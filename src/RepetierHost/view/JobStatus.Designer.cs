@@ -194,6 +194,7 @@
             this.Name = "JobStatus";
             this.Text = "Job status";
             this.Shown += new System.EventHandler(this.JobStatus_Shown);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.JobStatus_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

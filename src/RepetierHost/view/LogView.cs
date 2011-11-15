@@ -75,6 +75,13 @@ namespace RepetierHost.view
             listLog.Items.RemoveAt(listLog.Items.Count - 1);
             logAppend(line);
         }
+        private bool isAck(string t)
+        {
+            if (t.StartsWith("ok") || t.StartsWith("wait")) return true;
+            if (t.IndexOf("SD printing byte")!=-1) return true;
+            if (t.IndexOf("Not SD printing")!=-1) return true;
+            return false;
+        }
         private void UpdateNewEntries(object sender, EventArgs e)
         {
             LinkedList<LogLine> nl = null;
@@ -88,7 +95,7 @@ namespace RepetierHost.view
             while (nl.Count > 0)
             {
                 LogLine line = nl.First.Value;
-                if (toolACK.Checked == false && (line.text.StartsWith("ok") || line.text.StartsWith("wait"))) nl.RemoveFirst();
+                if (toolACK.Checked == false && isAck(line.text)) nl.RemoveFirst();
                 else if (line.level == 0 && line.response==false && toolSend.Checked == false) nl.RemoveFirst();
                 else if (line.level == 1 && toolWarning.Checked == false) nl.RemoveFirst();
                 else if (line.level == 2 && toolErrors.Checked == false) nl.RemoveFirst();
@@ -107,7 +114,7 @@ namespace RepetierHost.view
         }
         private void logAppend(LogLine line)
         {
-            if (toolACK.Checked == false && (line.text.StartsWith("ok") || line.text.StartsWith("wait"))) return;
+            if (toolACK.Checked == false && isAck(line.text)) return;
             if (line.level == 0 && line.response==false && toolSend.Checked == false) return;
             if (line.level == 1 && toolWarning.Checked == false) return;
             if (line.level == 2 && toolErrors.Checked == false) return;

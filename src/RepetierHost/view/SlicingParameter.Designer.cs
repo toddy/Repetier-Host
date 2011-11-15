@@ -602,6 +602,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SlicingParameter";
             this.Text = "Slicing Parameter";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SlicingParameter_FormClosing);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

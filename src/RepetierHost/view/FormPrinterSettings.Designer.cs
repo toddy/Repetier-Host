@@ -51,6 +51,12 @@
             this.comboPort = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.tabPagePrinter = new System.Windows.Forms.TabPage();
+            this.label37 = new System.Windows.Forms.Label();
+            this.label36 = new System.Windows.Forms.Label();
+            this.textDefaultHeatedBedTemp = new System.Windows.Forms.TextBox();
+            this.textDefaultExtruderTemp = new System.Windows.Forms.TextBox();
+            this.label35 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
             this.label33 = new System.Windows.Forms.Label();
             this.textDisposeZ = new System.Windows.Forms.TextBox();
             this.label32 = new System.Windows.Forms.Label();
@@ -341,6 +347,12 @@
             // tabPagePrinter
             // 
             this.tabPagePrinter.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPagePrinter.Controls.Add(this.label37);
+            this.tabPagePrinter.Controls.Add(this.label36);
+            this.tabPagePrinter.Controls.Add(this.textDefaultHeatedBedTemp);
+            this.tabPagePrinter.Controls.Add(this.textDefaultExtruderTemp);
+            this.tabPagePrinter.Controls.Add(this.label35);
+            this.tabPagePrinter.Controls.Add(this.label34);
             this.tabPagePrinter.Controls.Add(this.label33);
             this.tabPagePrinter.Controls.Add(this.textDisposeZ);
             this.tabPagePrinter.Controls.Add(this.label32);
@@ -370,10 +382,64 @@
             this.tabPagePrinter.TabIndex = 1;
             this.tabPagePrinter.Text = "Printer";
             // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Location = new System.Drawing.Point(293, 92);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(18, 13);
+            this.label37.TabIndex = 24;
+            this.label37.Text = "°C";
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Location = new System.Drawing.Point(293, 62);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(18, 13);
+            this.label36.TabIndex = 23;
+            this.label36.Text = "°C";
+            // 
+            // textDefaultHeatedBedTemp
+            // 
+            this.textDefaultHeatedBedTemp.Location = new System.Drawing.Point(187, 85);
+            this.textDefaultHeatedBedTemp.Name = "textDefaultHeatedBedTemp";
+            this.textDefaultHeatedBedTemp.Size = new System.Drawing.Size(100, 20);
+            this.textDefaultHeatedBedTemp.TabIndex = 22;
+            this.textDefaultHeatedBedTemp.Text = "55";
+            this.textDefaultHeatedBedTemp.Validating += new System.ComponentModel.CancelEventHandler(this.int_Validating);
+            // 
+            // textDefaultExtruderTemp
+            // 
+            this.textDefaultExtruderTemp.Location = new System.Drawing.Point(187, 59);
+            this.textDefaultExtruderTemp.Name = "textDefaultExtruderTemp";
+            this.textDefaultExtruderTemp.Size = new System.Drawing.Size(100, 20);
+            this.textDefaultExtruderTemp.TabIndex = 21;
+            this.textDefaultExtruderTemp.Text = "200";
+            this.textDefaultExtruderTemp.Validating += new System.ComponentModel.CancelEventHandler(this.int_Validating);
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(12, 88);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(164, 13);
+            this.label35.TabIndex = 20;
+            this.label35.Text = "Default heated bed Temperature:";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(12, 62);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(144, 13);
+            this.label34.TabIndex = 19;
+            this.label34.Text = "Default extruder temperature:";
+            // 
             // label33
             // 
             this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(396, 122);
+            this.label33.Location = new System.Drawing.Point(396, 170);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(29, 13);
             this.label33.TabIndex = 18;
@@ -381,7 +447,7 @@
             // 
             // textDisposeZ
             // 
-            this.textDisposeZ.Location = new System.Drawing.Point(324, 119);
+            this.textDisposeZ.Location = new System.Drawing.Point(324, 167);
             this.textDisposeZ.Name = "textDisposeZ";
             this.textDisposeZ.Size = new System.Drawing.Size(52, 20);
             this.textDisposeZ.TabIndex = 7;
@@ -391,7 +457,7 @@
             // label32
             // 
             this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(281, 122);
+            this.label32.Location = new System.Drawing.Point(281, 170);
             this.label32.Name = "label32";
             this.label32.Size = new System.Drawing.Size(37, 13);
             this.label32.TabIndex = 16;
@@ -400,7 +466,7 @@
             // checkDisbaleHeatedBedAfterJob
             // 
             this.checkDisbaleHeatedBedAfterJob.AutoSize = true;
-            this.checkDisbaleHeatedBedAfterJob.Location = new System.Drawing.Point(15, 194);
+            this.checkDisbaleHeatedBedAfterJob.Location = new System.Drawing.Point(15, 242);
             this.checkDisbaleHeatedBedAfterJob.Name = "checkDisbaleHeatedBedAfterJob";
             this.checkDisbaleHeatedBedAfterJob.Size = new System.Drawing.Size(193, 17);
             this.checkDisbaleHeatedBedAfterJob.TabIndex = 10;
@@ -412,7 +478,7 @@
             this.checkDisableExtruderAfterJob.AutoSize = true;
             this.checkDisableExtruderAfterJob.Checked = true;
             this.checkDisableExtruderAfterJob.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkDisableExtruderAfterJob.Location = new System.Drawing.Point(15, 170);
+            this.checkDisableExtruderAfterJob.Location = new System.Drawing.Point(15, 218);
             this.checkDisableExtruderAfterJob.Name = "checkDisableExtruderAfterJob";
             this.checkDisableExtruderAfterJob.Size = new System.Drawing.Size(177, 17);
             this.checkDisableExtruderAfterJob.TabIndex = 9;
@@ -424,7 +490,7 @@
             this.checkGoDisposeAfterJob.AutoSize = true;
             this.checkGoDisposeAfterJob.Checked = true;
             this.checkGoDisposeAfterJob.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkGoDisposeAfterJob.Location = new System.Drawing.Point(15, 146);
+            this.checkGoDisposeAfterJob.Location = new System.Drawing.Point(15, 194);
             this.checkGoDisposeAfterJob.Name = "checkGoDisposeAfterJob";
             this.checkGoDisposeAfterJob.Size = new System.Drawing.Size(190, 17);
             this.checkGoDisposeAfterJob.TabIndex = 8;
@@ -434,7 +500,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(195, 119);
+            this.label15.Location = new System.Drawing.Point(195, 167);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(17, 13);
             this.label15.TabIndex = 15;
@@ -442,7 +508,7 @@
             // 
             // textDisposeY
             // 
-            this.textDisposeY.Location = new System.Drawing.Point(218, 119);
+            this.textDisposeY.Location = new System.Drawing.Point(218, 167);
             this.textDisposeY.Name = "textDisposeY";
             this.textDisposeY.Size = new System.Drawing.Size(57, 20);
             this.textDisposeY.TabIndex = 6;
@@ -451,7 +517,7 @@
             // 
             // textDisposeX
             // 
-            this.textDisposeX.Location = new System.Drawing.Point(129, 119);
+            this.textDisposeX.Location = new System.Drawing.Point(129, 167);
             this.textDisposeX.Name = "textDisposeX";
             this.textDisposeX.Size = new System.Drawing.Size(60, 20);
             this.textDisposeX.TabIndex = 5;
@@ -461,7 +527,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(106, 119);
+            this.label14.Location = new System.Drawing.Point(106, 167);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(17, 13);
             this.label14.TabIndex = 12;
@@ -470,7 +536,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(12, 119);
+            this.label13.Location = new System.Drawing.Point(12, 167);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(101, 13);
             this.label13.TabIndex = 11;
@@ -479,7 +545,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(118, 83);
+            this.label12.Location = new System.Drawing.Point(118, 131);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(50, 13);
             this.label12.TabIndex = 3;
@@ -488,7 +554,7 @@
             // labelCheckInterval
             // 
             this.labelCheckInterval.AutoSize = true;
-            this.labelCheckInterval.Location = new System.Drawing.Point(86, 83);
+            this.labelCheckInterval.Location = new System.Drawing.Point(86, 131);
             this.labelCheckInterval.Name = "labelCheckInterval";
             this.labelCheckInterval.Size = new System.Drawing.Size(13, 13);
             this.labelCheckInterval.TabIndex = 2;
@@ -497,7 +563,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(12, 83);
+            this.label11.Location = new System.Drawing.Point(12, 131);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(67, 13);
             this.label11.TabIndex = 8;
@@ -506,7 +572,7 @@
             // trackTempPeriod
             // 
             this.trackTempPeriod.BackColor = System.Drawing.SystemColors.Control;
-            this.trackTempPeriod.Location = new System.Drawing.Point(187, 82);
+            this.trackTempPeriod.Location = new System.Drawing.Point(187, 130);
             this.trackTempPeriod.Maximum = 60;
             this.trackTempPeriod.Minimum = 1;
             this.trackTempPeriod.Name = "trackTempPeriod";
@@ -521,7 +587,7 @@
             this.checkTemp.AutoSize = true;
             this.checkTemp.Checked = true;
             this.checkTemp.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkTemp.Location = new System.Drawing.Point(15, 59);
+            this.checkTemp.Location = new System.Drawing.Point(15, 107);
             this.checkTemp.Name = "checkTemp";
             this.checkTemp.Size = new System.Drawing.Size(199, 17);
             this.checkTemp.TabIndex = 2;
@@ -876,6 +942,7 @@
             this.ShowIcon = false;
             this.Text = "Printer settings";
             this.Shown += new System.EventHandler(this.FormPrinterSettings_Shown);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormPrinterSettings_FormClosing);
             this.panelPrinterSelect.ResumeLayout(false);
             this.panelPrinterSelect.PerformLayout();
             this.tabControl1.ResumeLayout(false);
@@ -965,5 +1032,11 @@
         private System.Windows.Forms.Label label33;
         private System.Windows.Forms.TextBox textDisposeZ;
         private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.Label label37;
+        private System.Windows.Forms.Label label36;
+        private System.Windows.Forms.TextBox textDefaultHeatedBedTemp;
+        private System.Windows.Forms.TextBox textDefaultExtruderTemp;
+        private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.Label label34;
     }
 }

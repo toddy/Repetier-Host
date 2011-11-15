@@ -34,6 +34,7 @@ namespace RepetierHost.model
         public static NumberFormatInfo format = CultureInfo.InvariantCulture.NumberFormat;
         private ushort fields = 128;
         int n;
+        public bool comment = false;
         private byte g = 0, m = 0, t = 0;
         private float x, y, z, e, f;
         private int s;
@@ -235,9 +236,82 @@ namespace RepetierHost.model
             }
             return s.ToString();
         }
+        private void AddCode(char c,string val) {
+            double d;
+            double.TryParse(val, NumberStyles.Float, format, out d);
+            switch (c)
+            {
+                case 'G':
+                    G = (byte)d;
+                    break;
+                case 'M':
+                    M = (byte)d;
+                    break;
+                case 'T':
+                    T = (byte)d;
+                    break;
+                case 'S':
+                    S = (int)d;
+                    break;
+                case 'P':
+                    P = (int)d;
+                    break;
+                case 'X':
+                    X = (float)d;
+                    break;
+                case 'Y':
+                    Y = (float)d;
+                    break;
+                case 'Z':
+                    Z = (float)d;
+                    break;
+                case 'E':
+                    E = (float)d;
+                    break;
+                case 'F':
+                    F = (float)d;
+                    break;
+            }
+        }
         public void Parse(String line)
         {
             fields = 128;
+            int l = line.Length,i;
+            int mode = 0; // 0 = search code, 1 = search value
+            char code = ';';
+            int p1=0;
+            for (i = 0; i < l; i++)
+            {
+                char c = line[i];
+                if (mode == 0 && c >= 'A' && c <= 'Z')
+                {
+                    code = c;
+                    mode = 1;
+                    p1 = i + 1;
+                    continue;
+                }
+                else if (mode == 1)
+                {
+                    if (c == ' ' || c=='\t' || c==';')
+                    {
+                        AddCode(code,line.Substring(p1, i - p1));
+                        mode = 0;
+                        if (hasM && (m == 23 || m == 28 || m == 29 || m == 30))
+                        {
+                            int pos = i;
+                            while (pos < line.Length && char.IsWhiteSpace(line[pos])) pos++;
+                            int end = pos;
+                            while (end < line.Length && !char.IsWhiteSpace(line[end])) end++;
+                            Text = line.Substring(pos, end - pos);
+                            break;
+                        }
+                    }
+                }
+                if (c == ';') break;
+            }
+            if (mode == 1)
+                AddCode(code, line.Substring(p1, line.Length - p1));
+            /* Slow version
             int iv;
             float fv;
             if (line.IndexOf(';') >= 0) line = line.Substring(0, line.IndexOf(';')); // Strip comments
@@ -251,7 +325,7 @@ namespace RepetierHost.model
             if (ExtractFloat(line, "Z", out fv)) Z = fv;
             if (ExtractFloat(line, "E", out fv)) E = fv;
             if (ExtractFloat(line, "F", out fv)) F = fv;
-            if (hasM && (m == 23 || m == 28 || m == 29))
+            if (hasM && (m == 23 || m == 28 || m == 29 || m == 30))
             {
                 int pos = line.IndexOf('M') + 3;
                 while (pos < line.Length && char.IsWhiteSpace(line[pos])) pos++;
@@ -259,6 +333,8 @@ namespace RepetierHost.model
                 while (end < line.Length && !char.IsWhiteSpace(line[end])) end++;
                 Text = line.Substring(pos, end - pos);
             }
+              */
+            comment = fields == 128;
         }
         private bool ExtractInt(string s,string code,out int value) {
             value = 0;
@@ -266,7 +342,7 @@ namespace RepetierHost.model
             if (p < 0) return false;
             p++;
             int end = p;
-            while(end<s.Length && char.IsDigit(s[end])) end++;
+            while(end<s.Length && ((end==p && (s[end]=='-' || s[end]=='+')) || char.IsDigit(s[end]))) end++;
             int.TryParse(s.Substring(p,end-p),out value);
             return true;
         }

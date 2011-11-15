@@ -261,6 +261,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "PrinterInfo";
             this.Text = "Printer information";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PrinterInfo_FormClosing);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

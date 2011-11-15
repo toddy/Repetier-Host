@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using RepetierHost.model;
 using System.Globalization;
+using RepetierHost.view.utils;
 
 namespace RepetierHost.view
 {
@@ -25,6 +26,7 @@ namespace RepetierHost.view
         public SlicingParameter()
         {
             InitializeComponent();
+            RegMemory.RestoreWindowPos("slicingParameterWindow", this);
         }
         private String ReadD(double d)
         {
@@ -122,6 +124,11 @@ namespace RepetierHost.view
             {
                 errorProvider.SetError(box, "Not an integer.");
             }
+        }
+
+        private void SlicingParameter_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            RegMemory.StoreWindowPos("slicingParameterWindow", this, false, false);
         }
     }
 }

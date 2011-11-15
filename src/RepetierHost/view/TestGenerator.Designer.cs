@@ -262,6 +262,7 @@
             this.MinimizeBox = false;
             this.Name = "TestGenerator";
             this.Text = "Test generator";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TestGenerator_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

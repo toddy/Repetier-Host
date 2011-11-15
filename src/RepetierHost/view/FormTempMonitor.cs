@@ -24,6 +24,7 @@ using System.Text;
 using System.Windows.Forms;
 using RepetierHost.GraphLib;
 using RepetierHost.model;
+using RepetierHost.view.utils;
 
 namespace RepetierHost.view
 {
@@ -36,6 +37,7 @@ namespace RepetierHost.view
         public FormTempMonitor()
         {
             InitializeComponent();
+            RegMemory.RestoreWindowPos("tempMonitorWindow", this);
             this.SuspendLayout();
             comboMonitor.SelectedIndex = 0;
             source = new DataSource();
@@ -154,6 +156,11 @@ namespace RepetierHost.view
             target.AutoScaleX = checkAutoscaleX.Checked;
             output.AutoScaleX = checkAutoscaleX.Checked;
             plotter.Refresh();
+        }
+
+        private void FormTempMonitor_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            RegMemory.StoreWindowPos("tempMonitorWindow", this, true, true);
         }
     }
 }

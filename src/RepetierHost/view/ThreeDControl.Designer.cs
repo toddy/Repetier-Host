@@ -167,6 +167,7 @@
             this.gl.Resize += new System.EventHandler(this.gl_Resize);
             this.gl.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ThreeDControl_KeyPress);
             this.gl.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gl_MouseUp);
+            this.gl.MouseEnter += new System.EventHandler(this.ThreeDControl_MouseEnter);
             // 
             // timer
             // 
@@ -181,6 +182,7 @@
             this.Size = new System.Drawing.Size(830, 504);
             this.Load += new System.EventHandler(this.ThreeDControl_Load);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ThreeDControl_KeyPress);
+            this.MouseEnter += new System.EventHandler(this.ThreeDControl_MouseEnter);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);

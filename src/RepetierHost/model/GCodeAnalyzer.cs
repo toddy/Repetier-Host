@@ -30,6 +30,7 @@ namespace RepetierHost.model
         public event OnAnalyzerChange eventChange;
         public int activeExtruder = 0;
         public int extruderTemp=0;
+        public bool uploading = false;
         public int bedTemp=0;
         public float x=0, y=0, z=0, e=0,emax=0;
         public float xOffset=0, yOffset=0, zOffset=0, eOffset=0;
@@ -80,6 +81,7 @@ namespace RepetierHost.model
         {
             if (code.hasN)
                 lastline = code.N;
+            if (uploading && !code.hasM && code.M != 29) return; // ignore upload commands
             if (code.hasG)
             {
                 switch (code.G)
@@ -111,7 +113,10 @@ namespace RepetierHost.model
                         if (z < 0) z = 0;
                         if (e > emax) emax = e;
                         if (eventPosChanged != null)
-                            Main.main.Invoke(eventPosChanged,code, x, y, z);
+                            if (privateAnalyzer)
+                                eventPosChanged(code, x, y, z);
+                            else
+                                Main.main.Invoke(eventPosChanged,code, x, y, z);
                         break;
                     case 28:
                     case 161:
@@ -122,6 +127,9 @@ namespace RepetierHost.model
                             if (code.hasZ || homeAll) { zOffset = 0; z = 0; hasZHome = true; }
                             if (code.hasE) { eOffset = 0; e = 0; emax = 0; }
                             if (eventPosChanged != null)
+                                if (privateAnalyzer)
+                                    eventPosChanged(code, x, y, z);
+                            else
                                 Main.main.Invoke(eventPosChanged, code, x, y, z);
                         }
                         break;
@@ -132,6 +140,9 @@ namespace RepetierHost.model
                             if (code.hasY || homeAll) { yOffset = 0; y = Main.printerSettings.PrintAreaDepth; hasYHome = true; }
                             if (code.hasZ || homeAll) { zOffset = 0; z = Main.printerSettings.PrintAreaHeight; hasZHome = true; }
                             if (eventPosChanged != null)
+                                if (privateAnalyzer)
+                                    eventPosChanged(code, x, y, z);
+                            else
                                 Main.main.Invoke(eventPosChanged, code, x, y, z);
                         }
                         break;
@@ -142,12 +153,15 @@ namespace RepetierHost.model
                         relative = true;
                         break;
                     case 92:
-                        if (code.hasX) { xOffset = Math.Max(0,x-code.X); x = code.X; }
-                        if (code.hasY) { yOffset = Math.Max(0,y-code.Y); y = code.Y; }
-                        if (code.hasZ) { zOffset = Math.Max(0,z-code.Z); z = code.Z; }
-                        if (code.hasE) { eOffset = Math.Max(0,e-code.E); e = code.E; }
+                        if (code.hasX) { xOffset = x-code.X; x = xOffset; }
+                        if (code.hasY) { yOffset = y-code.Y; y = zOffset; }
+                        if (code.hasZ) { zOffset = z-code.Z; z = zOffset; }
+                        if (code.hasE) { eOffset = e-code.E; e = eOffset; }
                         if (eventPosChanged != null)
-                            Main.main.Invoke(eventPosChanged,code, x, y, z);
+                            if (privateAnalyzer)
+                                eventPosChanged(code, x, y, z);
+                            else
+                                Main.main.Invoke(eventPosChanged, code, x, y, z);
                         break;
                 }
             }
@@ -155,6 +169,12 @@ namespace RepetierHost.model
             {
                 switch (code.M)
                 {
+                    case 28:
+                        uploading = true;
+                        break;
+                    case 29:
+                        uploading = false;
+                        break;
                     case 80:
                         powerOn = true;
                         fireChanged();

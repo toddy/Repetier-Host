@@ -24,6 +24,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
 using Microsoft.Win32;
+using RepetierHost.view.utils;
 
 namespace RepetierHost.view
 {
@@ -36,6 +37,7 @@ namespace RepetierHost.view
         public Skeinforge()
         {
             InitializeComponent();
+            RegMemory.RestoreWindowPos("skeinforgeWindow", this);
             repetierKey = Registry.CurrentUser.CreateSubKey("Software\\Repetier");
             regToForm();
         }
@@ -181,6 +183,11 @@ namespace RepetierHost.view
         {
             if (openPython.ShowDialog() == DialogResult.OK)
                 textPython.Text = openPython.FileName;
+        }
+
+        private void Skeinforge_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            RegMemory.StoreWindowPos("skeinforgeWindow", this, false, false);
         }
     }
 }

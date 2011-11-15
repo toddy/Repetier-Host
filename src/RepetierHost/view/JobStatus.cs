@@ -23,6 +23,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using RepetierHost.model;
+using RepetierHost.view.utils;
 
 namespace RepetierHost.view
 {
@@ -39,6 +40,7 @@ namespace RepetierHost.view
         public JobStatus()
         {
             InitializeComponent();
+            RegMemory.RestoreWindowPos("jobStatusWindow", this);
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -89,6 +91,11 @@ namespace RepetierHost.view
         {
             timer.Stop();
             Hide();
+        }
+
+        private void JobStatus_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            RegMemory.StoreWindowPos("jobStatusWindow", this, false, false);
         }
     }
 }

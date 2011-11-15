@@ -23,6 +23,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using RepetierHost.model;
+using RepetierHost.view.utils;
 
 namespace RepetierHost.view
 {
@@ -33,6 +34,7 @@ namespace RepetierHost.view
         {
             con = Main.conn;
             InitializeComponent();
+            RegMemory.RestoreWindowPos("printerInfoWindow", this);
             timer_Tick(null, null);
         }
         /// <summary>
@@ -61,6 +63,11 @@ namespace RepetierHost.view
         private void labelFirmwareURL_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Main.main.openLink(labelFirmwareURL.Text);
+        }
+
+        private void PrinterInfo_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            RegMemory.StoreWindowPos("printerInfoWindow", this, false, false);
         }
 
     }

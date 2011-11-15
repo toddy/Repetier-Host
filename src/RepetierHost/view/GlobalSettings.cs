@@ -23,6 +23,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.Win32;
+using RepetierHost.view.utils;
 
 namespace RepetierHost.view
 {
@@ -33,6 +34,7 @@ namespace RepetierHost.view
         public GlobalSettings()
         {
             InitializeComponent();
+            RegMemory.RestoreWindowPos("globalSettingsWindow", this);
             repetierKey = Registry.CurrentUser.CreateSubKey("Software\\Repetier");
             RegToForm();
         }
@@ -73,6 +75,11 @@ namespace RepetierHost.view
             {
                 textWorkdir.Text = folderBrowser.SelectedPath;
             }
+        }
+
+        private void GlobalSettings_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            RegMemory.StoreWindowPos("globalSettingsWindow", this, false, false);
         }
     }
 }

@@ -41,9 +41,11 @@ namespace RepetierHost.view
         float xPos, yPos;
         float speedX, speedY;
         float zoom = 1.0f;
-        Vector3 viewCenter;
-        Vector3 userPosition;
+        Vector3 viewCenter,startViewCenter;
+        Vector3 userPosition,startUserPosition;
         float rotZ = 0, rotX = 0;
+        float startRotZ=0, startRotX=0;
+        float lastX, lastY;
         Stopwatch sw = new Stopwatch();
         Stopwatch fpsTimer = new Stopwatch();
         int mode = 0;
@@ -317,8 +319,12 @@ namespace RepetierHost.view
 
         private void gl_MouseDown(object sender, MouseEventArgs e)
         {
-            xDown = e.X;
-            yDown = e.Y;
+            lastX = xDown = e.X;
+            lastY = yDown = e.Y;
+            startRotX = rotX;
+            startRotZ = rotZ;
+            startViewCenter = viewCenter;
+            startUserPosition = userPosition;
         }
 
         private void gl_MouseMove(object sender, MouseEventArgs e)
@@ -366,18 +372,31 @@ namespace RepetierHost.view
             if (k == Keys.Alt) emode = 4;
             if (emode == 0)
             {
-                rotZ += (float)milliseconds * speedX *Math.Abs(speedX)/ 15.0f;
-                rotX += (float)milliseconds * speedY*Math.Abs(speedY) / 15.0f;
+                float d = Math.Min(gl.Width, gl.Height) / 3;
+                speedX = (xPos - xDown) / d;
+                speedY = (yPos - yDown) / d;
+                rotZ = startRotZ + speedX * 50;
+                rotX = startRotX + speedY * 50;
+                //rotZ += (float)milliseconds * speedX *Math.Abs(speedX)/ 15.0f;
+                //rotX += (float)milliseconds * speedY*Math.Abs(speedY) / 15.0f;
             }
             else if (emode == 1)
             {
-                userPosition.X += (float)milliseconds * speedX *Math.Abs(speedX)/ 10.0f;
-                userPosition.Z -= (float)milliseconds * speedY *Math.Abs(speedY)/ 10.0f;
+                speedX = (xPos - xDown) / gl.Width;
+                speedY = (yPos - yDown) / gl.Height;
+                userPosition.X = startUserPosition.X + speedX * 200 * zoom;
+                userPosition.Z = startUserPosition.Z - speedY * 200 * zoom;
+                //userPosition.X += (float)milliseconds * speedX * Math.Abs(speedX) / 10.0f;
+                //userPosition.Z -= (float)milliseconds * speedY *Math.Abs(speedY)/ 10.0f;
             }
             else if (emode == 2)
             {
-                viewCenter.X -= (float)milliseconds * speedX * Math.Abs(speedX)/ 10.0f;
-                viewCenter.Z += (float)milliseconds * speedY * Math.Abs(speedY)/ 10.0f;
+                speedX = (xPos - xDown) / gl.Width;
+                speedY = (yPos - yDown) / gl.Height;
+                viewCenter.X = startViewCenter.X-speedX *200*zoom;
+                viewCenter.Z = startViewCenter.Z+speedY *200*zoom;
+                //viewCenter.X -= (float)milliseconds * speedX * Math.Abs(speedX) / 10.0f;
+                //viewCenter.Z += (float)milliseconds * speedY * Math.Abs(speedY)/ 10.0f;
             }
             else if (emode == 3)
             {
@@ -385,9 +404,14 @@ namespace RepetierHost.view
             }
             else if (emode == 4)
             {
+                speedX = (xPos - lastX)*200*zoom / gl.Width;
+                speedY = (yPos - lastY)*200*zoom / gl.Height;
                 if (eventObjectMoved != null)
-                    eventObjectMoved((float)milliseconds * speedX * Math.Abs(speedX) / 10.0f,
-                        -(float)milliseconds * speedY * Math.Abs(speedY) / 10.0f);
+                    eventObjectMoved(speedX,-speedY);
+                //eventObjectMoved((float)milliseconds * speedX * Math.Abs(speedX) / 10.0f,
+                 //   -(float)milliseconds * speedY * Math.Abs(speedY) / 10.0f);
+                lastX = xPos;
+                lastY = yPos;
             }
             gl.Invalidate();
         }
@@ -480,6 +504,11 @@ namespace RepetierHost.view
         private void toolAutoupdate_Click(object sender, EventArgs e)
         {
             toolAutoupdate.Checked = !toolAutoupdate.Checked;
+        }
+
+        private void ThreeDControl_MouseEnter(object sender, EventArgs e)
+        {
+           // Focus();
         }
     }
 }

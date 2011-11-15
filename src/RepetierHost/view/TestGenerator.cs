@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using RepetierHost.model;
 using System.Globalization;
+using RepetierHost.view.utils;
 
 namespace RepetierHost.view
 {
@@ -24,6 +25,7 @@ namespace RepetierHost.view
         public TestGenerator()
         {
             InitializeComponent();
+            RegMemory.RestoreWindowPos("testGeneratorWindow", this);
             comboTestCase.SelectedIndex = 0;
             gen = Main.generator;
         }
@@ -142,6 +144,11 @@ namespace RepetierHost.view
             {
                 errorProvider.SetError(box, "Not a number.");
             }
+        }
+
+        private void TestGenerator_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            RegMemory.StoreWindowPos("testGeneratorWindow", this, false, false);
         }
     }
 }

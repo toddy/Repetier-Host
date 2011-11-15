@@ -25,7 +25,9 @@ using System.IO;
 using System.Windows.Forms;
 using RepetierHost.model;
 using RepetierHost.view;
+using RepetierHost.view.utils;
 using Microsoft.Win32;
+using System.Threading;
 
 namespace RepetierHost
 {
@@ -48,6 +50,25 @@ namespace RepetierHost
         public GCodeVisual printVisual = null;
         public static GCodeGenerator generator = null;
         public string basicTitle = "";
+        public volatile GCodeVisual newVisual = null;
+        public volatile bool jobPreviewThreadFinished = true;
+        public volatile Thread previewThread = null;
+        public RegMemory.FilesHistory fileHistory = new RegMemory.FilesHistory("fileHistory", 8);
+        public class JobUpdater
+        {
+            GCodeVisual visual = null;
+            // This method will be called when the thread is started.
+            public void DoWork()
+            {
+                RepetierEditor ed = Main.main.editor;
+                string text = ed.getContent(1) + ed.getContent(0) + ed.getContent(2);
+                visual = new GCodeVisual();
+                visual.ParseText(text, true);
+                Main.main.newVisual = visual;
+                Main.main.jobPreviewThreadFinished = true;
+                Main.main.previewThread = null;
+            }
+        }
         public Main()
         {
             repetierKey = Registry.CurrentUser.CreateSubKey("Software\\Repetier");
@@ -58,15 +79,21 @@ namespace RepetierHost
             printerSettings = new FormPrinterSettings();
             threeDSettings = new ThreeDSettings();
             InitializeComponent();
+            RegMemory.RestoreWindowPos("mainWindow", this);
+            if (WindowState == FormWindowState.Maximized)
+                Application.DoEvents();
+            splitLog.SplitterDistance = RegMemory.GetInt("logSplitterDistance", splitLog.SplitterDistance);
+            toolShowLog.Checked = RegMemory.GetBool("logShow", true);
             conn.eventConnectionChange += OnPrinterConnectionChange;
             conn.eventPrinterAction += OnPrinterAction;
             conn.eventJobProgress += OnJobProgress;
             printPanel = new PrintPanel();
             printPanel.Dock = DockStyle.Fill;
             splitContainerPrinterGraphic.Panel1.Controls.Add(printPanel);
+            printerSettings.formToCon();
             logView = new LogView();
             logView.Dock = DockStyle.Fill;
-            splitVert.Panel2.Controls.Add(logView);
+            splitLog.Panel2.Controls.Add(logView);
             skeinforge = new Skeinforge();
             PrinterChanged(printerSettings.currentPrinterKey,true);
             printerSettings.eventPrinterChanged += PrinterChanged;
@@ -79,13 +106,82 @@ namespace RepetierHost
             printVisual = new GCodeVisual(conn.analyzer);
             printPreview.models.AddLast(printVisual);
             basicTitle = Text;
+            jobPreview = new ThreeDControl();
+            jobPreview.Dock = DockStyle.Fill;
+            splitJob.Panel2.Controls.Add(jobPreview);
+            jobPreview.SetEditor(false);
+            jobPreview.models.AddLast(jobVisual);
+            editor.contentChangedEvent += JobPreview;
+            editor.commands = new Commands();
+            editor.commands.Read("default", "en");
+            UpdateHistory();
+            UpdateConnections();
         }
-        public void PrinterChanged(RegistryKey pkey,bool printerChanged)
+        public void UpdateConnections()
+        {
+            toolConnect.DropDownItems.Clear();
+            foreach (string s in printerSettings.printerKey.GetSubKeyNames())
+            {
+                toolConnect.DropDownItems.Add(s, null, ConnectHandler);
+            }
+            foreach (ToolStripItem it in toolConnect.DropDownItems)
+                it.Enabled = !conn.connected;
+        }
+        public void UpdateHistory()
+        {
+            bool delFlag = false;
+            LinkedList<ToolStripItem> delArray = new LinkedList<ToolStripItem>();
+            int pos = 0;
+            foreach(ToolStripItem c in fileToolStripMenuItem.DropDownItems) {
+                if (c == toolStripEndHistory) break;
+                if (!delFlag) pos++;
+                if (c == toolStripStartHistory)
+                {
+                    delFlag = true;
+                    continue;
+                }
+                if (delFlag)
+                    delArray.AddLast(c);
+            }
+            foreach (ToolStripItem i in delArray)
+                fileToolStripMenuItem.DropDownItems.Remove(i);
+            toolLoad.DropDownItems.Clear();
+            foreach(RegMemory.HistoryFile f in fileHistory.list) {
+                ToolStripMenuItem item = new ToolStripMenuItem(); // You would obviously calculate this value at runtime
+                item = new ToolStripMenuItem();
+                item.Name = "file" +pos;
+                item.Tag = f;
+                item.Text = f.ToString();
+                item.Click += new EventHandler(HistoryHandler);
+                fileToolStripMenuItem.DropDownItems.Insert(pos++,item);
+                item = new ToolStripMenuItem();
+                item.Name = "filet" + pos;
+                item.Tag = f;
+                item.Text = f.ToString();
+                item.Click += new EventHandler(HistoryHandler);
+                toolLoad.DropDownItems.Add(item);
+            }
+        }
+
+        private void HistoryHandler(object sender, EventArgs e)
+        {
+            ToolStripMenuItem clickedItem = (ToolStripMenuItem)sender;
+            RegMemory.HistoryFile f = (RegMemory.HistoryFile)clickedItem.Tag;
+            LoadGCodeOrSTL(f.file);
+            // Take some action based on the data in clickedItem
+        }
+        private void ConnectHandler(object sender, EventArgs e)
+        {
+            ToolStripMenuItem clickedItem = (ToolStripMenuItem)sender;
+            printerSettings.load(clickedItem.Text);
+            printerSettings.formToCon();
+            conn.open();
+        }
+        public void PrinterChanged(RegistryKey pkey, bool printerChanged)
         {
             if (printerChanged)
             {
-                textGCodePrepend.Text = (string)pkey.GetValue("gcodePrepend", textGCodePrepend.Text);
-                textGCodeAppend.Text = (string)pkey.GetValue("gcodeAppend", textGCodeAppend.Text);
+                editor.UpdatePrependAppend();
             }
         }
         public string Title
@@ -99,6 +195,20 @@ namespace RepetierHost
         }
         private void OnPrinterConnectionChange(string msg) {
             toolConnection.Text = msg;
+            if (conn.connected)
+            {
+                toolConnect.Image = imageList.Images[0];
+                toolConnect.ToolTipText = "Disconnect printer";
+                foreach (ToolStripItem it in toolConnect.DropDownItems)
+                    it.Enabled = false;
+            }
+            else
+            {
+                toolConnect.Image = imageList.Images[1];
+                toolConnect.ToolTipText = "Connect printer";
+                foreach (ToolStripItem it in toolConnect.DropDownItems)
+                    it.Enabled = true;
+            }
         }
         private void OnPrinterAction(string msg)
         {
@@ -120,27 +230,36 @@ namespace RepetierHost
         {
             if (openGCode.ShowDialog() == DialogResult.OK)
             {
-                FileInfo f = new FileInfo(openGCode.FileName);
-                Title = f.Name;
-                if (openGCode.FileName.EndsWith(".stl"))
-                {
-                    skeinforge.RunSlice(openGCode.FileName); // Slice it and load
-                }
-                else
-                {
-                    textGCode.Text = System.IO.File.ReadAllText(openGCode.FileName);
-                    tab.SelectTab(tabGCode);
-                    tabGCodes.SelectedTab = tabPageGCode;
-                }
+                LoadGCodeOrSTL(openGCode.FileName);
+            }
+        }
+        public void LoadGCodeOrSTL(string file)
+        {
+            if (!File.Exists(file)) return;
+            FileInfo f = new FileInfo(file);
+            Title = f.Name;
+            fileHistory.Save(file);
+            UpdateHistory();
+            if (openGCode.FileName.EndsWith(".stl"))
+            {
+                skeinforge.RunSlice(file); // Slice it and load
+            }
+            else
+            {
+                editor.setContent(0, System.IO.File.ReadAllText(file));
+                tab.SelectTab(tabGCode);
+                editor.selectContent(0);
             }
         }
         public void LoadGCode(string file)
         {
             try
             {
-                textGCode.Text = System.IO.File.ReadAllText(file);
+                editor.setContent(0,System.IO.File.ReadAllText(file));
                 tab.SelectTab(tabGCode);
-                tabGCodes.SelectedTab = tabPageGCode;
+                editor.selectContent(0);
+                fileHistory.Save(file);
+                UpdateHistory();
             }
             catch(Exception e)
             {
@@ -151,9 +270,9 @@ namespace RepetierHost
         {
             try
             {
-                textGCode.Text = text;
+                editor.setContent(0,text);
                 tab.SelectTab(tabGCode);
-                tabGCodes.SelectedTab = tabPageGCode;
+                editor.selectContent(0);
             }
             catch (Exception e)
             {
@@ -164,35 +283,13 @@ namespace RepetierHost
         {
             Printjob job = conn.job;
             job.BeginJob();
-            job.PushData(textGCodePrepend.Text);
-            job.PushData(textGCode.Text);
-            job.PushData(textGCodeAppend.Text);
+            job.PushData(editor.getContent(1));
+            job.PushData(editor.getContent(0));
+            job.PushData(editor.getContent(2));
             job.EndJob();
         }
 
-        private void textGCode_CursorChanged()
-        {
-            TextBox act = null;
-            if (tabGCodes.SelectedTab == tabPageGCode)
-                act = textGCode;
-            else if (tabGCodes.SelectedTab == tabPagePrepend)
-                act = textGCodePrepend;
-            else
-                act = textGCodeAppend;
-            Point p = act.GetPositionFromCharIndex(act.SelectionStart);
-            toolGCodeCol.Text = "Col " + (act.SelectionStart - act.GetFirstCharIndexOfCurrentLine() + 1);
-            toolGCodeRow.Text = "Row " + (act.GetLineFromCharIndex(act.SelectionStart) + 1);
-        }
 
-        private void textGCode_Key(object sender, KeyEventArgs e)
-        {
-            textGCode_CursorChanged();
-        }
-
-        private void textGCode_Enter(object sender, EventArgs e)
-        {
-            textGCode_CursorChanged();
-        }
 
         private void toolKillJob_Click(object sender, EventArgs e)
         {
@@ -202,21 +299,6 @@ namespace RepetierHost
         private void printerSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             printerSettings.ShowDialog();
-        }
-
-        private void textGCode_Click(object sender, EventArgs e)
-        {
-            textGCode_CursorChanged();
-        }
-
-        private void textGCodePrepend_Click(object sender, EventArgs e)
-        {
-            textGCode_CursorChanged();
-        }
-
-        private void textGCodeAppend_Click(object sender, EventArgs e)
-        {
-            textGCode_CursorChanged();
         }
 
         private void temperatureMonitorToolStripMenuItem_Click(object sender, EventArgs e)
@@ -250,6 +332,12 @@ namespace RepetierHost
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
+            RegMemory.StoreWindowPos("mainWindow",this, true, true);
+            RegMemory.SetInt("logSplitterDistance", splitLog.SplitterDistance);
+            RegMemory.SetBool("logShow", toolShowLog.Checked);
+
+            if(previewThread!=null)
+                previewThread.Join();
             conn.Destroy();
         }
 
@@ -311,7 +399,7 @@ namespace RepetierHost
             }
         };
 
-        private void toolStripSaveGCode_Click(object sender, EventArgs e)
+      /*  private void toolStripSaveGCode_Click(object sender, EventArgs e)
         {
             if (saveJobDialog.ShowDialog() == DialogResult.OK)
             {
@@ -327,10 +415,12 @@ namespace RepetierHost
         private void toolStripSaveAppend_Click(object sender, EventArgs e)
         {
             printerSettings.currentPrinterKey.SetValue("gcodeAppend", textGCodeAppend.Text);
-        }
-        private void toolStripJobPreview_Click(object sender, EventArgs e)
+        }*/
+        bool recalcJobPreview = false;
+        private void JobPreview()
         {
-            if (splitJob.Panel2Collapsed)
+            if (editor.autopreview == false) return;
+     /*       if (splitJob.Panel2Collapsed)
             {
                 splitJob.Panel2Collapsed = false;
                 splitJob.SplitterDistance = 300;
@@ -340,11 +430,17 @@ namespace RepetierHost
                 jobPreview.SetEditor(false);
                 jobPreview.models.AddLast(jobVisual);
                 //jobPreview.SetObjectSelected(false);
-            }
-            jobVisual.ParseText(textGCodePrepend.Text, true);
-            jobVisual.ParseText(textGCode.Text, false);
-            jobVisual.ParseText(textGCodeAppend.Text, false);
-            jobPreview.UpdateChanges();
+            }*/
+            /* Read the initial time. */
+            recalcJobPreview = true;
+            /*DateTime startTime = DateTime.Now;
+            jobVisual.ParseText(editor.getContent(1), true);
+            jobVisual.ParseText(editor.getContent(0), false);
+            jobVisual.ParseText(editor.getContent(2), false);
+            DateTime stopTime = DateTime.Now;
+            TimeSpan duration = stopTime - startTime;
+            Main.conn.log(duration.ToString(), false, 3);
+            jobPreview.UpdateChanges();*/
         }
         public void Update3D()
         {
@@ -372,6 +468,66 @@ namespace RepetierHost
         private void internalSlicingParameterToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SlicingParameter.Execute();
+        }
+
+        private void toolStripSDCard_Click(object sender, EventArgs e)
+        {
+            SDCard.Execute();
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            if (newVisual != null)
+            {
+                jobPreview.models.RemoveLast();
+                jobVisual.Clear();
+                jobVisual = newVisual;
+                jobPreview.models.AddLast(jobVisual);
+                jobPreview.UpdateChanges();
+                newVisual = null;
+                editor.toolUpdating.Text = "";
+            }
+            if (recalcJobPreview && jobPreviewThreadFinished)
+            {
+                recalcJobPreview = false;
+                jobPreviewThreadFinished = false;
+                JobUpdater workerObject = new JobUpdater();
+                editor.toolUpdating.Text = "Updating ...";
+                previewThread = new Thread(workerObject.DoWork);
+                previewThread.Start();
+
+            }
+        }
+
+        private void toolConnect_Click(object sender, EventArgs e)
+        {
+            if (conn.connected)
+            {
+                conn.close();
+            }
+            else
+            {
+                conn.open();
+            }
+        }
+
+        private void toolShowLog_Click(object sender, EventArgs e)
+        {
+            toolShowLog.Checked = !toolShowLog.Checked;   
+        }
+
+        private void toolShowLog_CheckedChanged(object sender, EventArgs e)
+        {
+            if (toolShowLog.Checked)
+            {
+                toolShowLog.ToolTipText = "Hide logs";
+                splitLog.Panel2Collapsed = false;
+            }
+            else
+            {
+                toolShowLog.ToolTipText = "Show logs";
+                splitLog.Panel2Collapsed = true;
+            }
         }
     }
 }

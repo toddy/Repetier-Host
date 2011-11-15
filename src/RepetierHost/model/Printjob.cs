@@ -31,6 +31,7 @@ namespace RepetierHost.model
         public bool dataComplete = false;
         public int totalLines;
         public int linesSend;
+        public bool exclusive = false;
         public int mode = 0; // 0 = no job defines, 1 = printing, 2 = finished, 3 = aborted
         public DateTime jobStarted, jobFinished;
         LinkedList<GCode> jobList = new LinkedList<GCode>();
@@ -73,12 +74,19 @@ namespace RepetierHost.model
             jobFinished = DateTime.Now;
             jobList.Clear();
             mode = 3;
+            exclusive = false;
+            con.injectManualCommandFirst("M29");
             Main.main.Invoke(Main.main.UpdateJobButtons);
             con.firePrinterAction("Job killed");
             DoEndKillActions();
         }
         public void DoEndKillActions()
         {
+            if (exclusive) // not a normal print job
+            {
+                exclusive = false;
+                return;
+            }
             con.GetInjectLock();
             if (con.afterJobDisableExtruder)
             {
@@ -99,8 +107,11 @@ namespace RepetierHost.model
                 if (line.Length == 0) continue;
                 GCode gcode = new GCode();
                 gcode.Parse(line);
-                jobList.AddLast(gcode);
-                totalLines++;
+                if (!gcode.comment)
+                {
+                    jobList.AddLast(gcode);
+                    totalLines++;
+                }
             }
         }
         /// <summary>

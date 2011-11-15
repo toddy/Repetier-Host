@@ -214,6 +214,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Skeinforge";
             this.Text = "Skeinforge settings";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Skeinforge_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -3,6 +3,8 @@ Repetier-Host
 Software for controlling RepRap style 3D-printer like Mendel, Darwin or 
 Prusa mendel. Works with most firmware types. It is optimized to work
 with Repetier-Firmware, see https://github.com/repetier/Repetier-Firmware
+Other working firmware is Sprinter, Teacup, Marlin and all compatible
+firmwares.
 
 Manual
 

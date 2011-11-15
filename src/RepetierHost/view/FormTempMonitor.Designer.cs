@@ -157,6 +157,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormTempMonitor";
             this.Text = "Temperature monitor";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormTempMonitor_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -53,6 +53,16 @@ namespace RepetierHost.view
         {
             labelExtruderTemp.Text = extruder.ToString() + "°C";
             labelPrintbedTemp.Text = printbed.ToString() + "°C";
+            string tr = "Extruder: " + con.extruderTemp.ToString();
+            if (switchExtruderHeatOn.On) tr += "/" + ann.extruderTemp.ToString() + "°C";
+            else tr += "°C/Off";
+            if (con.bedTemp > 0)
+            {
+                tr += " Bed: " + con.bedTemp.ToString();
+                if (ann.bedTemp > 0) tr += "/" + con.bedTemp.ToString() + "°C ";
+                else tr += "°C/Off ";
+            }
+            Main.main.toolTempReading.Text = tr;
         }
         private void analyzerChange() {
             createCommands = false;
@@ -75,7 +85,9 @@ namespace RepetierHost.view
         private void UpdateConStatus(bool c)
         {
             Main.main.toolRunJob.Enabled = c;
-            switchConnect.On = c;
+            Main.main.toolStripSDCard.Enabled = c;
+            Main.main.menuSDCardManager.Enabled = c;
+           // switchConnect.On = c;
             switchBedHeat.Enabled = c;
             switchFanOn.Enabled = c;
             switchExtruderHeatOn.Enabled = c;
@@ -135,10 +147,6 @@ namespace RepetierHost.view
             textGCode.Text = "";
         }
 
-        private void switchConnect_Changed(SwitchButton b)
-        {
-            if (switchConnect.On) con.open(); else con.close();
-        }
         private void sendDebug()
         {
             if (con.serial == null) return;

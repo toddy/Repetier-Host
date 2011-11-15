@@ -85,6 +85,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "EEPROMRepetier";
             this.Text = "Firmware EEPROM settings";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.EEPROMRepetier_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.grid)).EndInit();
             this.ResumeLayout(false);
 

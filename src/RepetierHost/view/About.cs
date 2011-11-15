@@ -22,6 +22,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using RepetierHost.view.utils;
 
 namespace RepetierHost.view
 {
@@ -30,6 +31,9 @@ namespace RepetierHost.view
         public About()
         {
             InitializeComponent();
+            RegMemory.RestoreWindowPos("aboutWindow", this);
+            textLicence.SelectionLength = 0;
+            textLicence.SelectionStart = 0;
         }
 
         private void buttonOK_Click(object sender, EventArgs e)
@@ -40,6 +44,11 @@ namespace RepetierHost.view
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Main.main.openLink("https://github.com/repetier/Repetier-Host");
+        }
+
+        private void About_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            RegMemory.StoreWindowPos("aboutWindow", this, false, false);
         }
 
     }

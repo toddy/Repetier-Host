@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ThreeDSettings));
             this.colorDialog = new System.Windows.Forms.ColorDialog();
             this.groupBoxColors = new System.Windows.Forms.GroupBox();
@@ -45,11 +46,16 @@
             this.label1 = new System.Windows.Forms.Label();
             this.buttonOK = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.textDiameter = new System.Windows.Forms.TextBox();
+            this.radioDiameter = new System.Windows.Forms.RadioButton();
+            this.radioHeight = new System.Windows.Forms.RadioButton();
             this.useVBOs = new System.Windows.Forms.CheckBox();
             this.textWidthOverThickness = new System.Windows.Forms.TextBox();
             this.textLayerHeight = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.comboFilamentVisualization = new System.Windows.Forms.ComboBox();
             this.showPrintbed = new System.Windows.Forms.CheckBox();
@@ -59,9 +65,11 @@
             this.enableLight3 = new System.Windows.Forms.CheckBox();
             this.enableLight2 = new System.Windows.Forms.CheckBox();
             this.enableLight1 = new System.Windows.Forms.CheckBox();
+            this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.groupBoxColors.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBoxColors
@@ -106,7 +114,7 @@
             // 
             // filament
             // 
-            this.filament.BackColor = System.Drawing.Color.Yellow;
+            this.filament.BackColor = System.Drawing.Color.Blue;
             this.filament.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.filament.Location = new System.Drawing.Point(341, 76);
             this.filament.Name = "filament";
@@ -202,7 +210,7 @@
             // buttonOK
             // 
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOK.Location = new System.Drawing.Point(439, 314);
+            this.buttonOK.Location = new System.Drawing.Point(439, 375);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
             this.buttonOK.TabIndex = 1;
@@ -212,21 +220,86 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label11);
+            this.groupBox1.Controls.Add(this.label10);
+            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.textDiameter);
+            this.groupBox1.Controls.Add(this.radioDiameter);
+            this.groupBox1.Controls.Add(this.radioHeight);
             this.groupBox1.Controls.Add(this.useVBOs);
             this.groupBox1.Controls.Add(this.textWidthOverThickness);
             this.groupBox1.Controls.Add(this.textLayerHeight);
             this.groupBox1.Controls.Add(this.label9);
-            this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.comboFilamentVisualization);
             this.groupBox1.Controls.Add(this.showPrintbed);
             this.groupBox1.Controls.Add(this.showEdges);
             this.groupBox1.Location = new System.Drawing.Point(13, 133);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(517, 109);
+            this.groupBox1.Size = new System.Drawing.Size(517, 173);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Visualization";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(50, 125);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(461, 39);
+            this.label11.TabIndex = 13;
+            this.label11.Text = resources.GetString("label11.Text");
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(475, 105);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(29, 13);
+            this.label10.TabIndex = 12;
+            this.label10.Text = "[mm]";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(475, 81);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(29, 13);
+            this.label8.TabIndex = 12;
+            this.label8.Text = "[mm]";
+            // 
+            // textDiameter
+            // 
+            this.textDiameter.Location = new System.Drawing.Point(352, 102);
+            this.textDiameter.Name = "textDiameter";
+            this.textDiameter.Size = new System.Drawing.Size(100, 20);
+            this.textDiameter.TabIndex = 11;
+            this.textDiameter.Text = "2.87";
+            this.textDiameter.TextChanged += new System.EventHandler(this.textLayerHeight_TextChanged);
+            this.textDiameter.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
+            // 
+            // radioDiameter
+            // 
+            this.radioDiameter.AutoSize = true;
+            this.radioDiameter.Location = new System.Drawing.Point(240, 101);
+            this.radioDiameter.Name = "radioDiameter";
+            this.radioDiameter.Size = new System.Drawing.Size(110, 17);
+            this.radioDiameter.TabIndex = 10;
+            this.radioDiameter.Text = "Filament diameter:";
+            this.radioDiameter.UseVisualStyleBackColor = true;
+            // 
+            // radioHeight
+            // 
+            this.radioHeight.AutoSize = true;
+            this.radioHeight.Checked = true;
+            this.radioHeight.Location = new System.Drawing.Point(240, 78);
+            this.radioHeight.Name = "radioHeight";
+            this.radioHeight.Size = new System.Drawing.Size(86, 17);
+            this.radioHeight.TabIndex = 9;
+            this.radioHeight.TabStop = true;
+            this.radioHeight.Text = "Layer height:";
+            this.radioHeight.UseVisualStyleBackColor = true;
+            this.radioHeight.CheckedChanged += new System.EventHandler(this.showEdges_CheckedChanged);
             // 
             // useVBOs
             // 
@@ -243,39 +316,32 @@
             // 
             // textWidthOverThickness
             // 
-            this.textWidthOverThickness.Location = new System.Drawing.Point(352, 75);
+            this.textWidthOverThickness.Location = new System.Drawing.Point(352, 49);
             this.textWidthOverThickness.Name = "textWidthOverThickness";
             this.textWidthOverThickness.Size = new System.Drawing.Size(100, 20);
             this.textWidthOverThickness.TabIndex = 7;
             this.textWidthOverThickness.Text = "1.8";
             this.textWidthOverThickness.TextChanged += new System.EventHandler(this.textLayerHeight_TextChanged);
+            this.textWidthOverThickness.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
             // 
             // textLayerHeight
             // 
-            this.textLayerHeight.Location = new System.Drawing.Point(352, 48);
+            this.textLayerHeight.Location = new System.Drawing.Point(352, 75);
             this.textLayerHeight.Name = "textLayerHeight";
             this.textLayerHeight.Size = new System.Drawing.Size(100, 20);
             this.textLayerHeight.TabIndex = 6;
             this.textLayerHeight.Text = "0.38";
             this.textLayerHeight.TextChanged += new System.EventHandler(this.textLayerHeight_TextChanged);
+            this.textLayerHeight.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(237, 78);
+            this.label9.Location = new System.Drawing.Point(237, 52);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(110, 13);
             this.label9.TabIndex = 5;
             this.label9.Text = "Width over thickness:";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(237, 51);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(68, 13);
-            this.label8.TabIndex = 4;
-            this.label8.Text = "Layer height:";
             // 
             // label7
             // 
@@ -331,7 +397,7 @@
             this.groupBox2.Controls.Add(this.enableLight3);
             this.groupBox2.Controls.Add(this.enableLight2);
             this.groupBox2.Controls.Add(this.enableLight1);
-            this.groupBox2.Location = new System.Drawing.Point(12, 248);
+            this.groupBox2.Location = new System.Drawing.Point(12, 312);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(517, 53);
             this.groupBox2.TabIndex = 3;
@@ -386,11 +452,15 @@
             this.enableLight1.UseVisualStyleBackColor = true;
             this.enableLight1.CheckedChanged += new System.EventHandler(this.showEdges_CheckedChanged);
             // 
+            // errorProvider
+            // 
+            this.errorProvider.ContainerControl = this;
+            // 
             // ThreeDSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(542, 349);
+            this.ClientSize = new System.Drawing.Size(542, 410);
             this.ControlBox = false;
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -404,12 +474,14 @@
             this.Opacity = 0.85;
             this.Text = "3D settings";
             this.TopMost = true;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ThreeDSettings_FormClosing);
             this.groupBoxColors.ResumeLayout(false);
             this.groupBoxColors.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -442,9 +514,15 @@
         private System.Windows.Forms.TextBox textWidthOverThickness;
         private System.Windows.Forms.TextBox textLayerHeight;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox comboFilamentVisualization;
         public System.Windows.Forms.CheckBox useVBOs;
+        private System.Windows.Forms.TextBox textDiameter;
+        private System.Windows.Forms.RadioButton radioDiameter;
+        private System.Windows.Forms.RadioButton radioHeight;
+        private System.Windows.Forms.ErrorProvider errorProvider;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label8;
     }
 }

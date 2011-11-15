@@ -25,6 +25,7 @@ using System.Windows.Forms;
 using System.IO.Ports;
 using Microsoft.Win32;
 using RepetierHost.model;
+using RepetierHost.view.utils;
 using System.Globalization;
 
 namespace RepetierHost.view
@@ -48,6 +49,7 @@ namespace RepetierHost.view
         public FormPrinterSettings()
         {
             InitializeComponent();
+            RegMemory.RestoreWindowPos("printerSettingsWindow", this);
             repetierKey = Registry.CurrentUser.CreateSubKey("Software\\Repetier");
             printerKey = repetierKey.CreateSubKey("printer");
             con = Main.conn;
@@ -90,6 +92,8 @@ namespace RepetierHost.view
             p.SetValue("dumpAreaFront", textDumpAreaFront.Text);
             p.SetValue("dumpAreaWidth", textDumpAreaWidth.Text);
             p.SetValue("dumpAreaDepth", textDumpAreaDepth.Text);
+            p.SetValue("defaultExtruderTemp", textDefaultExtruderTemp.Text);
+            p.SetValue("defaultHeatedBedTemp", textDefaultHeatedBedTemp.Text);
         }
         public void load(string printername)
         {
@@ -123,6 +127,8 @@ namespace RepetierHost.view
             textDumpAreaFront.Text = (string)p.GetValue("dumpAreaFront", textDumpAreaFront.Text);
             textDumpAreaWidth.Text = (string)p.GetValue("dumpAreaWidth", textDumpAreaWidth.Text);
             textDumpAreaDepth.Text = (string)p.GetValue("dumpAreaDepth", textDumpAreaDepth.Text);
+            textDefaultExtruderTemp.Text = (string)p.GetValue("defaultExtruderTemp", textDefaultExtruderTemp.Text);
+            textDefaultHeatedBedTemp.Text = (string)p.GetValue("defaultHeatedBedTemp", textDefaultHeatedBedTemp.Text);
 
         }
         public void UpdateDimensions()
@@ -169,6 +175,11 @@ namespace RepetierHost.view
             con.afterJobDisableExtruder = checkDisableExtruderAfterJob.Checked;
             con.afterJobDisablePrintbed = checkDisbaleHeatedBedAfterJob.Checked;
             int.TryParse(textReceiveCacheSize.Text, out con.receiveCacheSize);
+            if (Main.main.printPanel != null)
+            {
+                Main.main.printPanel.textExtruderSetTemp.Text = textDefaultExtruderTemp.Text;
+                Main.main.printPanel.textPrintbedTemp.Text = textDefaultHeatedBedTemp.Text;
+            }
             if (eventPrinterChanged != null)
                 eventPrinterChanged(currentPrinterKey,pnchanged);
         }
@@ -205,6 +216,11 @@ namespace RepetierHost.view
             checkDisbaleHeatedBedAfterJob.Checked = con.afterJobDisablePrintbed;
             labelCheckInterval.Text = trackTempPeriod.Value.ToString();
             textReceiveCacheSize.Text = con.receiveCacheSize.ToString();
+            if (Main.main.printPanel != null)
+            {
+                textDefaultExtruderTemp.Text = Main.main.printPanel.textExtruderSetTemp.Text;
+                textDefaultHeatedBedTemp.Text = Main.main.printPanel.textPrintbedTemp.Text;
+            }
         }
         private void buttonOK_Click(object sender, EventArgs e)
         {
@@ -213,6 +229,7 @@ namespace RepetierHost.view
             UpdateDimensions();
             Hide();
             Main.main.Update3D();
+            Main.main.UpdateConnections();
         }
 
         private void buttonAbort_Click(object sender, EventArgs e)
@@ -221,6 +238,7 @@ namespace RepetierHost.view
             UpdateDimensions();
             Hide();
             Main.main.Update3D();
+            Main.main.UpdateConnections();
         }
 
         private void FormPrinterSettings_Shown(object sender, EventArgs e)
@@ -243,6 +261,7 @@ namespace RepetierHost.view
                 comboPrinter.SelectedIndex = comboPrinter.Items.IndexOf(name);
             }
             Main.main.Update3D();
+            Main.main.UpdateConnections();
         }
 
         private void comboPrinter_SelectedIndexChanged(object sender, EventArgs e)
@@ -283,6 +302,24 @@ namespace RepetierHost.view
             {
                 errorProvider.SetError(box, "Not a number.");
             }
+        }
+        private void int_Validating(object sender, CancelEventArgs e)
+        {
+            TextBox box = (TextBox)sender;
+            try
+            {
+                int.Parse(box.Text);
+                errorProvider.SetError(box, "");
+            }
+            catch
+            {
+                errorProvider.SetError(box, "Not a integer.");
+            }
+        }
+
+        private void FormPrinterSettings_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            RegMemory.StoreWindowPos("printerSettingsWindow", this, false, false);
         }
     }
 }

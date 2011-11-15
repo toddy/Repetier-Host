@@ -37,6 +37,7 @@ namespace RepetierHost.model
     public delegate void OnTempUpdate(int extruder,int printbed);
     public delegate void OnJobProgress(float percent);
     public delegate void OnTempMonitor(UInt32 time,int temp,int target,int output); 
+    public delegate void OnResponse(string response);
     public class PrinterConnection
     {
         public event OnPrinterConnectionChange eventConnectionChange;
@@ -48,6 +49,7 @@ namespace RepetierHost.model
         public event OnTempUpdate eventTempChange;
         public event OnJobProgress eventJobProgress;
         public event OnTempMonitor eventTempMonitor;
+        public event OnResponse eventResponse;
         TextWriter logWriter = null;
         public GCodeAnalyzer analyzer = new GCodeAnalyzer(false);
         public bool connected = false;
@@ -70,6 +72,7 @@ namespace RepetierHost.model
         public bool afterJobGoDispose = true;
         public bool afterJobDisableExtruder = true;
         public bool afterJobDisablePrintbed = true;
+        public bool sdcardMounted = true;
         string read="";
         public LinkedList<LogLine> logList = new LinkedList<LogLine>();
         public LinkedList<LogLine> newLogs = new LinkedList<LogLine>();
@@ -134,6 +137,22 @@ namespace RepetierHost.model
                 logWriter.Close();
             }
         }
+        public bool hasInjectedMCommand(int code)
+        {
+            bool has = false;
+            lock (history)
+            {
+                foreach (GCode co in injectCommands)
+                {
+                    if (co.hasM && co.M == code)
+                    {
+                        has = true;
+                        break;
+                    }
+                }
+            }
+            return has;
+        }
         void handleTimer(object sender, EventArgs e)
         {
             if (nextPrinterAction != null && !nextPrinterAction.Equals(lastPrinterAction))
@@ -149,7 +168,7 @@ namespace RepetierHost.model
             }
             if (serial == null || connected == false) return;
             long actTime = DateTime.Now.Ticks / 10000;
-            if (autocheckTemp && actTime - lastAutocheck > autocheckInterval)
+            if (autocheckTemp && actTime - lastAutocheck > autocheckInterval && job.exclusive==false)
             {
                 lastAutocheck = actTime;
                 // only inject temp check, if not present. Some commands
@@ -539,6 +558,7 @@ namespace RepetierHost.model
             history.Clear();
             injectCommands.Clear();
             resendNode = null;
+            comErrorsReceived = 0;
             if(eventConnectionChange!=null)
                 try
                 {
@@ -553,14 +573,19 @@ namespace RepetierHost.model
         {
             nextPrinterAction = s;
         }
+        int comErrorsReceived = 0;
         private void error(Object sender, SerialErrorReceivedEventArgs e)
         {
+            comErrorsReceived++;
             log("Serial com error:" + e.ToString(), false, 2);
+            if (comErrorsReceived == 10)
+                close();
         }
 
         private void received(object sender,
                         SerialDataReceivedEventArgs e)
         {
+            if (serial == null) return;
             string indata = serial.ReadExisting();
             read+=indata.Replace('\r','\n');
             do {
@@ -583,8 +608,28 @@ namespace RepetierHost.model
         {
             GCode gc = new GCode();
             gc.Parse(command);
+            if (gc.comment) return;
             lock(history)
                 injectCommands.AddLast(gc);
+            if (job.dataComplete == false)
+            {
+                if (injectCommands.Count == 0)
+                {
+                    firePrinterAction("Idle");
+                }
+                else
+                {
+                    firePrinterAction(injectCommands.Count.ToString() + " commands waiting");
+                }
+            }
+        }
+        public void injectManualCommandFirst(string command)
+        {
+            GCode gc = new GCode();
+            gc.Parse(command);
+            if (gc.comment) return;
+            lock (history)
+                injectCommands.AddFirst(gc);
             if (job.dataComplete == false)
             {
                 if (injectCommands.Count == 0)
@@ -632,7 +677,10 @@ namespace RepetierHost.model
                 logWriter.WriteLine("> "+time.Hour.ToString("00") + ":" + time.Minute.ToString("00") + ":" +
                 time.Second.ToString("00") + "." + time.Millisecond.ToString("000") + " : " + res);
             }
-            
+            if (eventResponse != null)
+            {
+                eventResponse(res);
+            }
             string h = extract(res, "FIRMWARE_NAME:");
             if (h != null)
             {
@@ -742,6 +790,7 @@ namespace RepetierHost.model
                 lastline = 0;
                 job.KillJob(); // continuing the old job makes no sense, better save the plastic
                 resendNode = null;
+                sdcardMounted = true;
                 history.Clear();
                 analyzer.start();
                 readyForNextSend = true;

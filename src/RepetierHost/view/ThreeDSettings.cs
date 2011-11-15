@@ -25,6 +25,7 @@ using System.Windows.Forms;
 using Microsoft.Win32;
 using System.Globalization;
 using RepetierHost.model;
+using RepetierHost.view.utils;
 
 namespace RepetierHost.view
 {
@@ -35,6 +36,7 @@ namespace RepetierHost.view
         public ThreeDSettings()
         {
             InitializeComponent();
+            RegMemory.RestoreWindowPos("threeDSettingsWindow", this);
             repetierKey = Registry.CurrentUser.CreateSubKey("Software\\Repetier");
             threedKey = repetierKey.CreateSubKey("3D");
             if (comboFilamentVisualization.SelectedIndex < 0) comboFilamentVisualization.SelectedIndex = 1;
@@ -48,9 +50,17 @@ namespace RepetierHost.view
         {
             get { float h; float.TryParse(textLayerHeight.Text, NumberStyles.Float, GCode.format, out h); if (h < 0.05) h = 0.05f; return h; }
         }
+        public float filamentDiameter
+        {
+            get { float h; float.TryParse(textDiameter.Text, NumberStyles.Float, GCode.format, out h); if (h < 0.05) h = 0.05f; return h; }
+        }
         public float widthOverHeight
         {
             get { float h; float.TryParse(textWidthOverThickness.Text, NumberStyles.Float, GCode.format, out h); if (h < 0.05) h = 0.05f; return h; }
+        }
+        public bool useLayerHeight
+        {
+            get { return radioHeight.Checked; }
         }
         private void FormToRegistry()
         {
@@ -66,6 +76,8 @@ namespace RepetierHost.view
                 threedKey.SetValue("showPrintbed", showPrintbed.Checked ? 1 : 0);
                 threedKey.SetValue("useVBOs", useVBOs.Checked ? 1 : 0);
                 threedKey.SetValue("layerHeight", textLayerHeight.Text);
+                threedKey.SetValue("filamentDiameter", textDiameter.Text);
+                threedKey.SetValue("useLayerHeight", radioHeight.Checked ? 1 : 0);
                 threedKey.SetValue("widthOverHeight", textWidthOverThickness.Text);
                 threedKey.SetValue("filamentVisualization", comboFilamentVisualization.SelectedIndex);
             }
@@ -85,6 +97,9 @@ namespace RepetierHost.view
                 showPrintbed.Checked = 0 != (int)threedKey.GetValue("showPrintbed", showPrintbed.Checked ? 1 : 0);
                 useVBOs.Checked = 0 != (int)threedKey.GetValue("useVBOs", useVBOs.Checked ? 1 : 0);
                 textLayerHeight.Text = (string)threedKey.GetValue("layerHeight", textLayerHeight.Text);
+                textDiameter.Text = (string)threedKey.GetValue("filamentDiameter", textDiameter.Text);
+                radioHeight.Checked = 0 != (int)threedKey.GetValue("useLayerHeight", radioHeight.Checked ? 1 : 0);
+                radioDiameter.Checked = !radioHeight.Checked;
                 textWidthOverThickness.Text = (string)threedKey.GetValue("widthOverHeight", textWidthOverThickness.Text);
                 comboFilamentVisualization.SelectedIndex = (int)threedKey.GetValue("filamentVisualization", comboFilamentVisualization.SelectedIndex);
             }
@@ -168,6 +183,24 @@ namespace RepetierHost.view
         private void showEdges_CheckedChanged(object sender, EventArgs e)
         {
             Main.main.Update3D();
+        }
+        private void float_Validating(object sender, CancelEventArgs e)
+        {
+            TextBox box = (TextBox)sender;
+            try
+            {
+                float.Parse(box.Text);
+                errorProvider.SetError(box, "");
+            }
+            catch
+            {
+                errorProvider.SetError(box, "Not a number.");
+            }
+        }
+
+        private void ThreeDSettings_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            RegMemory.StoreWindowPos("threeDSettingsWindow", this, false, false);
         }
     }
 }

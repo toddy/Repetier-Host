@@ -23,6 +23,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using RepetierHost.model;
+using RepetierHost.view.utils;
 
 namespace RepetierHost.view
 {
@@ -33,6 +34,7 @@ namespace RepetierHost.view
         public EEPROMRepetier()
         {
             InitializeComponent();
+            RegMemory.RestoreWindowPos("eepromWindow", this);
             storage = Main.conn.eeprom;
             storage.eventAdded += newline;
             grid.Columns.Add("Description", "Description");
@@ -62,6 +64,11 @@ namespace RepetierHost.view
         private void buttonAbort_Click(object sender, EventArgs e)
         {
             Hide();
+        }
+
+        private void EEPROMRepetier_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            RegMemory.StoreWindowPos("eepromWindow", this, false, false);
         }
     }
 }

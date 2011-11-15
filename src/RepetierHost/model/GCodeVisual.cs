@@ -27,6 +27,11 @@ using System.Windows.Forms;
 
 namespace RepetierHost.model
 {
+    public class GCodePoint
+    {
+        public float e;
+        public Vector3 p;
+    }
     public class GCodePath
     {
         public int drawMethod = -1;
@@ -34,10 +39,13 @@ namespace RepetierHost.model
         public float[] normals = null;
         public int[] elements = null;
         public int[] buf = new int[3];
-        public LinkedList<Vector3> points = new LinkedList<Vector3>();
-        public void Add(Vector3 v)
+        public LinkedList<GCodePoint> points = new LinkedList<GCodePoint>();
+        public void Add(Vector3 v,float e)
         {
-            points.AddLast(v);
+            GCodePoint pt = new GCodePoint();
+            pt.p = v;
+            pt.e = e;
+            points.AddLast(pt);
             drawMethod = -1; // invalidate old 
         }
         public void Free()
@@ -58,7 +66,10 @@ namespace RepetierHost.model
                 GL.DeleteBuffers(3, buf);
             int method = Main.threeDSettings.filamentVisualization;
             float h = Main.threeDSettings.layerHeight;
-            float w = h * Main.threeDSettings.widthOverHeight;
+            float wfac = Main.threeDSettings.widthOverHeight;
+            float w = h * wfac;
+            bool fixedH = Main.threeDSettings.useLayerHeight;
+            float dfac = (float)(Math.PI * Main.threeDSettings.filamentDiameter * Main.threeDSettings.filamentDiameter * 0.25 / wfac);
             int nv = 8 * (method - 1), i;
             if (method == 1) nv = 4;
             if (method == 0) nv = 1;
@@ -76,24 +87,38 @@ namespace RepetierHost.model
                 float[] dirs = new float[3];
                 float[] diru = new float[3];
                 float[] norm = new float[3];
+                float laste=0;
                 float dh = 0.5f * h;
                 float dw = 0.5f * w;
                 bool first = true;
                 Vector3 last = new Vector3();
                 w *= 0.5f;
                 int nv2 = 2*nv;
-                foreach (Vector3 v in points)
+                foreach (GCodePoint pt in points)
                 {
+                    Vector3 v = pt.p;
                     if (first)
                     {
                         last = v;
+                        laste = pt.e;
                         first = false;
                         continue;
                     }
-                    bool isLast = v == points.Last.Value;
+                    bool isLast = pt == points.Last.Value;
                     dir[0] = v.X - last.X;
                     dir[1] = v.Y - last.Y;
                     dir[2] = v.Z - last.Z;
+                    if (!fixedH)
+                    {
+                        float dist = (float)Math.Sqrt(dir[0]*dir[0]+dir[1]*dir[1]+dir[2]*dir[2]);
+                        if (dist > 0)
+                        {
+                            h = (float)Math.Sqrt((pt.e - laste) * dfac / dist);
+                            w = h * wfac;
+                            dh = 0.5f * h;
+                            dw = 0.5f * w;
+                        }
+                    }
                     GCodeVisual.normalize(ref dir);
                     dirs[0] = -dir[1];
                     dirs[1] = dir[0];
@@ -130,6 +155,7 @@ namespace RepetierHost.model
                         alpha += dalpha;
                     }
                     last = v;
+                    laste = pt.e;
                 }
                 GL.GenBuffers(3, buf);
                 GL.BindBuffer(BufferTarget.ArrayBuffer, buf[0]);
@@ -143,8 +169,9 @@ namespace RepetierHost.model
             {
                 // Draw edges
                 bool first = true;
-                foreach (Vector3 v in points)
+                foreach (GCodePoint pt in points)
                 {
+                    Vector3 v = pt.p;
                     positions[vpos++] = v.X;
                     positions[vpos++] = v.Y;
                     positions[vpos++] = v.Z;
@@ -173,6 +200,8 @@ namespace RepetierHost.model
         public GCode act = null;
         public float lastFilHeight = 999;
         public float lastFilWidth = 999;
+        public float lastFilDiameter = 999;
+        public bool lastFilUseHeight = true;
         public float laste = -999;
         float lastx = 1e20f, lasty = 0, lastz = 0;
         bool changed = false;
@@ -222,7 +251,7 @@ namespace RepetierHost.model
                 if (!isLastPos) // no move, no action
                 {
                     GCodePath p = new GCodePath();
-                    p.Add(new Vector3(x, y, z));
+                    p.Add(new Vector3(x, y, z),ana.emax);
                     if (segments.Count > 0 && segments.Last.Value.points.Count == 1)
                     {
                         segments.RemoveLast();
@@ -235,7 +264,7 @@ namespace RepetierHost.model
             {
                 if (!isLastPos)
                 {
-                    segments.Last.Value.Add(new Vector3(x, y, z));
+                    segments.Last.Value.Add(new Vector3(x, y, z),ana.emax);
                     changed = true;
                 }
             }
@@ -273,11 +302,16 @@ namespace RepetierHost.model
             GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Specular, new float[] { 1.0f, 1.0f, 1.0f, 1.0f });
             GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Shininess, 50f);
             int method = Main.threeDSettings.filamentVisualization;
+            float wfac = Main.threeDSettings.widthOverHeight;
             float h = Main.threeDSettings.layerHeight;
-            float w = h * Main.threeDSettings.widthOverHeight;
-            bool recompute = lastFilHeight != h || lastFilWidth != w;
+            float w = h * wfac;
+            bool fixedH = Main.threeDSettings.useLayerHeight;
+            float dfac = (float)(Math.PI * Main.threeDSettings.filamentDiameter * Main.threeDSettings.filamentDiameter * 0.25 / wfac);
+            bool recompute = lastFilHeight != h || lastFilWidth != w || fixedH!=lastFilUseHeight || dfac!=lastFilDiameter;
             lastFilHeight = h;
             lastFilWidth = w;
+            lastFilDiameter = dfac;
+            lastFilUseHeight = fixedH;
             if (Main.threeDSettings.useVBOs.Checked)
             {
                 GL.EnableClientState(ArrayCap.VertexArray);
@@ -327,18 +361,30 @@ namespace RepetierHost.model
                         bool first = true;
                         Vector3 last = new Vector3();
                         w *= 0.5f;
-                        foreach (Vector3 v in path.points)
+                        foreach (GCodePoint pt in path.points)
                         {
+                            Vector3 v = pt.p;
                             if (first)
                             {
                                 last = v;
                                 first = false;
                                 continue;
                             }
-                            bool isLast = v == path.points.Last.Value;
+                            bool isLast = pt == path.points.Last.Value;
                             dir[0] = v.X - last.X;
                             dir[1] = v.Y - last.Y;
                             dir[2] = v.Z - last.Z;
+                            if (!fixedH)
+                            {
+                                float dist = (float)Math.Sqrt(dir[0] * dir[0] + dir[1] * dir[1] + dir[2] * dir[2]);
+                                if (dist > 0)
+                                {
+                                    h = (float)Math.Sqrt((pt.e - laste) * dfac / dist);
+                                    w = h * wfac;
+                                    dh = 0.5f * h;
+                                    dw = 0.5f * w;
+                                }
+                            }
                             normalize(ref dir);
                             dirs[0] = -dir[1];
                             dirs[1] = dir[0];
@@ -388,10 +434,11 @@ namespace RepetierHost.model
                     {
                         if (path.points.Count < 2) continue;
                         bool first = true;
-                        foreach (Vector3 v in path.points)
+                        foreach (GCodePoint pt in path.points)
                         {
+                            Vector3 v = pt.p;
                             GL.Vertex3(v);
-                            if (!first && v != path.points.Last.Value)
+                            if (!first && pt != path.points.Last.Value)
                                 GL.Vertex3(v);
                             first = false;
                         }
