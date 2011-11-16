@@ -30,7 +30,7 @@
   <Command name="G20" title="Set units to inches">
     <Description>Units from now on are in inches.</Description>
   </Command>
-  <Command name="G21" title="Set units to inches">
+  <Command name="G21" title="Set units to millimeter">
     <Description>Units from now on are in millimeter.</Description>
   </Command>
   <Command name="G90" title="Absolute positioning">
@@ -134,6 +134,12 @@
   <Command name="M30" title="Delete file on SD card">
     <Param name="" optional="0">Filename</Param>
     <Description>Deletes given file from SD card.</Description>
+  </Command>
+  <Command name="M82" title="Disable extruder relative mode">
+    <Description>Disables relive mode for extruder values.</Description>
+  </Command>
+  <Command name="M83" title="Enable extruder relative mode">
+    <Description>Enable relative mode for extuder values.</Description>
   </Command>
 
 </CommandDescriptions>
