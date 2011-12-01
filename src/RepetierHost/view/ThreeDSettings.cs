@@ -37,6 +37,8 @@ namespace RepetierHost.view
         {
             InitializeComponent();
             RegMemory.RestoreWindowPos("threeDSettingsWindow", this);
+            if (Main.IsMono)
+                buttonOK.Location = new Point(buttonOK.Location.X,buttonOK.Location.Y-10);
             repetierKey = Registry.CurrentUser.CreateSubKey("Software\\Repetier");
             threedKey = repetierKey.CreateSubKey("3D");
             if (comboFilamentVisualization.SelectedIndex < 0) comboFilamentVisualization.SelectedIndex = 1;

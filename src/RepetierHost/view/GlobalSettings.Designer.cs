@@ -38,11 +38,13 @@
             this.buttonOK = new System.Windows.Forms.Button();
             this.buttonAbort = new System.Windows.Forms.Button();
             this.folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
+            this.labelOKMasg = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.labelOKMasg);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.checkLogfile);
             this.groupBox1.Controls.Add(this.buttonSearchWorkdir);
@@ -50,7 +52,7 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(470, 145);
+            this.groupBox1.Size = new System.Drawing.Size(486, 145);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Files and directories";
@@ -90,6 +92,7 @@
             this.textWorkdir.Name = "textWorkdir";
             this.textWorkdir.Size = new System.Drawing.Size(307, 20);
             this.textWorkdir.TabIndex = 0;
+            this.textWorkdir.TextChanged += new System.EventHandler(this.textWorkdir_TextChanged);
             // 
             // label1
             // 
@@ -125,18 +128,31 @@
             this.folderBrowser.Description = "Select working directory";
             this.folderBrowser.RootFolder = System.Environment.SpecialFolder.MyComputer;
             // 
+            // labelOKMasg
+            // 
+            this.labelOKMasg.AutoSize = true;
+            this.labelOKMasg.ForeColor = System.Drawing.Color.Red;
+            this.labelOKMasg.Location = new System.Drawing.Point(117, 43);
+            this.labelOKMasg.Name = "labelOKMasg";
+            this.labelOKMasg.Size = new System.Drawing.Size(69, 13);
+            this.labelOKMasg.TabIndex = 5;
+            this.labelOKMasg.Text = "workdirstatus";
+            // 
             // GlobalSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(494, 200);
+            this.ClientSize = new System.Drawing.Size(510, 210);
             this.ControlBox = false;
             this.Controls.Add(this.buttonAbort);
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.groupBox1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "GlobalSettings";
+            this.ShowInTaskbar = false;
             this.Text = "Repetier settings";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GlobalSettings_FormClosing);
             this.groupBox1.ResumeLayout(false);
@@ -156,6 +172,7 @@
         private System.Windows.Forms.Button buttonOK;
         private System.Windows.Forms.Button buttonAbort;
         private System.Windows.Forms.FolderBrowserDialog folderBrowser;
+        private System.Windows.Forms.Label labelOKMasg;
 
     }
 }

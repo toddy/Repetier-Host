@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Repetier-Host"
-#define MyAppVersion "0.28"
+#define MyAppVersion "0.29"
 #define MyAppPublisher "repetier"
 #define MyAppURL "https://github.com/repetier/Repetier-Host"
 #define MyAppExeName "RepetierHost.exe"
@@ -22,8 +22,8 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
-LicenseFile=D:\arduino\mendel\repetier\Repetier-Host\Repetier-Host-licence.txt
-OutputDir=D:\arduino\mendel\repetier\Repetier-Host
+LicenseFile=Repetier-Host-licence.txt
+OutputDir=.
 OutputBaseFilename=setupRepetierHost
 Compression=lzma
 SolidCompression=yes
@@ -56,14 +56,16 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "D:\arduino\mendel\repetier\Repetier-Host\src\RepetierHost\bin\Release\RepetierHost.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\arduino\mendel\repetier\Repetier-Host\src\RepetierHost\bin\Release\OpenTK.Compatibility.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\arduino\mendel\repetier\Repetier-Host\src\RepetierHost\bin\Release\OpenTK.Compatibility.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\arduino\mendel\repetier\Repetier-Host\src\RepetierHost\bin\Release\OpenTK.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\arduino\mendel\repetier\Repetier-Host\src\RepetierHost\bin\Release\OpenTK.GLControl.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\arduino\mendel\repetier\Repetier-Host\src\RepetierHost\bin\Release\OpenTK.GLControl.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\arduino\mendel\repetier\Repetier-Host\src\RepetierHost\bin\Release\OpenTK.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\arduino\mendel\repetier\Repetier-Host\src\data\*"; DestDir: "{app}/data"; Flags: ignoreversion recursesubdirs
+Source: "src\RepetierHost\bin\Release\RepetierHost.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "src\RepetierHost\bin\Release\OpenTK.Compatibility.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "src\RepetierHost\bin\Release\OpenTK.Compatibility.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "src\RepetierHost\bin\Release\OpenTK.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "src\RepetierHost\bin\Release\OpenTK.GLControl.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "src\RepetierHost\bin\Release\OpenTK.GLControl.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "src\RepetierHost\bin\Release\OpenTK.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "src\data\*"; DestDir: "{app}/data"; Flags: ignoreversion recursesubdirs
+Source: "src\Slic3r\*"; DestDir: "{app}/Slic3r"; Flags: ignoreversion recursesubdirs
+Source: "src\empty.txt"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]

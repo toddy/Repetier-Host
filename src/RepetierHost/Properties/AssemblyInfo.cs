@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("RepetierHost")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Hewlett-Packard")]
+[assembly: AssemblyCompany("-")]
 [assembly: AssemblyProduct("RepetierHost")]
 [assembly: AssemblyCopyright("Copyright © 2011 repetier")]
 [assembly: AssemblyTrademark("")]

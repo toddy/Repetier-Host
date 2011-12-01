@@ -1,3 +1,11 @@
+Version 0.29 
+  Linux version available.
+  Mac OS X version available.
+  Faster and better log panel.
+  Fixed errors in editor.
+  Includes Slic3r as default slicer.
+  Optimized menu tree.
+
 Version 0.28 15.11.2011
   Added SD-card support.
   New editor with syntax highlighting and code explaination.

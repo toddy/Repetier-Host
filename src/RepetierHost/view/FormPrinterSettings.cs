@@ -313,7 +313,7 @@ namespace RepetierHost.view
             }
             catch
             {
-                errorProvider.SetError(box, "Not a integer.");
+                errorProvider.SetError(box, "Not an integer.");
             }
         }
 

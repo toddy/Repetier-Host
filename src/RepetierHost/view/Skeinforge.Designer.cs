@@ -31,7 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Skeinforge));
             this.openFile = new System.Windows.Forms.OpenFileDialog();
             this.label1 = new System.Windows.Forms.Label();
-            this.textSkainforge = new System.Windows.Forms.TextBox();
+            this.textSkeinforge = new System.Windows.Forms.TextBox();
             this.buttonSerach = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.textExtension = new System.Windows.Forms.TextBox();
@@ -62,12 +62,12 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Skeinforge application:";
             // 
-            // textSkainforge
+            // textSkeinforge
             // 
-            this.textSkainforge.Location = new System.Drawing.Point(135, 13);
-            this.textSkainforge.Name = "textSkainforge";
-            this.textSkainforge.Size = new System.Drawing.Size(376, 20);
-            this.textSkainforge.TabIndex = 1;
+            this.textSkeinforge.Location = new System.Drawing.Point(135, 13);
+            this.textSkeinforge.Name = "textSkeinforge";
+            this.textSkeinforge.Size = new System.Drawing.Size(376, 20);
+            this.textSkeinforge.TabIndex = 1;
             // 
             // buttonSerach
             // 
@@ -209,10 +209,13 @@
             this.Controls.Add(this.buttonSearchCraft);
             this.Controls.Add(this.buttonSerach);
             this.Controls.Add(this.textSkeinforgeCraft);
-            this.Controls.Add(this.textSkainforge);
+            this.Controls.Add(this.textSkeinforge);
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Skeinforge";
+            this.ShowInTaskbar = false;
             this.Text = "Skeinforge settings";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Skeinforge_FormClosing);
             this.ResumeLayout(false);
@@ -224,7 +227,6 @@
 
         private System.Windows.Forms.OpenFileDialog openFile;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textSkainforge;
         private System.Windows.Forms.Button buttonSerach;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textExtension;
@@ -232,12 +234,13 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button buttonOK;
         private System.Windows.Forms.Button buttonAbort;
-        private System.Windows.Forms.TextBox textPython;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button buttonSerachPy;
         private System.Windows.Forms.OpenFileDialog openPython;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textSkeinforgeCraft;
         private System.Windows.Forms.Button buttonSearchCraft;
+        public System.Windows.Forms.TextBox textSkeinforge;
+        public System.Windows.Forms.TextBox textPython;
+        public System.Windows.Forms.TextBox textSkeinforgeCraft;
     }
 }

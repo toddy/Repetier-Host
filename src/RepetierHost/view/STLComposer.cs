@@ -31,7 +31,7 @@ namespace RepetierHost.view
 {
     public partial class STLComposer : UserControl
     {
-        ThreeDControl cont;
+        public ThreeDControl cont;
         public STLComposer()
         {
             InitializeComponent();
@@ -352,9 +352,9 @@ namespace RepetierHost.view
             if (listSTLObjects.Items.Count > 1)
                 t += " + " + (listSTLObjects.Items.Count - 1).ToString();
             Main.main.Title = t;
-            dir+="/composition.stl";
+            dir+=Path.DirectorySeparatorChar+"composition.stl";
             saveComposition(dir);
-            Main.main.skeinforge.RunSlice(dir); // Slice it and load
+            Main.slicer.RunSlice(dir); // Slice it and load
         }
     }
 }

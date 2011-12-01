@@ -22,6 +22,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.IO;
 using Microsoft.Win32;
 using RepetierHost.view.utils;
 
@@ -37,6 +38,17 @@ namespace RepetierHost.view
             RegMemory.RestoreWindowPos("globalSettingsWindow", this);
             repetierKey = Registry.CurrentUser.CreateSubKey("Software\\Repetier");
             RegToForm();
+        }
+        public bool WorkdirOK()
+        {
+            string wd = Workdir;
+            if (wd.Length == 0 || !Directory.Exists(wd))
+            {
+                labelOKMasg.Text = "Existing work directory required!";
+                return false;
+            }
+            labelOKMasg.Text = "";
+            return true;
         }
         public void FormToReg()
         {
@@ -60,13 +72,15 @@ namespace RepetierHost.view
         private void buttonAbort_Click(object sender, EventArgs e)
         {
             RegToForm();
-            Hide();
+            if(WorkdirOK())
+                Hide();
         }
 
         private void buttonOK_Click(object sender, EventArgs e)
         {
             FormToReg();
-            Hide();
+            if(WorkdirOK())
+                Hide();
         }
 
         private void buttonSearchWorkdir_Click(object sender, EventArgs e)
@@ -80,6 +94,11 @@ namespace RepetierHost.view
         private void GlobalSettings_FormClosing(object sender, FormClosingEventArgs e)
         {
             RegMemory.StoreWindowPos("globalSettingsWindow", this, false, false);
+        }
+
+        private void textWorkdir_TextChanged(object sender, EventArgs e)
+        {
+            WorkdirOK();
         }
     }
 }

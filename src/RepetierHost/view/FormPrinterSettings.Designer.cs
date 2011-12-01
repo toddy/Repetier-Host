@@ -935,12 +935,16 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.panelPrinterSelect);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormPrinterSettings";
             this.ShowIcon = false;
+            this.ShowInTaskbar = false;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Printer settings";
+            this.TopMost = true;
             this.Shown += new System.EventHandler(this.FormPrinterSettings_Shown);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormPrinterSettings_FormClosing);
             this.panelPrinterSelect.ResumeLayout(false);

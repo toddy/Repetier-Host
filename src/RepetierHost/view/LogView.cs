@@ -38,7 +38,6 @@ namespace RepetierHost.view
             InitializeComponent();
             key = Registry.CurrentUser.CreateSubKey("Software\\Repetier");
             RegToForm();
-            //Main.conn.eventLogAppend += logAppend;
         }
         public void FormToReg()
         {
@@ -59,8 +58,7 @@ namespace RepetierHost.view
         }
         private void filter()
         {
-            listLog.BeginUpdate();
-            listLog.Items.Clear();
+            listLog.Clear();
             lock (Main.conn.logList)
             {
                 foreach (LogLine l in Main.conn.logList)
@@ -68,12 +66,16 @@ namespace RepetierHost.view
                     logAppend(l);
                 }
             }
-            listLog.EndUpdate();
+            if (toolAutoscroll.Checked)
+            {
+                listLog.ScrollBottom();
+            }
+            listLog.UpdateBox();
         }
         private void logUpdate(LogLine line)
         {
-            listLog.Items.RemoveAt(listLog.Items.Count - 1);
             logAppend(line);
+            listLog.UpdateBox();
         }
         private bool isAck(string t)
         {
@@ -103,14 +105,9 @@ namespace RepetierHost.view
                 else break;
             }
             if (nl.Count == 0) return;
-            //listLog.SuspendLayout();
-            listLog.BeginUpdate();
             foreach (LogLine line in nl)
                 logAppend(line);
-            while (listLog.Items.Count > Main.conn.maxLogLines)
-                listLog.Items.RemoveAt(0);
-            listLog.EndUpdate();
-            //listLog.ResumeLayout();
+            listLog.UpdateBox();
         }
         private void logAppend(LogLine line)
         {
@@ -119,34 +116,11 @@ namespace RepetierHost.view
             if (line.level == 1 && toolWarning.Checked == false) return;
             if (line.level == 2 && toolErrors.Checked == false) return;
             if (line.level == 3 && toolInfo.Checked == false) return;
-            ListViewItem item = new ListViewItem(line.text);
-            item.Tag = line;
-            switch(line.level) {
-                case 0:
-                case 4:
-                    item.BackColor = Color.White;
-                    break;
-                case 1:
-                    item.BackColor = warningColor;
-                    break;
-                case 2:
-                    item.BackColor = errorColor;
-                    item.ForeColor = Color.Black;
-                    break;
-                case 3:
-                    item.BackColor = infoColor;
-                    break;
-            }
-            listLog.Items.Add(item);
-            if (toolAutoscroll.Checked)
-            {
-                listLog.EnsureVisible(listLog.Items.Count - 1);
-            }
+            listLog.Add(line);
         }
 
         private void listLog_Resize(object sender, EventArgs e)
         {
-            column.Width = listLog.Width-30;
         }
 
         private void toolSend_CheckStateChanged(object sender, EventArgs e)
@@ -187,21 +161,21 @@ namespace RepetierHost.view
         private void toolCopy_Click(object sender, EventArgs e)
         {
             StringBuilder sb = new StringBuilder();
-
-            foreach (ListViewItem it in listLog.SelectedItems)
-            {
-                sb.AppendLine(it.Text);
-            }
-            if(sb.Length>0)
-                Clipboard.SetText(sb.ToString());
+            string sel = listLog.getSelection();
+            if(sel.Length>0)
+                Clipboard.SetText(sel);
         }
 
         private void LogView_Load(object sender, EventArgs e)
         {
             Main.conn.eventLogCleared += filter;
             Main.conn.eventLogUpdate += logUpdate;
-            column.Width = listLog.Width - 30;
             Application.Idle += new EventHandler(UpdateNewEntries);
+        }
+
+        private void toolAutoscroll_CheckedChanged(object sender, EventArgs e)
+        {
+            listLog.Autoscroll = toolAutoscroll.Checked;
         }
     }
 }

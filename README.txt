@@ -14,7 +14,7 @@ Requirements
 
 * Windows XP or later.
 * .NET 3.5 of higher.
-* Skeinforge for slicing.
+* Skeinforge for slicing (optional).
 
 Installation
 

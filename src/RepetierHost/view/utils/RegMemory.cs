@@ -152,7 +152,7 @@ namespace RepetierHost.view.utils
             }
             public override string ToString()
             {
-                int p = file.LastIndexOf('\\');
+                int p = file.LastIndexOf(Path.DirectorySeparatorChar);
                 if (p < 0) return file;
                 return file.Substring(p + 1);
             }

@@ -7,12 +7,22 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		MacOSX|Any CPU = MacOSX|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B118044A-6AC1-407D-8CE9-A624810BEE0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B118044A-6AC1-407D-8CE9-A624810BEE0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B118044A-6AC1-407D-8CE9-A624810BEE0C}.MacOSX|Any CPU.ActiveCfg = MacOSX|Any CPU
+		{B118044A-6AC1-407D-8CE9-A624810BEE0C}.MacOSX|Any CPU.Build.0 = MacOSX|Any CPU
 		{B118044A-6AC1-407D-8CE9-A624810BEE0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B118044A-6AC1-407D-8CE9-A624810BEE0C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = RepetierHost.csproj
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = None
+		$1.ResourceNamePolicy = FileFormatDefault
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

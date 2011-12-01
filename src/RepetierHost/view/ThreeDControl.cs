@@ -64,11 +64,32 @@ namespace RepetierHost.view
             rotX = 20;
             userPosition = new Vector3(0, -2f * ps.PrintAreaDepth, 0.0f * ps.PrintAreaHeight);
             gl.MouseWheel += gl_MouseWheel;
+           // Controls.Remove(gl);
         }
         public void SetEditor(bool ed)
         {
             editor = ed;
             toolMoveObject.Visible = editor;
+        }
+        public void MakeVisible(bool vis)
+        {
+            //return;
+            //Console.WriteLine("Vis = " + vis);
+            if (vis)
+            {
+                if (!Controls.Contains(gl))
+                    Controls.Add(gl);
+                //gl.Dock = DockStyle.None;
+                //gl.Width = 0;
+                //gl.Height = 0;
+            }
+            else
+            {
+                if (Controls.Contains(gl))
+                    Controls.Remove(gl);
+                //gl.Dock = DockStyle.Fill;
+            }
+            gl.Visible = vis;
         }
         public void SetObjectSelected(bool sel)
         {

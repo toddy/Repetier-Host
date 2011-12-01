@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml;
 using System.IO;
 using Microsoft.Win32;
+using System.Windows.Forms;
 
 namespace RepetierHost.model
 {
@@ -64,19 +65,25 @@ namespace RepetierHost.model
             RegistryKey repetierKey = Registry.CurrentUser.CreateSubKey("Software\\Repetier");
 
             string basedir = (string)repetierKey.GetValue("installPath");
-            ReadFile(basedir + "\\data\\default\\syntax_en.xml");
+
+            ReadFile(basedir + Path.DirectorySeparatorChar+"data"+Path.DirectorySeparatorChar+"default"+
+                Path.DirectorySeparatorChar+"syntax_en.xml");
             if(lang.Equals("en")==false)
-                ReadFile(basedir + "\\data\\default\\syntax_"+lang+".xml");
+                ReadFile(basedir + Path.DirectorySeparatorChar+"data"+Path.DirectorySeparatorChar+"default"+
+                    Path.DirectorySeparatorChar+"syntax_"+lang+".xml");
             if (firmware.Equals("default") == false)
             {
-                ReadFile(basedir + "\\data\\"+firmware+"\\syntax_en.xml");
+                ReadFile(basedir + Path.DirectorySeparatorChar+"data"+Path.DirectorySeparatorChar+firmware+
+                    Path.DirectorySeparatorChar+"syntax_en.xml");
                 if (lang.Equals("en") == false)
-                    ReadFile(basedir + "\\data\\"+firmware+"\\syntax_" + lang + ".xml");
+                    ReadFile(basedir + Path.DirectorySeparatorChar+"data"+Path.DirectorySeparatorChar+firmware+
+                        Path.DirectorySeparatorChar+"syntax_" + lang + ".xml");
             }
         }
         private void ReadFile(string file)
         {
             if (!File.Exists(file)) return;
+
             try
             {
                 XmlDocument doc = new XmlDocument();

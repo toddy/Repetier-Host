@@ -57,8 +57,8 @@ namespace RepetierHost.view
             {
                 procSkein.EnableRaisingEvents = true;
                 procSkein.Exited += new EventHandler(SkeinExited);
-                procSkein.StartInfo.FileName = wrapQuotes(textPython.Text);
-                procSkein.StartInfo.Arguments = wrapQuotes(textSkainforge.Text);
+                procSkein.StartInfo.FileName = Main.IsMono ? textPython.Text : wrapQuotes(textPython.Text);
+                procSkein.StartInfo.Arguments = wrapQuotes(textSkeinforge.Text);
                 procSkein.StartInfo.UseShellExecute = false;
                 procSkein.StartInfo.RedirectStandardOutput = true;
                 procSkein.OutputDataReceived += new DataReceivedEventHandler(OutputDataHandler);
@@ -84,10 +84,12 @@ namespace RepetierHost.view
             procConvert = new Process();
             try
             {
+                SlicingInfo.Start("Skeinforge");
+                SlicingInfo.SetAction("Slicing STL file ...");
                 slicefile = file;
                 procConvert.EnableRaisingEvents = true;
                 procConvert.Exited += new EventHandler(ConversionExited);
-                procConvert.StartInfo.FileName = wrapQuotes(textPython.Text);
+                procConvert.StartInfo.FileName = Main.IsMono ? textPython.Text : wrapQuotes(textPython.Text);
                 procConvert.StartInfo.Arguments = wrapQuotes(textSkeinforgeCraft.Text) + " " + wrapQuotes(file);
                 procConvert.StartInfo.UseShellExecute = false;
                 procConvert.StartInfo.RedirectStandardOutput = true;
@@ -98,7 +100,7 @@ namespace RepetierHost.view
                 // Start the asynchronous read of the standard output stream.
                 procConvert.BeginOutputReadLine();
                 procConvert.BeginErrorReadLine();
-                Main.main.tab.SelectedTab = Main.main.tabPrint;
+                //Main.main.tab.SelectedTab = Main.main.tabPrint;
             }
             catch (Exception e)
             {
@@ -108,6 +110,7 @@ namespace RepetierHost.view
         public delegate void LoadGCode(String myString);
         private void ConversionExited(object sender, System.EventArgs e)
         {
+            SlicingInfo.f.Invoke(SlicingInfo.f.StopInfo);
             LoadGCode lg = Main.main.LoadGCode;
             procConvert.Close();
             procConvert = null;
@@ -137,7 +140,7 @@ namespace RepetierHost.view
         }
         private void regToForm()
         {
-            textSkainforge.Text = (string)repetierKey.GetValue("SkeinforgePath", textSkainforge.Text);
+            textSkeinforge.Text = (string)repetierKey.GetValue("SkeinforgePath", textSkeinforge.Text);
             textSkeinforgeCraft.Text = (string)repetierKey.GetValue("SkeinforgeCraftPath", textSkeinforgeCraft.Text);
             textPython.Text = (string)repetierKey.GetValue("SkeinforgePython", textPython.Text);
             textExtension.Text = (string)repetierKey.GetValue("SkeinforgeExtension", textExtension.Text);
@@ -145,7 +148,7 @@ namespace RepetierHost.view
         }
         private void FormToReg()
         {
-            repetierKey.SetValue("SkeinforgePath", textSkainforge.Text);
+            repetierKey.SetValue("SkeinforgePath", textSkeinforge.Text);
             repetierKey.SetValue("SkeinforgeCraftPath", textSkeinforgeCraft.Text);
             repetierKey.SetValue("SkeinforgePython", textPython.Text);
             repetierKey.SetValue("SkeinforgeExtension", textExtension.Text);
@@ -161,13 +164,14 @@ namespace RepetierHost.view
         {
             FormToReg();
             Hide();
+            Main.slicer.Update();
         }
 
         private void buttonSerach_Click(object sender, EventArgs e)
         {
             if (openFile.ShowDialog() == DialogResult.OK)
             {
-                textSkainforge.Text = openFile.FileName;
+                textSkeinforge.Text = openFile.FileName;
             }
         }
 

@@ -86,7 +86,7 @@
             this.groupBoxColors.Controls.Add(this.label3);
             this.groupBoxColors.Controls.Add(this.label2);
             this.groupBoxColors.Controls.Add(this.label1);
-            this.groupBoxColors.Location = new System.Drawing.Point(13, 13);
+            this.groupBoxColors.Location = new System.Drawing.Point(13, 7);
             this.groupBoxColors.Name = "groupBoxColors";
             this.groupBoxColors.Size = new System.Drawing.Size(517, 114);
             this.groupBoxColors.TabIndex = 0;
@@ -209,7 +209,6 @@
             // 
             // buttonOK
             // 
-            this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonOK.Location = new System.Drawing.Point(439, 375);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
@@ -234,7 +233,7 @@
             this.groupBox1.Controls.Add(this.comboFilamentVisualization);
             this.groupBox1.Controls.Add(this.showPrintbed);
             this.groupBox1.Controls.Add(this.showEdges);
-            this.groupBox1.Location = new System.Drawing.Point(13, 133);
+            this.groupBox1.Location = new System.Drawing.Point(13, 127);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(517, 173);
             this.groupBox1.TabIndex = 2;
@@ -244,7 +243,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(50, 125);
+            this.label11.Location = new System.Drawing.Point(24, 125);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(461, 39);
             this.label11.TabIndex = 13;
@@ -397,7 +396,7 @@
             this.groupBox2.Controls.Add(this.enableLight3);
             this.groupBox2.Controls.Add(this.enableLight2);
             this.groupBox2.Controls.Add(this.enableLight1);
-            this.groupBox2.Location = new System.Drawing.Point(12, 312);
+            this.groupBox2.Location = new System.Drawing.Point(12, 307);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(517, 53);
             this.groupBox2.TabIndex = 3;

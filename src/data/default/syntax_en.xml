@@ -141,5 +141,8 @@
   <Command name="M83" title="Enable extruder relative mode">
     <Description>Enable relative mode for extuder values.</Description>
   </Command>
+  <Command name="M84" title="Disable motors">
+    <Description>Disable motors if enabled. May shift extruder position!</Description>
+  </Command>
 
 </CommandDescriptions>

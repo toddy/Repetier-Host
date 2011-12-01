@@ -193,7 +193,6 @@
         #endregion
 
         private System.Windows.Forms.ToolStrip toolStrip1;
-        private OpenTK.GLControl gl;
         private System.Windows.Forms.ToolStripButton toolRotate;
         private System.Windows.Forms.ToolStripButton toolMove;
         private System.Windows.Forms.ToolStripButton toolResetView;
@@ -204,5 +203,6 @@
         private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.ToolStripButton toolAutoupdate;
         private System.Windows.Forms.ToolStripButton toolStripClear;
+        public OpenTK.GLControl gl;
     }
 }

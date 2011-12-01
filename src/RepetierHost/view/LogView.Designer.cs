@@ -39,8 +39,7 @@
             this.toolAutoscroll = new System.Windows.Forms.ToolStripButton();
             this.toolClear = new System.Windows.Forms.ToolStripButton();
             this.toolCopy = new System.Windows.Forms.ToolStripButton();
-            this.listLog = new System.Windows.Forms.ListView();
-            this.column = new System.Windows.Forms.ColumnHeader();
+            this.listLog = new RepetierHost.view.LogBox();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -144,6 +143,7 @@
             this.toolAutoscroll.Size = new System.Drawing.Size(65, 22);
             this.toolAutoscroll.Text = "Autoscroll";
             this.toolAutoscroll.ToolTipText = "Always show the end, if new logs appear.";
+            this.toolAutoscroll.CheckedChanged += new System.EventHandler(this.toolAutoscroll_CheckedChanged);
             // 
             // toolClear
             // 
@@ -167,22 +167,11 @@
             // 
             // listLog
             // 
-            this.listLog.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.column});
             this.listLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listLog.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.listLog.Location = new System.Drawing.Point(0, 25);
             this.listLog.Name = "listLog";
             this.listLog.Size = new System.Drawing.Size(947, 376);
             this.listLog.TabIndex = 1;
-            this.listLog.UseCompatibleStateImageBehavior = false;
-            this.listLog.View = System.Windows.Forms.View.Details;
-            this.listLog.Resize += new System.EventHandler(this.listLog_Resize);
-            // 
-            // column
-            // 
-            this.column.Text = "Log";
-            this.column.Width = 1280;
             // 
             // LogView
             // 
@@ -205,8 +194,6 @@
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton toolSend;
         private System.Windows.Forms.ToolStripButton toolInfo;
-        private System.Windows.Forms.ListView listLog;
-        private System.Windows.Forms.ColumnHeader column;
         private System.Windows.Forms.ToolStripButton toolWarning;
         private System.Windows.Forms.ToolStripButton toolErrors;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
@@ -214,5 +201,6 @@
         private System.Windows.Forms.ToolStripButton toolClear;
         private System.Windows.Forms.ToolStripButton toolCopy;
         public System.Windows.Forms.ToolStripButton toolACK;
+        private LogBox listLog;
     }
 }

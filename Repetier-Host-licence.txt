@@ -18,6 +18,11 @@ Repetier-Host software
 
 Libraries and licences:
 
+Slic3r http://www.slic3r.org
+
+Slic3r is dual-licensed under the Perl Artistic License and the AGPLv3. 
+The author is Alessandro Ranellucci.
+
 OpenTK  http://www.opentk.com
 
 Copyright (c) 2006 - 2009 The Open Toolkit library.

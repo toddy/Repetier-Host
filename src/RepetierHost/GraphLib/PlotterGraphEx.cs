@@ -43,7 +43,7 @@ namespace RepetierHost.GraphLib
         PlotterGraphSelectCurvesForm GraphPropertiesForm = null;
         PrintPreviewForm printPreviewForm = null;
 
-        private PrecisionTimer.Timer mTimer = null;
+        private System.Windows.Forms.Timer mTimer = null;
         private float play_speed = 0.5f;
         private float play_speed_max = 10f;
         private float play_speed_min = 0.5f;
@@ -58,8 +58,8 @@ namespace RepetierHost.GraphLib
         public PlotterDisplayEx()
         {
             InitializeComponent();
-            mTimer = new PrecisionTimer.Timer();
-            mTimer.Period = 50;                         // 20 fps
+            mTimer = new System.Windows.Forms.Timer();
+            mTimer.Interval = 50;                         // 20 fps
             mTimer.Tick += new EventHandler(OnTimerTick);
             play_speed = 0.5f; // 20x10 = 200 values per second == sample frequency     
             mTimer.Start();
@@ -203,7 +203,7 @@ namespace RepetierHost.GraphLib
         {
             paused = true;
 
-            if (mTimer.IsRunning)
+            if (mTimer.Enabled)
             {
                 mTimer.Stop();
                 mTimer.Dispose();

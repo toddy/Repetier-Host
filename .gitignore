@@ -1,0 +1,13 @@
+src/RepetierHost/obj
+src/RepetierHost/bin
+src/Slic3r
+src/slic3r*
+*/.DS_Store
+macosx/RepetierHost.app
+linux/RepetierHost
+RepetierHostMacOSX.sparseimage
+.DS_Store
+
+macosx/Repetier-Host.dmg
+
+screenshots/Thumbs.db

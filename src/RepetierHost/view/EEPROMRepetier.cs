@@ -47,6 +47,7 @@ namespace RepetierHost.view
         public void Show2()
         {
             Show();
+            BringToFront();
             storage.Clear();
             data.Clear();
             storage.Update();

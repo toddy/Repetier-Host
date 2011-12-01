@@ -39,6 +39,7 @@ namespace RepetierHost.view
             con = Main.conn;
             ann = con.analyzer;
             con.eventConnectionChange += ConnectionChanged;
+            ann.fanVoltage = trackFanVoltage.Value;
             con.eventTempChange += tempUpdate;
             ann.eventPosChanged += coordUpdate;
             ann.eventChange += analyzerChange;
@@ -342,6 +343,7 @@ namespace RepetierHost.view
             float volt = 100f*trackFanVoltage.Value/255;
             labelVoltage.Text = "Output " + volt.ToString("0.0") + "%";
             if (!createCommands) return;
+            switchFanOn.On = true;
             switchFanOn_Change(null);
         }
 

@@ -3,21 +3,23 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B118044A-6AC1-407D-8CE9-A624810BEE0C}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RepetierHost</RootNamespace>
     <AssemblyName>RepetierHost</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ManifestCertificateThumbprint>4D8B5380D7CB00A0A95794AAA4F075AF1C54B30F</ManifestCertificateThumbprint>
     <ManifestKeyFile>RepetierHost_TemporaryKey.pfx</ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
     <SignManifests>false</SignManifests>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <ApplicationIcon>repetier-logo32.ico</ApplicationIcon>
+    <ApplicationIcon>repetier-logo-trans32.ico</ApplicationIcon>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <StartupObject>RepetierHost.Program</StartupObject>
+    <NoWin32Manifest>true</NoWin32Manifest>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -32,7 +34,6 @@
     <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
-    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -43,6 +44,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -51,11 +53,22 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOSX|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\MacOSX</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <Commandlineparameters>-macosx</Commandlineparameters>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="OpenTK, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4" />
     <Reference Include="OpenTK.Compatibility, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" />
-    <Reference Include="OpenTK.GLControl, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" />
+    <Reference Include="OpenTK.GLControl, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\release\OpenTK.GLControl.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -72,6 +85,15 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="OpenTK.Compatibility">
+      <HintPath>bin\MacOSX\OpenTK.Compatibility.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK">
+      <HintPath>bin\MacOSX\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK.GLControl">
+      <HintPath>bin\MacOSX\OpenTK.GLControl.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GraphLib\BackBuffer.cs" />
@@ -112,7 +134,6 @@
       <DependentUpon>PlotterGraphPropertiesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="GraphLib\PlotterGraphTypes.cs" />
-    <Compile Include="GraphLib\PrecisionTimer.cs" />
     <Compile Include="GraphLib\PrintPreviewForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -125,18 +146,23 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="GraphLib\PlotterGraphEx.resx">
       <DependentUpon>PlotterGraphEx.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="GraphLib\PlotterGraphPaneEx.resx">
       <DependentUpon>PlotterGraphPaneEx.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="GraphLib\PlotterGraphPropertiesForm.resx">
       <DependentUpon>PlotterGraphPropertiesForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="GraphLib\PrintPreviewForm.resx">
       <DependentUpon>PrintPreviewForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -145,60 +171,95 @@
     </EmbeddedResource>
     <EmbeddedResource Include="view\About.resx">
       <DependentUpon>About.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="view\EEPROMRepetier.resx">
       <DependentUpon>EEPROMRepetier.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="view\FormPrinterSettings.resx">
       <DependentUpon>FormPrinterSettings.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="view\FormTempMonitor.resx">
       <DependentUpon>FormTempMonitor.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="view\GlobalSettings.resx">
       <DependentUpon>GlobalSettings.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="view\JobStatus.resx">
       <DependentUpon>JobStatus.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="view\LogBox.resx">
+      <DependentUpon>LogBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="view\LogView.resx">
       <DependentUpon>LogView.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="view\PrinterInfo.resx">
       <DependentUpon>PrinterInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="view\PrintPanel.resx">
       <DependentUpon>PrintPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="view\RepetierEditor.resx">
       <DependentUpon>RepetierEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="view\SDCard.resx">
       <DependentUpon>SDCard.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="view\SDCardUpload.resx">
       <DependentUpon>SDCardUpload.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="view\Skeinforge.resx">
       <DependentUpon>Skeinforge.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="view\Slic3r.resx">
+      <DependentUpon>Slic3r.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="view\SlicingParameter.resx">
       <DependentUpon>SlicingParameter.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="view\STLComposer.resx">
       <DependentUpon>STLComposer.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="view\SwitchButton.resx">
       <DependentUpon>SwitchButton.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="view\TestGenerator.resx">
       <DependentUpon>TestGenerator.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="view\ThreeDControl.resx">
       <DependentUpon>ThreeDControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="view\ThreeDSettings.resx">
       <DependentUpon>ThreeDSettings.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="view\utils\SlicingInfo.resx">
+      <DependentUpon>SlicingInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="view\utils\StringInput.resx">
+      <DependentUpon>StringInput.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -229,7 +290,7 @@
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
     <Compile Include="view\DoubleBufferPanel.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="view\EEPROMRepetier.cs">
       <SubType>Form</SubType>
@@ -260,6 +321,12 @@
     </Compile>
     <Compile Include="view\JobStatus.Designer.cs">
       <DependentUpon>JobStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="view\LogBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="view\LogBox.Designer.cs">
+      <DependentUpon>LogBox.cs</DependentUpon>
     </Compile>
     <Compile Include="view\LogView.cs">
       <SubType>UserControl</SubType>
@@ -303,6 +370,12 @@
     <Compile Include="view\Skeinforge.Designer.cs">
       <DependentUpon>Skeinforge.cs</DependentUpon>
     </Compile>
+    <Compile Include="view\Slic3r.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="view\Slic3r.Designer.cs">
+      <DependentUpon>Slic3r.cs</DependentUpon>
+    </Compile>
     <Compile Include="view\SlicingParameter.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -340,18 +413,27 @@
       <DependentUpon>ThreeDSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="view\utils\RegMemory.cs" />
+    <Compile Include="view\utils\Slicer.cs" />
+    <Compile Include="view\utils\SlicingInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="view\utils\SlicingInfo.Designer.cs">
+      <DependentUpon>SlicingInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="view\utils\StringInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="view\utils\StringInput.Designer.cs">
+      <DependentUpon>StringInput.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="images\switch_on.bmp" />
     <Content Include="images\switch_off.bmp" />
+    <Content Include="repetier-logo-trans32.ico" />
     <Content Include="repetier-logo32.ico" />
   </ItemGroup>
   <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
       <Visible>False</Visible>
       <ProductName>.NET Framework 2.0 %28x86%29</ProductName>

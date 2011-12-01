@@ -35,6 +35,7 @@ namespace RepetierHost.view
             if (f == null)
                 f = new JobStatus();
             f.Show();
+            f.BringToFront();
             f.timer.Start();
         }
         public JobStatus()

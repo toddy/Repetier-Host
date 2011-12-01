@@ -58,10 +58,11 @@ namespace RepetierHost.model
         public int transferProtocol = 0; // 0 = auto, 1 = force ascii, 2 = force binary
         public int binaryVersion = 0;
         public int baud=57600;
+        public bool garbageCleared = false; // Skip old output
         public Parity parity = Parity.None;
         public StopBits stopbits = StopBits.One;
         public int databits = 8;
-        public ProtectedSerialPort serial = null;
+        public SerialPort serial = null;
         public string port="COM10";
         public float travelFeedRate = 4800;
         public float printFeedRate = 2400;
@@ -110,8 +111,11 @@ namespace RepetierHost.model
         private string lastPrinterAction = "";
         public int receiveCacheSize = 120;
         public LinkedList<int> nackLines = new LinkedList<int>(); // Lines, whoses receivement were not acknowledged
+        Thread readThread = null;
         public PrinterConnection()
         {
+            if (Environment.OSVersion.Platform == PlatformID.Unix)
+                port = "/dev/ttyUSB0";
             job = new Printjob(this);
             timer = new System.Timers.Timer();
             timer.Interval = 100;
@@ -122,7 +126,7 @@ namespace RepetierHost.model
             {
                 string dir = Main.globalSettings.Workdir;
                 if(dir.Length>0 && Main.globalSettings.LogEnabled)
-                    logWriter = new StreamWriter(dir+"\\repetier.log");
+                    logWriter = new StreamWriter(dir+Path.DirectorySeparatorChar+"repetier.log");
             }
             catch
             {
@@ -166,7 +170,7 @@ namespace RepetierHost.model
                 catch { }
                 nextPrinterAction = null;
             }
-            if (serial == null || connected == false) return;
+            if (serial == null || connected == false || garbageCleared==false) return;
             long actTime = DateTime.Now.Ticks / 10000;
             if (autocheckTemp && actTime - lastAutocheck > autocheckInterval && job.exclusive==false)
             {
@@ -238,10 +242,10 @@ namespace RepetierHost.model
             }
             lock (logList)
             {
-                if (t.Length > 0 && t[t.Length - 1] == 27)
+                if (l.text.Length > 0 && l.text[l.text.Length - 1] == 27)
                 {
                     //useNextLog = l;
-                    l.text = t.Substring(0, t.Length - 1);
+                    l.text = l.text.Substring(0, l.text.Length - 1);
                 }
                 if (!update) logList.AddLast(l);
             }
@@ -348,6 +352,7 @@ namespace RepetierHost.model
             float logprogress = -1;
             string printeraction = null;
             GCode historygc = null;
+            if (!garbageCleared) return;
             try
             {
                 lock (nextlineLock)
@@ -506,15 +511,30 @@ namespace RepetierHost.model
         public void open()
         {
             try {
-                serial = new ProtectedSerialPort();
+                if (Main.IsMono)
+                    serial = new SerialPort();
+                else
+                    serial = new ProtectedSerialPort();
+                garbageCleared = false;
                 serial.PortName = port;
                 serial.BaudRate = baud;
                 serial.Parity = parity;
                 serial.DataBits = databits;
                 serial.StopBits = stopbits;
-                serial.DataReceived += received;
+                if(!Main.IsMono)
+                    serial.DataReceived += received;
                 serial.ErrorReceived += error;
+                serial.RtsEnable = false;
+                serial.DtrEnable = false;
                 serial.Open();
+                // If we didn't restart the connection we need to eat
+                // all unread data on this port.
+                serial.DiscardInBuffer();
+                /*while(serial.BytesToRead > 0)
+                {
+                    string indata = serial.ReadExisting();
+                }*/
+                serial.WriteLine("M105");
                 connected = true;
                 if (transferProtocol < 2)
                     binaryVersion = 0;
@@ -523,6 +543,11 @@ namespace RepetierHost.model
                 nackLines.Clear();
                 ignoreNextOk = false;
                 linesSend = errorsReceived = bytesSend = 0;
+                if (readThread == null && Main.IsMono)
+                {
+                    readThread = new Thread(new ThreadStart(this.ReadThread));
+                    readThread.Start();
+                }
                 GetInjectLock();
                 injectManualCommand("N0 M110"); // Make sure we tal about the same linenumbers
                 injectManualCommand("M115"); // Check firmware
@@ -544,6 +569,9 @@ namespace RepetierHost.model
         {
             if(serial == null) return;
             connected = false;
+            if (readThread != null)
+                readThread.Abort();
+            readThread = null;
             lock (nextlineLock)
             {
                 try
@@ -581,7 +609,47 @@ namespace RepetierHost.model
             if (comErrorsReceived == 10)
                 close();
         }
+        /// <summary>
+        /// Mono version as mono does not execute received event.
+        /// </summary>
+        private void ReadThread()
+        {
+            try
+            {
+                while (true)
+                {
+                    Thread.Sleep(2);
+                    if (!connected || serial == null || !serial.IsOpen) continue; // Not connected
+                    if (serial.BytesToRead > 0)
+                    {
 
+                        string indata = serial.ReadExisting();
+                        //Console.Write(indata);
+                        read += indata.Replace('\r', '\n');
+                        do
+                        {
+                            int pos = read.IndexOf('\n');
+                            if (pos < 0) break;
+                            string response = read.Substring(0, pos);
+                            read = read.Substring(pos + 1);
+                            if (response.Length > 0)
+                            {
+                                analyzeResponse(response);
+                            }
+                            TrySendNextLine();
+                        } while (true);
+                        lastReceived = DateTime.Now.Ticks / 10000;
+                    }
+                }
+            }
+            catch (ThreadAbortException)
+            {
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
         private void received(object sender,
                         SerialDataReceivedEventArgs e)
         {
@@ -785,7 +853,7 @@ namespace RepetierHost.model
                 int.TryParse(h, out binaryVersion);
                 if (transferProtocol == 1) binaryVersion = 0; // force ascii transfer
             }
-            if (res.Equals("start"))
+            if (res.Equals("start") || (garbageCleared==false && res.IndexOf("start")!=-1))
             {
                 lastline = 0;
                 job.KillJob(); // continuing the old job makes no sense, better save the plastic
@@ -795,6 +863,7 @@ namespace RepetierHost.model
                 analyzer.start();
                 readyForNextSend = true;
                 nackLines.Clear();
+                garbageCleared = true;
             }
             if (extract(res, "Error:")!=null)
             {
@@ -816,6 +885,7 @@ namespace RepetierHost.model
             }
             else if (res.StartsWith("ok"))
             {
+                garbageCleared = true;
                 if(Main.main.logView.toolACK.Checked)
                   log(res, true, level);
                 if (!ignoreNextOk)  // ok in response of resend?
@@ -850,7 +920,7 @@ namespace RepetierHost.model
                 resendError = 0;
                 TrySendNextLine();
             }
-            else if (level >= 0) log(res, true, level);
+            else if (level >= 0 && garbageCleared) log(res, true, level);
             
         }
         private string extract(string source, string ident)

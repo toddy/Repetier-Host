@@ -255,10 +255,12 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(472, 317);
+            this.ControlBox = false;
             this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "PrinterInfo";
             this.Text = "Printer information";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PrinterInfo_FormClosing);
