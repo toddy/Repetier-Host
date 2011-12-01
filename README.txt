@@ -12,12 +12,10 @@ Read the wiki at https://github.com/repetier/Repetier-Host/wiki
 
 Requirements
 
-* Windows XP or later.
-* .NET 3.5 of higher.
+* Windows XP or later, Linux or Mac OS X
+* .NET 3.5 of higher or Mono on non-Windows platforms.
 * Skeinforge for slicing (optional).
 
-Installation
+Installation:
 
-1. Download setupRepetierHost.exe
-2. Double click it.
-3. Follow the instuctions of the installer.
+https://github.com/repetier/Repetier-Host/wiki/Installation
