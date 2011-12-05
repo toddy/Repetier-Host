@@ -113,18 +113,21 @@ namespace RepetierHost.view
                 buttonSlice.Enabled = true;
             }
         }
-        private void buttonAddSTL_Click(object sender, EventArgs e)
-        {
-            if (openFileSTL.ShowDialog() == DialogResult.OK)
-            {
+        public void openAndAddObject(string file) {
                 STL stl = new STL();
-                stl.Load(openFileSTL.FileName);
+                stl.Load(file);
                 if (stl.list.Count > 0)
                 {
                     listSTLObjects.Items.Add(stl);
                     cont.models.AddLast(stl);
                     listSTLObjects.SelectedItem = stl;
                 }
+        }
+        private void buttonAddSTL_Click(object sender, EventArgs e)
+        {
+            if (openFileSTL.ShowDialog() == DialogResult.OK)
+            {
+                openAndAddObject(openFileSTL.FileName);
             }
         }
 

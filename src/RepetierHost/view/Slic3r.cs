@@ -90,7 +90,10 @@ namespace RepetierHost.view
             textSkirtHeight.Text = (string)c.GetValue("SkirtHeight", textSkirtHeight.Text);
             textSkirtDistance.Text = (string)c.GetValue("SkirtDistance", textSkirtDistance.Text);
             textExtrusionWidthRatio.Text = (string)c.GetValue("ExtrusionWidthRatio", textExtrusionWidthRatio.Text);
-
+            textBridgeFlowRatio.Text = (string) c.GetValue("BridgeFlowRatio", textBridgeFlowRatio.Text);
+            textBridgeSpeed.Text = (string) c.GetValue("BridgeSpeed", textBridgeSpeed.Text);
+            textSolidInfillSpeed.Text = (string) c.GetValue("SolidInfillSpeed", textSolidInfillSpeed.Text);
+            textSmallPerimeterSpeed.Text = (string) c.GetValue("SmallPerimeterSpeed", textSmallPerimeterSpeed.Text);
         }
         private void saveConfig(string name)
         {
@@ -123,6 +126,10 @@ namespace RepetierHost.view
             c.SetValue("SkirtHeight", textSkirtHeight.Text);
             c.SetValue("SkirtDistance", textSkirtDistance.Text);
             c.SetValue("ExtrusionWidthRatio", textExtrusionWidthRatio.Text);
+            c.SetValue("BridgeFlowRatio", textBridgeFlowRatio.Text);
+            c.SetValue("BridgeSpeed", textBridgeSpeed.Text);
+            c.SetValue("SolidInfillSpeed", textSolidInfillSpeed.Text);
+            c.SetValue("SmallPerimeterSpeed", textSmallPerimeterSpeed.Text);
         }
         private void buttonOK_Click(object sender, EventArgs e)
         {
@@ -248,14 +255,22 @@ namespace RepetierHost.view
                 sb.Append(textPackingDensity.Text);
                 sb.Append(" --temperature ");
                 sb.Append(textTemperature.Text);
-                sb.Append(" --print-feed-rate ");
+                sb.Append(" --infill-speed ");
                 sb.Append(textPrintFeedrate.Text);
-                sb.Append(" --travel-feed-rate ");
+                sb.Append(" --solid-infill-speed ");
+                sb.Append(textSolidInfillSpeed.Text);
+                sb.Append(" --travel-speed ");
                 sb.Append(textTravelFeedrate.Text);
-                sb.Append(" --perimeter-feed-rate ");
+                sb.Append(" --bridge-speed ");
+                sb.Append(textBridgeSpeed.Text);
+                sb.Append(" --perimeter-speed ");
                 sb.Append(textPerimeterFeedrate.Text);
+                sb.Append(" --small-perimeter-speed ");
+                sb.Append(textSmallPerimeterSpeed.Text);
                 sb.Append(" --bottom-layer-speed-ratio ");
                 sb.Append(textBottomLayerRatio.Text);
+                sb.Append(" --bridge-flow-ratio ");
+                sb.Append(textBridgeFlowRatio.Text);
                 sb.Append(" --layer-height ");
                 sb.Append(textLayerHeight.Text);
                 sb.Append(" --infill-every-layers ");

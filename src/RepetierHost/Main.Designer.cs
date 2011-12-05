@@ -83,22 +83,24 @@
             this.toolKillJob = new System.Windows.Forms.ToolStripButton();
             this.toolStripSDCard = new System.Windows.Forms.ToolStripButton();
             this.toolShowLog = new System.Windows.Forms.ToolStripButton();
-            this.tab = new System.Windows.Forms.TabControl();
-            this.tabModel = new System.Windows.Forms.TabPage();
-            this.tabGCode = new System.Windows.Forms.TabPage();
-            this.splitJob = new System.Windows.Forms.SplitContainer();
-            this.tabPrint = new System.Windows.Forms.TabPage();
-            this.splitContainerPrinterGraphic = new System.Windows.Forms.SplitContainer();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.openGCode = new System.Windows.Forms.OpenFileDialog();
             this.saveJobDialog = new System.Windows.Forms.SaveFileDialog();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.splitLog = new System.Windows.Forms.SplitContainer();
+            this.tab = new System.Windows.Forms.TabControl();
+            this.tabModel = new System.Windows.Forms.TabPage();
             this.stlComposer1 = new RepetierHost.view.STLComposer();
+            this.tabGCode = new System.Windows.Forms.TabPage();
+            this.splitJob = new System.Windows.Forms.SplitContainer();
             this.editor = new RepetierHost.view.RepetierEditor();
+            this.tabPrint = new System.Windows.Forms.TabPage();
+            this.splitContainerPrinterGraphic = new System.Windows.Forms.SplitContainer();
             this.menu.SuspendLayout();
             this.status.SuspendLayout();
             this.toolStrip.SuspendLayout();
+            this.splitLog.Panel1.SuspendLayout();
+            this.splitLog.SuspendLayout();
             this.tab.SuspendLayout();
             this.tabModel.SuspendLayout();
             this.tabGCode.SuspendLayout();
@@ -106,8 +108,6 @@
             this.splitJob.SuspendLayout();
             this.tabPrint.SuspendLayout();
             this.splitContainerPrinterGraphic.SuspendLayout();
-            this.splitLog.Panel1.SuspendLayout();
-            this.splitLog.SuspendLayout();
             this.SuspendLayout();
             // 
             // menu
@@ -559,83 +559,6 @@
             this.toolShowLog.CheckedChanged += new System.EventHandler(this.toolShowLog_CheckedChanged);
             this.toolShowLog.Click += new System.EventHandler(this.toolShowLog_Click);
             // 
-            // tab
-            // 
-            this.tab.Controls.Add(this.tabModel);
-            this.tab.Controls.Add(this.tabGCode);
-            this.tab.Controls.Add(this.tabPrint);
-            this.tab.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tab.Location = new System.Drawing.Point(0, 0);
-            this.tab.Name = "tab";
-            this.tab.SelectedIndex = 0;
-            this.tab.Size = new System.Drawing.Size(953, 355);
-            this.tab.TabIndex = 3;
-            this.tab.SelectedIndexChanged += new System.EventHandler(this.tab_SelectedIndexChanged);
-            // 
-            // tabModel
-            // 
-            this.tabModel.BackColor = System.Drawing.SystemColors.Control;
-            this.tabModel.Controls.Add(this.stlComposer1);
-            this.tabModel.Location = new System.Drawing.Point(4, 22);
-            this.tabModel.Name = "tabModel";
-            this.tabModel.Size = new System.Drawing.Size(945, 329);
-            this.tabModel.TabIndex = 2;
-            this.tabModel.Text = "Model";
-            // 
-            // tabGCode
-            // 
-            this.tabGCode.AutoScroll = true;
-            this.tabGCode.BackColor = System.Drawing.SystemColors.Control;
-            this.tabGCode.Controls.Add(this.splitJob);
-            this.tabGCode.Location = new System.Drawing.Point(4, 22);
-            this.tabGCode.Name = "tabGCode";
-            this.tabGCode.Padding = new System.Windows.Forms.Padding(3);
-            this.tabGCode.Size = new System.Drawing.Size(945, 329);
-            this.tabGCode.TabIndex = 1;
-            this.tabGCode.Text = "Job";
-            // 
-            // splitJob
-            // 
-            this.splitJob.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitJob.BackColor = System.Drawing.Color.Transparent;
-            this.splitJob.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitJob.Location = new System.Drawing.Point(3, 3);
-            this.splitJob.Name = "splitJob";
-            // 
-            // splitJob.Panel1
-            // 
-            this.splitJob.Panel1.Controls.Add(this.editor);
-            this.splitJob.Size = new System.Drawing.Size(939, 320);
-            this.splitJob.SplitterDistance = 500;
-            this.splitJob.TabIndex = 3;
-            // 
-            // tabPrint
-            // 
-            this.tabPrint.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPrint.Controls.Add(this.splitContainerPrinterGraphic);
-            this.tabPrint.Location = new System.Drawing.Point(4, 22);
-            this.tabPrint.Name = "tabPrint";
-            this.tabPrint.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPrint.Size = new System.Drawing.Size(945, 329);
-            this.tabPrint.TabIndex = 0;
-            this.tabPrint.Text = "Print";
-            // 
-            // splitContainerPrinterGraphic
-            // 
-            this.splitContainerPrinterGraphic.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainerPrinterGraphic.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainerPrinterGraphic.Location = new System.Drawing.Point(3, 3);
-            this.splitContainerPrinterGraphic.Name = "splitContainerPrinterGraphic";
-            // 
-            // splitContainerPrinterGraphic.Panel1
-            // 
-            this.splitContainerPrinterGraphic.Panel1.BackColor = System.Drawing.Color.Transparent;
-            this.splitContainerPrinterGraphic.Size = new System.Drawing.Size(939, 323);
-            this.splitContainerPrinterGraphic.SplitterDistance = 465;
-            this.splitContainerPrinterGraphic.TabIndex = 0;
-            // 
             // imageList
             // 
             this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
@@ -677,6 +600,29 @@
             this.splitLog.SplitterDistance = 357;
             this.splitLog.TabIndex = 4;
             // 
+            // tab
+            // 
+            this.tab.Controls.Add(this.tabModel);
+            this.tab.Controls.Add(this.tabGCode);
+            this.tab.Controls.Add(this.tabPrint);
+            this.tab.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tab.Location = new System.Drawing.Point(0, 0);
+            this.tab.Name = "tab";
+            this.tab.SelectedIndex = 0;
+            this.tab.Size = new System.Drawing.Size(953, 355);
+            this.tab.TabIndex = 3;
+            this.tab.SelectedIndexChanged += new System.EventHandler(this.tab_SelectedIndexChanged);
+            // 
+            // tabModel
+            // 
+            this.tabModel.BackColor = System.Drawing.SystemColors.Control;
+            this.tabModel.Controls.Add(this.stlComposer1);
+            this.tabModel.Location = new System.Drawing.Point(4, 22);
+            this.tabModel.Name = "tabModel";
+            this.tabModel.Size = new System.Drawing.Size(945, 329);
+            this.tabModel.TabIndex = 2;
+            this.tabModel.Text = "Object placements";
+            // 
             // stlComposer1
             // 
             this.stlComposer1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -684,6 +630,35 @@
             this.stlComposer1.Name = "stlComposer1";
             this.stlComposer1.Size = new System.Drawing.Size(945, 329);
             this.stlComposer1.TabIndex = 0;
+            // 
+            // tabGCode
+            // 
+            this.tabGCode.AutoScroll = true;
+            this.tabGCode.BackColor = System.Drawing.SystemColors.Control;
+            this.tabGCode.Controls.Add(this.splitJob);
+            this.tabGCode.Location = new System.Drawing.Point(4, 22);
+            this.tabGCode.Name = "tabGCode";
+            this.tabGCode.Padding = new System.Windows.Forms.Padding(3);
+            this.tabGCode.Size = new System.Drawing.Size(945, 329);
+            this.tabGCode.TabIndex = 1;
+            this.tabGCode.Text = "G-Code visual editor";
+            // 
+            // splitJob
+            // 
+            this.splitJob.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitJob.BackColor = System.Drawing.Color.Transparent;
+            this.splitJob.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitJob.Location = new System.Drawing.Point(3, 3);
+            this.splitJob.Name = "splitJob";
+            // 
+            // splitJob.Panel1
+            // 
+            this.splitJob.Panel1.Controls.Add(this.editor);
+            this.splitJob.Size = new System.Drawing.Size(939, 320);
+            this.splitJob.SplitterDistance = 500;
+            this.splitJob.TabIndex = 3;
             // 
             // editor
             // 
@@ -695,6 +670,31 @@
             this.editor.Name = "editor";
             this.editor.Size = new System.Drawing.Size(500, 320);
             this.editor.TabIndex = 0;
+            // 
+            // tabPrint
+            // 
+            this.tabPrint.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPrint.Controls.Add(this.splitContainerPrinterGraphic);
+            this.tabPrint.Location = new System.Drawing.Point(4, 22);
+            this.tabPrint.Name = "tabPrint";
+            this.tabPrint.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPrint.Size = new System.Drawing.Size(945, 329);
+            this.tabPrint.TabIndex = 0;
+            this.tabPrint.Text = "Manual control";
+            // 
+            // splitContainerPrinterGraphic
+            // 
+            this.splitContainerPrinterGraphic.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainerPrinterGraphic.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainerPrinterGraphic.Location = new System.Drawing.Point(3, 3);
+            this.splitContainerPrinterGraphic.Name = "splitContainerPrinterGraphic";
+            // 
+            // splitContainerPrinterGraphic.Panel1
+            // 
+            this.splitContainerPrinterGraphic.Panel1.BackColor = System.Drawing.Color.Transparent;
+            this.splitContainerPrinterGraphic.Size = new System.Drawing.Size(939, 323);
+            this.splitContainerPrinterGraphic.SplitterDistance = 465;
+            this.splitContainerPrinterGraphic.TabIndex = 0;
             // 
             // Main
             // 
@@ -709,7 +709,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menu;
             this.Name = "Main";
-            this.Text = "Repetier-Host V0.29";
+            this.Text = "Repetier-Host V0.30";
             this.Shown += new System.EventHandler(this.Main_Shown);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.Resize += new System.EventHandler(this.Main_Resize);
@@ -719,6 +719,8 @@
             this.status.PerformLayout();
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
+            this.splitLog.Panel1.ResumeLayout(false);
+            this.splitLog.ResumeLayout(false);
             this.tab.ResumeLayout(false);
             this.tabModel.ResumeLayout(false);
             this.tabGCode.ResumeLayout(false);
@@ -726,8 +728,6 @@
             this.splitJob.ResumeLayout(false);
             this.tabPrint.ResumeLayout(false);
             this.splitContainerPrinterGraphic.ResumeLayout(false);
-            this.splitLog.Panel1.ResumeLayout(false);
-            this.splitLog.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

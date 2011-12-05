@@ -333,7 +333,14 @@ namespace RepetierHost
             UpdateHistory();
             if (file.EndsWith(".stl"))
             {
-                slicer.RunSlice(file); // Slice it and load
+                if (MessageBox.Show("Do you want to slice the STL-File? No adds it to the object grid.", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    slicer.RunSlice(file); // Slice it and load
+                }
+                else
+                {
+                    stlComposer1.openAndAddObject(file);
+                }
             }
             else
             {

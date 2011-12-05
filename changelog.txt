@@ -1,3 +1,7 @@
+Version 0.30
+  Updated Slic3r to version 0.53
+  Loading STL files with G-button asks what to do - slice or add
+  
 Version 0.29 
   Linux version available.
   Mac OS X version available.

@@ -119,6 +119,17 @@
             this.buttonApply = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.label45 = new System.Windows.Forms.Label();
+            this.textSmallPerimeterSpeed = new System.Windows.Forms.TextBox();
+            this.label46 = new System.Windows.Forms.Label();
+            this.label47 = new System.Windows.Forms.Label();
+            this.textSolidInfillSpeed = new System.Windows.Forms.TextBox();
+            this.label48 = new System.Windows.Forms.Label();
+            this.label49 = new System.Windows.Forms.Label();
+            this.textBridgeFlowRatio = new System.Windows.Forms.TextBox();
+            this.textBridgeSpeed = new System.Windows.Forms.TextBox();
+            this.label50 = new System.Windows.Forms.Label();
+            this.label51 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panelData.SuspendLayout();
             this.groupSkirt.SuspendLayout();
@@ -193,7 +204,7 @@
             this.panelData.Controls.Add(this.groupPrinter);
             this.panelData.Location = new System.Drawing.Point(0, 41);
             this.panelData.Name = "panelData";
-            this.panelData.Size = new System.Drawing.Size(643, 484);
+            this.panelData.Size = new System.Drawing.Size(949, 419);
             this.panelData.TabIndex = 1;
             // 
             // groupSkirt
@@ -206,7 +217,7 @@
             this.groupSkirt.Controls.Add(this.textSkirtHeight);
             this.groupSkirt.Controls.Add(this.textSkirtDistance);
             this.groupSkirt.Controls.Add(this.textSkirtLoops);
-            this.groupSkirt.Location = new System.Drawing.Point(318, 351);
+            this.groupSkirt.Location = new System.Drawing.Point(633, 113);
             this.groupSkirt.Name = "groupSkirt";
             this.groupSkirt.Size = new System.Drawing.Size(309, 100);
             this.groupSkirt.TabIndex = 6;
@@ -295,7 +306,7 @@
             this.groupAccuracy.Controls.Add(this.label35);
             this.groupAccuracy.Controls.Add(this.textInfillEvery);
             this.groupAccuracy.Controls.Add(this.textLayerHeight);
-            this.groupAccuracy.Location = new System.Drawing.Point(3, 370);
+            this.groupAccuracy.Location = new System.Drawing.Point(633, 8);
             this.groupAccuracy.Name = "groupAccuracy";
             this.groupAccuracy.Size = new System.Drawing.Size(309, 99);
             this.groupAccuracy.TabIndex = 5;
@@ -316,7 +327,7 @@
             this.textExtrusionWidthRatio.Location = new System.Drawing.Point(131, 74);
             this.textExtrusionWidthRatio.Name = "textExtrusionWidthRatio";
             this.textExtrusionWidthRatio.Size = new System.Drawing.Size(100, 20);
-            this.textExtrusionWidthRatio.TabIndex = 6;
+            this.textExtrusionWidthRatio.TabIndex = 2;
             this.textExtrusionWidthRatio.Text = "0";
             this.textExtrusionWidthRatio.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
             // 
@@ -391,7 +402,7 @@
             this.groupRetraction.Controls.Add(this.textRetSpeed);
             this.groupRetraction.Controls.Add(this.textRetLift);
             this.groupRetraction.Controls.Add(this.textRetLength);
-            this.groupRetraction.Location = new System.Drawing.Point(318, 192);
+            this.groupRetraction.Location = new System.Drawing.Point(3, 235);
             this.groupRetraction.Name = "groupRetraction";
             this.groupRetraction.Size = new System.Drawing.Size(309, 155);
             this.groupRetraction.TabIndex = 4;
@@ -587,7 +598,7 @@
             this.comboSolidFillPattern.Location = new System.Drawing.Point(135, 152);
             this.comboSolidFillPattern.Name = "comboSolidFillPattern";
             this.comboSolidFillPattern.Size = new System.Drawing.Size(121, 21);
-            this.comboSolidFillPattern.TabIndex = 9;
+            this.comboSolidFillPattern.TabIndex = 5;
             // 
             // comboFillPattern
             // 
@@ -603,7 +614,7 @@
             this.comboFillPattern.Location = new System.Drawing.Point(135, 125);
             this.comboFillPattern.Name = "comboFillPattern";
             this.comboFillPattern.Size = new System.Drawing.Size(121, 21);
-            this.comboFillPattern.TabIndex = 9;
+            this.comboFillPattern.TabIndex = 4;
             // 
             // label22
             // 
@@ -688,8 +699,19 @@
             // 
             // groupSpeed
             // 
+            this.groupSpeed.Controls.Add(this.label50);
+            this.groupSpeed.Controls.Add(this.textBridgeSpeed);
+            this.groupSpeed.Controls.Add(this.textBridgeFlowRatio);
+            this.groupSpeed.Controls.Add(this.label49);
+            this.groupSpeed.Controls.Add(this.textSolidInfillSpeed);
+            this.groupSpeed.Controls.Add(this.label47);
+            this.groupSpeed.Controls.Add(this.textSmallPerimeterSpeed);
+            this.groupSpeed.Controls.Add(this.label45);
+            this.groupSpeed.Controls.Add(this.label46);
             this.groupSpeed.Controls.Add(this.label17);
             this.groupSpeed.Controls.Add(this.label16);
+            this.groupSpeed.Controls.Add(this.label51);
+            this.groupSpeed.Controls.Add(this.label48);
             this.groupSpeed.Controls.Add(this.label15);
             this.groupSpeed.Controls.Add(this.label14);
             this.groupSpeed.Controls.Add(this.label13);
@@ -699,9 +721,9 @@
             this.groupSpeed.Controls.Add(this.textPerimeterFeedrate);
             this.groupSpeed.Controls.Add(this.textTravelFeedrate);
             this.groupSpeed.Controls.Add(this.textPrintFeedrate);
-            this.groupSpeed.Location = new System.Drawing.Point(3, 235);
+            this.groupSpeed.Location = new System.Drawing.Point(318, 195);
             this.groupSpeed.Name = "groupSpeed";
-            this.groupSpeed.Size = new System.Drawing.Size(309, 129);
+            this.groupSpeed.Size = new System.Drawing.Size(309, 221);
             this.groupSpeed.TabIndex = 2;
             this.groupSpeed.TabStop = false;
             this.groupSpeed.Text = "Speed";
@@ -709,7 +731,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(252, 75);
+            this.label17.Location = new System.Drawing.Point(254, 43);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(39, 13);
             this.label17.TabIndex = 8;
@@ -718,7 +740,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(252, 48);
+            this.label16.Location = new System.Drawing.Point(254, 16);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(39, 13);
             this.label16.TabIndex = 8;
@@ -727,7 +749,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(252, 22);
+            this.label15.Location = new System.Drawing.Point(252, 96);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(39, 13);
             this.label15.TabIndex = 8;
@@ -736,7 +758,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(7, 102);
+            this.label14.Location = new System.Drawing.Point(11, 198);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(91, 13);
             this.label14.TabIndex = 7;
@@ -745,7 +767,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(7, 75);
+            this.label13.Location = new System.Drawing.Point(9, 43);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(99, 13);
             this.label13.TabIndex = 6;
@@ -754,7 +776,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(7, 48);
+            this.label12.Location = new System.Drawing.Point(9, 16);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(85, 13);
             this.label12.TabIndex = 5;
@@ -763,45 +785,45 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(7, 22);
+            this.label11.Location = new System.Drawing.Point(11, 96);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(76, 13);
+            this.label11.Size = new System.Drawing.Size(73, 13);
             this.label11.TabIndex = 4;
-            this.label11.Text = "Print feed rate:";
+            this.label11.Text = "Infill feed rate:";
             // 
             // textBottomLayerRatio
             // 
-            this.textBottomLayerRatio.Location = new System.Drawing.Point(131, 99);
+            this.textBottomLayerRatio.Location = new System.Drawing.Point(135, 198);
             this.textBottomLayerRatio.Name = "textBottomLayerRatio";
             this.textBottomLayerRatio.Size = new System.Drawing.Size(100, 20);
-            this.textBottomLayerRatio.TabIndex = 3;
+            this.textBottomLayerRatio.TabIndex = 7;
             this.textBottomLayerRatio.Text = "0.5";
             this.textBottomLayerRatio.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
             // 
             // textPerimeterFeedrate
             // 
-            this.textPerimeterFeedrate.Location = new System.Drawing.Point(131, 72);
+            this.textPerimeterFeedrate.Location = new System.Drawing.Point(133, 40);
             this.textPerimeterFeedrate.Name = "textPerimeterFeedrate";
             this.textPerimeterFeedrate.Size = new System.Drawing.Size(100, 20);
-            this.textPerimeterFeedrate.TabIndex = 2;
-            this.textPerimeterFeedrate.Text = "20";
+            this.textPerimeterFeedrate.TabIndex = 1;
+            this.textPerimeterFeedrate.Text = "30";
             this.textPerimeterFeedrate.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
             // 
             // textTravelFeedrate
             // 
-            this.textTravelFeedrate.Location = new System.Drawing.Point(131, 45);
+            this.textTravelFeedrate.Location = new System.Drawing.Point(133, 13);
             this.textTravelFeedrate.Name = "textTravelFeedrate";
             this.textTravelFeedrate.Size = new System.Drawing.Size(100, 20);
-            this.textTravelFeedrate.TabIndex = 1;
+            this.textTravelFeedrate.TabIndex = 0;
             this.textTravelFeedrate.Text = "100";
             this.textTravelFeedrate.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
             // 
             // textPrintFeedrate
             // 
-            this.textPrintFeedrate.Location = new System.Drawing.Point(131, 19);
+            this.textPrintFeedrate.Location = new System.Drawing.Point(135, 93);
             this.textPrintFeedrate.Name = "textPrintFeedrate";
             this.textPrintFeedrate.Size = new System.Drawing.Size(100, 20);
-            this.textPrintFeedrate.TabIndex = 0;
+            this.textPrintFeedrate.TabIndex = 3;
             this.textPrintFeedrate.Text = "30";
             this.textPrintFeedrate.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
             // 
@@ -863,7 +885,7 @@
             this.textTemperature.Location = new System.Drawing.Point(131, 71);
             this.textTemperature.Name = "textTemperature";
             this.textTemperature.Size = new System.Drawing.Size(100, 20);
-            this.textTemperature.TabIndex = 3;
+            this.textTemperature.TabIndex = 2;
             this.textTemperature.Text = "200";
             this.textTemperature.Validating += new System.ComponentModel.CancelEventHandler(this.int_Validating);
             // 
@@ -872,7 +894,7 @@
             this.textPackingDensity.Location = new System.Drawing.Point(131, 44);
             this.textPackingDensity.Name = "textPackingDensity";
             this.textPackingDensity.Size = new System.Drawing.Size(100, 20);
-            this.textPackingDensity.TabIndex = 2;
+            this.textPackingDensity.TabIndex = 1;
             this.textPackingDensity.Text = "1";
             this.textPackingDensity.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
             // 
@@ -881,7 +903,7 @@
             this.textDiameter.Location = new System.Drawing.Point(131, 17);
             this.textDiameter.Name = "textDiameter";
             this.textDiameter.Size = new System.Drawing.Size(100, 20);
-            this.textDiameter.TabIndex = 1;
+            this.textDiameter.TabIndex = 0;
             this.textDiameter.Text = "3.0";
             this.textDiameter.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
             // 
@@ -954,7 +976,7 @@
             this.textZOffset.Location = new System.Drawing.Point(135, 43);
             this.textZOffset.Name = "textZOffset";
             this.textZOffset.Size = new System.Drawing.Size(100, 20);
-            this.textZOffset.TabIndex = 3;
+            this.textZOffset.TabIndex = 1;
             this.textZOffset.Text = "0";
             this.textZOffset.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
             // 
@@ -963,7 +985,7 @@
             this.textNozzleDiameter.Location = new System.Drawing.Point(135, 17);
             this.textNozzleDiameter.Name = "textNozzleDiameter";
             this.textNozzleDiameter.Size = new System.Drawing.Size(100, 20);
-            this.textNozzleDiameter.TabIndex = 2;
+            this.textNozzleDiameter.TabIndex = 0;
             this.textNozzleDiameter.Text = "0.5";
             this.textNozzleDiameter.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
             // 
@@ -991,7 +1013,7 @@
             this.panelCloseButtons.Controls.Add(this.buttonCancel);
             this.panelCloseButtons.Controls.Add(this.buttonApply);
             this.panelCloseButtons.Controls.Add(this.buttonOK);
-            this.panelCloseButtons.Location = new System.Drawing.Point(335, 531);
+            this.panelCloseButtons.Location = new System.Drawing.Point(636, 464);
             this.panelCloseButtons.Name = "panelCloseButtons";
             this.panelCloseButtons.Size = new System.Drawing.Size(323, 34);
             this.panelCloseButtons.TabIndex = 2;
@@ -1030,11 +1052,110 @@
             // 
             this.errorProvider.ContainerControl = this;
             // 
+            // label45
+            // 
+            this.label45.AutoSize = true;
+            this.label45.Location = new System.Drawing.Point(9, 70);
+            this.label45.Name = "label45";
+            this.label45.Size = new System.Drawing.Size(126, 13);
+            this.label45.TabIndex = 9;
+            this.label45.Text = "Small perimeter feed rate:";
+            // 
+            // textSmallPerimeterSpeed
+            // 
+            this.textSmallPerimeterSpeed.Location = new System.Drawing.Point(133, 67);
+            this.textSmallPerimeterSpeed.Name = "textSmallPerimeterSpeed";
+            this.textSmallPerimeterSpeed.Size = new System.Drawing.Size(100, 20);
+            this.textSmallPerimeterSpeed.TabIndex = 2;
+            this.textSmallPerimeterSpeed.Text = "30";
+            this.textSmallPerimeterSpeed.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
+            // 
+            // label46
+            // 
+            this.label46.AutoSize = true;
+            this.label46.Location = new System.Drawing.Point(254, 70);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(39, 13);
+            this.label46.TabIndex = 8;
+            this.label46.Text = "[mm/s]";
+            // 
+            // label47
+            // 
+            this.label47.AutoSize = true;
+            this.label47.Location = new System.Drawing.Point(9, 122);
+            this.label47.Name = "label47";
+            this.label47.Size = new System.Drawing.Size(98, 13);
+            this.label47.TabIndex = 11;
+            this.label47.Text = "Solid infill feed rate:";
+            // 
+            // textSolidInfillSpeed
+            // 
+            this.textSolidInfillSpeed.Location = new System.Drawing.Point(135, 119);
+            this.textSolidInfillSpeed.Name = "textSolidInfillSpeed";
+            this.textSolidInfillSpeed.Size = new System.Drawing.Size(100, 20);
+            this.textSolidInfillSpeed.TabIndex = 4;
+            this.textSolidInfillSpeed.Text = "30";
+            this.textSolidInfillSpeed.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
+            // 
+            // label48
+            // 
+            this.label48.AutoSize = true;
+            this.label48.Location = new System.Drawing.Point(252, 122);
+            this.label48.Name = "label48";
+            this.label48.Size = new System.Drawing.Size(39, 13);
+            this.label48.TabIndex = 8;
+            this.label48.Text = "[mm/s]";
+            // 
+            // label49
+            // 
+            this.label49.AutoSize = true;
+            this.label49.Location = new System.Drawing.Point(11, 174);
+            this.label49.Name = "label49";
+            this.label49.Size = new System.Drawing.Size(85, 13);
+            this.label49.TabIndex = 13;
+            this.label49.Text = "Bridge flow ratio:";
+            // 
+            // textBridgeFlowRatio
+            // 
+            this.textBridgeFlowRatio.Location = new System.Drawing.Point(135, 171);
+            this.textBridgeFlowRatio.Name = "textBridgeFlowRatio";
+            this.textBridgeFlowRatio.Size = new System.Drawing.Size(100, 20);
+            this.textBridgeFlowRatio.TabIndex = 6;
+            this.textBridgeFlowRatio.Text = "1";
+            this.textBridgeFlowRatio.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
+            // 
+            // textBridgeSpeed
+            // 
+            this.textBridgeSpeed.Location = new System.Drawing.Point(133, 145);
+            this.textBridgeSpeed.Name = "textBridgeSpeed";
+            this.textBridgeSpeed.Size = new System.Drawing.Size(100, 20);
+            this.textBridgeSpeed.TabIndex = 5;
+            this.textBridgeSpeed.Text = "60";
+            this.textBridgeSpeed.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
+            // 
+            // label50
+            // 
+            this.label50.AutoSize = true;
+            this.label50.Location = new System.Drawing.Point(11, 148);
+            this.label50.Name = "label50";
+            this.label50.Size = new System.Drawing.Size(85, 13);
+            this.label50.TabIndex = 16;
+            this.label50.Text = "Bridge feed rate:";
+            // 
+            // label51
+            // 
+            this.label51.AutoSize = true;
+            this.label51.Location = new System.Drawing.Point(252, 148);
+            this.label51.Name = "label51";
+            this.label51.Size = new System.Drawing.Size(39, 13);
+            this.label51.TabIndex = 8;
+            this.label51.Text = "[mm/s]";
+            // 
             // Slic3r
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(654, 563);
+            this.ClientSize = new System.Drawing.Size(955, 496);
             this.ControlBox = false;
             this.Controls.Add(this.panelCloseButtons);
             this.Controls.Add(this.panelData);
@@ -1160,5 +1281,16 @@
         private System.Windows.Forms.Label label44;
         private System.Windows.Forms.TextBox textExtrusionWidthRatio;
         private System.Windows.Forms.Label label43;
+        private System.Windows.Forms.TextBox textSmallPerimeterSpeed;
+        private System.Windows.Forms.Label label45;
+        private System.Windows.Forms.Label label46;
+        private System.Windows.Forms.TextBox textSolidInfillSpeed;
+        private System.Windows.Forms.Label label47;
+        private System.Windows.Forms.Label label48;
+        private System.Windows.Forms.TextBox textBridgeFlowRatio;
+        private System.Windows.Forms.Label label49;
+        private System.Windows.Forms.Label label50;
+        private System.Windows.Forms.TextBox textBridgeSpeed;
+        private System.Windows.Forms.Label label51;
     }
 }
