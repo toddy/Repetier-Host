@@ -116,6 +116,8 @@ namespace RepetierHost.view
         public void openAndAddObject(string file) {
                 STL stl = new STL();
                 stl.Load(file);
+                stl.Center(Main.printerSettings.PrintAreaWidth / 2, Main.printerSettings.PrintAreaDepth / 2);
+                stl.Land();
                 if (stl.list.Count > 0)
                 {
                     listSTLObjects.Items.Add(stl);

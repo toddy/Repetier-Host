@@ -847,6 +847,7 @@ namespace RepetierHost.view
             { // Join with next line
                 if (row == 0) return;
                 cur.AddUndo(new Undo(UndoAction.ReplaceSelection, "", "\n", col, row, lines[row-1].Length, row -1));
+                col = lines[row-1].Length;
                 lines[row - 1] += lines[row];
                 lines.RemoveAt(row);
                 row--;

@@ -79,6 +79,7 @@ namespace RepetierHost.model
         }
         public void Analyze(GCode code)
         {
+            if (code.hostCommand || code.forceAscii) return; // Don't analyse host commands and unknown commands
             if (code.hasN)
                 lastline = code.N;
             if (uploading && !code.hasM && code.M != 29) return; // ignore upload commands

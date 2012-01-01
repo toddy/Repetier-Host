@@ -187,7 +187,7 @@ namespace RepetierHost.model
         int[] bufs = null;
         public override void Paint()
         {
-            bool useVBOs = Main.threeDSettings.useVBOs.Checked;
+            bool useVBOs = Main.threeDSettings.useVBOs;
             if (useVBOs && bufs == null)
             {
                 bufs = new int[4];

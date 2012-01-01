@@ -33,6 +33,7 @@ namespace RepetierHost.view
     {
         RegistryKey repetierKey;
         RegistryKey threedKey;
+        public bool useVBOs = false;
         public ThreeDSettings()
         {
             InitializeComponent();
@@ -60,6 +61,10 @@ namespace RepetierHost.view
         {
             get { float h; float.TryParse(textWidthOverThickness.Text, NumberStyles.Float, GCode.format, out h); if (h < 0.05) h = 0.05f; return h; }
         }
+        public float hotFilamentLength
+        {
+            get { float h; float.TryParse(textHotFilamentLength.Text, NumberStyles.Float, GCode.format, out h); if (h < 0) h = 0; return h; }
+        }
         public bool useLayerHeight
         {
             get { return radioHeight.Checked; }
@@ -74,13 +79,16 @@ namespace RepetierHost.view
                 threedKey.SetValue("selectedFacesColor", selectedFaces.BackColor.ToArgb());
                 threedKey.SetValue("printerBaseColor", printerBase.BackColor.ToArgb());
                 threedKey.SetValue("filamenColor", filament.BackColor.ToArgb());
+                threedKey.SetValue("hotFilamentColor", hotFilament.BackColor.ToArgb());
                 threedKey.SetValue("showEdges", showEdges.Checked ? 1 : 0);
                 threedKey.SetValue("showPrintbed", showPrintbed.Checked ? 1 : 0);
-                threedKey.SetValue("useVBOs", useVBOs.Checked ? 1 : 0);
+                threedKey.SetValue("disableFilamentVisualization", checkDisableFilamentVisualization.Checked ? 1 : 0);
+                // threedKey.SetValue("useVBOs", useVBOs ? 1 : 0);
                 threedKey.SetValue("layerHeight", textLayerHeight.Text);
                 threedKey.SetValue("filamentDiameter", textDiameter.Text);
                 threedKey.SetValue("useLayerHeight", radioHeight.Checked ? 1 : 0);
                 threedKey.SetValue("widthOverHeight", textWidthOverThickness.Text);
+                threedKey.SetValue("hotFilamentLength", textHotFilamentLength.Text);
                 threedKey.SetValue("filamentVisualization", comboFilamentVisualization.SelectedIndex);
             }
             catch { }
@@ -95,14 +103,17 @@ namespace RepetierHost.view
                 selectedFaces.BackColor = Color.FromArgb((int)threedKey.GetValue("selectedFacesColor", selectedFaces.BackColor.ToArgb()));
                 printerBase.BackColor = Color.FromArgb((int)threedKey.GetValue("printerBaseColor", printerBase.BackColor.ToArgb()));
                 filament.BackColor = Color.FromArgb((int)threedKey.GetValue("filamenColor", filament.BackColor.ToArgb()));
+                hotFilament.BackColor = Color.FromArgb((int)threedKey.GetValue("hotFilamentColor", hotFilament.BackColor.ToArgb()));
                 showEdges.Checked = 0 != (int)threedKey.GetValue("showEdges", showEdges.Checked ? 1 : 0);
                 showPrintbed.Checked = 0 != (int)threedKey.GetValue("showPrintbed", showPrintbed.Checked ? 1 : 0);
-                useVBOs.Checked = 0 != (int)threedKey.GetValue("useVBOs", useVBOs.Checked ? 1 : 0);
+                checkDisableFilamentVisualization.Checked = 0 != (int)threedKey.GetValue("disableFilamentVisualization", checkDisableFilamentVisualization.Checked ? 1 : 0);
+                // useVBOs = 0 != (int)threedKey.GetValue("useVBOs", useVBOs.Checked ? 1 : 0);
                 textLayerHeight.Text = (string)threedKey.GetValue("layerHeight", textLayerHeight.Text);
                 textDiameter.Text = (string)threedKey.GetValue("filamentDiameter", textDiameter.Text);
                 radioHeight.Checked = 0 != (int)threedKey.GetValue("useLayerHeight", radioHeight.Checked ? 1 : 0);
                 radioDiameter.Checked = !radioHeight.Checked;
                 textWidthOverThickness.Text = (string)threedKey.GetValue("widthOverHeight", textWidthOverThickness.Text);
+                textHotFilamentLength.Text = (string)threedKey.GetValue("hotFilamentLength", textHotFilamentLength.Text);
                 comboFilamentVisualization.SelectedIndex = (int)threedKey.GetValue("filamentVisualization", comboFilamentVisualization.SelectedIndex);
             }
             catch { }
@@ -203,6 +214,21 @@ namespace RepetierHost.view
         private void ThreeDSettings_FormClosing(object sender, FormClosingEventArgs e)
         {
             RegMemory.StoreWindowPos("threeDSettingsWindow", this, false, false);
+        }
+
+        private void hotFilament_Click(object sender, EventArgs e)
+        {
+            colorDialog.Color = hotFilament.BackColor;
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                hotFilament.BackColor = colorDialog.Color;
+                Main.main.Update3D();
+            }
+        }
+
+        private void checkDisableFilamentVisualization_CheckedChanged(object sender, EventArgs e)
+        {
+            Main.main.Update3D();
         }
     }
 }

@@ -85,8 +85,19 @@
             this.textSolidLayers = new System.Windows.Forms.TextBox();
             this.textPerimeters = new System.Windows.Forms.TextBox();
             this.groupSpeed = new System.Windows.Forms.GroupBox();
+            this.label50 = new System.Windows.Forms.Label();
+            this.textBridgeSpeed = new System.Windows.Forms.TextBox();
+            this.textBridgeFlowRatio = new System.Windows.Forms.TextBox();
+            this.label49 = new System.Windows.Forms.Label();
+            this.textSolidInfillSpeed = new System.Windows.Forms.TextBox();
+            this.label47 = new System.Windows.Forms.Label();
+            this.textSmallPerimeterSpeed = new System.Windows.Forms.TextBox();
+            this.label45 = new System.Windows.Forms.Label();
+            this.label46 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
+            this.label51 = new System.Windows.Forms.Label();
+            this.label48 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
@@ -119,17 +130,7 @@
             this.buttonApply = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this.label45 = new System.Windows.Forms.Label();
-            this.textSmallPerimeterSpeed = new System.Windows.Forms.TextBox();
-            this.label46 = new System.Windows.Forms.Label();
-            this.label47 = new System.Windows.Forms.Label();
-            this.textSolidInfillSpeed = new System.Windows.Forms.TextBox();
-            this.label48 = new System.Windows.Forms.Label();
-            this.label49 = new System.Windows.Forms.Label();
-            this.textBridgeFlowRatio = new System.Windows.Forms.TextBox();
-            this.textBridgeSpeed = new System.Windows.Forms.TextBox();
-            this.label50 = new System.Windows.Forms.Label();
-            this.label51 = new System.Windows.Forms.Label();
+            this.checkComments = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.panelData.SuspendLayout();
             this.groupSkirt.SuspendLayout();
@@ -402,7 +403,7 @@
             this.groupRetraction.Controls.Add(this.textRetSpeed);
             this.groupRetraction.Controls.Add(this.textRetLift);
             this.groupRetraction.Controls.Add(this.textRetLength);
-            this.groupRetraction.Location = new System.Drawing.Point(3, 235);
+            this.groupRetraction.Location = new System.Drawing.Point(3, 259);
             this.groupRetraction.Name = "groupRetraction";
             this.groupRetraction.Size = new System.Drawing.Size(309, 155);
             this.groupRetraction.TabIndex = 4;
@@ -728,6 +729,87 @@
             this.groupSpeed.TabStop = false;
             this.groupSpeed.Text = "Speed";
             // 
+            // label50
+            // 
+            this.label50.AutoSize = true;
+            this.label50.Location = new System.Drawing.Point(11, 148);
+            this.label50.Name = "label50";
+            this.label50.Size = new System.Drawing.Size(85, 13);
+            this.label50.TabIndex = 16;
+            this.label50.Text = "Bridge feed rate:";
+            // 
+            // textBridgeSpeed
+            // 
+            this.textBridgeSpeed.Location = new System.Drawing.Point(133, 145);
+            this.textBridgeSpeed.Name = "textBridgeSpeed";
+            this.textBridgeSpeed.Size = new System.Drawing.Size(100, 20);
+            this.textBridgeSpeed.TabIndex = 5;
+            this.textBridgeSpeed.Text = "60";
+            this.textBridgeSpeed.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
+            // 
+            // textBridgeFlowRatio
+            // 
+            this.textBridgeFlowRatio.Location = new System.Drawing.Point(135, 171);
+            this.textBridgeFlowRatio.Name = "textBridgeFlowRatio";
+            this.textBridgeFlowRatio.Size = new System.Drawing.Size(100, 20);
+            this.textBridgeFlowRatio.TabIndex = 6;
+            this.textBridgeFlowRatio.Text = "1";
+            this.textBridgeFlowRatio.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
+            // 
+            // label49
+            // 
+            this.label49.AutoSize = true;
+            this.label49.Location = new System.Drawing.Point(11, 174);
+            this.label49.Name = "label49";
+            this.label49.Size = new System.Drawing.Size(85, 13);
+            this.label49.TabIndex = 13;
+            this.label49.Text = "Bridge flow ratio:";
+            // 
+            // textSolidInfillSpeed
+            // 
+            this.textSolidInfillSpeed.Location = new System.Drawing.Point(135, 119);
+            this.textSolidInfillSpeed.Name = "textSolidInfillSpeed";
+            this.textSolidInfillSpeed.Size = new System.Drawing.Size(100, 20);
+            this.textSolidInfillSpeed.TabIndex = 4;
+            this.textSolidInfillSpeed.Text = "30";
+            this.textSolidInfillSpeed.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
+            // 
+            // label47
+            // 
+            this.label47.AutoSize = true;
+            this.label47.Location = new System.Drawing.Point(9, 122);
+            this.label47.Name = "label47";
+            this.label47.Size = new System.Drawing.Size(98, 13);
+            this.label47.TabIndex = 11;
+            this.label47.Text = "Solid infill feed rate:";
+            // 
+            // textSmallPerimeterSpeed
+            // 
+            this.textSmallPerimeterSpeed.Location = new System.Drawing.Point(133, 67);
+            this.textSmallPerimeterSpeed.Name = "textSmallPerimeterSpeed";
+            this.textSmallPerimeterSpeed.Size = new System.Drawing.Size(100, 20);
+            this.textSmallPerimeterSpeed.TabIndex = 2;
+            this.textSmallPerimeterSpeed.Text = "30";
+            this.textSmallPerimeterSpeed.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
+            // 
+            // label45
+            // 
+            this.label45.AutoSize = true;
+            this.label45.Location = new System.Drawing.Point(9, 70);
+            this.label45.Name = "label45";
+            this.label45.Size = new System.Drawing.Size(126, 13);
+            this.label45.TabIndex = 9;
+            this.label45.Text = "Small perimeter feed rate:";
+            // 
+            // label46
+            // 
+            this.label46.AutoSize = true;
+            this.label46.Location = new System.Drawing.Point(254, 70);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(39, 13);
+            this.label46.TabIndex = 8;
+            this.label46.Text = "[mm/s]";
+            // 
             // label17
             // 
             this.label17.AutoSize = true;
@@ -745,6 +827,24 @@
             this.label16.Size = new System.Drawing.Size(39, 13);
             this.label16.TabIndex = 8;
             this.label16.Text = "[mm/s]";
+            // 
+            // label51
+            // 
+            this.label51.AutoSize = true;
+            this.label51.Location = new System.Drawing.Point(252, 148);
+            this.label51.Name = "label51";
+            this.label51.Size = new System.Drawing.Size(39, 13);
+            this.label51.TabIndex = 8;
+            this.label51.Text = "[mm/s]";
+            // 
+            // label48
+            // 
+            this.label48.AutoSize = true;
+            this.label48.Location = new System.Drawing.Point(252, 122);
+            this.label48.Name = "label48";
+            this.label48.Size = new System.Drawing.Size(39, 13);
+            this.label48.TabIndex = 8;
+            this.label48.Text = "[mm/s]";
             // 
             // label15
             // 
@@ -837,7 +937,7 @@
             this.groupFilament.Controls.Add(this.textPackingDensity);
             this.groupFilament.Controls.Add(this.textDiameter);
             this.groupFilament.Controls.Add(this.label6);
-            this.groupFilament.Location = new System.Drawing.Point(3, 129);
+            this.groupFilament.Location = new System.Drawing.Point(3, 157);
             this.groupFilament.Name = "groupFilament";
             this.groupFilament.Size = new System.Drawing.Size(309, 100);
             this.groupFilament.TabIndex = 1;
@@ -918,6 +1018,7 @@
             // 
             // groupPrinter
             // 
+            this.groupPrinter.Controls.Add(this.checkComments);
             this.groupPrinter.Controls.Add(this.checkNoExtrusion);
             this.groupPrinter.Controls.Add(this.checkRelativeE);
             this.groupPrinter.Controls.Add(this.label5);
@@ -928,7 +1029,7 @@
             this.groupPrinter.Controls.Add(this.label2);
             this.groupPrinter.Location = new System.Drawing.Point(3, 3);
             this.groupPrinter.Name = "groupPrinter";
-            this.groupPrinter.Size = new System.Drawing.Size(309, 120);
+            this.groupPrinter.Size = new System.Drawing.Size(309, 146);
             this.groupPrinter.TabIndex = 0;
             this.groupPrinter.TabStop = false;
             this.groupPrinter.Text = "Printer";
@@ -1052,104 +1153,15 @@
             // 
             this.errorProvider.ContainerControl = this;
             // 
-            // label45
+            // checkComments
             // 
-            this.label45.AutoSize = true;
-            this.label45.Location = new System.Drawing.Point(9, 70);
-            this.label45.Name = "label45";
-            this.label45.Size = new System.Drawing.Size(126, 13);
-            this.label45.TabIndex = 9;
-            this.label45.Text = "Small perimeter feed rate:";
-            // 
-            // textSmallPerimeterSpeed
-            // 
-            this.textSmallPerimeterSpeed.Location = new System.Drawing.Point(133, 67);
-            this.textSmallPerimeterSpeed.Name = "textSmallPerimeterSpeed";
-            this.textSmallPerimeterSpeed.Size = new System.Drawing.Size(100, 20);
-            this.textSmallPerimeterSpeed.TabIndex = 2;
-            this.textSmallPerimeterSpeed.Text = "30";
-            this.textSmallPerimeterSpeed.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
-            // 
-            // label46
-            // 
-            this.label46.AutoSize = true;
-            this.label46.Location = new System.Drawing.Point(254, 70);
-            this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(39, 13);
-            this.label46.TabIndex = 8;
-            this.label46.Text = "[mm/s]";
-            // 
-            // label47
-            // 
-            this.label47.AutoSize = true;
-            this.label47.Location = new System.Drawing.Point(9, 122);
-            this.label47.Name = "label47";
-            this.label47.Size = new System.Drawing.Size(98, 13);
-            this.label47.TabIndex = 11;
-            this.label47.Text = "Solid infill feed rate:";
-            // 
-            // textSolidInfillSpeed
-            // 
-            this.textSolidInfillSpeed.Location = new System.Drawing.Point(135, 119);
-            this.textSolidInfillSpeed.Name = "textSolidInfillSpeed";
-            this.textSolidInfillSpeed.Size = new System.Drawing.Size(100, 20);
-            this.textSolidInfillSpeed.TabIndex = 4;
-            this.textSolidInfillSpeed.Text = "30";
-            this.textSolidInfillSpeed.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
-            // 
-            // label48
-            // 
-            this.label48.AutoSize = true;
-            this.label48.Location = new System.Drawing.Point(252, 122);
-            this.label48.Name = "label48";
-            this.label48.Size = new System.Drawing.Size(39, 13);
-            this.label48.TabIndex = 8;
-            this.label48.Text = "[mm/s]";
-            // 
-            // label49
-            // 
-            this.label49.AutoSize = true;
-            this.label49.Location = new System.Drawing.Point(11, 174);
-            this.label49.Name = "label49";
-            this.label49.Size = new System.Drawing.Size(85, 13);
-            this.label49.TabIndex = 13;
-            this.label49.Text = "Bridge flow ratio:";
-            // 
-            // textBridgeFlowRatio
-            // 
-            this.textBridgeFlowRatio.Location = new System.Drawing.Point(135, 171);
-            this.textBridgeFlowRatio.Name = "textBridgeFlowRatio";
-            this.textBridgeFlowRatio.Size = new System.Drawing.Size(100, 20);
-            this.textBridgeFlowRatio.TabIndex = 6;
-            this.textBridgeFlowRatio.Text = "1";
-            this.textBridgeFlowRatio.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
-            // 
-            // textBridgeSpeed
-            // 
-            this.textBridgeSpeed.Location = new System.Drawing.Point(133, 145);
-            this.textBridgeSpeed.Name = "textBridgeSpeed";
-            this.textBridgeSpeed.Size = new System.Drawing.Size(100, 20);
-            this.textBridgeSpeed.TabIndex = 5;
-            this.textBridgeSpeed.Text = "60";
-            this.textBridgeSpeed.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
-            // 
-            // label50
-            // 
-            this.label50.AutoSize = true;
-            this.label50.Location = new System.Drawing.Point(11, 148);
-            this.label50.Name = "label50";
-            this.label50.Size = new System.Drawing.Size(85, 13);
-            this.label50.TabIndex = 16;
-            this.label50.Text = "Bridge feed rate:";
-            // 
-            // label51
-            // 
-            this.label51.AutoSize = true;
-            this.label51.Location = new System.Drawing.Point(252, 148);
-            this.label51.Name = "label51";
-            this.label51.Size = new System.Drawing.Size(39, 13);
-            this.label51.TabIndex = 8;
-            this.label51.Text = "[mm/s]";
+            this.checkComments.AutoSize = true;
+            this.checkComments.Location = new System.Drawing.Point(10, 117);
+            this.checkComments.Name = "checkComments";
+            this.checkComments.Size = new System.Drawing.Size(96, 17);
+            this.checkComments.TabIndex = 7;
+            this.checkComments.Text = "Add comments";
+            this.checkComments.UseVisualStyleBackColor = true;
             // 
             // Slic3r
             // 
@@ -1292,5 +1304,6 @@
         private System.Windows.Forms.Label label50;
         private System.Windows.Forms.TextBox textBridgeSpeed;
         private System.Windows.Forms.Label label51;
+        private System.Windows.Forms.CheckBox checkComments;
     }
 }

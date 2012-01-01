@@ -60,7 +60,7 @@ namespace RepetierHost.view
             if (con.bedTemp > 0)
             {
                 tr += " Bed: " + con.bedTemp.ToString();
-                if (ann.bedTemp > 0) tr += "/" + con.bedTemp.ToString() + "°C ";
+                if (ann.bedTemp > 0) tr += "/" + ann.bedTemp.ToString() + "°C ";
                 else tr += "°C/Off ";
             }
             Main.main.toolTempReading.Text = tr;

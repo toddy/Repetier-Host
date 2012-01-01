@@ -1,3 +1,12 @@
+Version 0.31  1.1.2012
+  Updated Slic3r to version 0.5.7
+  Autodetect OpenGL capabilities and using the fasted method.
+  Pause function as button and command in G-Code (@pause Some text)
+  Log commands in G-Code (@info Text for log line)
+  New STL-Files are centered on the bed.
+  Show hot filament during print.
+  Minor bug fixes.
+  
 Version 0.30
   Updated Slic3r to version 0.53
   Loading STL files with G-button asks what to do - slice or add

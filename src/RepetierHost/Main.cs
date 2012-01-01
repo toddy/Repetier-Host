@@ -31,6 +31,8 @@ using System.Threading;
 
 namespace RepetierHost
 {
+    public delegate void executeHostCommandDelegate(GCode code);
+
     public partial class Main : Form
     {
         public static PrinterConnection conn;
@@ -59,6 +61,7 @@ namespace RepetierHost
         public static Slic3r slic3r = null;
         public static bool IsMac = false;
         public int refreshCounter = 0;
+        public executeHostCommandDelegate executeHostCall;
         public class JobUpdater
         {
             GCodeVisual visual = null;
@@ -98,6 +101,7 @@ namespace RepetierHost
 	static extern int uname (IntPtr buf);
         public Main()
         {
+            executeHostCall = new executeHostCommandDelegate(this.executeHostCommand);
             repetierKey = Registry.CurrentUser.CreateSubKey("Software\\Repetier");
 			repetierKey.SetValue("installPath",Application.StartupPath);
 			if(Path.DirectorySeparatorChar != '\\' && IsRunningOnMac())
@@ -179,6 +183,7 @@ namespace RepetierHost
             printPreview.SetEditor(false);
             printPreview.AutoUpdateable = true;
             printVisual = new GCodeVisual(conn.analyzer);
+            printVisual.liveView = true;
             printPreview.models.AddLast(printVisual);
             basicTitle = Text;
             jobPreview = new ThreeDControl();
@@ -380,11 +385,19 @@ namespace RepetierHost
         private void toolPrintJob_Click(object sender, EventArgs e)
         {
             Printjob job = conn.job;
-            job.BeginJob();
-            job.PushData(editor.getContent(1));
-            job.PushData(editor.getContent(0));
-            job.PushData(editor.getContent(2));
-            job.EndJob();
+            if (job.dataComplete)
+            {
+                conn.pause("Press OK to continue.\n\nYou can add pauses in your code with\n@pause Some text like this");
+            }
+            else
+            {
+                toolRunJob.Image = imageList.Images[3];
+                job.BeginJob();
+                job.PushData(editor.getContent(1));
+                job.PushData(editor.getContent(0));
+                job.PushData(editor.getContent(2));
+                job.EndJob();
+            }
         }
 
 
@@ -493,13 +506,17 @@ namespace RepetierHost
         {
             if (conn.job.mode != 1)
             {
-                Main.main.toolRunJob.Enabled = conn.connected;
                 Main.main.toolKillJob.Enabled = false;
+                Main.main.toolRunJob.Enabled = conn.connected;
+                Main.main.toolRunJob.ToolTipText = "Run job";
+                Main.main.toolRunJob.Image = Main.main.imageList.Images[2];
             }
             else
             {
-                Main.main.toolRunJob.Enabled = false;
+                Main.main.toolRunJob.Enabled = true;
                 Main.main.toolKillJob.Enabled = true;
+                Main.main.toolRunJob.Image = Main.main.imageList.Images[3];
+                Main.main.toolRunJob.ToolTipText = "Pause job";
                 Main.main.printVisual.Clear();
             }
         };
@@ -765,5 +782,19 @@ namespace RepetierHost
                 globalSettings.Show();
 
         }
+        public void executeHostCommand(GCode code)
+        {
+            string com = code.getHostCommand();
+            string param = code.getHostParameter();
+            if (com.Equals("@info"))
+            {
+                conn.log(param, false, 3);
+            }
+            else if (com.Equals("@pause"))
+            {
+                conn.pause(param);
+            }
+        }
+
     }
 }

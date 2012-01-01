@@ -30,7 +30,7 @@ using RepetierHost.model;
 
 namespace RepetierHost.view
 {
-    public delegate void onObjectMoved(float dx,float dy);
+    public delegate void onObjectMoved(float dx, float dy);
 
     public partial class ThreeDControl : UserControl
     {
@@ -41,10 +41,10 @@ namespace RepetierHost.view
         float xPos, yPos;
         float speedX, speedY;
         float zoom = 1.0f;
-        Vector3 viewCenter,startViewCenter;
-        Vector3 userPosition,startUserPosition;
+        Vector3 viewCenter, startViewCenter;
+        Vector3 userPosition, startUserPosition;
         float rotZ = 0, rotX = 0;
-        float startRotZ=0, startRotX=0;
+        float startRotZ = 0, startRotX = 0;
         float lastX, lastY;
         Stopwatch sw = new Stopwatch();
         Stopwatch fpsTimer = new Stopwatch();
@@ -64,7 +64,7 @@ namespace RepetierHost.view
             rotX = 20;
             userPosition = new Vector3(0, -2f * ps.PrintAreaDepth, 0.0f * ps.PrintAreaHeight);
             gl.MouseWheel += gl_MouseWheel;
-           // Controls.Remove(gl);
+            // Controls.Remove(gl);
         }
         public void SetEditor(bool ed)
         {
@@ -113,7 +113,8 @@ namespace RepetierHost.view
                 toolStripClear.Visible = value;
             }
         }
-        public void UpdateChanges() {
+        public void UpdateChanges()
+        {
             gl.Invalidate();
         }
         protected override void OnPaint(PaintEventArgs pe)
@@ -126,14 +127,14 @@ namespace RepetierHost.view
             {
                 int w = gl.Width;
                 int h = gl.Height;
-                GL.Viewport(0,0, w, h); // Use all of the glControl painting area
+                GL.Viewport(0, 0, w, h); // Use all of the glControl painting area
                 GL.MatrixMode(MatrixMode.Projection);
                 //GL.LoadIdentity();
                 float dx = viewCenter.X - userPosition.X;
                 float dy = viewCenter.Y - userPosition.Y;
                 float dz = viewCenter.Z - userPosition.Z;
                 float dist = (float)Math.Sqrt(dx * dx + dy * dy + dz * dz);
-                Matrix4 persp = Matrix4.CreatePerspectiveFieldOfView((float)(zoom*30f * Math.PI / 180f), (float)w / (float)h, Math.Max(10,dist-2f*ps.PrintAreaDepth),dist+ 2*ps.PrintAreaDepth);
+                Matrix4 persp = Matrix4.CreatePerspectiveFieldOfView((float)(zoom * 30f * Math.PI / 180f), (float)w / (float)h, Math.Max(10, dist - 2f * ps.PrintAreaDepth), dist + 2 * ps.PrintAreaDepth);
                 GL.LoadMatrix(ref persp);
                 // GL.Ortho(0, w, 0, h, -1, 1); // Bottom-left corner pixel has coordinate (0, 0)
 
@@ -159,7 +160,7 @@ namespace RepetierHost.view
                 GL.ShadeModel(ShadingModel.Smooth);
                 //Enable lighting
                 GL.Light(LightName.Light0, LightParameter.Ambient, new float[] { 0.2f, 0.2f, 0.2f, 1f });
-                GL.Light(LightName.Light0, LightParameter.Diffuse, new float[] {0,0,0,0});
+                GL.Light(LightName.Light0, LightParameter.Diffuse, new float[] { 0, 0, 0, 0 });
                 GL.Light(LightName.Light0, LightParameter.Specular, new float[] { 0, 0, 0, 0 });
                 GL.Enable(EnableCap.Light0);
                 if (Main.threeDSettings.enableLight1.Checked)
@@ -167,7 +168,7 @@ namespace RepetierHost.view
                     GL.Light(LightName.Light1, LightParameter.Diffuse, new float[] { 0.8f, 0.8f, 0.8f, 1f });
                     GL.Light(LightName.Light1, LightParameter.Specular, new float[] { 1.0f, 1.0f, 1.0f, 1.0f });
                     GL.Light(LightName.Light1, LightParameter.Position, (new Vector4(-1f, -1f, 2f, 0)));
-                    GL.Light(LightName.Light1, LightParameter.SpotExponent, new float[] { 1.0f, 1.0f, 1.0f, 1.0f });
+                    //  GL.Light(LightName.Light1, LightParameter.SpotExponent, new float[] { 1.0f, 1.0f, 1.0f, 1.0f });
                     GL.Enable(EnableCap.Light1);
                 }
                 else GL.Disable(EnableCap.Light1);
@@ -220,20 +221,20 @@ namespace RepetierHost.view
 
                 GL.Rotate(rotX, 1, 0, 0);
                 GL.Rotate(rotZ, 0, 0, 1);
-                GL.Translate(-ps.PrintAreaWidth*0.5f,-ps.PrintAreaDepth*0.5f,-0.5f*ps.PrintAreaHeight);
+                GL.Translate(-ps.PrintAreaWidth * 0.5f, -ps.PrintAreaDepth * 0.5f, -0.5f * ps.PrintAreaHeight);
                 GL.Material(
                     MaterialFace.Front,
                     MaterialParameter.Specular,
-                    new OpenTK.Graphics.Color4(255,255,255,255));
+                    new OpenTK.Graphics.Color4(255, 255, 255, 255));
 
+                float dx1 = ps.DumpAreaLeft;
+                float dx2 = dx1 + ps.DumpAreaWidth;
+                float dy1 = ps.DumpAreaFront;
+                float dy2 = dy1 + ps.DumpAreaDepth;
                 if (Main.threeDSettings.showPrintbed.Checked)
                 {
-                    float dx1 = ps.DumpAreaLeft;
-                    float dx2 = dx1 + ps.DumpAreaWidth;
-                    float dy1 = ps.DumpAreaFront;
-                    float dy2 = dy1 + ps.DumpAreaDepth;
                     col = Main.threeDSettings.printerBase.BackColor;
-                    GL.Material(MaterialFace.FrontAndBack, MaterialParameter.AmbientAndDiffuse, new OpenTK.Graphics.Color4(0, 0,0, 255));
+                    GL.Material(MaterialFace.FrontAndBack, MaterialParameter.AmbientAndDiffuse, new OpenTK.Graphics.Color4(0, 0, 0, 255));
                     GL.Material(MaterialFace.Front, MaterialParameter.Emission, new OpenTK.Graphics.Color4(0, 0, 0, 0));
                     GL.Material(MaterialFace.Front, MaterialParameter.Specular, new float[] { 0.0f, 0.0f, 0.0f, 1.0f });
                     GL.Material(
@@ -275,11 +276,11 @@ namespace RepetierHost.view
                     }
                     float dx = ps.PrintAreaWidth / 20f;
                     float dy = ps.PrintAreaDepth / 20f;
-                    float x,y;
+                    float x, y;
                     for (i = 0; i < 21; i++)
                     {
-                        x = (float)i*dx;
-                        y = (float)i*dy;
+                        x = (float)i * dx;
+                        y = (float)i * dy;
                         if (ps.HasDumpArea && y >= dy1 && y <= dy2)
                         {
                             GL.Vertex3(0, y, 0);
@@ -318,6 +319,68 @@ namespace RepetierHost.view
                     model.Paint();
                     GL.PopMatrix();
                 }
+                if (Main.threeDSettings.showPrintbed.Checked)
+                {
+                    GL.Disable(EnableCap.CullFace);
+                    GL.Enable(EnableCap.Blend);	// Turn Blending On
+                    GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+                    //GL.Disable(EnableCap.Lighting);
+                    // Draw bottom
+                    col = Main.threeDSettings.printerBase.BackColor;
+                    float[] transblack = new float[] { 0, 0, 0, 0 };
+                    GL.Material(MaterialFace.FrontAndBack, MaterialParameter.AmbientAndDiffuse, new OpenTK.Graphics.Color4(col.R, col.G, col.B, 130));
+                    GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Specular, transblack);
+                    GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Emission, transblack);
+                    GL.PushMatrix();
+                    GL.Translate(0, 0, -0.04);
+                    GL.Begin(BeginMode.Quads);
+                    GL.Normal3(0, 0, 1);
+
+                    if (ps.HasDumpArea)
+                    {
+                        if (dy1 > 0)
+                        {
+                            GL.Vertex3(0, 0, 0);
+                            GL.Vertex3(ps.PrintAreaWidth, 0, 0);
+                            GL.Vertex3(ps.PrintAreaWidth, dy1, 0);
+                            GL.Vertex3(0, dy1, 0);
+                        }
+                        if (dy2 < ps.PrintAreaDepth)
+                        {
+                            GL.Vertex3(0, dy2, 0);
+                            GL.Vertex3(ps.PrintAreaWidth, dy2, 0);
+                            GL.Vertex3(ps.PrintAreaWidth, ps.PrintAreaDepth, 0);
+                            GL.Vertex3(0, ps.PrintAreaDepth, 0);
+                        }
+                        if (dx1 > 0)
+                        {
+                            GL.Vertex3(0, dy1, 0);
+                            GL.Vertex3(dx1, dy1, 0);
+                            GL.Vertex3(dx1, dy2, 0);
+                            GL.Vertex3(0, dy2, 0);
+                        }
+                        if (dx2 < ps.PrintAreaWidth)
+                        {
+                            GL.Vertex3(dx2, dy1, 0);
+                            GL.Vertex3(ps.PrintAreaWidth, dy1, 0);
+                            GL.Vertex3(ps.PrintAreaWidth, dy2, 0);
+                            GL.Vertex3(dx2, dy2, 0);
+                        }
+                    }
+                    else
+                    {
+                        GL.Vertex3(0, 0, 0);
+                        GL.Vertex3(ps.PrintAreaWidth, 0, 0);
+                        GL.Vertex3(ps.PrintAreaWidth, ps.PrintAreaDepth, 0);
+                        GL.Vertex3(0, ps.PrintAreaDepth, 0);
+                    }
+
+                    GL.End();
+                    GL.PopMatrix();
+                    GL.Disable(EnableCap.Blend);
+
+                }
+
                 gl.SwapBuffers();
                 fpsTimer.Stop();
                 double framerate = 10000000.0 / fpsTimer.ElapsedTicks;
@@ -326,8 +389,33 @@ namespace RepetierHost.view
             catch { }
         }
 
+        static bool configureSettings = true;
         private void ThreeDControl_Load(object sender, EventArgs e)
         {
+            if (configureSettings)
+            {
+                try
+                {
+                    Main.conn.log("OpenGL version:" + GL.GetString(StringName.Version), false, 3);
+                    Main.conn.log("OpenGL extensions:" + GL.GetString(StringName.Extensions), false, 3);
+                    Main.conn.log("OpenGL renderer:" + GL.GetString(StringName.Renderer), false, 3);
+                    string extensions = GL.GetString(StringName.Extensions);
+                    Main.threeDSettings.useVBOs = false;
+                    foreach (string s in extensions.Split(' '))
+                    {
+                        if (s.Equals("GL_ARB_vertex_buffer_object"))
+                        {
+                            Main.threeDSettings.useVBOs = true;
+                        }
+                    }
+                    if (Main.threeDSettings.useVBOs)
+                        Main.conn.log("Using fast VBOs for rendering", false, 3);
+                    else
+                        Main.conn.log("Fast VBOs for rendering not supported. Using slower default method.", false, 3);
+                }
+                catch { }
+                configureSettings = false;
+            }
             loaded = true;
             SetupViewport();
         }
@@ -358,7 +446,7 @@ namespace RepetierHost.view
             xPos = e.X;
             yPos = e.Y;
             float d = Math.Min(gl.Width, gl.Height) / 3;
-            speedX = Math.Max(-1,Math.Min(1,(xPos - xDown) / d));
+            speedX = Math.Max(-1, Math.Min(1, (xPos - xDown) / d));
             speedY = Math.Max(-1, Math.Min(1, (yPos - yDown) / d));
         }
 
@@ -379,7 +467,7 @@ namespace RepetierHost.view
         }
         void Application_Idle(object sender, EventArgs e)
         {
-            if (!loaded || (speedX==0 && speedY==0)) return;
+            if (!loaded || (speedX == 0 && speedY == 0)) return;
             // no guard needed -- we hooked into the event in Load handler
 
             sw.Stop(); // we've measured everything since last Idle run
@@ -414,23 +502,23 @@ namespace RepetierHost.view
             {
                 speedX = (xPos - xDown) / gl.Width;
                 speedY = (yPos - yDown) / gl.Height;
-                viewCenter.X = startViewCenter.X-speedX *200*zoom;
-                viewCenter.Z = startViewCenter.Z+speedY *200*zoom;
+                viewCenter.X = startViewCenter.X - speedX * 200 * zoom;
+                viewCenter.Z = startViewCenter.Z + speedY * 200 * zoom;
                 //viewCenter.X -= (float)milliseconds * speedX * Math.Abs(speedX) / 10.0f;
                 //viewCenter.Z += (float)milliseconds * speedY * Math.Abs(speedY)/ 10.0f;
             }
             else if (emode == 3)
             {
-                userPosition.Y += (float)milliseconds * speedY * Math.Abs(speedY)/ 10.0f;
+                userPosition.Y += (float)milliseconds * speedY * Math.Abs(speedY) / 10.0f;
             }
             else if (emode == 4)
             {
-                speedX = (xPos - lastX)*200*zoom / gl.Width;
-                speedY = (yPos - lastY)*200*zoom / gl.Height;
+                speedX = (xPos - lastX) * 200 * zoom / gl.Width;
+                speedY = (yPos - lastY) * 200 * zoom / gl.Height;
                 if (eventObjectMoved != null)
-                    eventObjectMoved(speedX,-speedY);
+                    eventObjectMoved(speedX, -speedY);
                 //eventObjectMoved((float)milliseconds * speedX * Math.Abs(speedX) / 10.0f,
-                 //   -(float)milliseconds * speedY * Math.Abs(speedY) / 10.0f);
+                //   -(float)milliseconds * speedY * Math.Abs(speedY) / 10.0f);
                 lastX = xPos;
                 lastY = yPos;
             }
@@ -529,7 +617,7 @@ namespace RepetierHost.view
 
         private void ThreeDControl_MouseEnter(object sender, EventArgs e)
         {
-           // Focus();
+            // Focus();
         }
     }
 }

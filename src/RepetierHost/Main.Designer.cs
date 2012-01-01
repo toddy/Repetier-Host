@@ -90,12 +90,12 @@
             this.splitLog = new System.Windows.Forms.SplitContainer();
             this.tab = new System.Windows.Forms.TabControl();
             this.tabModel = new System.Windows.Forms.TabPage();
-            this.stlComposer1 = new RepetierHost.view.STLComposer();
             this.tabGCode = new System.Windows.Forms.TabPage();
             this.splitJob = new System.Windows.Forms.SplitContainer();
-            this.editor = new RepetierHost.view.RepetierEditor();
             this.tabPrint = new System.Windows.Forms.TabPage();
             this.splitContainerPrinterGraphic = new System.Windows.Forms.SplitContainer();
+            this.stlComposer1 = new RepetierHost.view.STLComposer();
+            this.editor = new RepetierHost.view.RepetierEditor();
             this.menu.SuspendLayout();
             this.status.SuspendLayout();
             this.toolStrip.SuspendLayout();
@@ -565,6 +565,8 @@
             this.imageList.TransparentColor = System.Drawing.Color.Transparent;
             this.imageList.Images.SetKeyName(0, "connect.png");
             this.imageList.Images.SetKeyName(1, "disconnect.png");
+            this.imageList.Images.SetKeyName(2, "runjob32.png");
+            this.imageList.Images.SetKeyName(3, "pauseicon.png");
             // 
             // openGCode
             // 
@@ -623,14 +625,6 @@
             this.tabModel.TabIndex = 2;
             this.tabModel.Text = "Object placements";
             // 
-            // stlComposer1
-            // 
-            this.stlComposer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.stlComposer1.Location = new System.Drawing.Point(0, 0);
-            this.stlComposer1.Name = "stlComposer1";
-            this.stlComposer1.Size = new System.Drawing.Size(945, 329);
-            this.stlComposer1.TabIndex = 0;
-            // 
             // tabGCode
             // 
             this.tabGCode.AutoScroll = true;
@@ -660,17 +654,6 @@
             this.splitJob.SplitterDistance = 500;
             this.splitJob.TabIndex = 3;
             // 
-            // editor
-            // 
-            this.editor.AccessibleRole = System.Windows.Forms.AccessibleRole.Caret;
-            this.editor.autopreview = true;
-            this.editor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.editor.Location = new System.Drawing.Point(0, 0);
-            this.editor.MinimumSize = new System.Drawing.Size(150, 140);
-            this.editor.Name = "editor";
-            this.editor.Size = new System.Drawing.Size(500, 320);
-            this.editor.TabIndex = 0;
-            // 
             // tabPrint
             // 
             this.tabPrint.BackColor = System.Drawing.SystemColors.Control;
@@ -696,6 +679,25 @@
             this.splitContainerPrinterGraphic.SplitterDistance = 465;
             this.splitContainerPrinterGraphic.TabIndex = 0;
             // 
+            // stlComposer1
+            // 
+            this.stlComposer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stlComposer1.Location = new System.Drawing.Point(0, 0);
+            this.stlComposer1.Name = "stlComposer1";
+            this.stlComposer1.Size = new System.Drawing.Size(945, 329);
+            this.stlComposer1.TabIndex = 0;
+            // 
+            // editor
+            // 
+            this.editor.AccessibleRole = System.Windows.Forms.AccessibleRole.Caret;
+            this.editor.autopreview = true;
+            this.editor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.editor.Location = new System.Drawing.Point(0, 0);
+            this.editor.MinimumSize = new System.Drawing.Size(150, 140);
+            this.editor.Name = "editor";
+            this.editor.Size = new System.Drawing.Size(500, 320);
+            this.editor.TabIndex = 0;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -709,7 +711,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menu;
             this.Name = "Main";
-            this.Text = "Repetier-Host V0.30";
+            this.Text = "Repetier-Host V0.31";
             this.Shown += new System.EventHandler(this.Main_Shown);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.Resize += new System.EventHandler(this.Main_Resize);

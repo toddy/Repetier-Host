@@ -22,6 +22,7 @@ using System.IO.Ports;
 using System.IO;
 using System.Timers;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace RepetierHost.model
 {
@@ -95,6 +96,7 @@ namespace RepetierHost.model
         public int extruderTemp;
         public int bedTemp;
         public float x, y, z, e;
+        public bool paused = false;
         public int lastline = 0;
         long lastReceived = 0;
         public bool autocheckTemp = true;
@@ -345,6 +347,13 @@ namespace RepetierHost.model
                 node = node.Previous;
             } while (true);
         }
+        public void pause(string text)
+        {
+            if (paused) return;
+            paused = true;
+            MessageBox.Show(Main.main,text, "Printer paused", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+            paused = false;
+        }
         public void TrySendNextLine()
         {
             string logtext = null;
@@ -352,6 +361,7 @@ namespace RepetierHost.model
             float logprogress = -1;
             string printeraction = null;
             GCode historygc = null;
+            GCode hostCommand = null;
             if (!garbageCleared) return;
             try
             {
@@ -403,32 +413,42 @@ namespace RepetierHost.model
                         {
                             lock (history)
                             {
-                                gc = injectCommands.First.Value;                                
-                                gc.N = ++lastline;
-                                if (binaryVersion == 0)
+                                gc = injectCommands.First.Value;
+                                if (gc.hostCommand)
                                 {
-                                    string cmd = gc.getAscii(true, true);
-                                    if (!pingpong && receivedCount() + cmd.Length + 2 > receiveCacheSize) { --lastline; return; } // printer cache full
-                                    if (pingpong) readyForNextSend = false;
-                                    else { lock (nackLines) { nackLines.AddLast(cmd.Length); } }
-                                    serial.WriteLine(cmd);
-                                    bytesSend += cmd.Length + 2;
+                                    hostCommand = gc;
                                 }
                                 else
                                 {
-                                    byte[] cmd = gc.getBinary(binaryVersion);
-                                    if (!pingpong && receivedCount() + cmd.Length > receiveCacheSize) { --lastline; return; } // printer cache full
-                                    if (pingpong) readyForNextSend = false;
-                                    else { lock (nackLines) { nackLines.AddLast(cmd.Length); } }
-                                    serial.Write(cmd, 0, cmd.Length);
-                                    bytesSend += cmd.Length;
+                                    gc.N = ++lastline;
+                                    if (binaryVersion == 0 || gc.forceAscii)
+                                    {
+                                        string cmd = gc.getAscii(true, true);
+                                        if (!pingpong && receivedCount() + cmd.Length + 2 > receiveCacheSize) { --lastline; return; } // printer cache full
+                                        if (pingpong) readyForNextSend = false;
+                                        else { lock (nackLines) { nackLines.AddLast(cmd.Length); } }
+                                        serial.WriteLine(cmd);
+                                        bytesSend += cmd.Length + 2;
+                                    }
+                                    else
+                                    {
+                                        byte[] cmd = gc.getBinary(binaryVersion);
+                                        if (!pingpong && receivedCount() + cmd.Length > receiveCacheSize) { --lastline; return; } // printer cache full
+                                        if (pingpong) readyForNextSend = false;
+                                        else { lock (nackLines) { nackLines.AddLast(cmd.Length); } }
+                                        serial.Write(cmd, 0, cmd.Length);
+                                        bytesSend += cmd.Length;
+                                    }
                                 }
                                 injectCommands.RemoveFirst();
                             }
-                            linesSend++;
-                            lastCommandSend = DateTime.Now.Ticks;
-                            historygc = gc;
-                            analyzer.Analyze(gc);
+                            if (!gc.hostCommand)
+                            {
+                                linesSend++;
+                                lastCommandSend = DateTime.Now.Ticks;
+                                historygc = gc;
+                                analyzer.Analyze(gc);
+                            }
                             if (job.dataComplete == false)
                             {
                                 if (injectCommands.Count == 0)
@@ -443,40 +463,51 @@ namespace RepetierHost.model
                             return;
                         }
                         // do we have a printing job?
-                        if (job.dataComplete)
+                        if (job.dataComplete && !paused)
                         {
                             lock (history)
                             {
                                 gc = job.PeekData();
-                                gc.N = ++lastline;
-                                if (binaryVersion == 0)
+                                if (gc.hostCommand)
                                 {
-                                    string cmd = gc.getAscii(true, true);
-                                    if (!pingpong && receivedCount() + cmd.Length + 2 > receiveCacheSize) { --lastline; return; } // printer cache full
-                                    if (pingpong) readyForNextSend = false;
-                                    else { lock (nackLines) { nackLines.AddLast(cmd.Length + 2); } }
-                                    serial.WriteLine(cmd);
-                                    bytesSend += cmd.Length + 2;
+                                    hostCommand = gc;
                                 }
                                 else
                                 {
-                                    byte[] cmd = gc.getBinary(binaryVersion);
-                                    if (!pingpong && receivedCount() + cmd.Length > receiveCacheSize) { --lastline; return; } // printer cache full
-                                    if (pingpong) readyForNextSend = false;
-                                    else { lock (nackLines) { nackLines.AddLast(cmd.Length); } }
-                                    serial.Write(cmd, 0, cmd.Length);
-                                    bytesSend += cmd.Length;
+                                    gc.N = ++lastline;
+                                    if (binaryVersion == 0 || gc.forceAscii)
+                                    {
+                                        string cmd = gc.getAscii(true, true);
+                                        if (!pingpong && receivedCount() + cmd.Length + 2 > receiveCacheSize) { --lastline; return; } // printer cache full
+                                        if (pingpong) readyForNextSend = false;
+                                        else { lock (nackLines) { nackLines.AddLast(cmd.Length + 2); } }
+                                        serial.WriteLine(cmd);
+                                        bytesSend += cmd.Length + 2;
+                                    }
+                                    else
+                                    {
+                                        byte[] cmd = gc.getBinary(binaryVersion);
+                                        if (!pingpong && receivedCount() + cmd.Length > receiveCacheSize) { --lastline; return; } // printer cache full
+                                        if (pingpong) readyForNextSend = false;
+                                        else { lock (nackLines) { nackLines.AddLast(cmd.Length); } }
+                                        serial.Write(cmd, 0, cmd.Length);
+                                        bytesSend += cmd.Length;
+                                    }
+                                    historygc = gc;
                                 }
-                                historygc = gc;
                                 job.PopData();
                             }
-                            linesSend++;
-                            lastCommandSend = DateTime.Now.Ticks;
-                            analyzer.Analyze(gc);
-                            printeraction = "Printing...ETA " + job.ETA;
-                            logprogress = job.PercentDone;
+                            if (!gc.hostCommand)
+                            {
+                                linesSend++;
+                                lastCommandSend = DateTime.Now.Ticks;
+                                analyzer.Analyze(gc);
+                                printeraction = "Printing...ETA " + job.ETA;
+                                logprogress = job.PercentDone;
+                            }
                         }
-
+                        if (hostCommand != null)
+                            Main.main.Invoke(Main.main.executeHostCall,hostCommand);
                     }
                     catch (InvalidOperationException ex)
                     {

@@ -32,6 +32,8 @@ namespace RepetierHost.model
     public class GCode
     {
         public static NumberFormatInfo format = CultureInfo.InvariantCulture.NumberFormat;
+        public bool forceAscii = false; // true if unpaseable content is found
+        public bool hostCommand = false; // True if it contains a host command to be executed
         private ushort fields = 128;
         int n;
         public bool comment = false;
@@ -40,6 +42,7 @@ namespace RepetierHost.model
         private int s;
         private int p;
         private String text = null;
+        public String orig;
 
         public bool hasText { get { return (fields & 32768) != 0; } }
         public String Text
@@ -163,6 +166,7 @@ namespace RepetierHost.model
         }
         public String getAscii(bool inclLine,bool inclChecksum)
         {
+            if (hostCommand) return orig;
             StringBuilder s = new StringBuilder();
             if (inclLine && hasN)
             {
@@ -170,61 +174,72 @@ namespace RepetierHost.model
                 s.Append(n);
                 s.Append(" ");
             }
-            if (hasM)
+            if (forceAscii)
             {
-                s.Append("M");
-                s.Append(m);
+                int pc = orig.IndexOf(';');
+                if (pc < 0)
+                    s.Append(orig);
+                else
+                    s.Append(orig.Substring(0, pc).Trim());
             }
-            if (hasG)
+            else
             {
-                s.Append("G");
-                s.Append(g);
-            }
-            if (hasT)
-            {
-                if (hasM) s.Append(" ");
-                s.Append("T");
-                s.Append(t);
-            }
-            if (hasX)
-            {
-                s.Append(" X");
-                s.Append(x.ToString(format));
-            }
-            if (hasY)
-            {
-                s.Append(" Y");
-                s.Append(y.ToString(format));
-            }
-            if (hasZ)
-            {
-                s.Append(" Z");
-                s.Append(z.ToString(format));
-            }
-            if (hasE)
-            {
-                s.Append(" E");
-                s.Append(e.ToString(format));
-            }
-            if (hasF)
-            {
-                s.Append(" F");
-                s.Append(f.ToString(format));
-            }
-            if (hasS)
-            {
-                s.Append(" S");
-                s.Append(this.s);
-            }
-            if (hasP)
-            {
-                s.Append(" P");
-                s.Append(p);
-            }
-            if (hasText)
-            {
-                s.Append(" ");
-                s.Append(text);
+                if (hasM)
+                {
+                    s.Append("M");
+                    s.Append(m);
+                }
+                if (hasG)
+                {
+                    s.Append("G");
+                    s.Append(g);
+                }
+                if (hasT)
+                {
+                    if (hasM) s.Append(" ");
+                    s.Append("T");
+                    s.Append(t);
+                }
+                if (hasX)
+                {
+                    s.Append(" X");
+                    s.Append(x.ToString(format));
+                }
+                if (hasY)
+                {
+                    s.Append(" Y");
+                    s.Append(y.ToString(format));
+                }
+                if (hasZ)
+                {
+                    s.Append(" Z");
+                    s.Append(z.ToString(format));
+                }
+                if (hasE)
+                {
+                    s.Append(" E");
+                    s.Append(e.ToString(format));
+                }
+                if (hasF)
+                {
+                    s.Append(" F");
+                    s.Append(f.ToString(format));
+                }
+                if (hasS)
+                {
+                    s.Append(" S");
+                    s.Append(this.s);
+                }
+                if (hasP)
+                {
+                    s.Append(" P");
+                    s.Append(p);
+                }
+                if (hasText)
+                {
+                    s.Append(" ");
+                    s.Append(text);
+                }
             }
             if (inclChecksum)
             {
@@ -242,12 +257,15 @@ namespace RepetierHost.model
             switch (c)
             {
                 case 'G':
+                    if (d > 255) forceAscii = true;
                     G = (byte)d;
                     break;
                 case 'M':
+                    if (d > 255) forceAscii = true;
                     M = (byte)d;
                     break;
                 case 'T':
+                    if (d > 255) forceAscii = true;
                     T = (byte)d;
                     break;
                 case 'S':
@@ -271,10 +289,31 @@ namespace RepetierHost.model
                 case 'F':
                     F = (float)d;
                     break;
+                default:
+                    forceAscii = true;
+                    break;
             }
+        }
+        public string getHostCommand()
+        {
+            int p = orig.IndexOf(' ');
+            if (p < 0) return orig;
+            return orig.Substring(0, p);
+        }
+        public string getHostParameter()
+        {
+            int p = orig.IndexOf(' ');
+            if (p < 0) return "";
+            return orig.Substring(p+1);
         }
         public void Parse(String line)
         {
+            orig = line;
+            if (line.StartsWith("@"))
+            {
+                hostCommand = true;
+                return;
+            }
             fields = 128;
             int l = line.Length,i;
             int mode = 0; // 0 = search code, 1 = search value

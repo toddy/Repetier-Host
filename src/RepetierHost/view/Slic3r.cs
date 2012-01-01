@@ -66,6 +66,7 @@ namespace RepetierHost.view
             textZOffset.Text = (string)c.GetValue("ZOffset", textZOffset.Text);
             checkRelativeE.Checked  = ((int)c.GetValue("UseRelativeE", checkRelativeE.Checked ? 1 : 0))==1;
             checkNoExtrusion.Checked = ((int)c.GetValue("NoExtrusion", checkNoExtrusion.Checked ? 1 : 0))==1;
+            checkComments.Checked = ((int)c.GetValue("Comments", checkComments.Checked ? 1 : 0)) == 1;
             textDiameter.Text = (string)c.GetValue("FilamentDiameter", textDiameter.Text);
             textPackingDensity.Text = (string)c.GetValue("PackingDensity", textPackingDensity.Text);
             textTemperature.Text = (string)c.GetValue("Temperature", textTemperature.Text);
@@ -102,6 +103,7 @@ namespace RepetierHost.view
             c.SetValue("ZOffset", textZOffset.Text);
             c.SetValue("UseRelativeE", checkRelativeE.Checked ? 1 : 0);
             c.SetValue("NoExtrusion", checkNoExtrusion.Checked ? 1 : 0);
+            c.SetValue("Comments", checkComments.Checked ? 1 : 0);
             c.SetValue("FilamentDiameter", textDiameter.Text);
             c.SetValue("PackingDensity", textPackingDensity.Text);
             c.SetValue("Temperature", textTemperature.Text);
@@ -247,6 +249,10 @@ namespace RepetierHost.view
                     sb.Append("--no-extrusion ");
                 if (checkRelativeE.Checked)
                     sb.Append("--use-relative-e-distances ");
+                if (checkComments.Checked)
+                    sb.Append("--gcode-comments ");
+               // else
+               //     sb.Append("--gcode-comments 0 ");
                 sb.Append("--z-offset ");
                 sb.Append(textZOffset.Text);
                 sb.Append(" --filament-diameter ");
