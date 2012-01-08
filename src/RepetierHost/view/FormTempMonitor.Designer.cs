@@ -52,9 +52,10 @@
             this.panelButtons.Controls.Add(this.buttonStopMonitor);
             this.panelButtons.Controls.Add(this.buttonClear);
             this.panelButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelButtons.Location = new System.Drawing.Point(0, 510);
+            this.panelButtons.Location = new System.Drawing.Point(0, 627);
+            this.panelButtons.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panelButtons.Name = "panelButtons";
-            this.panelButtons.Size = new System.Drawing.Size(871, 51);
+            this.panelButtons.Size = new System.Drawing.Size(1161, 63);
             this.panelButtons.TabIndex = 8;
             // 
             // comboMonitor
@@ -67,17 +68,19 @@
             "Extruder 2",
             "Extruder 3",
             "Heated bed"});
-            this.comboMonitor.Location = new System.Drawing.Point(62, 15);
+            this.comboMonitor.Location = new System.Drawing.Point(83, 18);
+            this.comboMonitor.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.comboMonitor.Name = "comboMonitor";
-            this.comboMonitor.Size = new System.Drawing.Size(166, 21);
+            this.comboMonitor.Size = new System.Drawing.Size(220, 24);
             this.comboMonitor.TabIndex = 6;
             // 
             // checkAutoscaleX
             // 
             this.checkAutoscaleX.AutoSize = true;
-            this.checkAutoscaleX.Location = new System.Drawing.Point(486, 17);
+            this.checkAutoscaleX.Location = new System.Drawing.Point(648, 21);
+            this.checkAutoscaleX.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.checkAutoscaleX.Name = "checkAutoscaleX";
-            this.checkAutoscaleX.Size = new System.Drawing.Size(83, 17);
+            this.checkAutoscaleX.Size = new System.Drawing.Size(105, 21);
             this.checkAutoscaleX.TabIndex = 7;
             this.checkAutoscaleX.Text = "Autoscale X";
             this.checkAutoscaleX.UseVisualStyleBackColor = true;
@@ -86,9 +89,10 @@
             // buttonClose
             // 
             this.buttonClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonClose.Location = new System.Drawing.Point(784, 15);
+            this.buttonClose.Location = new System.Drawing.Point(1045, 18);
+            this.buttonClose.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonClose.Name = "buttonClose";
-            this.buttonClose.Size = new System.Drawing.Size(75, 23);
+            this.buttonClose.Size = new System.Drawing.Size(100, 28);
             this.buttonClose.TabIndex = 1;
             this.buttonClose.Text = "&Close";
             this.buttonClose.UseVisualStyleBackColor = true;
@@ -96,9 +100,10 @@
             // 
             // buttonStartMonitor
             // 
-            this.buttonStartMonitor.Location = new System.Drawing.Point(238, 15);
+            this.buttonStartMonitor.Location = new System.Drawing.Point(317, 18);
+            this.buttonStartMonitor.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonStartMonitor.Name = "buttonStartMonitor";
-            this.buttonStartMonitor.Size = new System.Drawing.Size(78, 23);
+            this.buttonStartMonitor.Size = new System.Drawing.Size(104, 28);
             this.buttonStartMonitor.TabIndex = 2;
             this.buttonStartMonitor.Text = "Start monitor";
             this.buttonStartMonitor.UseVisualStyleBackColor = true;
@@ -107,17 +112,19 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 19);
+            this.label1.Location = new System.Drawing.Point(12, 23);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(45, 13);
+            this.label1.Size = new System.Drawing.Size(59, 17);
             this.label1.TabIndex = 5;
             this.label1.Text = "Monitor:";
             // 
             // buttonStopMonitor
             // 
-            this.buttonStopMonitor.Location = new System.Drawing.Point(320, 14);
+            this.buttonStopMonitor.Location = new System.Drawing.Point(427, 17);
+            this.buttonStopMonitor.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonStopMonitor.Name = "buttonStopMonitor";
-            this.buttonStopMonitor.Size = new System.Drawing.Size(78, 23);
+            this.buttonStopMonitor.Size = new System.Drawing.Size(104, 28);
             this.buttonStopMonitor.TabIndex = 3;
             this.buttonStopMonitor.Text = "Stop monitor";
             this.buttonStopMonitor.UseVisualStyleBackColor = true;
@@ -125,9 +132,10 @@
             // 
             // buttonClear
             // 
-            this.buttonClear.Location = new System.Drawing.Point(402, 13);
+            this.buttonClear.Location = new System.Drawing.Point(536, 16);
+            this.buttonClear.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonClear.Name = "buttonClear";
-            this.buttonClear.Size = new System.Drawing.Size(78, 23);
+            this.buttonClear.Size = new System.Drawing.Size(104, 28);
             this.buttonClear.TabIndex = 4;
             this.buttonClear.Text = "Clear";
             this.buttonClear.UseVisualStyleBackColor = true;
@@ -143,21 +151,23 @@
             this.plotter.DoubleBuffering = true;
             this.plotter.ForeColor = System.Drawing.Color.White;
             this.plotter.Location = new System.Drawing.Point(0, 0);
+            this.plotter.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
             this.plotter.Name = "plotter";
             this.plotter.PlaySpeed = 0.5F;
-            this.plotter.Size = new System.Drawing.Size(871, 510);
+            this.plotter.Size = new System.Drawing.Size(1161, 627);
             this.plotter.SolidGridColor = System.Drawing.Color.DarkGray;
             this.plotter.TabIndex = 0;
             // 
             // FormTempMonitor
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(871, 561);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.ClientSize = new System.Drawing.Size(1161, 690);
             this.ControlBox = false;
             this.Controls.Add(this.plotter);
             this.Controls.Add(this.panelButtons);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FormTempMonitor";
             this.Text = "Temperature monitor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormTempMonitor_FormClosing);

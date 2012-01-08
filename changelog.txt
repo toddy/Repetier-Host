@@ -1,3 +1,12 @@
+Version 0.32 8.1.2012
+  Filaments are drawn solid.
+  Faster 3d drawing algorithms. Now even in virtual hardware useable.
+  Filament visualization need 45% less data storage.
+  Select and move objects with right mouse button.
+  Move viewpoint with middle mouse button.
+  STL objects outside printable are start pulsing.
+  Removed several threading error conditions and other minor bugs.
+
 Version 0.31  1.1.2012
   Updated Slic3r to version 0.5.7
   Autodetect OpenGL capabilities and using the fasted method.

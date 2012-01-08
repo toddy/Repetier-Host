@@ -54,62 +54,69 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 13);
+            this.label1.Location = new System.Drawing.Point(17, 16);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(40, 13);
+            this.label1.Size = new System.Drawing.Size(52, 17);
             this.label1.TabIndex = 0;
             this.label1.Text = "Status:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 33);
+            this.label2.Location = new System.Drawing.Point(17, 41);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(54, 13);
+            this.label2.Size = new System.Drawing.Size(72, 17);
             this.label2.TabIndex = 1;
             this.label2.Text = "Start time:";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(13, 53);
+            this.label3.Location = new System.Drawing.Point(17, 65);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(59, 13);
+            this.label3.Size = new System.Drawing.Size(79, 17);
             this.label3.TabIndex = 2;
             this.label3.Text = "Finish time:";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(13, 73);
+            this.label4.Location = new System.Drawing.Point(17, 90);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(31, 13);
+            this.label4.Size = new System.Drawing.Size(39, 17);
             this.label4.TabIndex = 3;
             this.label4.Text = "ETA:";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(13, 93);
+            this.label5.Location = new System.Drawing.Point(17, 114);
+            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(58, 13);
+            this.label5.Size = new System.Drawing.Size(77, 17);
             this.label5.TabIndex = 4;
             this.label5.Text = "Total lines:";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(13, 113);
+            this.label6.Location = new System.Drawing.Point(17, 139);
+            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(61, 13);
+            this.label6.Size = new System.Drawing.Size(81, 17);
             this.label6.TabIndex = 5;
             this.label6.Text = "Lines send:";
             // 
             // buttonClose
             // 
-            this.buttonClose.Location = new System.Drawing.Point(60, 141);
+            this.buttonClose.Location = new System.Drawing.Point(80, 174);
+            this.buttonClose.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonClose.Name = "buttonClose";
-            this.buttonClose.Size = new System.Drawing.Size(75, 23);
+            this.buttonClose.Size = new System.Drawing.Size(100, 28);
             this.buttonClose.TabIndex = 6;
             this.buttonClose.Text = "Close";
             this.buttonClose.UseVisualStyleBackColor = true;
@@ -118,62 +125,68 @@
             // labelStatus
             // 
             this.labelStatus.AutoSize = true;
-            this.labelStatus.Location = new System.Drawing.Point(80, 13);
+            this.labelStatus.Location = new System.Drawing.Point(107, 16);
+            this.labelStatus.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelStatus.Name = "labelStatus";
-            this.labelStatus.Size = new System.Drawing.Size(10, 13);
+            this.labelStatus.Size = new System.Drawing.Size(13, 17);
             this.labelStatus.TabIndex = 7;
             this.labelStatus.Text = "-";
             // 
             // labelStartTime
             // 
             this.labelStartTime.AutoSize = true;
-            this.labelStartTime.Location = new System.Drawing.Point(80, 33);
+            this.labelStartTime.Location = new System.Drawing.Point(107, 41);
+            this.labelStartTime.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelStartTime.Name = "labelStartTime";
-            this.labelStartTime.Size = new System.Drawing.Size(10, 13);
+            this.labelStartTime.Size = new System.Drawing.Size(13, 17);
             this.labelStartTime.TabIndex = 8;
             this.labelStartTime.Text = "-";
             // 
             // labelFinishTime
             // 
             this.labelFinishTime.AutoSize = true;
-            this.labelFinishTime.Location = new System.Drawing.Point(80, 53);
+            this.labelFinishTime.Location = new System.Drawing.Point(107, 65);
+            this.labelFinishTime.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelFinishTime.Name = "labelFinishTime";
-            this.labelFinishTime.Size = new System.Drawing.Size(10, 13);
+            this.labelFinishTime.Size = new System.Drawing.Size(13, 17);
             this.labelFinishTime.TabIndex = 8;
             this.labelFinishTime.Text = "-";
             // 
             // labelETA
             // 
             this.labelETA.AutoSize = true;
-            this.labelETA.Location = new System.Drawing.Point(80, 73);
+            this.labelETA.Location = new System.Drawing.Point(107, 90);
+            this.labelETA.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelETA.Name = "labelETA";
-            this.labelETA.Size = new System.Drawing.Size(10, 13);
+            this.labelETA.Size = new System.Drawing.Size(13, 17);
             this.labelETA.TabIndex = 8;
             this.labelETA.Text = "-";
             // 
             // labelTotalLines
             // 
             this.labelTotalLines.AutoSize = true;
-            this.labelTotalLines.Location = new System.Drawing.Point(80, 93);
+            this.labelTotalLines.Location = new System.Drawing.Point(107, 114);
+            this.labelTotalLines.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelTotalLines.Name = "labelTotalLines";
-            this.labelTotalLines.Size = new System.Drawing.Size(10, 13);
+            this.labelTotalLines.Size = new System.Drawing.Size(13, 17);
             this.labelTotalLines.TabIndex = 8;
             this.labelTotalLines.Text = "-";
             // 
             // labelLinesSend
             // 
             this.labelLinesSend.AutoSize = true;
-            this.labelLinesSend.Location = new System.Drawing.Point(80, 113);
+            this.labelLinesSend.Location = new System.Drawing.Point(107, 139);
+            this.labelLinesSend.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelLinesSend.Name = "labelLinesSend";
-            this.labelLinesSend.Size = new System.Drawing.Size(10, 13);
+            this.labelLinesSend.Size = new System.Drawing.Size(13, 17);
             this.labelLinesSend.TabIndex = 8;
             this.labelLinesSend.Text = "-";
             // 
             // JobStatus
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(194, 177);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.ClientSize = new System.Drawing.Size(259, 218);
             this.ControlBox = false;
             this.Controls.Add(this.labelLinesSend);
             this.Controls.Add(this.labelTotalLines);
@@ -189,6 +202,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "JobStatus";

@@ -24,8 +24,9 @@ using OpenTK;
 
 namespace RepetierHost.model
 {
-    public class Coord3D {
-        public float x=0,y=0,z=0;
+    public class Coord3D
+    {
+        public float x = 0, y = 0, z = 0;
         public Coord3D() { }
         public Coord3D(float _x, float _y, float _z)
         {
@@ -39,8 +40,83 @@ namespace RepetierHost.model
         private bool selected = false;
         private Coord3D position = new Coord3D();
         private Coord3D rotation = new Coord3D();
-        private Coord3D scale = new Coord3D(1,1,1);
+        private Coord3D scale = new Coord3D(1, 1, 1);
+        public LinkedList<ModelAnimation> animations = new LinkedList<ModelAnimation>();
 
+        public void addAnimation(ModelAnimation anim)
+        {
+            animations.AddLast(anim);
+        }
+        public void removeAnimationWithName(string aname)
+        {
+            bool found = true;
+            while (found)
+            {
+                found = false;
+                foreach (ModelAnimation a in animations)
+                {
+                    if (a.name.Equals(aname))
+                    {
+                        found = true;
+                        animations.Remove(a);
+                        break;
+                    }
+                }
+            }
+        }
+        public bool hasAnimationWithName(string aname)
+        {
+            foreach (ModelAnimation a in animations)
+            {
+                if (a.name.Equals(aname))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public void clearAnimations()
+        {
+            animations.Clear();
+        }
+        public bool hasAnimations
+        {
+            get { return animations.Count > 0; }
+        }
+        public void AnimationBefore()
+        {
+            foreach (ModelAnimation a in animations)
+                a.BeforeAction(this);
+        }
+        /// <summary>
+        /// Plays the after action and removes finished animations.
+        /// </summary>
+        public void AnimationAfter()
+        {
+            bool remove = false;
+            foreach (ModelAnimation a in animations)
+            {
+                a.AfterAction(this);
+                remove |= a.AnimationFinished();
+            }
+            if (remove)
+            {
+                bool found = true;
+                while (found)
+                {
+                    found = false;
+                    foreach (ModelAnimation a in animations)
+                    {
+                        if (a.AnimationFinished())
+                        {
+                            found = true;
+                            animations.Remove(a);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
         public bool Selected
         {
             get { return selected; }
@@ -68,7 +144,11 @@ namespace RepetierHost.model
         {
             get { return false; }
         }
-        public virtual void Clear() {}
+        public virtual void Clear() { }
         abstract public void Paint();
+        public virtual Vector3 getCenter()
+        {
+            return new Vector3(0, 0, 0);
+        }
     }
 }

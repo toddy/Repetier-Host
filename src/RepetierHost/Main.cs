@@ -72,6 +72,8 @@ namespace RepetierHost
                 string text = ed.getContent(1) + ed.getContent(0) + ed.getContent(2);
                 visual = new GCodeVisual();
                 visual.ParseText(text, true);
+                visual.Reduce();
+                //visual.stats();
                 Main.main.newVisual = visual;
                 Main.main.jobPreviewThreadFinished = true;
                 Main.main.previewThread = null;
@@ -448,6 +450,7 @@ namespace RepetierHost
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
+            conn.close();
             RegMemory.StoreWindowPos("mainWindow",this, true, true);
             RegMemory.SetInt("logSplitterDistance", splitLog.SplitterDistance);
             RegMemory.SetBool("logShow", toolShowLog.Checked);
@@ -569,14 +572,14 @@ namespace RepetierHost
             if (tab == null) return;
             switch (tab.SelectedIndex)
             {
-                case 0:
+                case 2:
                     printPreview.UpdateChanges();
                     break;
                 case 1:
                     if (jobPreview != null)
                         jobPreview.UpdateChanges();
                     break;
-                case 2:
+                case 0:
                     stlComposer1.Update3D();
                     break;
             }

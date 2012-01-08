@@ -171,7 +171,6 @@
             // 
             // timer
             // 
-            this.timer.Interval = 250;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
             // ThreeDControl

@@ -130,18 +130,23 @@ namespace RepetierHost.model
         public GCode PopData()
         {
             if (jobList.Count == 0) return null;
-            linesSend++;
-            GCode gc = jobList.First.Value;
-            jobList.RemoveFirst();
-            PrintTime pt = new PrintTime();
-            pt.line = linesSend;
-            pt.time = DateTime.Now.Ticks;
-            lock (times)
+            GCode gc = null;
+            try
             {
-                times.AddLast(pt);
-                if (times.Count > 1500)
-                    times.RemoveFirst();
+                gc = jobList.First.Value;
+                jobList.RemoveFirst();
+                linesSend++;
+                PrintTime pt = new PrintTime();
+                pt.line = linesSend;
+                pt.time = DateTime.Now.Ticks;
+                lock (times)
+                {
+                    times.AddLast(pt);
+                    if (times.Count > 1500)
+                        times.RemoveFirst();
+                }
             }
+            catch { };
             if (jobList.Count == 0)
             {
                 dataComplete = false;

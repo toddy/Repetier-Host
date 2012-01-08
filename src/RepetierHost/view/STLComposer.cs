@@ -46,6 +46,8 @@ namespace RepetierHost.view
                 cont.SetEditor(true);
                 cont.SetObjectSelected(false);
                 cont.eventObjectMoved += objectMoved;
+                cont.eventObjectSelected += objectSelected;
+                cont.AutoUpdateable = true;
                 updateEnabled();
             }
             catch { }
@@ -123,6 +125,8 @@ namespace RepetierHost.view
                     listSTLObjects.Items.Add(stl);
                     cont.models.AddLast(stl);
                     listSTLObjects.SelectedItem = stl;
+                    stl.addAnimation(new DropAnimation("drop"));
+                    updateSTLState(stl);
                 }
         }
         private void buttonAddSTL_Click(object sender, EventArgs e)
@@ -132,7 +136,24 @@ namespace RepetierHost.view
                 openAndAddObject(openFileSTL.FileName);
             }
         }
-
+        /// <summary>
+        /// Checks the state of the object.
+        /// If it is outside print are it starts pulsing
+        /// </summary>
+        public void updateSTLState(STL stl)
+        {
+            stl.UpdateBoundingBox();
+            if (stl.xMin < 0 || stl.yMin < 0 || stl.zMin < -0.001 || stl.xMax > Main.printerSettings.PrintAreaWidth ||
+                stl.yMax > Main.printerSettings.PrintAreaDepth || stl.zMax > Main.printerSettings.PrintAreaHeight)
+            {
+                if(!stl.hasAnimationWithName("pulse"))
+                    stl.addAnimation(new PulseAnimation("pulse", 0.05, 0.05, 0.05, 0.5));
+            }
+            else
+            {
+                stl.removeAnimationWithName("pulse");
+            }
+        }
         private void listSTLObjects_SelectedIndexChanged(object sender, EventArgs e)
         {
             updateEnabled();
@@ -162,6 +183,7 @@ namespace RepetierHost.view
             STL stl = (STL)listSTLObjects.SelectedItem;
             if(stl==null) return;
             float.TryParse(textTransX.Text, NumberStyles.Float, GCode.format, out stl.Position.x);
+            updateSTLState(stl);
             cont.UpdateChanges();
         }
 
@@ -170,6 +192,7 @@ namespace RepetierHost.view
             STL stl = (STL)listSTLObjects.SelectedItem;
             if (stl == null) return;
             float.TryParse(textTransY.Text, NumberStyles.Float, GCode.format, out stl.Position.y);
+            updateSTLState(stl);
             cont.UpdateChanges();
         }
 
@@ -178,6 +201,7 @@ namespace RepetierHost.view
             STL stl = (STL)listSTLObjects.SelectedItem;
             if (stl == null) return;
             float.TryParse(textTransZ.Text, NumberStyles.Float, GCode.format, out stl.Position.z);
+            updateSTLState(stl);
             cont.UpdateChanges();
         }
         private void objectMoved(float dx, float dy)
@@ -188,7 +212,12 @@ namespace RepetierHost.view
             stl.Position.y += dy;
             textTransX.Text = stl.Position.x.ToString(GCode.format);
             textTransY.Text = stl.Position.y.ToString(GCode.format);
+            updateSTLState(stl);
             cont.UpdateChanges();
+        }
+        private void objectSelected(ThreeDModel sel)
+        {
+            listSTLObjects.SelectedItem = sel;
         }
         private void textScaleX_TextChanged(object sender, EventArgs e)
         {
@@ -201,6 +230,7 @@ namespace RepetierHost.view
                 textScaleY.Text = stl.Scale.y.ToString(GCode.format);
                 textScaleZ.Text = stl.Scale.z.ToString(GCode.format);
             }
+            updateSTLState(stl);
             cont.UpdateChanges();
         }
 
@@ -209,6 +239,7 @@ namespace RepetierHost.view
             STL stl = (STL)listSTLObjects.SelectedItem;
             if (stl == null) return;
             float.TryParse(textScaleY.Text, NumberStyles.Float, GCode.format, out stl.Scale.y);
+            updateSTLState(stl);
             cont.UpdateChanges();
         }
 
@@ -217,6 +248,7 @@ namespace RepetierHost.view
             STL stl = (STL)listSTLObjects.SelectedItem;
             if (stl == null) return;
             float.TryParse(textScaleZ.Text, NumberStyles.Float, GCode.format, out stl.Scale.z);
+            updateSTLState(stl);
             cont.UpdateChanges();
         }
 
@@ -225,6 +257,7 @@ namespace RepetierHost.view
             STL stl = (STL)listSTLObjects.SelectedItem;
             if (stl == null) return;
             float.TryParse(textRotX.Text, NumberStyles.Float, GCode.format, out stl.Rotation.x);
+            updateSTLState(stl);
             cont.UpdateChanges();
         }
 
@@ -233,6 +266,7 @@ namespace RepetierHost.view
             STL stl = (STL)listSTLObjects.SelectedItem;
             if (stl == null) return;
             float.TryParse(textRotY.Text, NumberStyles.Float, GCode.format, out stl.Rotation.y);
+            updateSTLState(stl);
             cont.UpdateChanges();
         }
 
@@ -241,6 +275,7 @@ namespace RepetierHost.view
             STL stl = (STL)listSTLObjects.SelectedItem;
             if (stl == null) return;
             float.TryParse(textRotZ.Text, NumberStyles.Float, GCode.format, out stl.Rotation.z);
+            updateSTLState(stl);
             cont.UpdateChanges();
         }
 
@@ -360,6 +395,12 @@ namespace RepetierHost.view
             dir+=Path.DirectorySeparatorChar+"composition.stl";
             saveComposition(dir);
             Main.slicer.RunSlice(dir); // Slice it and load
+        }
+
+        private void checkScaleAll_CheckedChanged(object sender, EventArgs e)
+        {
+            textScaleY.Enabled = !checkScaleAll.Checked;
+            textScaleZ.Enabled = !checkScaleAll.Checked;
         }
     }
 }

@@ -185,6 +185,7 @@
             this.checkScaleAll.TabIndex = 8;
             this.checkScaleAll.Text = "Lock aspect ratio";
             this.checkScaleAll.UseVisualStyleBackColor = true;
+            this.checkScaleAll.CheckedChanged += new System.EventHandler(this.checkScaleAll_CheckedChanged);
             // 
             // label12
             // 

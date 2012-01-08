@@ -7,3 +7,4 @@ cp -r ../src/data RepetierHost
 cp ../src/RepetierHost/bin/Release/Rep* RepetierHost
 tar -czf ../repetierHostLinux.tgz RepetierHost
 
+

@@ -45,18 +45,20 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.grid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.grid.Location = new System.Drawing.Point(12, 12);
+            this.grid.Location = new System.Drawing.Point(16, 15);
+            this.grid.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.grid.MultiSelect = false;
             this.grid.Name = "grid";
-            this.grid.Size = new System.Drawing.Size(640, 377);
+            this.grid.Size = new System.Drawing.Size(853, 464);
             this.grid.TabIndex = 0;
             // 
             // buttonOK
             // 
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOK.Location = new System.Drawing.Point(472, 415);
+            this.buttonOK.Location = new System.Drawing.Point(629, 511);
+            this.buttonOK.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonOK.Name = "buttonOK";
-            this.buttonOK.Size = new System.Drawing.Size(75, 23);
+            this.buttonOK.Size = new System.Drawing.Size(100, 28);
             this.buttonOK.TabIndex = 1;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
@@ -65,9 +67,10 @@
             // buttonAbort
             // 
             this.buttonAbort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonAbort.Location = new System.Drawing.Point(577, 415);
+            this.buttonAbort.Location = new System.Drawing.Point(769, 511);
+            this.buttonAbort.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonAbort.Name = "buttonAbort";
-            this.buttonAbort.Size = new System.Drawing.Size(75, 23);
+            this.buttonAbort.Size = new System.Drawing.Size(100, 28);
             this.buttonAbort.TabIndex = 2;
             this.buttonAbort.Text = "Cancel";
             this.buttonAbort.UseVisualStyleBackColor = true;
@@ -75,14 +78,15 @@
             // 
             // EEPROMRepetier
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(666, 459);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.ClientSize = new System.Drawing.Size(888, 565);
             this.ControlBox = false;
             this.Controls.Add(this.buttonAbort);
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.grid);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "EEPROMRepetier";
             this.Text = "Firmware EEPROM settings";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.EEPROMRepetier_FormClosing);

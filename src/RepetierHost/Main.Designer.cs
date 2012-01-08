@@ -90,12 +90,12 @@
             this.splitLog = new System.Windows.Forms.SplitContainer();
             this.tab = new System.Windows.Forms.TabControl();
             this.tabModel = new System.Windows.Forms.TabPage();
+            this.stlComposer1 = new RepetierHost.view.STLComposer();
             this.tabGCode = new System.Windows.Forms.TabPage();
             this.splitJob = new System.Windows.Forms.SplitContainer();
+            this.editor = new RepetierHost.view.RepetierEditor();
             this.tabPrint = new System.Windows.Forms.TabPage();
             this.splitContainerPrinterGraphic = new System.Windows.Forms.SplitContainer();
-            this.stlComposer1 = new RepetierHost.view.STLComposer();
-            this.editor = new RepetierHost.view.RepetierEditor();
             this.menu.SuspendLayout();
             this.status.SuspendLayout();
             this.toolStrip.SuspendLayout();
@@ -120,7 +120,7 @@
             this.helpToolStripMenuItem});
             this.menu.Location = new System.Drawing.Point(0, 0);
             this.menu.Name = "menu";
-            this.menu.Size = new System.Drawing.Size(955, 24);
+            this.menu.Size = new System.Drawing.Size(1018, 24);
             this.menu.TabIndex = 0;
             this.menu.Text = "menuStrip1";
             // 
@@ -437,9 +437,10 @@
             this.toolAction,
             this.toolProgress,
             this.fpsLabel});
-            this.status.Location = new System.Drawing.Point(0, 517);
+            this.status.Location = new System.Drawing.Point(0, 508);
             this.status.Name = "status";
-            this.status.Size = new System.Drawing.Size(955, 22);
+            this.status.Padding = new System.Windows.Forms.Padding(1, 0, 15, 0);
+            this.status.Size = new System.Drawing.Size(1018, 22);
             this.status.TabIndex = 1;
             this.status.Text = "statusStrip1";
             // 
@@ -464,7 +465,7 @@
             // toolProgress
             // 
             this.toolProgress.Name = "toolProgress";
-            this.toolProgress.Size = new System.Drawing.Size(200, 16);
+            this.toolProgress.Size = new System.Drawing.Size(214, 16);
             // 
             // fpsLabel
             // 
@@ -487,7 +488,7 @@
             this.toolShowLog});
             this.toolStrip.Location = new System.Drawing.Point(0, 24);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(955, 39);
+            this.toolStrip.Size = new System.Drawing.Size(1018, 39);
             this.toolStrip.TabIndex = 2;
             this.toolStrip.Text = "toolStrip1";
             // 
@@ -598,8 +599,8 @@
             // splitLog.Panel1
             // 
             this.splitLog.Panel1.Controls.Add(this.tab);
-            this.splitLog.Size = new System.Drawing.Size(955, 454);
-            this.splitLog.SplitterDistance = 357;
+            this.splitLog.Size = new System.Drawing.Size(1018, 445);
+            this.splitLog.SplitterDistance = 347;
             this.splitLog.TabIndex = 4;
             // 
             // tab
@@ -611,7 +612,7 @@
             this.tab.Location = new System.Drawing.Point(0, 0);
             this.tab.Name = "tab";
             this.tab.SelectedIndex = 0;
-            this.tab.Size = new System.Drawing.Size(953, 355);
+            this.tab.Size = new System.Drawing.Size(1016, 345);
             this.tab.TabIndex = 3;
             this.tab.SelectedIndexChanged += new System.EventHandler(this.tab_SelectedIndexChanged);
             // 
@@ -621,9 +622,18 @@
             this.tabModel.Controls.Add(this.stlComposer1);
             this.tabModel.Location = new System.Drawing.Point(4, 22);
             this.tabModel.Name = "tabModel";
-            this.tabModel.Size = new System.Drawing.Size(945, 329);
+            this.tabModel.Size = new System.Drawing.Size(1008, 319);
             this.tabModel.TabIndex = 2;
             this.tabModel.Text = "Object placements";
+            // 
+            // stlComposer1
+            // 
+            this.stlComposer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stlComposer1.Location = new System.Drawing.Point(0, 0);
+            this.stlComposer1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.stlComposer1.Name = "stlComposer1";
+            this.stlComposer1.Size = new System.Drawing.Size(1008, 319);
+            this.stlComposer1.TabIndex = 0;
             // 
             // tabGCode
             // 
@@ -632,8 +642,8 @@
             this.tabGCode.Controls.Add(this.splitJob);
             this.tabGCode.Location = new System.Drawing.Point(4, 22);
             this.tabGCode.Name = "tabGCode";
-            this.tabGCode.Padding = new System.Windows.Forms.Padding(3);
-            this.tabGCode.Size = new System.Drawing.Size(945, 329);
+            this.tabGCode.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabGCode.Size = new System.Drawing.Size(1009, 350);
             this.tabGCode.TabIndex = 1;
             this.tabGCode.Text = "G-Code visual editor";
             // 
@@ -650,9 +660,21 @@
             // splitJob.Panel1
             // 
             this.splitJob.Panel1.Controls.Add(this.editor);
-            this.splitJob.Size = new System.Drawing.Size(939, 320);
+            this.splitJob.Size = new System.Drawing.Size(1002, 341);
             this.splitJob.SplitterDistance = 500;
             this.splitJob.TabIndex = 3;
+            // 
+            // editor
+            // 
+            this.editor.AccessibleRole = System.Windows.Forms.AccessibleRole.Caret;
+            this.editor.autopreview = true;
+            this.editor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.editor.Location = new System.Drawing.Point(0, 0);
+            this.editor.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.editor.MinimumSize = new System.Drawing.Size(160, 138);
+            this.editor.Name = "editor";
+            this.editor.Size = new System.Drawing.Size(500, 341);
+            this.editor.TabIndex = 0;
             // 
             // tabPrint
             // 
@@ -660,8 +682,8 @@
             this.tabPrint.Controls.Add(this.splitContainerPrinterGraphic);
             this.tabPrint.Location = new System.Drawing.Point(4, 22);
             this.tabPrint.Name = "tabPrint";
-            this.tabPrint.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPrint.Size = new System.Drawing.Size(945, 329);
+            this.tabPrint.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPrint.Size = new System.Drawing.Size(1009, 350);
             this.tabPrint.TabIndex = 0;
             this.tabPrint.Text = "Manual control";
             // 
@@ -675,35 +697,16 @@
             // splitContainerPrinterGraphic.Panel1
             // 
             this.splitContainerPrinterGraphic.Panel1.BackColor = System.Drawing.Color.Transparent;
-            this.splitContainerPrinterGraphic.Size = new System.Drawing.Size(939, 323);
+            this.splitContainerPrinterGraphic.Size = new System.Drawing.Size(1003, 344);
             this.splitContainerPrinterGraphic.SplitterDistance = 465;
             this.splitContainerPrinterGraphic.TabIndex = 0;
             // 
-            // stlComposer1
-            // 
-            this.stlComposer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.stlComposer1.Location = new System.Drawing.Point(0, 0);
-            this.stlComposer1.Name = "stlComposer1";
-            this.stlComposer1.Size = new System.Drawing.Size(945, 329);
-            this.stlComposer1.TabIndex = 0;
-            // 
-            // editor
-            // 
-            this.editor.AccessibleRole = System.Windows.Forms.AccessibleRole.Caret;
-            this.editor.autopreview = true;
-            this.editor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.editor.Location = new System.Drawing.Point(0, 0);
-            this.editor.MinimumSize = new System.Drawing.Size(150, 140);
-            this.editor.Name = "editor";
-            this.editor.Size = new System.Drawing.Size(500, 320);
-            this.editor.TabIndex = 0;
-            // 
             // Main
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(955, 539);
+            this.ClientSize = new System.Drawing.Size(1018, 530);
             this.Controls.Add(this.splitLog);
             this.Controls.Add(this.toolStrip);
             this.Controls.Add(this.status);
@@ -711,7 +714,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menu;
             this.Name = "Main";
-            this.Text = "Repetier-Host V0.31";
+            this.Text = "Repetier-Host V0.32";
             this.Shown += new System.EventHandler(this.Main_Shown);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.Resize += new System.EventHandler(this.Main_Resize);

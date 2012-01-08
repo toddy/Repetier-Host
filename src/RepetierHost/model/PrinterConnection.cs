@@ -223,6 +223,9 @@ namespace RepetierHost.model
 
         }
         LogLine useNextLog = null;
+        public static void logInfo(string text) {
+            Main.conn.log(text,false,3);
+        }
         public void log(string t, bool response, int level)
         {
             LogLine l;
@@ -239,8 +242,13 @@ namespace RepetierHost.model
                 l = new LogLine(t, response, level);
             if (logWriter != null)
             {
-                if(!response)
-                    logWriter.WriteLine("< "+l.text);
+                if (!response)
+                {
+                    lock (logWriter)
+                    {
+                        logWriter.WriteLine("< " + l.text);
+                    }
+                }
             }
             lock (logList)
             {
@@ -599,12 +607,17 @@ namespace RepetierHost.model
         public void close()
         {
             if(serial == null) return;
+            if(job.mode==1)
+                job.KillJob();
+            Application.DoEvents();
+            Thread.Sleep(100);
+            Application.DoEvents();
             connected = false;
             if (readThread != null)
                 readThread.Abort();
             readThread = null;
-            lock (nextlineLock)
-            {
+          //  lock (nextlineLock)
+           // {
                 try
                 {
                     serial.Close();
@@ -612,7 +625,7 @@ namespace RepetierHost.model
                 }
                 catch (Exception) { }
                 serial = null;
-            }
+           // }
             job.KillJob();
             history.Clear();
             injectCommands.Clear();
@@ -773,8 +786,11 @@ namespace RepetierHost.model
             if (logWriter != null)
             {
                 DateTime time = DateTime.Now;
-                logWriter.WriteLine("> "+time.Hour.ToString("00") + ":" + time.Minute.ToString("00") + ":" +
-                time.Second.ToString("00") + "." + time.Millisecond.ToString("000") + " : " + res);
+                lock (logWriter)
+                {
+                    logWriter.WriteLine("> " + time.Hour.ToString("00") + ":" + time.Minute.ToString("00") + ":" +
+                    time.Second.ToString("00") + "." + time.Millisecond.ToString("000") + " : " + res);
+                }
             }
             if (eventResponse != null)
             {

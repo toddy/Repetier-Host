@@ -50,17 +50,19 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 13);
+            this.label1.Location = new System.Drawing.Point(17, 16);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(98, 13);
+            this.label1.Size = new System.Drawing.Size(130, 17);
             this.label1.TabIndex = 0;
             this.label1.Text = "Uploaded filename:";
             // 
             // textFilename
             // 
-            this.textFilename.Location = new System.Drawing.Point(117, 10);
+            this.textFilename.Location = new System.Drawing.Point(156, 12);
+            this.textFilename.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textFilename.Name = "textFilename";
-            this.textFilename.Size = new System.Drawing.Size(100, 20);
+            this.textFilename.Size = new System.Drawing.Size(132, 22);
             this.textFilename.TabIndex = 1;
             this.textFilename.Validating += new System.ComponentModel.CancelEventHandler(this.textFilename_Validating);
             // 
@@ -68,9 +70,10 @@
             // 
             this.radioCurrent.AutoSize = true;
             this.radioCurrent.Checked = true;
-            this.radioCurrent.Location = new System.Drawing.Point(16, 82);
+            this.radioCurrent.Location = new System.Drawing.Point(21, 101);
+            this.radioCurrent.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.radioCurrent.Name = "radioCurrent";
-            this.radioCurrent.Size = new System.Drawing.Size(134, 17);
+            this.radioCurrent.Size = new System.Drawing.Size(176, 21);
             this.radioCurrent.TabIndex = 2;
             this.radioCurrent.TabStop = true;
             this.radioCurrent.Text = "Upload current G-Code";
@@ -79,9 +82,10 @@
             // radioExternal
             // 
             this.radioExternal.AutoSize = true;
-            this.radioExternal.Location = new System.Drawing.Point(16, 106);
+            this.radioExternal.Location = new System.Drawing.Point(21, 130);
+            this.radioExternal.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.radioExternal.Name = "radioExternal";
-            this.radioExternal.Size = new System.Drawing.Size(115, 17);
+            this.radioExternal.Size = new System.Drawing.Size(150, 21);
             this.radioExternal.TabIndex = 3;
             this.radioExternal.Text = "Upload external file";
             this.radioExternal.UseVisualStyleBackColor = true;
@@ -89,24 +93,27 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(41, 133);
+            this.label2.Location = new System.Drawing.Point(55, 164);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(26, 13);
+            this.label2.Size = new System.Drawing.Size(34, 17);
             this.label2.TabIndex = 4;
             this.label2.Text = "File:";
             // 
             // extFilename
             // 
-            this.extFilename.Location = new System.Drawing.Point(74, 130);
+            this.extFilename.Location = new System.Drawing.Point(99, 160);
+            this.extFilename.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.extFilename.Name = "extFilename";
-            this.extFilename.Size = new System.Drawing.Size(282, 20);
+            this.extFilename.Size = new System.Drawing.Size(375, 22);
             this.extFilename.TabIndex = 5;
             // 
             // buttonBrowse
             // 
-            this.buttonBrowse.Location = new System.Drawing.Point(362, 125);
+            this.buttonBrowse.Location = new System.Drawing.Point(483, 154);
+            this.buttonBrowse.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonBrowse.Name = "buttonBrowse";
-            this.buttonBrowse.Size = new System.Drawing.Size(75, 23);
+            this.buttonBrowse.Size = new System.Drawing.Size(100, 28);
             this.buttonBrowse.TabIndex = 6;
             this.buttonBrowse.Text = "Browse ...";
             this.buttonBrowse.UseVisualStyleBackColor = true;
@@ -114,9 +121,10 @@
             // 
             // buttonOK
             // 
-            this.buttonOK.Location = new System.Drawing.Point(262, 172);
+            this.buttonOK.Location = new System.Drawing.Point(349, 212);
+            this.buttonOK.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonOK.Name = "buttonOK";
-            this.buttonOK.Size = new System.Drawing.Size(75, 23);
+            this.buttonOK.Size = new System.Drawing.Size(100, 28);
             this.buttonOK.TabIndex = 7;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
@@ -124,9 +132,10 @@
             // 
             // buttonCancel
             // 
-            this.buttonCancel.Location = new System.Drawing.Point(362, 172);
+            this.buttonCancel.Location = new System.Drawing.Point(483, 212);
+            this.buttonCancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(75, 23);
+            this.buttonCancel.Size = new System.Drawing.Size(100, 28);
             this.buttonCancel.TabIndex = 8;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
@@ -142,9 +151,10 @@
             // 
             this.panel1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel1.BackgroundImage")));
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.panel1.Location = new System.Drawing.Point(405, 13);
+            this.panel1.Location = new System.Drawing.Point(540, 16);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(32, 32);
+            this.panel1.Size = new System.Drawing.Size(43, 39);
             this.panel1.TabIndex = 9;
             // 
             // checkAppendPrepend
@@ -152,9 +162,10 @@
             this.checkAppendPrepend.AutoSize = true;
             this.checkAppendPrepend.Checked = true;
             this.checkAppendPrepend.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkAppendPrepend.Location = new System.Drawing.Point(16, 37);
+            this.checkAppendPrepend.Location = new System.Drawing.Point(21, 46);
+            this.checkAppendPrepend.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.checkAppendPrepend.Name = "checkAppendPrepend";
-            this.checkAppendPrepend.Size = new System.Drawing.Size(212, 17);
+            this.checkAppendPrepend.Size = new System.Drawing.Size(269, 21);
             this.checkAppendPrepend.TabIndex = 10;
             this.checkAppendPrepend.Text = "Include \"Append\" and \"Prepend\" code";
             this.checkAppendPrepend.UseVisualStyleBackColor = true;
@@ -168,18 +179,19 @@
             this.checkJobFinished.AutoSize = true;
             this.checkJobFinished.Checked = true;
             this.checkJobFinished.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkJobFinished.Location = new System.Drawing.Point(16, 60);
+            this.checkJobFinished.Location = new System.Drawing.Point(21, 74);
+            this.checkJobFinished.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.checkJobFinished.Name = "checkJobFinished";
-            this.checkJobFinished.Size = new System.Drawing.Size(171, 17);
+            this.checkJobFinished.Size = new System.Drawing.Size(223, 21);
             this.checkJobFinished.TabIndex = 11;
             this.checkJobFinished.Text = "Include job finished commands";
             this.checkJobFinished.UseVisualStyleBackColor = true;
             // 
             // SDCardUpload
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(449, 203);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.ClientSize = new System.Drawing.Size(599, 250);
             this.ControlBox = false;
             this.Controls.Add(this.checkJobFinished);
             this.Controls.Add(this.checkAppendPrepend);
@@ -194,6 +206,7 @@
             this.Controls.Add(this.textFilename);
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "SDCardUpload";

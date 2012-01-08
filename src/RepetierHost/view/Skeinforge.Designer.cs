@@ -56,24 +56,27 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 13);
+            this.label1.Location = new System.Drawing.Point(17, 16);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(115, 13);
+            this.label1.Size = new System.Drawing.Size(152, 17);
             this.label1.TabIndex = 0;
             this.label1.Text = "Skeinforge application:";
             // 
             // textSkeinforge
             // 
-            this.textSkeinforge.Location = new System.Drawing.Point(135, 13);
+            this.textSkeinforge.Location = new System.Drawing.Point(180, 16);
+            this.textSkeinforge.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textSkeinforge.Name = "textSkeinforge";
-            this.textSkeinforge.Size = new System.Drawing.Size(376, 20);
+            this.textSkeinforge.Size = new System.Drawing.Size(500, 22);
             this.textSkeinforge.TabIndex = 1;
             // 
             // buttonSerach
             // 
-            this.buttonSerach.Location = new System.Drawing.Point(518, 13);
+            this.buttonSerach.Location = new System.Drawing.Point(691, 16);
+            this.buttonSerach.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonSerach.Name = "buttonSerach";
-            this.buttonSerach.Size = new System.Drawing.Size(75, 23);
+            this.buttonSerach.Size = new System.Drawing.Size(100, 28);
             this.buttonSerach.TabIndex = 2;
             this.buttonSerach.Text = "Browse ...";
             this.buttonSerach.UseVisualStyleBackColor = true;
@@ -82,42 +85,47 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 65);
+            this.label2.Location = new System.Drawing.Point(17, 80);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(91, 13);
+            this.label2.Size = new System.Drawing.Size(120, 17);
             this.label2.TabIndex = 3;
             this.label2.Text = "GCode extension:";
             // 
             // textExtension
             // 
-            this.textExtension.Location = new System.Drawing.Point(135, 65);
+            this.textExtension.Location = new System.Drawing.Point(180, 80);
+            this.textExtension.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textExtension.Name = "textExtension";
-            this.textExtension.Size = new System.Drawing.Size(100, 20);
+            this.textExtension.Size = new System.Drawing.Size(132, 22);
             this.textExtension.TabIndex = 4;
             this.textExtension.Text = ".gcode";
             // 
             // textPostfix
             // 
-            this.textPostfix.Location = new System.Drawing.Point(135, 92);
+            this.textPostfix.Location = new System.Drawing.Point(180, 113);
+            this.textPostfix.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textPostfix.Name = "textPostfix";
-            this.textPostfix.Size = new System.Drawing.Size(100, 20);
+            this.textPostfix.Size = new System.Drawing.Size(132, 22);
             this.textPostfix.TabIndex = 5;
             this.textPostfix.Text = "_export";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 92);
+            this.label3.Location = new System.Drawing.Point(16, 113);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(85, 13);
+            this.label3.Size = new System.Drawing.Size(113, 17);
             this.label3.TabIndex = 6;
             this.label3.Text = "Filename postfix:";
             // 
             // buttonOK
             // 
-            this.buttonOK.Location = new System.Drawing.Point(71, 146);
+            this.buttonOK.Location = new System.Drawing.Point(95, 180);
+            this.buttonOK.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonOK.Name = "buttonOK";
-            this.buttonOK.Size = new System.Drawing.Size(75, 23);
+            this.buttonOK.Size = new System.Drawing.Size(100, 28);
             this.buttonOK.TabIndex = 7;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
@@ -125,9 +133,10 @@
             // 
             // buttonAbort
             // 
-            this.buttonAbort.Location = new System.Drawing.Point(473, 145);
+            this.buttonAbort.Location = new System.Drawing.Point(631, 178);
+            this.buttonAbort.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonAbort.Name = "buttonAbort";
-            this.buttonAbort.Size = new System.Drawing.Size(75, 23);
+            this.buttonAbort.Size = new System.Drawing.Size(100, 28);
             this.buttonAbort.TabIndex = 8;
             this.buttonAbort.Text = "Cancel";
             this.buttonAbort.UseVisualStyleBackColor = true;
@@ -135,25 +144,28 @@
             // 
             // textPython
             // 
-            this.textPython.Location = new System.Drawing.Point(135, 119);
+            this.textPython.Location = new System.Drawing.Point(180, 146);
+            this.textPython.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textPython.Name = "textPython";
-            this.textPython.Size = new System.Drawing.Size(376, 20);
+            this.textPython.Size = new System.Drawing.Size(500, 22);
             this.textPython.TabIndex = 9;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(16, 119);
+            this.label4.Location = new System.Drawing.Point(21, 146);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(93, 13);
+            this.label4.Size = new System.Drawing.Size(126, 17);
             this.label4.TabIndex = 10;
             this.label4.Text = "Python interpreter:";
             // 
             // buttonSerachPy
             // 
-            this.buttonSerachPy.Location = new System.Drawing.Point(518, 119);
+            this.buttonSerachPy.Location = new System.Drawing.Point(691, 146);
+            this.buttonSerachPy.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonSerachPy.Name = "buttonSerachPy";
-            this.buttonSerachPy.Size = new System.Drawing.Size(75, 23);
+            this.buttonSerachPy.Size = new System.Drawing.Size(100, 28);
             this.buttonSerachPy.TabIndex = 11;
             this.buttonSerachPy.Text = "Browse ...";
             this.buttonSerachPy.UseVisualStyleBackColor = true;
@@ -167,24 +179,27 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(13, 39);
+            this.label5.Location = new System.Drawing.Point(17, 48);
+            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(85, 13);
+            this.label5.Size = new System.Drawing.Size(112, 17);
             this.label5.TabIndex = 12;
             this.label5.Text = "Skeinforge craft:";
             // 
             // textSkeinforgeCraft
             // 
-            this.textSkeinforgeCraft.Location = new System.Drawing.Point(135, 39);
+            this.textSkeinforgeCraft.Location = new System.Drawing.Point(180, 48);
+            this.textSkeinforgeCraft.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textSkeinforgeCraft.Name = "textSkeinforgeCraft";
-            this.textSkeinforgeCraft.Size = new System.Drawing.Size(376, 20);
+            this.textSkeinforgeCraft.Size = new System.Drawing.Size(500, 22);
             this.textSkeinforgeCraft.TabIndex = 1;
             // 
             // buttonSearchCraft
             // 
-            this.buttonSearchCraft.Location = new System.Drawing.Point(518, 39);
+            this.buttonSearchCraft.Location = new System.Drawing.Point(691, 48);
+            this.buttonSearchCraft.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonSearchCraft.Name = "buttonSearchCraft";
-            this.buttonSearchCraft.Size = new System.Drawing.Size(75, 23);
+            this.buttonSearchCraft.Size = new System.Drawing.Size(100, 28);
             this.buttonSearchCraft.TabIndex = 2;
             this.buttonSearchCraft.Text = "Browse ...";
             this.buttonSearchCraft.UseVisualStyleBackColor = true;
@@ -192,9 +207,9 @@
             // 
             // Skeinforge
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(603, 186);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.ClientSize = new System.Drawing.Size(804, 229);
             this.ControlBox = false;
             this.Controls.Add(this.label5);
             this.Controls.Add(this.buttonSerachPy);
@@ -212,6 +227,7 @@
             this.Controls.Add(this.textSkeinforge);
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Skeinforge";

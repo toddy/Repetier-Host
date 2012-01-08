@@ -34,12 +34,15 @@ namespace RepetierHost.view
         RegistryKey repetierKey;
         RegistryKey threedKey;
         public bool useVBOs = false;
+        public int drawMethod = 0; // 0 = elements, 1 = drawElements, 2 = VBO
+        public float openGLVersion = 1.0f; // Version for feature detection
         public ThreeDSettings()
         {
             InitializeComponent();
             RegMemory.RestoreWindowPos("threeDSettingsWindow", this);
             if (Main.IsMono)
                 buttonOK.Location = new Point(buttonOK.Location.X,buttonOK.Location.Y-10);
+            comboDrawMethod.SelectedIndex = 0;
             repetierKey = Registry.CurrentUser.CreateSubKey("Software\\Repetier");
             threedKey = repetierKey.CreateSubKey("3D");
             if (comboFilamentVisualization.SelectedIndex < 0) comboFilamentVisualization.SelectedIndex = 1;
@@ -84,6 +87,7 @@ namespace RepetierHost.view
                 threedKey.SetValue("showPrintbed", showPrintbed.Checked ? 1 : 0);
                 threedKey.SetValue("disableFilamentVisualization", checkDisableFilamentVisualization.Checked ? 1 : 0);
                 // threedKey.SetValue("useVBOs", useVBOs ? 1 : 0);
+                threedKey.SetValue("drawMethod", comboDrawMethod.SelectedIndex);
                 threedKey.SetValue("layerHeight", textLayerHeight.Text);
                 threedKey.SetValue("filamentDiameter", textDiameter.Text);
                 threedKey.SetValue("useLayerHeight", radioHeight.Checked ? 1 : 0);
@@ -108,6 +112,7 @@ namespace RepetierHost.view
                 showPrintbed.Checked = 0 != (int)threedKey.GetValue("showPrintbed", showPrintbed.Checked ? 1 : 0);
                 checkDisableFilamentVisualization.Checked = 0 != (int)threedKey.GetValue("disableFilamentVisualization", checkDisableFilamentVisualization.Checked ? 1 : 0);
                 // useVBOs = 0 != (int)threedKey.GetValue("useVBOs", useVBOs.Checked ? 1 : 0);
+                comboDrawMethod.SelectedIndex = (int)threedKey.GetValue("drawMethod", 0);
                 textLayerHeight.Text = (string)threedKey.GetValue("layerHeight", textLayerHeight.Text);
                 textDiameter.Text = (string)threedKey.GetValue("filamentDiameter", textDiameter.Text);
                 radioHeight.Checked = 0 != (int)threedKey.GetValue("useLayerHeight", radioHeight.Checked ? 1 : 0);
@@ -229,6 +234,11 @@ namespace RepetierHost.view
         private void checkDisableFilamentVisualization_CheckedChanged(object sender, EventArgs e)
         {
             Main.main.Update3D();
+        }
+
+        private void comboDrawMethod_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Main.main.Update3D();
         }
     }
 }

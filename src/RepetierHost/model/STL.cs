@@ -135,6 +135,10 @@ namespace RepetierHost.model
             Position.x += x - 0.5f * (xMax + xMin);
             Position.y += y - 0.5f * (yMax + yMin);
         }
+        public override Vector3 getCenter()
+        {
+            return new Vector3(0.5f*(xMin+xMax),0.5f*(yMin+yMax),0.5f*(zMin+zMax));
+        }
         public void UpdateMatrix()
         {
             Matrix4 transl = Matrix4.CreateTranslation(Position.x, Position.y, Position.z);
@@ -187,11 +191,20 @@ namespace RepetierHost.model
         int[] bufs = null;
         public override void Paint()
         {
-            bool useVBOs = Main.threeDSettings.useVBOs;
-            if (useVBOs && bufs == null)
+            GL.Enable(EnableCap.Normalize);
+            bool useVBOs = Main.threeDSettings.drawMethod==2;
+            if (bufs != null && useVBOs == false)
             {
-                bufs = new int[4];
-                GL.GenBuffers(4, bufs);
+                GL.DeleteBuffers(4, bufs);
+                bufs = null;
+            }
+            if (((useVBOs && bufs == null)) || (points==null && Main.threeDSettings.drawMethod==1))
+            {
+                if (useVBOs)
+                {
+                    bufs = new int[4];
+                    GL.GenBuffers(4, bufs);
+                }
                 int nv = list.Count * 3;
                 points = new float[nv*3];
                 normals = new float[nv*3];
@@ -232,14 +245,17 @@ namespace RepetierHost.model
                     points[ppos++] = tri.p3.Z;
                     pos += 3;
                 }
-                GL.BindBuffer(BufferTarget.ArrayBuffer, bufs[0]);
-                GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(points.Length * sizeof(float)), points, BufferUsageHint.StaticDraw);
-                GL.BindBuffer(BufferTarget.ArrayBuffer, bufs[1]);
-                GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(normals.Length * sizeof(float)), normals, BufferUsageHint.StaticDraw);
-                GL.BindBuffer(BufferTarget.ElementArrayBuffer, bufs[2]);
-                GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(triangles.Length * sizeof(int)), triangles, BufferUsageHint.StaticDraw);
-                GL.BindBuffer(BufferTarget.ElementArrayBuffer, bufs[3]);
-                GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(edges.Length * sizeof(int)), edges, BufferUsageHint.StaticDraw);
+                if (useVBOs)
+                {
+                    GL.BindBuffer(BufferTarget.ArrayBuffer, bufs[0]);
+                    GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(points.Length * sizeof(float)), points, BufferUsageHint.StaticDraw);
+                    GL.BindBuffer(BufferTarget.ArrayBuffer, bufs[1]);
+                    GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(normals.Length * sizeof(float)), normals, BufferUsageHint.StaticDraw);
+                    GL.BindBuffer(BufferTarget.ElementArrayBuffer, bufs[2]);
+                    GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(triangles.Length * sizeof(int)), triangles, BufferUsageHint.StaticDraw);
+                    GL.BindBuffer(BufferTarget.ElementArrayBuffer, bufs[3]);
+                    GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(edges.Length * sizeof(int)), edges, BufferUsageHint.StaticDraw);
+                }
             }
             Color col;
             if (Selected)
@@ -251,26 +267,44 @@ namespace RepetierHost.model
             GL.Material(MaterialFace.Front,MaterialParameter.Emission,new OpenTK.Graphics.Color4(0,0,0,0));
             GL.Material(MaterialFace.Front, MaterialParameter.Specular, new float[] { 1.0f, 1.0f, 1.0f, 1.0f });
             GL.Material(MaterialFace.Front, MaterialParameter.Shininess, 50f);
-            if (useVBOs)
+            if (Main.threeDSettings.drawMethod>0)
             {
                 GL.EnableClientState(ArrayCap.VertexArray);
                 GL.EnableClientState(ArrayCap.NormalArray);
-                GL.BindBuffer(BufferTarget.ArrayBuffer, bufs[0]);
-                GL.VertexPointer(3, VertexPointerType.Float, 0, 0);
-                GL.BindBuffer(BufferTarget.ArrayBuffer, bufs[1]);
-                GL.NormalPointer(NormalPointerType.Float, 0, 0);
-                GL.BindBuffer(BufferTarget.ElementArrayBuffer, bufs[2]);
-
-                GL.DrawElements(BeginMode.Triangles, triangles.Length, DrawElementsType.UnsignedInt, 0);
-                if (Main.threeDSettings.showEdges.Checked)
+                if (useVBOs)
                 {
-                    col = Main.threeDSettings.edges.BackColor;
-                    GL.Material(
-                        MaterialFace.Front,
-                        MaterialParameter.Emission,
-                        new OpenTK.Graphics.Color4(col.R, col.G, col.B, col.A));
-                    GL.BindBuffer(BufferTarget.ElementArrayBuffer, bufs[3]);
-                    GL.DrawElements(BeginMode.Lines, edges.Length, DrawElementsType.UnsignedInt, 0);
+                    GL.BindBuffer(BufferTarget.ArrayBuffer, bufs[0]);
+                    GL.VertexPointer(3, VertexPointerType.Float, 0, 0);
+                    GL.BindBuffer(BufferTarget.ArrayBuffer, bufs[1]);
+                    GL.NormalPointer(NormalPointerType.Float, 0, 0);
+                    GL.BindBuffer(BufferTarget.ElementArrayBuffer, bufs[2]);
+
+                    GL.DrawElements(BeginMode.Triangles, triangles.Length, DrawElementsType.UnsignedInt, 0);
+                    if (Main.threeDSettings.showEdges.Checked)
+                    {
+                        col = Main.threeDSettings.edges.BackColor;
+                        GL.Material(
+                            MaterialFace.Front,
+                            MaterialParameter.Emission,
+                            new OpenTK.Graphics.Color4(col.R, col.G, col.B, col.A));
+                        GL.BindBuffer(BufferTarget.ElementArrayBuffer, bufs[3]);
+                        GL.DrawElements(BeginMode.Lines, edges.Length, DrawElementsType.UnsignedInt, 0);
+                    }
+                }
+                else
+                {
+                    GL.VertexPointer(3, VertexPointerType.Float, 0, points);
+                    GL.NormalPointer(NormalPointerType.Float, 0, normals);
+                    GL.DrawElements(BeginMode.Triangles, triangles.Length, DrawElementsType.UnsignedInt, triangles);
+                    if (Main.threeDSettings.showEdges.Checked)
+                    {
+                        col = Main.threeDSettings.edges.BackColor;
+                        GL.Material(
+                            MaterialFace.Front,
+                            MaterialParameter.Emission,
+                            new OpenTK.Graphics.Color4(col.R, col.G, col.B, col.A));
+                        GL.DrawElements(BeginMode.Lines, edges.Length, DrawElementsType.UnsignedInt, edges);
+                    }
                 }
                 GL.DisableClientState(ArrayCap.VertexArray);
                 GL.DisableClientState(ArrayCap.NormalArray);
@@ -307,6 +341,7 @@ namespace RepetierHost.model
                 }
                 GL.End();
             }
+            GL.Disable(EnableCap.Normalize);
         }
         /// <summary>
         /// solid
