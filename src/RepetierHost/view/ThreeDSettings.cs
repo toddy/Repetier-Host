@@ -233,6 +233,7 @@ namespace RepetierHost.view
 
         private void checkDisableFilamentVisualization_CheckedChanged(object sender, EventArgs e)
         {
+            Main.main.updateShowFilament();
             Main.main.Update3D();
         }
 

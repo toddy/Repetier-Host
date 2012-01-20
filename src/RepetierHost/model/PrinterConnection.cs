@@ -35,9 +35,9 @@ namespace RepetierHost.model
     public delegate void OnLogCleared();
     public delegate void OnLogAppend(LogLine line);
     public delegate void OnLogRemoveLast(LogLine line);
-    public delegate void OnTempUpdate(int extruder,int printbed);
+    public delegate void OnTempUpdate(int extruder, int printbed);
     public delegate void OnJobProgress(float percent);
-    public delegate void OnTempMonitor(UInt32 time,int temp,int target,int output); 
+    public delegate void OnTempMonitor(UInt32 time, int temp, int target, int output);
     public delegate void OnResponse(string response);
     public class PrinterConnection
     {
@@ -58,24 +58,24 @@ namespace RepetierHost.model
         public string printerName = "default";
         public int transferProtocol = 0; // 0 = auto, 1 = force ascii, 2 = force binary
         public int binaryVersion = 0;
-        public int baud=57600;
+        public int baud = 57600;
         public bool garbageCleared = false; // Skip old output
         public Parity parity = Parity.None;
         public StopBits stopbits = StopBits.One;
         public int databits = 8;
         public SerialPort serial = null;
-        public string port="COM10";
+        public string port = "COM10";
         public float travelFeedRate = 4800;
         public float printFeedRate = 2400;
         public float maxZFeedRate = 100;
-        public float disposeX=130;
+        public float disposeX = 130;
         public float disposeY = 0;
         public float disposeZ = 0;
         public bool afterJobGoDispose = true;
         public bool afterJobDisableExtruder = true;
         public bool afterJobDisablePrintbed = true;
         public bool sdcardMounted = true;
-        string read="";
+        string read = "";
         public LinkedList<LogLine> logList = new LinkedList<LogLine>();
         public LinkedList<LogLine> newLogs = new LinkedList<LogLine>();
         public int maxLogLines = 1000;
@@ -102,7 +102,7 @@ namespace RepetierHost.model
         public bool autocheckTemp = true;
         public long autocheckInterval = 3000;
         private long lastAutocheck = 0;
-        System.Timers.Timer timer=null;
+        System.Timers.Timer timer = null;
         private int resendError = 0;
         public int linesSend = 0, errorsReceived = 0;
         public int bytesSend = 0;
@@ -114,8 +114,15 @@ namespace RepetierHost.model
         public int receiveCacheSize = 120;
         public LinkedList<int> nackLines = new LinkedList<int>(); // Lines, whoses receivement were not acknowledged
         Thread readThread = null;
+        VirtualPrinter virtualPrinter;
+        public bool isVirtualActive = false;
+        Thread writeThread = null;
+        static AutoResetEvent writeEvent;
+        public float lastlogprogress = -1000;
+
         public PrinterConnection()
         {
+            virtualPrinter = new VirtualPrinter();
             if (Environment.OSVersion.Platform == PlatformID.Unix)
                 port = "/dev/ttyUSB0";
             job = new Printjob(this);
@@ -124,20 +131,23 @@ namespace RepetierHost.model
             timer.AutoReset = true;
             timer.Elapsed += handleTimer;
             timer.Start();
+
             try
             {
                 string dir = Main.globalSettings.Workdir;
-                if(dir.Length>0 && Main.globalSettings.LogEnabled)
-                    logWriter = new StreamWriter(dir+Path.DirectorySeparatorChar+"repetier.log");
+                if (dir.Length > 0 && Main.globalSettings.LogEnabled)
+                    logWriter = new StreamWriter(dir + Path.DirectorySeparatorChar + "repetier.log");
             }
             catch
             {
                 logWriter = null;
             }
+            writeEvent = new AutoResetEvent(false);
         }
         public void Destroy()
         {
-            if(serial!=null) close();
+            
+            if (serial != null) close();
             if (logWriter != null)
             {
                 logWriter.Close();
@@ -172,9 +182,9 @@ namespace RepetierHost.model
                 catch { }
                 nextPrinterAction = null;
             }
-            if (serial == null || connected == false || garbageCleared==false) return;
+            if (((serial == null || connected == false) && !isVirtualActive) || garbageCleared == false) return;
             long actTime = DateTime.Now.Ticks / 10000;
-            if (autocheckTemp && actTime - lastAutocheck > autocheckInterval && job.exclusive==false)
+            if (autocheckTemp && actTime - lastAutocheck > autocheckInterval && job.exclusive == false)
             {
                 lastAutocheck = actTime;
                 // only inject temp check, if not present. Some commands
@@ -199,7 +209,7 @@ namespace RepetierHost.model
                     ReturnInjectLock();
                 }
             }
-            if ((!pingpong && nackLines.Count==0) || (pingpong && readyForNextSend)) TrySendNextLine();
+            if ((!pingpong && nackLines.Count == 0) || (pingpong && readyForNextSend)) TrySendNextLine();
 
             // If the reprap starts sending response it should finish soon
             else if (resendError < 4 && read.Length > 0 && lastReceived - actTime > 400)
@@ -223,8 +233,9 @@ namespace RepetierHost.model
 
         }
         LogLine useNextLog = null;
-        public static void logInfo(string text) {
-            Main.conn.log(text,false,3);
+        public static void logInfo(string text)
+        {
+            Main.conn.log(text, false, 3);
         }
         public void log(string t, bool response, int level)
         {
@@ -238,7 +249,8 @@ namespace RepetierHost.model
                 l.level = level;
                 update = true;
                 useNextLog = null;
-            } else
+            }
+            else
                 l = new LogLine(t, response, level);
             if (logWriter != null)
             {
@@ -267,16 +279,16 @@ namespace RepetierHost.model
                     removed = logList.First.Value;
                     logList.RemoveFirst();
                 }
-               /* if (eventLogRemoveLast!=null)
-                {
-                    try
-                    {
-                        Main.main.Invoke(eventLogRemoveLast, removed);
-                    }
-                    catch { } // Closing the app can cause an exception, if event comes after Main handle is destroyed
-                }*/
+                /* if (eventLogRemoveLast!=null)
+                 {
+                     try
+                     {
+                         Main.main.Invoke(eventLogRemoveLast, removed);
+                     }
+                     catch { } // Closing the app can cause an exception, if event comes after Main handle is destroyed
+                 }*/
             }
-            if(!update /*&& eventLogAppend!=null*/)
+            if (!update /*&& eventLogAppend!=null*/)
                 try
                 {
                     lock (newLogs)
@@ -286,7 +298,7 @@ namespace RepetierHost.model
                     //Main.main.Invoke(eventLogAppend, l);
                 }
                 catch { } // Closing the app can cause an exception, if event comes after Main handle is destroyed
-      
+
             if (update && eventLogUpdate != null)
                 try
                 {
@@ -317,17 +329,17 @@ namespace RepetierHost.model
             errorsReceived++;
             if (pingpong)
                 readyForNextSend = true;
-            else 
+            else
                 nackLines.Clear(); // printer flushed all coming commands
-            
+
             LinkedListNode<GCode> node = history.Last;
-            if (resendError > 5 || node==null)
+            if (resendError > 5 || node == null)
             {
-                log("Receiving only error messages. Stopped communication.",false,2);
+                log("Receiving only error messages. Stopped communication.", false, 2);
                 close();
                 return; // give up, something is terribly wrong
             }
-            line &=65535;
+            line &= 65535;
             do
             {
                 GCode gc = node.Value;
@@ -359,10 +371,46 @@ namespace RepetierHost.model
         {
             if (paused) return;
             paused = true;
-            MessageBox.Show(Main.main,text, "Printer paused", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+            MessageBox.Show(Main.main, text, "Printer paused", MessageBoxButtons.OK, MessageBoxIcon.Stop);
             paused = false;
         }
         public void TrySendNextLine()
+        {
+            writeEvent.Set(); // Reactivate write look
+        }
+        public void WriteLoop()
+        {
+            bool abort = false;
+            do
+            {
+                try
+                {
+                    while (true)
+                    {
+                        if (pingpong && !readyForNextSend)
+                        {
+                            writeEvent.WaitOne(1);
+                        }
+                        else if (serial == null && !isVirtualActive)
+                        {
+                            // Not ready yet
+                            writeEvent.WaitOne(1);
+                        } else
+                            writeEvent.WaitOne(1);
+                        while (TrySendNextLine2()) { }
+                    }
+                }
+                catch (ThreadAbortException)
+                {
+                    abort = true;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+            } while (abort == false);
+        }
+        public bool TrySendNextLine2()
         {
             string logtext = null;
             int loglevel = 0;
@@ -370,17 +418,17 @@ namespace RepetierHost.model
             string printeraction = null;
             GCode historygc = null;
             GCode hostCommand = null;
-            if (!garbageCleared) return;
+            if (!garbageCleared) return false;
             try
             {
                 lock (nextlineLock)
                 {
-                    if (pingpong && !readyForNextSend) return;
-                    if (serial == null) return; // Not ready yet
-                    if (!serial.IsOpen) // someone unplugged the cord?
+                    if (pingpong && !readyForNextSend) return false;
+                    if (serial == null && !isVirtualActive) return false; // Not ready yet
+                    if (!isVirtualActive && !serial.IsOpen) // someone unplugged the cord?
                     {
                         close();
-                        return;
+                        return false;
                     }
                     GCode gc = null;
                     try
@@ -392,7 +440,7 @@ namespace RepetierHost.model
                             if (binaryVersion == 0)
                             {
                                 string cmd = gc.getAscii(true, true);
-                                if (!pingpong && receivedCount() + cmd.Length + 2 > receiveCacheSize) return; // printer cache full
+                                if (!pingpong && receivedCount() + cmd.Length + 2 > receiveCacheSize) return false; // printer cache full
                                 if (pingpong) readyForNextSend = false;
                                 else { lock (nackLines) { nackLines.AddLast(cmd.Length + 2); } }
                                 serial.WriteLine(cmd);
@@ -401,7 +449,7 @@ namespace RepetierHost.model
                             else
                             {
                                 byte[] cmd = gc.getBinary(binaryVersion);
-                                if (!pingpong && receivedCount() + cmd.Length > receiveCacheSize) return; // printer cache full
+                                if (!pingpong && receivedCount() + cmd.Length > receiveCacheSize) return false; // printer cache full
                                 if (pingpong) readyForNextSend = false;
                                 else { lock (nackLines) { nackLines.AddLast(cmd.Length); } }
                                 serial.Write(cmd, 0, cmd.Length);
@@ -411,9 +459,9 @@ namespace RepetierHost.model
                             lastCommandSend = DateTime.Now.Ticks;
                             resendNode = resendNode.Next;
                             logtext = "Resend: " + gc.getAscii(true, true);
-                          //  if (resendNode == null) readyForNextSend = true;
+                            //  if (resendNode == null) readyForNextSend = true;
                             //readyForNextSend = false;
-                            return;
+                            return true;
                         }
                         if (resendError > 0) resendError--; // Drop error counter
                         // then check for manual commands
@@ -429,24 +477,30 @@ namespace RepetierHost.model
                                 else
                                 {
                                     gc.N = ++lastline;
-                                    if (binaryVersion == 0 || gc.forceAscii)
+                                    if (isVirtualActive)
                                     {
-                                        string cmd = gc.getAscii(true, true);
-                                        if (!pingpong && receivedCount() + cmd.Length + 2 > receiveCacheSize) { --lastline; return; } // printer cache full
-                                        if (pingpong) readyForNextSend = false;
-                                        else { lock (nackLines) { nackLines.AddLast(cmd.Length); } }
-                                        serial.WriteLine(cmd);
-                                        bytesSend += cmd.Length + 2;
+                                        virtualPrinter.receiveLine(gc);
+                                        bytesSend += gc.orig.Length;
                                     }
                                     else
-                                    {
-                                        byte[] cmd = gc.getBinary(binaryVersion);
-                                        if (!pingpong && receivedCount() + cmd.Length > receiveCacheSize) { --lastline; return; } // printer cache full
-                                        if (pingpong) readyForNextSend = false;
-                                        else { lock (nackLines) { nackLines.AddLast(cmd.Length); } }
-                                        serial.Write(cmd, 0, cmd.Length);
-                                        bytesSend += cmd.Length;
-                                    }
+                                        if (binaryVersion == 0 || gc.forceAscii)
+                                        {
+                                            string cmd = gc.getAscii(true, true);
+                                            if (!pingpong && receivedCount() + cmd.Length + 2 > receiveCacheSize) { --lastline; return false; } // printer cache full
+                                            if (pingpong) readyForNextSend = false;
+                                            else { lock (nackLines) { nackLines.AddLast(cmd.Length); } }
+                                            serial.WriteLine(cmd);
+                                            bytesSend += cmd.Length + 2;
+                                        }
+                                        else
+                                        {
+                                            byte[] cmd = gc.getBinary(binaryVersion);
+                                            if (!pingpong && receivedCount() + cmd.Length > receiveCacheSize) { --lastline; return false; } // printer cache full
+                                            if (pingpong) readyForNextSend = false;
+                                            else { lock (nackLines) { nackLines.AddLast(cmd.Length); } }
+                                            serial.Write(cmd, 0, cmd.Length);
+                                            bytesSend += cmd.Length;
+                                        }
                                 }
                                 injectCommands.RemoveFirst();
                             }
@@ -468,7 +522,7 @@ namespace RepetierHost.model
                                     printeraction = injectCommands.Count.ToString() + " commands waiting";
                                 }
                             }
-                            return;
+                            return true;
                         }
                         // do we have a printing job?
                         if (job.dataComplete && !paused)
@@ -483,24 +537,30 @@ namespace RepetierHost.model
                                 else
                                 {
                                     gc.N = ++lastline;
-                                    if (binaryVersion == 0 || gc.forceAscii)
+                                    if (isVirtualActive)
                                     {
-                                        string cmd = gc.getAscii(true, true);
-                                        if (!pingpong && receivedCount() + cmd.Length + 2 > receiveCacheSize) { --lastline; return; } // printer cache full
-                                        if (pingpong) readyForNextSend = false;
-                                        else { lock (nackLines) { nackLines.AddLast(cmd.Length + 2); } }
-                                        serial.WriteLine(cmd);
-                                        bytesSend += cmd.Length + 2;
+                                        virtualPrinter.receiveLine(gc);
+                                        bytesSend += gc.orig.Length;
                                     }
                                     else
-                                    {
-                                        byte[] cmd = gc.getBinary(binaryVersion);
-                                        if (!pingpong && receivedCount() + cmd.Length > receiveCacheSize) { --lastline; return; } // printer cache full
-                                        if (pingpong) readyForNextSend = false;
-                                        else { lock (nackLines) { nackLines.AddLast(cmd.Length); } }
-                                        serial.Write(cmd, 0, cmd.Length);
-                                        bytesSend += cmd.Length;
-                                    }
+                                        if (binaryVersion == 0 || gc.forceAscii)
+                                        {
+                                            string cmd = gc.getAscii(true, true);
+                                            if (!pingpong && receivedCount() + cmd.Length + 2 > receiveCacheSize) { --lastline; return false; } // printer cache full
+                                            if (pingpong) readyForNextSend = false;
+                                            else { lock (nackLines) { nackLines.AddLast(cmd.Length + 2); } }
+                                            serial.WriteLine(cmd);
+                                            bytesSend += cmd.Length + 2;
+                                        }
+                                        else
+                                        {
+                                            byte[] cmd = gc.getBinary(binaryVersion);
+                                            if (!pingpong && receivedCount() + cmd.Length > receiveCacheSize) { --lastline; return false; } // printer cache full
+                                            if (pingpong) readyForNextSend = false;
+                                            else { lock (nackLines) { nackLines.AddLast(cmd.Length); } }
+                                            serial.Write(cmd, 0, cmd.Length);
+                                            bytesSend += cmd.Length;
+                                        }
                                     historygc = gc;
                                 }
                                 job.PopData();
@@ -513,9 +573,8 @@ namespace RepetierHost.model
                                 printeraction = "Printing...ETA " + job.ETA;
                                 logprogress = job.PercentDone;
                             }
+                            return true;
                         }
-                        if (hostCommand != null)
-                            Main.main.Invoke(Main.main.executeHostCall,hostCommand);
                     }
                     catch (InvalidOperationException ex)
                     {
@@ -528,15 +587,20 @@ namespace RepetierHost.model
             {
                 // need to extract log/event calls because they cause deadlocks inside
                 // the lock statement.
+                if (hostCommand != null)
+                    Main.main.Invoke(Main.main.executeHostCall, hostCommand);
                 if (historygc != null)
                     StoreHistory(historygc);
                 if (logtext != null)
                     log(logtext, false, loglevel);
                 if (printeraction != null)
                     firePrinterAction(printeraction);
-                if (logprogress>=0 && eventJobProgress != null)
+                if (logprogress >= 0 && Math.Abs(lastlogprogress-logprogress)>0.3 && eventJobProgress != null) {
+                    lastlogprogress = logprogress;
                     Main.main.Invoke(eventJobProgress, job.PercentDone);
+                }
             }
+            return false;
         }
         /// <summary>
         /// Clean log.
@@ -549,7 +613,40 @@ namespace RepetierHost.model
         }
         public void open()
         {
-            try {
+            if (writeThread == null)
+            {
+                writeThread = new Thread(new ThreadStart(this.WriteLoop));
+                writeThread.Start();
+            }
+            try
+            {
+                if (port.Equals("Virtual printer"))
+                {
+                    isVirtualActive = true;
+                    virtualPrinter.open();
+                    GCode gc = new GCode();
+                    gc.Parse("M105");
+                    virtualPrinter.receiveLine(gc);
+                    connected = true;
+                    if (transferProtocol < 2)
+                        binaryVersion = 0;
+                    else binaryVersion = transferProtocol - 1;
+                    readyForNextSend = true;
+                    nackLines.Clear();
+                    ignoreNextOk = false;
+                    linesSend = errorsReceived = bytesSend = 0;
+                    gc.Parse("N0 M110");
+                    virtualPrinter.receiveLine(gc);
+                    gc.Parse("M115");
+                    virtualPrinter.receiveLine(gc);
+                    gc.Parse("M105");
+                    virtualPrinter.receiveLine(gc);
+                    if (eventConnectionChange != null)
+                        eventConnectionChange("Connected");
+                    Main.main.Invoke(Main.main.UpdateJobButtons);
+                    return;
+                }
+                isVirtualActive = false;
                 if (Main.IsMono)
                     serial = new SerialPort();
                 else
@@ -560,7 +657,7 @@ namespace RepetierHost.model
                 serial.Parity = parity;
                 serial.DataBits = databits;
                 serial.StopBits = stopbits;
-                if(!Main.IsMono)
+                if (!Main.IsMono)
                     serial.DataReceived += received;
                 serial.ErrorReceived += error;
                 serial.RtsEnable = false;
@@ -596,18 +693,44 @@ namespace RepetierHost.model
                     eventConnectionChange("Connected");
                 Main.main.Invoke(Main.main.UpdateJobButtons);
             }
-            catch(IOException ex) {
+            catch (IOException ex)
+            {
                 serial = null;
                 log(ex.Message, true, 2);
-                if(eventConnectionChange!=null)
+                if (eventConnectionChange != null)
                     eventConnectionChange("Conn. error");
             }
         }
 
         public void close()
         {
-            if(serial == null) return;
-            if(job.mode==1)
+            if (writeThread != null)
+            {
+                writeThread.Abort();
+                writeThread = null;
+            }
+            if (isVirtualActive)
+            {
+                isVirtualActive = false;
+                connected = false;
+                virtualPrinter.close();
+                job.KillJob();
+                history.Clear();
+                injectCommands.Clear();
+                resendNode = null;
+                comErrorsReceived = 0;
+                if (eventConnectionChange != null)
+                    try
+                    {
+                        Main.main.Invoke(eventConnectionChange, "Disconnected");
+                    }
+                    catch { } // Closing the app can cause an exception, if event comes after Main handle is destroyed
+                firePrinterAction("Idle");
+                Main.main.Invoke(Main.main.UpdateJobButtons);
+                return;
+            }
+            if (serial == null) return;
+            if (job.mode == 1)
                 job.KillJob();
             Application.DoEvents();
             Thread.Sleep(100);
@@ -616,22 +739,22 @@ namespace RepetierHost.model
             if (readThread != null)
                 readThread.Abort();
             readThread = null;
-          //  lock (nextlineLock)
-           // {
-                try
-                {
-                    serial.Close();
-                    serial.Dispose();
-                }
-                catch (Exception) { }
-                serial = null;
-           // }
+            //  lock (nextlineLock)
+            // {
+            try
+            {
+                serial.Close();
+                serial.Dispose();
+            }
+            catch (Exception) { }
+            serial = null;
+            // }
             job.KillJob();
             history.Clear();
             injectCommands.Clear();
             resendNode = null;
             comErrorsReceived = 0;
-            if(eventConnectionChange!=null)
+            if (eventConnectionChange != null)
                 try
                 {
                     Main.main.Invoke(eventConnectionChange, "Disconnected");
@@ -694,23 +817,34 @@ namespace RepetierHost.model
                 Console.WriteLine(e);
             }
         }
+        public void VirtualResponse(string response)
+        {
+            if (response.Length > 0)
+            {
+                analyzeResponse(response);
+            }
+            TrySendNextLine();
+            lastReceived = DateTime.Now.Ticks / 10000;
+        }
         private void received(object sender,
                         SerialDataReceivedEventArgs e)
         {
             if (serial == null) return;
             string indata = serial.ReadExisting();
-            read+=indata.Replace('\r','\n');
-            do {
+            read += indata.Replace('\r', '\n');
+            do
+            {
                 int pos = read.IndexOf('\n');
-                if(pos<0) break;
-                string response = read.Substring(0,pos);
-                read = read.Substring(pos+1);
-                if(response.Length>0) {
+                if (pos < 0) break;
+                string response = read.Substring(0, pos);
+                read = read.Substring(pos + 1);
+                if (response.Length > 0)
+                {
                     analyzeResponse(response);
                 }
                 TrySendNextLine();
-            } while(true);
-            lastReceived = DateTime.Now.Ticks/10000;
+            } while (true);
+            lastReceived = DateTime.Now.Ticks / 10000;
         }
         /// <summary>
         /// Send a print command, that does not belong to a print job.
@@ -721,7 +855,7 @@ namespace RepetierHost.model
             GCode gc = new GCode();
             gc.Parse(command);
             if (gc.comment) return;
-            lock(history)
+            lock (history)
                 injectCommands.AddLast(gc);
             if (job.dataComplete == false)
             {
@@ -782,7 +916,7 @@ namespace RepetierHost.model
         /// <param name="res"></param>
         public void analyzeResponse(string res)
         {
-            int level=0;
+            int level = 0;
             if (logWriter != null)
             {
                 DateTime time = DateTime.Now;
@@ -855,7 +989,7 @@ namespace RepetierHost.model
             if (h != null)
             {
                 level = -1; // dont log, we see result in status
-                if(h.IndexOf('.')>0) h = h.Substring(0,h.IndexOf('.'));
+                if (h.IndexOf('.') > 0) h = h.Substring(0, h.IndexOf('.'));
                 int.TryParse(h, out extruderTemp);
                 tempChange = true;
             }
@@ -878,7 +1012,7 @@ namespace RepetierHost.model
                 if (sl.Length == 4)
                 {
                     UInt32 time;
-                    int temp,target,output;
+                    int temp, target, output;
                     UInt32.TryParse(sl[0], out time);
                     int.TryParse(sl[1], out temp);
                     int.TryParse(sl[2], out target);
@@ -900,7 +1034,7 @@ namespace RepetierHost.model
                 int.TryParse(h, out binaryVersion);
                 if (transferProtocol == 1) binaryVersion = 0; // force ascii transfer
             }
-            if (res.Equals("start") || (garbageCleared==false && res.IndexOf("start")!=-1))
+            if (res.Equals("start") || (garbageCleared == false && res.IndexOf("start") != -1))
             {
                 lastline = 0;
                 job.KillJob(); // continuing the old job makes no sense, better save the plastic
@@ -912,7 +1046,7 @@ namespace RepetierHost.model
                 nackLines.Clear();
                 garbageCleared = true;
             }
-            if (extract(res, "Error:")!=null)
+            if (extract(res, "Error:") != null)
             {
                 level = 2;
             }
@@ -933,8 +1067,8 @@ namespace RepetierHost.model
             else if (res.StartsWith("ok"))
             {
                 garbageCleared = true;
-                if(Main.main.logView.toolACK.Checked)
-                  log(res, true, level);
+                if (Main.main.logView.toolACK.Checked)
+                    log(res, true, level);
                 if (!ignoreNextOk)  // ok in response of resend?
                 {
                     if (pingpong) readyForNextSend = true;
@@ -948,10 +1082,11 @@ namespace RepetierHost.model
                     }
                     resendError = 0;
                     TrySendNextLine();
-                } else
-                  ignoreNextOk = false;
+                }
+                else
+                    ignoreNextOk = false;
             }
-            else if (res.Equals("wait") && DateTime.Now.Ticks-lastCommandSend>5000)
+            else if (res.Equals("wait") && DateTime.Now.Ticks - lastCommandSend > 5000)
             {
                 if (Main.main.logView.toolACK.Checked)
                     log(res, true, level);
@@ -968,7 +1103,7 @@ namespace RepetierHost.model
                 TrySendNextLine();
             }
             else if (level >= 0 && garbageCleared) log(res, true, level);
-            
+
         }
         private string extract(string source, string ident)
         {
@@ -986,7 +1121,7 @@ namespace RepetierHost.model
         public void doDispose()
         {
             if (analyzer.hasXHome == false || analyzer.hasYHome == false) return; // don't know where we are
-            float dx = disposeX - analyzer.xOffset-(analyzer.relative?analyzer.x:0);
+            float dx = disposeX - analyzer.xOffset - (analyzer.relative ? analyzer.x : 0);
             float dy = disposeY - analyzer.yOffset - (analyzer.relative ? analyzer.y : 0);
             string zextra = "";
             GetInjectLock();

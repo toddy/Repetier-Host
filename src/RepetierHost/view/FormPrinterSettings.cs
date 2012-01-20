@@ -244,6 +244,7 @@ namespace RepetierHost.view
         private void FormPrinterSettings_Shown(object sender, EventArgs e)
         {
             comboPort.Items.Clear();
+            comboPort.Items.Add("Virtual printer");
             foreach (string p in SerialPort.GetPortNames())
             {
                 comboPort.Items.Add(p);

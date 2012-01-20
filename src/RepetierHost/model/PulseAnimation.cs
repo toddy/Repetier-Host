@@ -23,6 +23,7 @@ namespace RepetierHost.model
 
             double baseamp = Math.Sin(Time * 2.0 * Math.PI * frequency);
             Vector3 center = model.getCenter();
+            //center = Vector3.Add(center,new Vector3(model.Position.x,model.Position.y,model.Position.z));
             GL.Translate(center);
             GL.Scale(1.0 + scalex * baseamp, 1.0 + scaley * baseamp, 1.0 + scalez * baseamp);
             GL.Translate(-center.X, -center.Y, -center.Z);
@@ -45,6 +46,7 @@ namespace RepetierHost.model
         {
             double t = Time;
             Vector3 c = model.getCenter();
+            //c = Vector3.Add(c,new Vector3(model.Position.x, model.Position.y, model.Position.z));
             if (mode == 0)
             {
                 height = Main.printerSettings.PrintAreaHeight * 1.2;

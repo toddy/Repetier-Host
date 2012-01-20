@@ -31,12 +31,12 @@ namespace RepetierHost.view
     {
         EEPROMStorage storage;
         BindingList<EEPROMParameter> data = new BindingList<EEPROMParameter>();
+        bool reinit = true;
         public EEPROMRepetier()
         {
             InitializeComponent();
             RegMemory.RestoreWindowPos("eepromWindow", this);
             storage = Main.conn.eeprom;
-            storage.eventAdded += newline;
             grid.Columns.Add("Description", "Description");
             grid.Columns[0].DataPropertyName = "Description";
             grid.Columns[0].ReadOnly = true;
@@ -46,11 +46,9 @@ namespace RepetierHost.view
         }
         public void Show2()
         {
+            reinit = true;
             Show();
             BringToFront();
-            storage.Clear();
-            data.Clear();
-            storage.Update();
         }
         private void newline(EEPROMParameter p)
         {
@@ -59,17 +57,39 @@ namespace RepetierHost.view
         private void buttonOK_Click(object sender, EventArgs e)
         {
             storage.Save();
+            storage.Clear();
+            storage.eventAdded -= newline;
+            grid.DataSource = null;
+            data.Clear();
             Hide();
         }
 
         private void buttonAbort_Click(object sender, EventArgs e)
         {
+            storage.Clear();
+            data.Clear();
+            storage.eventAdded -= newline;
+            grid.DataSource = null;
             Hide();
         }
 
         private void EEPROMRepetier_FormClosing(object sender, FormClosingEventArgs e)
         {
             RegMemory.StoreWindowPos("eepromWindow", this, false, false);
+        }
+
+        private void EEPROMRepetier_Activated(object sender, EventArgs e)
+        {
+            Console.WriteLine("Aktiviert");
+            if (reinit)
+            {
+                reinit = false;
+                storage.Clear();
+                data.Clear();
+                grid.DataSource = data;
+                storage.eventAdded += newline;
+                storage.Update();
+            }
         }
     }
 }

@@ -271,7 +271,7 @@ namespace RepetierHost.model
             {
                 GL.EnableClientState(ArrayCap.VertexArray);
                 GL.EnableClientState(ArrayCap.NormalArray);
-                if (useVBOs)
+                if (Main.threeDSettings.drawMethod==2)
                 {
                     GL.BindBuffer(BufferTarget.ArrayBuffer, bufs[0]);
                     GL.VertexPointer(3, VertexPointerType.Float, 0, 0);

@@ -38,7 +38,6 @@
             this.toolResetView = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolMoveObject = new System.Windows.Forms.ToolStripButton();
-            this.toolAutoupdate = new System.Windows.Forms.ToolStripButton();
             this.toolStripClear = new System.Windows.Forms.ToolStripButton();
             this.gl = new OpenTK.GLControl();
             this.timer = new System.Windows.Forms.Timer(this.components);
@@ -55,7 +54,6 @@
             this.toolResetView,
             this.toolStripSeparator1,
             this.toolMoveObject,
-            this.toolAutoupdate,
             this.toolStripClear});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
@@ -130,18 +128,6 @@
             this.toolMoveObject.Text = "Move object";
             this.toolMoveObject.Click += new System.EventHandler(this.toolMoveObject_Click);
             // 
-            // toolAutoupdate
-            // 
-            this.toolAutoupdate.Checked = true;
-            this.toolAutoupdate.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.toolAutoupdate.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolAutoupdate.Image = ((System.Drawing.Image)(resources.GetObject("toolAutoupdate.Image")));
-            this.toolAutoupdate.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolAutoupdate.Name = "toolAutoupdate";
-            this.toolAutoupdate.Size = new System.Drawing.Size(74, 22);
-            this.toolAutoupdate.Text = "Autoupdate";
-            this.toolAutoupdate.Click += new System.EventHandler(this.toolAutoupdate_Click);
-            // 
             // toolStripClear
             // 
             this.toolStripClear.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -171,6 +157,7 @@
             // 
             // timer
             // 
+            this.timer.Interval = 33;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
             // ThreeDControl
@@ -200,7 +187,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton toolMoveObject;
         private System.Windows.Forms.Timer timer;
-        private System.Windows.Forms.ToolStripButton toolAutoupdate;
         private System.Windows.Forms.ToolStripButton toolStripClear;
         public OpenTK.GLControl gl;
     }

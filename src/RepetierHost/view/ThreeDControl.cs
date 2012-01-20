@@ -45,11 +45,9 @@ namespace RepetierHost.view
         float zoom = 1.0f;
         Vector3 viewCenter, startViewCenter;
         Vector3 userPosition, startUserPosition;
-        Vector3 rayStart, rayEnd; // For object hit testing
         Matrix4 lookAt,persp,modelView;
         double normX=0, normY=0;
         float nearDist, farDist, aspectRatio,nearHeight;
-        bool drawRay = false;
         float rotZ = 0, rotX = 0;
         float startRotZ = 0, startRotX = 0;
         float lastX, lastY;
@@ -58,20 +56,23 @@ namespace RepetierHost.view
         int mode = 0;
         bool editor = false;
         bool autoupdateable = false;
+        int slowCounter = 0; // Indicates slow framerates
+        uint timeCall=0;
+
         public LinkedList<ThreeDModel> models;
         public ThreeDControl()
         {
             models = new LinkedList<ThreeDModel>();
             InitializeComponent();
-            toolAutoupdate.Visible = autoupdateable;
             toolStripClear.Visible = autoupdateable;
-            Application.Idle += Application_Idle;
+            //Application.Idle += Application_Idle;
             STL m1 = new STL();
             viewCenter = new Vector3(0, 0, 0);
             rotX = 20;
             userPosition = new Vector3(0, -2f * ps.PrintAreaDepth, 0.0f * ps.PrintAreaHeight);
             gl.MouseWheel += gl_MouseWheel;
             // Controls.Remove(gl);
+            timer.Start();
         }
         public void SetEditor(bool ed)
         {
@@ -116,7 +117,6 @@ namespace RepetierHost.view
                 {
                     timer.Stop();
                 }
-                toolAutoupdate.Visible = value;
                 toolStripClear.Visible = value;
             }
         }
@@ -437,6 +437,20 @@ namespace RepetierHost.view
                // PrinterConnection.logInfo("OpenGL update time:" + time.ToString());
                 double framerate = 10000000.0 / fpsTimer.ElapsedTicks;
                 Main.main.fpsLabel.Text = framerate.ToString("0") + " FPS";
+                if (framerate < 30)
+                {
+                    slowCounter++;
+                    if (slowCounter >= 10)
+                    {
+                        slowCounter = 0;
+                        foreach (ThreeDModel model in models)
+                        {
+                            model.ReduceQuality();
+                        }
+                    }
+                }
+                else if (slowCounter > 0)
+                    slowCounter--;
             }
             catch { }
         }
@@ -473,7 +487,7 @@ namespace RepetierHost.view
                         }
                     }
                     if (Main.threeDSettings.useVBOs)
-                        Main.conn.log("Using fast VBOs for rendering", false, 3);
+                        Main.conn.log("Using fast VBOs for rendering is possible", false, 3);
                     else
                         Main.conn.log("Fast VBOs for rendering not supported. Using slower default method.", false, 3);
                   //  Main.threeDSettings.useVBOs = false;
@@ -483,26 +497,6 @@ namespace RepetierHost.view
             }
             loaded = true;
             SetupViewport();
-        }
-        private void computeRay()
-        {
-            Matrix4 invpersp = Matrix4.Identity; // persp; // new Matrix4(persp.Row0, persp.Row1, persp.Row2, persp.Row3);
-            //invpersp.Invert();
-            float x = (float)(nearHeight * normX*aspectRatio);
-            float y = (float)(nearHeight * normY);
-            Vector4 minpos = new Vector4(x, y, nearDist, 1);
-            Vector4 maxpos = new Vector4(x*farDist/nearDist,y*farDist/nearDist, farDist, 1);
-            Matrix4 invview = Matrix4.Invert(modelView);
-            Vector4 rayStart4 = Vector4.Transform(Vector4.Transform(minpos, invpersp),invview);
-            Vector4 rayEnd4 = Vector4.Transform(Vector4.Transform(maxpos, invpersp),invview);
-            rayStart =Vector3.Multiply(new Vector3(rayStart4),1.0f/rayStart4.W);
-            rayEnd = Vector3.Multiply(new Vector3(rayEnd4), 1.0f / rayEnd4.W);
-            
-            drawRay = true;
-            PrinterConnection.logInfo("Start:" + rayStart+" aus "+minpos);
-            PrinterConnection.logInfo("End:" + rayEnd+" aus "+maxpos);
-            gl.Invalidate(); // draw line
-
         }
         private Matrix4 GluPickMatrix(float x, float y, float width, float height, int[] viewport)
         {
@@ -675,6 +669,7 @@ namespace RepetierHost.view
                 rotX = startRotX + speedY * 50;
                 //rotZ += (float)milliseconds * speedX *Math.Abs(speedX)/ 15.0f;
                 //rotX += (float)milliseconds * speedY*Math.Abs(speedY) / 15.0f;
+                gl.Invalidate();
             }
             else if (emode == 1)
             {
@@ -684,6 +679,7 @@ namespace RepetierHost.view
                 userPosition.Z = startUserPosition.Z - speedY * 200 * zoom;
                 //userPosition.X += (float)milliseconds * speedX * Math.Abs(speedX) / 10.0f;
                 //userPosition.Z -= (float)milliseconds * speedY *Math.Abs(speedY)/ 10.0f;
+                gl.Invalidate();
             }
             else if (emode == 2)
             {
@@ -693,10 +689,12 @@ namespace RepetierHost.view
                 viewCenter.Z = startViewCenter.Z + speedY * 200 * zoom;
                 //viewCenter.X -= (float)milliseconds * speedX * Math.Abs(speedX) / 10.0f;
                 //viewCenter.Z += (float)milliseconds * speedY * Math.Abs(speedY)/ 10.0f;
+                gl.Invalidate();
             }
             else if (emode == 3)
             {
                 userPosition.Y += (float)milliseconds * speedY * Math.Abs(speedY) / 10.0f;
+                gl.Invalidate();
             }
             else if (emode == 4)
             {
@@ -708,8 +706,8 @@ namespace RepetierHost.view
                 //   -(float)milliseconds * speedY * Math.Abs(speedY) / 10.0f);
                 lastX = xPos;
                 lastY = yPos;
+                gl.Invalidate();
             }
-            gl.Invalidate();
         }
 
         public void SetMode(int _mode)
@@ -776,19 +774,18 @@ namespace RepetierHost.view
 
         private void timer_Tick(object sender, EventArgs e)
         {
-            if (!autoupdateable) return;
-            if (toolAutoupdate.Checked == false) return;
+            Application_Idle(sender, e);
+            timeCall++;
             foreach (ThreeDModel m in models)
             {
                 if (m.Changed || m.hasAnimations)
                 {
-                    if (Main.threeDSettings.drawMethod == 0)
-                        timer.Interval = 300; // Method is slow, so leave more time for other tasks
-                    else
-                        timer.Interval = 100;
+                    if ((Main.threeDSettings.drawMethod == 0 && (timeCall % 9)!=0))
+                        return;
                     if (m.hasAnimations && Main.threeDSettings.drawMethod != 0)
-                        timer.Interval = 33;
-                    gl.Invalidate();
+                        gl.Invalidate();
+                    else if ((timeCall % 3) == 0)
+                        gl.Invalidate();
                     return;
                 }
             }
@@ -801,11 +798,6 @@ namespace RepetierHost.view
                 m.Clear();
             }
             gl.Invalidate();
-        }
-
-        private void toolAutoupdate_Click(object sender, EventArgs e)
-        {
-            toolAutoupdate.Checked = !toolAutoupdate.Checked;
         }
 
         private void ThreeDControl_MouseEnter(object sender, EventArgs e)

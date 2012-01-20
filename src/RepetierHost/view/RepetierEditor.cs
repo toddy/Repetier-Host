@@ -296,6 +296,7 @@ namespace RepetierHost.view
         Brush linesTextColor = Brushes.White;
         Brush backBrush = Brushes.White;
         Brush evenBackBrush = Brushes.Linen;
+        Brush hostBrush = Brushes.SeaGreen;
         Brush selectionBrush = Brushes.Aquamarine;
         Pen cursorBrush = Pens.Black;
         float fontHeight;
@@ -459,6 +460,17 @@ namespace RepetierHost.view
             string comment = "";
             string command = "";
             string parameter = "";
+            float ps = linesWidth + x;
+            int i;
+            if (text.StartsWith("@"))
+            {
+                for (i = 0; i < text.Length; i++)
+                {
+                    g.DrawString(text[i].ToString(), drawFont, hostBrush, ps, y);
+                    ps += fontWidth;
+                }
+                text = "";
+            }
             int p = text.IndexOf(';');
             if (p != -1)
             {
@@ -475,8 +487,6 @@ namespace RepetierHost.view
                 parameter = text.Substring(p);
                 command = text.Substring(0, p);
             }
-            float ps = linesWidth + x;
-            int i;
             if (command.Length > 0)
             {
                 for (i = 0; i < command.Length; i++)

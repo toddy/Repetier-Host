@@ -68,14 +68,15 @@ namespace RepetierHost.model
             pointsCount += path.pointsCount;
             if (elements != null)
             {
-                if (false && path.elements != null && drawMethod == path.drawMethod) // both parts are already up to date, so just join them
+                if (true && path.elements != null && drawMethod == path.drawMethod) // both parts are already up to date, so just join them
                 {
                     int[] newelements = new int[elements.Length + path.elements.Length];
                     int p, l = elements.Length, i;
                     for (p = 0; p < l; p++) newelements[p] = elements[p];
                     int[] pe = path.elements;
                     l = pe.Length;
-                    for (i = 0; i < l; i++) newelements[p++] = pe[i];
+                    int pointsold =positions.Length/3; 
+                    for (i = 0; i < l; i++) newelements[p++] = pe[i]+pointsold;
                     elements = newelements;
                     float[] newnormals = null;
                     if (normals != null) newnormals = new float[normals.Length + path.normals.Length];
@@ -83,7 +84,7 @@ namespace RepetierHost.model
                     if (normals != null)
                     {
                         l = normals.Length;
-                        for (p = 0; i < l; p++)
+                        for (p = 0; p < l; p++)
                         {
                             newnormals[p] = normals[p];
                             newpoints[p] = positions[p];
@@ -203,6 +204,7 @@ namespace RepetierHost.model
                 float dh = 0.5f * h;
                 float dw = 0.5f * w;
                 bool first = true;
+                float deltae;
                 Vector3 last = new Vector3();
                 w *= 0.5f;
                 int nv2 = 2 * nv;
@@ -227,6 +229,7 @@ namespace RepetierHost.model
                             lastdir[0] = actdir[0] = ptn.p.X - v.X;
                             lastdir[1] = actdir[1] = ptn.p.Y - v.Y;
                             lastdir[2] = actdir[2] = ptn.p.Z - v.Z;
+                            deltae = ptn.e - pt.e;
                             GCodeVisual.normalize(ref lastdir);
                             // first = false;
                             // continue;
@@ -239,12 +242,14 @@ namespace RepetierHost.model
                                 actdir[0] = v.X - last.X;
                                 actdir[1] = v.Y - last.Y;
                                 actdir[2] = v.Z - last.Z;
+                                deltae = pt.e - laste;
                             }
                             else
                             {
                                 actdir[0] = ptn.p.X - v.X;
                                 actdir[1] = ptn.p.Y - v.Y;
                                 actdir[2] = ptn.p.Z - v.Z;
+                                deltae = ptn.e - pt.e;
                             }
                         }
                         if (!fixedH)
@@ -252,7 +257,7 @@ namespace RepetierHost.model
                             float dist = (float)Math.Sqrt(actdir[0] * actdir[0] + actdir[1] * actdir[1] + actdir[2] * actdir[2]);
                             if (dist > 0)
                             {
-                                h = (float)Math.Sqrt((pt.e - laste) * dfac / dist);
+                                h = (float)Math.Sqrt(deltae * dfac / dist);
                                 w = h * wfac;
                                 dh = 0.5f * h;
                                 dw = 0.5f * w;
@@ -263,7 +268,7 @@ namespace RepetierHost.model
                         dir[1] = actdir[1] + lastdir[1];
                         dir[2] = actdir[2] + lastdir[2];
                         GCodeVisual.normalize(ref dir);
-                        float zoomw = dir[0] * lastdir[0] + dir[1] * lastdir[1] + dir[2] * lastdir[2];
+                        float zoomw = (float)Math.Cos(0.5*Math.Acos(dir[0] * lastdir[0] + dir[1] * lastdir[1] + dir[2] * lastdir[2]));
                         lastdir[0] = actdir[0];
                         lastdir[1] = actdir[1];
                         lastdir[2] = actdir[2];
@@ -424,6 +429,29 @@ namespace RepetierHost.model
                 GL.DeleteBuffers(1,colbuf);
             colbufSize = 0;
         }
+        public override void ReduceQuality()
+        {
+            if(!liveView) return;
+            if (Main.threeDSettings.filamentVisualization < ana.maxDrawMethod)
+                ana.maxDrawMethod = Main.threeDSettings.filamentVisualization;
+            if (ana.maxDrawMethod > 0)
+            {
+                ana.maxDrawMethod--;
+                Main.conn.log("Reduced visual quality for better framerates and to protect print quality", false, 1);
+            }
+            else
+            {
+                if (ana.drawing)
+                {
+                    ana.drawing = false;
+                    Main.conn.log("Disabled additional filament drawing for better framerates and to protect print quality", false, 1);
+                }
+            }
+        }
+        public override void ResetQuality() {
+            ana.drawing = true;
+            ana.maxDrawMethod = 10;
+        }
         public void Reduce()
         {
             if (segments.Count < 2) return;
@@ -512,11 +540,21 @@ namespace RepetierHost.model
             if (colbufSize > 0)
                 GL.DeleteBuffers(1, colbuf);
             colbufSize = 0;
+            ResetQuality();
+
             if (startOnClear)
                 ana.start();
         }
         void OnPosChange(GCode act, float x, float y, float z)
         {
+            if (!ana.drawing)
+            {
+                lastx = x;
+                lasty = y;
+                lastz = z;
+                laste = ana.emax;
+                return;
+            }
             float locDist = (float)Math.Sqrt((x - lastx) * (x - lastx) + (y - lasty) * (y - lasty) + (z - lastz) * (z - lastz));
             bool isLastPos = locDist < 0.00001;
             if (!act.hasG || (act.G > 1 && act.G != 28)) return;
@@ -898,6 +936,7 @@ namespace RepetierHost.model
             GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Specular, new float[] { 1.0f, 1.0f, 1.0f, 1.0f });
             GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Shininess, 50f);
             method = Main.threeDSettings.filamentVisualization;
+            if (method > ana.maxDrawMethod) method = ana.maxDrawMethod;
             wfac = Main.threeDSettings.widthOverHeight;
             h = Main.threeDSettings.layerHeight;
             w = h * wfac;

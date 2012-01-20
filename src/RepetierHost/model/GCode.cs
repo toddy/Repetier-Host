@@ -308,7 +308,8 @@ namespace RepetierHost.model
         }
         public void Parse(String line)
         {
-            orig = line;
+            hostCommand = false;
+            orig = line.Trim();
             if (line.StartsWith("@"))
             {
                 hostCommand = true;

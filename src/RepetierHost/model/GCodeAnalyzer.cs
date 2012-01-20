@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using RepetierHost.view;
 
 namespace RepetierHost.model
 {
@@ -43,12 +44,15 @@ namespace RepetierHost.model
         public int lastline = 0;
         public bool hasXHome = false, hasYHome = false, hasZHome = false;
         public bool privateAnalyzer = false;
+        public int maxDrawMethod = 2;
+        public bool drawing = true;
+        public float printerWidth, printerHeight, printerDepth;
         public GCodeAnalyzer(bool privAnal)
         {
             privateAnalyzer = privAnal;
             extruderTemp = 0;
             bedTemp = 0;
-        }
+         }
         public void fireChanged()
         {
             if (eventChange != null)
@@ -71,15 +75,30 @@ namespace RepetierHost.model
             fanOn = false;
             powerOn = true;
             fanVoltage = 0;
+            maxDrawMethod = 2;
+            drawing = true;
             lastline = 0;
             x = y = z = e = emax = 0;
             xOffset = yOffset = zOffset = eOffset = 0;
             hasXHome = hasYHome = hasZHome = false;
+            printerWidth = Main.printerSettings.PrintAreaWidth;
+            printerDepth = Main.printerSettings.PrintAreaDepth;
+            printerHeight = Main.printerSettings.PrintAreaHeight;
+            if (!privateAnalyzer)
+                Main.main.jobVisual.ResetQuality();
             fireChanged();
         }
         public void Analyze(GCode code)
         {
-            if (code.hostCommand || code.forceAscii) return; // Don't analyse host commands and unknown commands
+            if (code.hostCommand)
+            {
+                if (code.getHostCommand().Equals("@hide"))
+                    drawing = false;
+                else if (code.getHostCommand().Equals("@show"))
+                    drawing = true;
+                return;
+            }
+            if (code.forceAscii) return; // Don't analyse host commands and unknown commands
             if (code.hasN)
                 lastline = code.N;
             if (uploading && !code.hasM && code.M != 29) return; // ignore upload commands
@@ -109,9 +128,12 @@ namespace RepetierHost.model
                                     e = eOffset + code.E;
                             }
                         }
-                        if (x < 0) x = 0;
-                        if (y < 0) y = 0;
-                        if (z < 0) z = 0;
+                        if (x < 0) { x = 0; hasXHome = false; }
+                        if (y < 0) { y = 0; hasYHome = false; }
+                        if (z < 0) { z = 0; hasZHome = false; }
+                        if (x > printerWidth) { hasXHome = false; }
+                        if (y > printerDepth) { hasYHome = false; }
+                        if (z > printerHeight) { hasZHome = false; }
                         if (e > emax) emax = e;
                         if (eventPosChanged != null)
                             if (privateAnalyzer)

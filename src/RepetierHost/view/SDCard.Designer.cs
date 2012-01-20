@@ -62,7 +62,7 @@
             this.toolUnmount});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(479, 39);
+            this.toolStrip1.Size = new System.Drawing.Size(383, 39);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -138,10 +138,10 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStatus,
             this.progress});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 484);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 386);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(479, 26);
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 15, 0);
+            this.statusStrip1.Size = new System.Drawing.Size(383, 22);
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
@@ -149,7 +149,7 @@
             // toolStatus
             // 
             this.toolStatus.Name = "toolStatus";
-            this.toolStatus.Size = new System.Drawing.Size(190, 21);
+            this.toolStatus.Size = new System.Drawing.Size(151, 17);
             this.toolStatus.Spring = true;
             this.toolStatus.Text = "-";
             // 
@@ -158,7 +158,7 @@
             this.progress.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.progress.Maximum = 200;
             this.progress.Name = "progress";
-            this.progress.Size = new System.Drawing.Size(267, 20);
+            this.progress.Size = new System.Drawing.Size(214, 16);
             // 
             // files
             // 
@@ -171,11 +171,10 @@
             this.columnHeaderName,
             this.columnHeaderSize});
             this.files.FullRowSelect = true;
-            this.files.Location = new System.Drawing.Point(16, 52);
-            this.files.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.files.Location = new System.Drawing.Point(13, 42);
             this.files.MultiSelect = false;
             this.files.Name = "files";
-            this.files.Size = new System.Drawing.Size(449, 367);
+            this.files.Size = new System.Drawing.Size(360, 294);
             this.files.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.files.TabIndex = 2;
             this.files.UseCompatibleStateImageBehavior = false;
@@ -195,10 +194,9 @@
             // buttonClose
             // 
             this.buttonClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonClose.Location = new System.Drawing.Point(363, 439);
-            this.buttonClose.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonClose.Location = new System.Drawing.Point(291, 342);
             this.buttonClose.Name = "buttonClose";
-            this.buttonClose.Size = new System.Drawing.Size(100, 28);
+            this.buttonClose.Size = new System.Drawing.Size(80, 22);
             this.buttonClose.TabIndex = 3;
             this.buttonClose.Text = "Close";
             this.buttonClose.UseVisualStyleBackColor = true;
@@ -212,9 +210,9 @@
             // 
             // SDCard
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(479, 510);
+            this.ClientSize = new System.Drawing.Size(383, 408);
             this.ControlBox = false;
             this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.files);
@@ -222,7 +220,6 @@
             this.Controls.Add(this.toolStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "SDCard";

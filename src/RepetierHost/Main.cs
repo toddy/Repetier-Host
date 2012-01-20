@@ -126,8 +126,10 @@ namespace RepetierHost
             globalSettings = new GlobalSettings();
             conn = new PrinterConnection();
             printerSettings = new FormPrinterSettings();
+            conn.analyzer.start();
             threeDSettings = new ThreeDSettings();
             InitializeComponent();
+            updateShowFilament();
             RegMemory.RestoreWindowPos("mainWindow", this);
             if (WindowState == FormWindowState.Maximized)
                 Application.DoEvents();
@@ -299,11 +301,15 @@ namespace RepetierHost
                 toolConnect.ToolTipText = "Disconnect printer";
                 foreach (ToolStripItem it in toolConnect.DropDownItems)
                     it.Enabled = false;
+                eeprom.Enabled = true;
             }
             else
             {
                 toolConnect.Image = imageList.Images[1];
                 toolConnect.ToolTipText = "Connect printer";
+                eeprom.Enabled = false;
+                if (eepromSettings != null && eepromSettings.Visible)
+                    eepromSettings.Close();
                 foreach (ToolStripItem it in toolConnect.DropDownItems)
                     it.Enabled = true;
             }
@@ -319,6 +325,19 @@ namespace RepetierHost
 
         private void testToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (eepromSettings != null)
+            {
+                if (eepromSettings.Visible)
+                {
+                    eepromSettings.BringToFront();
+                    return;
+                }
+                else
+                {
+                    eepromSettings.Dispose();
+                    eepromSettings = null;
+                }
+            }
             if (eepromSettings == null)
                 eepromSettings = new EEPROMRepetier();
             eepromSettings.Show2();
@@ -797,6 +816,24 @@ namespace RepetierHost
             {
                 conn.pause(param);
             }
+        }
+        public void updateShowFilament()
+        {
+            if (threeDSettings.checkDisableFilamentVisualization.Checked)
+            {
+                toolShowFilament.Image = imageList.Images[5];
+                toolShowFilament.ToolTipText = "Filament visualization disabled";
+            }
+            else
+            {
+                toolShowFilament.Image = imageList.Images[4];
+                toolShowFilament.ToolTipText = "Filament visualization enabled";
+            }
+        }
+        private void toolShowFilament_Click(object sender, EventArgs e)
+        {
+            threeDSettings.checkDisableFilamentVisualization.Checked = !threeDSettings.checkDisableFilamentVisualization.Checked;
+           // updateShowFilament();
         }
 
     }

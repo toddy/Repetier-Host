@@ -137,6 +137,9 @@ namespace RepetierHost.model
             get { return scale; }
             set { scale = value; }
         }
+        public virtual void ReduceQuality() {
+        }
+        public virtual void ResetQuality() { }
         /// <summary>
         /// Has the model changed since last paint?
         /// </summary>

@@ -33,6 +33,7 @@ namespace RepetierHost.view
         LinkedList<string> commands = new LinkedList<string>();
         int commandPos = 0;
         bool createCommands = true;
+        float lastx = -1000, lasty = -1000, lastz = -1000;
         public PrintPanel()
         {
             InitializeComponent();
@@ -41,14 +42,15 @@ namespace RepetierHost.view
             con.eventConnectionChange += ConnectionChanged;
             ann.fanVoltage = trackFanVoltage.Value;
             con.eventTempChange += tempUpdate;
-            ann.eventPosChanged += coordUpdate;
+          //  ann.eventPosChanged += coordUpdate;
             ann.eventChange += analyzerChange;
             UpdateConStatus(false);
             float volt = 100f * trackFanVoltage.Value / 255;
             labelVoltage.Text = "Output " + volt.ToString("0.0") + "%";
+            timer.Start();
         }
         public void ConnectionChanged(string msg) {
-            UpdateConStatus(Main.conn.serial != null);
+            UpdateConStatus(Main.conn.serial != null || Main.conn.isVirtualActive);
         }
         private void tempUpdate(int extruder, int printbed)
         {
@@ -79,9 +81,33 @@ namespace RepetierHost.view
             createCommands = true;
         }
         private void coordUpdate(GCode code,float x,float y,float z) {
-            labelX.Text = "X=" + x.ToString("0.00");
-            labelY.Text = "Y=" + y.ToString("0.00");
-            labelZ.Text = "Z=" + z.ToString("0.00");
+            if (x != -lastx)
+            {
+                labelX.Text = "X=" + x.ToString("0.00");
+                if (ann.hasXHome)
+                    labelX.ForeColor = SystemColors.ControlText;
+                else
+                    labelX.ForeColor = Color.Red;
+                lastx = x;
+            }
+            if (y != lasty)
+            {
+                labelY.Text = "Y=" + y.ToString("0.00");
+                if (ann.hasYHome)
+                    labelY.ForeColor = SystemColors.ControlText;
+                else
+                    labelY.ForeColor = Color.Red;
+                lasty = y;
+            }
+            if (z != lastz)
+            {
+                labelZ.Text = "Z=" + z.ToString("0.00");
+                if (ann.hasZHome)
+                    labelZ.ForeColor = SystemColors.ControlText;
+                else
+                    labelZ.ForeColor = Color.Red;
+                lastz = z;
+            }
         }
         private void UpdateConStatus(bool c)
         {
@@ -150,7 +176,7 @@ namespace RepetierHost.view
 
         private void sendDebug()
         {
-            if (con.serial == null) return;
+            if (con.serial == null && !con.isVirtualActive) return;
             int v = 0;
             if (switchEcho.On) v += 1;
             if (switchInfo.On) v += 2;
@@ -520,6 +546,11 @@ namespace RepetierHost.view
         private void buttonStopMotor_Click(object sender, EventArgs e)
         {
             con.injectManualCommand("M84");
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            coordUpdate(null, ann.x, ann.y, ann.z);
         }
     }
 }

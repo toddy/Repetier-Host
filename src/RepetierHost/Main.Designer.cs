@@ -90,12 +90,13 @@
             this.splitLog = new System.Windows.Forms.SplitContainer();
             this.tab = new System.Windows.Forms.TabControl();
             this.tabModel = new System.Windows.Forms.TabPage();
-            this.stlComposer1 = new RepetierHost.view.STLComposer();
             this.tabGCode = new System.Windows.Forms.TabPage();
             this.splitJob = new System.Windows.Forms.SplitContainer();
-            this.editor = new RepetierHost.view.RepetierEditor();
             this.tabPrint = new System.Windows.Forms.TabPage();
             this.splitContainerPrinterGraphic = new System.Windows.Forms.SplitContainer();
+            this.toolShowFilament = new System.Windows.Forms.ToolStripButton();
+            this.stlComposer1 = new RepetierHost.view.STLComposer();
+            this.editor = new RepetierHost.view.RepetierEditor();
             this.menu.SuspendLayout();
             this.status.SuspendLayout();
             this.toolStrip.SuspendLayout();
@@ -183,6 +184,7 @@
             // 
             // eeprom
             // 
+            this.eeprom.Enabled = false;
             this.eeprom.Name = "eeprom";
             this.eeprom.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.E)));
             this.eeprom.Size = new System.Drawing.Size(252, 22);
@@ -485,7 +487,8 @@
             this.toolRunJob,
             this.toolKillJob,
             this.toolStripSDCard,
-            this.toolShowLog});
+            this.toolShowLog,
+            this.toolShowFilament});
             this.toolStrip.Location = new System.Drawing.Point(0, 24);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Size = new System.Drawing.Size(1018, 39);
@@ -568,6 +571,8 @@
             this.imageList.Images.SetKeyName(1, "disconnect.png");
             this.imageList.Images.SetKeyName(2, "runjob32.png");
             this.imageList.Images.SetKeyName(3, "pauseicon.png");
+            this.imageList.Images.SetKeyName(4, "preview.png");
+            this.imageList.Images.SetKeyName(5, "previewoff.png");
             // 
             // openGCode
             // 
@@ -626,15 +631,6 @@
             this.tabModel.TabIndex = 2;
             this.tabModel.Text = "Object placements";
             // 
-            // stlComposer1
-            // 
-            this.stlComposer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.stlComposer1.Location = new System.Drawing.Point(0, 0);
-            this.stlComposer1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.stlComposer1.Name = "stlComposer1";
-            this.stlComposer1.Size = new System.Drawing.Size(1008, 319);
-            this.stlComposer1.TabIndex = 0;
-            // 
             // tabGCode
             // 
             this.tabGCode.AutoScroll = true;
@@ -642,8 +638,8 @@
             this.tabGCode.Controls.Add(this.splitJob);
             this.tabGCode.Location = new System.Drawing.Point(4, 22);
             this.tabGCode.Name = "tabGCode";
-            this.tabGCode.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabGCode.Size = new System.Drawing.Size(1009, 350);
+            this.tabGCode.Padding = new System.Windows.Forms.Padding(3);
+            this.tabGCode.Size = new System.Drawing.Size(1008, 319);
             this.tabGCode.TabIndex = 1;
             this.tabGCode.Text = "G-Code visual editor";
             // 
@@ -660,21 +656,9 @@
             // splitJob.Panel1
             // 
             this.splitJob.Panel1.Controls.Add(this.editor);
-            this.splitJob.Size = new System.Drawing.Size(1002, 341);
+            this.splitJob.Size = new System.Drawing.Size(1001, 310);
             this.splitJob.SplitterDistance = 500;
             this.splitJob.TabIndex = 3;
-            // 
-            // editor
-            // 
-            this.editor.AccessibleRole = System.Windows.Forms.AccessibleRole.Caret;
-            this.editor.autopreview = true;
-            this.editor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.editor.Location = new System.Drawing.Point(0, 0);
-            this.editor.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.editor.MinimumSize = new System.Drawing.Size(160, 138);
-            this.editor.Name = "editor";
-            this.editor.Size = new System.Drawing.Size(500, 341);
-            this.editor.TabIndex = 0;
             // 
             // tabPrint
             // 
@@ -682,8 +666,8 @@
             this.tabPrint.Controls.Add(this.splitContainerPrinterGraphic);
             this.tabPrint.Location = new System.Drawing.Point(4, 22);
             this.tabPrint.Name = "tabPrint";
-            this.tabPrint.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabPrint.Size = new System.Drawing.Size(1009, 350);
+            this.tabPrint.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPrint.Size = new System.Drawing.Size(1008, 319);
             this.tabPrint.TabIndex = 0;
             this.tabPrint.Text = "Manual control";
             // 
@@ -697,9 +681,40 @@
             // splitContainerPrinterGraphic.Panel1
             // 
             this.splitContainerPrinterGraphic.Panel1.BackColor = System.Drawing.Color.Transparent;
-            this.splitContainerPrinterGraphic.Size = new System.Drawing.Size(1003, 344);
+            this.splitContainerPrinterGraphic.Size = new System.Drawing.Size(1002, 313);
             this.splitContainerPrinterGraphic.SplitterDistance = 465;
             this.splitContainerPrinterGraphic.TabIndex = 0;
+            // 
+            // toolShowFilament
+            // 
+            this.toolShowFilament.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolShowFilament.Image = ((System.Drawing.Image)(resources.GetObject("toolShowFilament.Image")));
+            this.toolShowFilament.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolShowFilament.Name = "toolShowFilament";
+            this.toolShowFilament.Size = new System.Drawing.Size(36, 36);
+            this.toolShowFilament.Text = "Show filament";
+            this.toolShowFilament.Click += new System.EventHandler(this.toolShowFilament_Click);
+            // 
+            // stlComposer1
+            // 
+            this.stlComposer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stlComposer1.Location = new System.Drawing.Point(0, 0);
+            this.stlComposer1.Margin = new System.Windows.Forms.Padding(4);
+            this.stlComposer1.Name = "stlComposer1";
+            this.stlComposer1.Size = new System.Drawing.Size(1008, 319);
+            this.stlComposer1.TabIndex = 0;
+            // 
+            // editor
+            // 
+            this.editor.AccessibleRole = System.Windows.Forms.AccessibleRole.Caret;
+            this.editor.autopreview = true;
+            this.editor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.editor.Location = new System.Drawing.Point(0, 0);
+            this.editor.Margin = new System.Windows.Forms.Padding(4);
+            this.editor.MinimumSize = new System.Drawing.Size(160, 138);
+            this.editor.Name = "editor";
+            this.editor.Size = new System.Drawing.Size(500, 310);
+            this.editor.TabIndex = 0;
             // 
             // Main
             // 
@@ -714,7 +729,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menu;
             this.Name = "Main";
-            this.Text = "Repetier-Host V0.32";
+            this.Text = "Repetier-Host V0.33";
             this.Shown += new System.EventHandler(this.Main_Shown);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.Resize += new System.EventHandler(this.Main_Resize);
@@ -806,6 +821,7 @@
         public System.Windows.Forms.ToolStripMenuItem slic3rToolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem skeinforgeToolStripMenuItem1;
         public System.Windows.Forms.ToolStripMenuItem skeinforgeConfigurationToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton toolShowFilament;
     }
 }
 
