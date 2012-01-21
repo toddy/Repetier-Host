@@ -268,7 +268,10 @@ namespace RepetierHost.model
                         dir[1] = actdir[1] + lastdir[1];
                         dir[2] = actdir[2] + lastdir[2];
                         GCodeVisual.normalize(ref dir);
-                        float zoomw = (float)Math.Cos(0.5*Math.Acos(dir[0] * lastdir[0] + dir[1] * lastdir[1] + dir[2] * lastdir[2]));
+                        double vacos = dir[0] * lastdir[0] + dir[1] * lastdir[1] + dir[2] * lastdir[2];
+                        if (vacos > 1) vacos = 1;
+                        if (vacos < -1) vacos = -1;
+                        float zoomw = (float)Math.Cos(0.5*Math.Acos(vacos));
                         lastdir[0] = actdir[0];
                         lastdir[1] = actdir[1];
                         lastdir[2] = actdir[2];

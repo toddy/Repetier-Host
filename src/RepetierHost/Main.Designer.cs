@@ -729,7 +729,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menu;
             this.Name = "Main";
-            this.Text = "Repetier-Host V0.33";
+            this.Text = "Repetier-Host V0.34";
             this.Shown += new System.EventHandler(this.Main_Shown);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.Resize += new System.EventHandler(this.Main_Resize);

@@ -115,6 +115,7 @@ namespace RepetierHost.view
             Main.main.toolStripSDCard.Enabled = c;
             Main.main.menuSDCardManager.Enabled = c;
            // switchConnect.On = c;
+            textGCode.Enabled = c;
             switchBedHeat.Enabled = c;
             switchFanOn.Enabled = c;
             switchExtruderHeatOn.Enabled = c;
@@ -152,7 +153,10 @@ namespace RepetierHost.view
             buttonZP100.Enabled = c;
             buttonStopMotor.Enabled = c;
             switchPower.Enabled = c;
-            switchExtruderReverse.Enabled = c;
+            textRetractAmount.Enabled = c;
+            textExtrudeSpeed.Enabled = c;
+            textExtrudeAmount.Enabled = c;
+            buttonRetract.Enabled = c;
             switchEcho.Enabled = c;
             switchInfo.Enabled = c;
             switchDryRun.Enabled = c;
@@ -373,24 +377,12 @@ namespace RepetierHost.view
             switchFanOn_Change(null);
         }
 
-        private void trackExtruderSpeed_ValueChanged(object sender, EventArgs e)
-        {
-            labelExtruderSpeed.Text = trackExtruderSpeed.Value.ToString();
-        }
-
-        private void trackExtruderLength_ValueChanged(object sender, EventArgs e)
-        {
-            labelExtruderLength.Text = trackExtruderLength.Value.ToString();
-        }
-
         private void buttonExtrude_Click(object sender, EventArgs e)
         {
-            int dir = 1;
-            if (switchExtruderReverse.On) dir = -1;
             con.GetInjectLock();
             bool wasrel = con.analyzer.relative;
             if (!wasrel) con.injectManualCommand("G91");
-            con.injectManualCommand("G1 E" + dir*trackExtruderLength.Value + " F"+trackExtruderSpeed.Value);
+            con.injectManualCommand("G1 E" + textExtrudeAmount.Text.Trim() + " F"+textExtrudeSpeed.Text.Trim());
             if (!wasrel) con.injectManualCommand("G90");
             con.ReturnInjectLock();
         }
@@ -519,6 +511,48 @@ namespace RepetierHost.view
                 e.Handled = true;
             }
         }
+        private void float_Validating(object sender, CancelEventArgs e)
+        {
+            TextBox box = (TextBox)sender;
+            try
+            {
+                float.Parse(box.Text);
+                errorProvider.SetError(box, "");
+            }
+            catch
+            {
+                errorProvider.SetError(box, "Not a number.");
+            }
+        }
+        private void floatPos_Validating(object sender, CancelEventArgs e)
+        {
+            TextBox box = (TextBox)sender;
+            try
+            {
+                float x = float.Parse(box.Text);
+                if (x >= 0)
+                    errorProvider.SetError(box, "");
+                else
+                    errorProvider.SetError(box, "Positive number required.");
+            }
+            catch
+            {
+                errorProvider.SetError(box, "Not a number.");
+            }
+        }
+        private void int_Validating(object sender, CancelEventArgs e)
+        {
+            TextBox box = (TextBox)sender;
+            try
+            {
+                int.Parse(box.Text);
+                errorProvider.SetError(box, "");
+            }
+            catch
+            {
+                errorProvider.SetError(box, "Not an integer.");
+            }
+        }
 
         private void buttonGoDisposeArea_Click(object sender, EventArgs e)
         {
@@ -551,6 +585,16 @@ namespace RepetierHost.view
         private void timer_Tick(object sender, EventArgs e)
         {
             coordUpdate(null, ann.x, ann.y, ann.z);
+        }
+
+        private void buttonRetract_Click(object sender, EventArgs e)
+        {
+            con.GetInjectLock();
+            bool wasrel = con.analyzer.relative;
+            if (!wasrel) con.injectManualCommand("G91");
+            con.injectManualCommand("G1 E-" + textRetractAmount.Text.Trim() + " F" + textExtrudeSpeed.Text.Trim());
+            if (!wasrel) con.injectManualCommand("G90");
+            con.ReturnInjectLock();
         }
     }
 }
