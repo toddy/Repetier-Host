@@ -1,3 +1,6 @@
+Version 0.34b 23.01.2012
+  Updated Slic3r to version 0.6.0
+
 Version 0.34 21.12.2012
   Some CPUs hat problems with acos(1.000001) craiting wrong graphics. Fixed.
   Changed print panel. Extuder control uses now text fields.
