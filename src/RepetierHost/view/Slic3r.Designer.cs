@@ -46,6 +46,8 @@
             this.textSkirtDistance = new System.Windows.Forms.TextBox();
             this.textSkirtLoops = new System.Windows.Forms.TextBox();
             this.groupAccuracy = new System.Windows.Forms.GroupBox();
+            this.textFirstLayerHeightRatio = new System.Windows.Forms.TextBox();
+            this.label52 = new System.Windows.Forms.Label();
             this.label44 = new System.Windows.Forms.Label();
             this.textExtrusionWidthRatio = new System.Windows.Forms.TextBox();
             this.label43 = new System.Windows.Forms.Label();
@@ -118,7 +120,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.groupPrinter = new System.Windows.Forms.GroupBox();
             this.checkComments = new System.Windows.Forms.CheckBox();
-            this.checkNoExtrusion = new System.Windows.Forms.CheckBox();
             this.checkRelativeE = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -218,7 +219,7 @@
             this.groupSkirt.Controls.Add(this.textSkirtHeight);
             this.groupSkirt.Controls.Add(this.textSkirtDistance);
             this.groupSkirt.Controls.Add(this.textSkirtLoops);
-            this.groupSkirt.Location = new System.Drawing.Point(675, 111);
+            this.groupSkirt.Location = new System.Drawing.Point(675, 139);
             this.groupSkirt.Name = "groupSkirt";
             this.groupSkirt.Size = new System.Drawing.Size(330, 98);
             this.groupSkirt.TabIndex = 6;
@@ -299,6 +300,8 @@
             // 
             // groupAccuracy
             // 
+            this.groupAccuracy.Controls.Add(this.textFirstLayerHeightRatio);
+            this.groupAccuracy.Controls.Add(this.label52);
             this.groupAccuracy.Controls.Add(this.label44);
             this.groupAccuracy.Controls.Add(this.textExtrusionWidthRatio);
             this.groupAccuracy.Controls.Add(this.label43);
@@ -309,15 +312,32 @@
             this.groupAccuracy.Controls.Add(this.textLayerHeight);
             this.groupAccuracy.Location = new System.Drawing.Point(675, 8);
             this.groupAccuracy.Name = "groupAccuracy";
-            this.groupAccuracy.Size = new System.Drawing.Size(330, 98);
+            this.groupAccuracy.Size = new System.Drawing.Size(330, 127);
             this.groupAccuracy.TabIndex = 5;
             this.groupAccuracy.TabStop = false;
             this.groupAccuracy.Text = "Accuracy";
             // 
+            // textFirstLayerHeightRatio
+            // 
+            this.textFirstLayerHeightRatio.Location = new System.Drawing.Point(140, 46);
+            this.textFirstLayerHeightRatio.Name = "textFirstLayerHeightRatio";
+            this.textFirstLayerHeightRatio.Size = new System.Drawing.Size(106, 20);
+            this.textFirstLayerHeightRatio.TabIndex = 9;
+            this.textFirstLayerHeightRatio.Text = "1";
+            // 
+            // label52
+            // 
+            this.label52.AutoSize = true;
+            this.label52.Location = new System.Drawing.Point(7, 49);
+            this.label52.Name = "label52";
+            this.label52.Size = new System.Drawing.Size(109, 13);
+            this.label52.TabIndex = 8;
+            this.label52.Text = "First layer height ratio:";
+            // 
             // label44
             // 
             this.label44.AutoSize = true;
-            this.label44.Location = new System.Drawing.Point(253, 76);
+            this.label44.Location = new System.Drawing.Point(253, 103);
             this.label44.Name = "label44";
             this.label44.Size = new System.Drawing.Size(70, 13);
             this.label44.TabIndex = 7;
@@ -325,7 +345,7 @@
             // 
             // textExtrusionWidthRatio
             // 
-            this.textExtrusionWidthRatio.Location = new System.Drawing.Point(140, 73);
+            this.textExtrusionWidthRatio.Location = new System.Drawing.Point(140, 100);
             this.textExtrusionWidthRatio.Name = "textExtrusionWidthRatio";
             this.textExtrusionWidthRatio.Size = new System.Drawing.Size(106, 20);
             this.textExtrusionWidthRatio.TabIndex = 2;
@@ -335,7 +355,7 @@
             // label43
             // 
             this.label43.AutoSize = true;
-            this.label43.Location = new System.Drawing.Point(7, 73);
+            this.label43.Location = new System.Drawing.Point(7, 100);
             this.label43.Name = "label43";
             this.label43.Size = new System.Drawing.Size(104, 13);
             this.label43.TabIndex = 5;
@@ -353,7 +373,7 @@
             // label36
             // 
             this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(7, 50);
+            this.label36.Location = new System.Drawing.Point(7, 77);
             this.label36.Name = "label36";
             this.label36.Size = new System.Drawing.Size(93, 13);
             this.label36.TabIndex = 3;
@@ -370,7 +390,7 @@
             // 
             // textInfillEvery
             // 
-            this.textInfillEvery.Location = new System.Drawing.Point(140, 46);
+            this.textInfillEvery.Location = new System.Drawing.Point(140, 73);
             this.textInfillEvery.Name = "textInfillEvery";
             this.textInfillEvery.Size = new System.Drawing.Size(106, 20);
             this.textInfillEvery.TabIndex = 1;
@@ -403,7 +423,7 @@
             this.groupRetraction.Controls.Add(this.textRetSpeed);
             this.groupRetraction.Controls.Add(this.textRetLift);
             this.groupRetraction.Controls.Add(this.textRetLength);
-            this.groupRetraction.Location = new System.Drawing.Point(3, 255);
+            this.groupRetraction.Location = new System.Drawing.Point(3, 235);
             this.groupRetraction.Name = "groupRetraction";
             this.groupRetraction.Size = new System.Drawing.Size(330, 153);
             this.groupRetraction.TabIndex = 4;
@@ -937,7 +957,7 @@
             this.groupFilament.Controls.Add(this.textPackingDensity);
             this.groupFilament.Controls.Add(this.textDiameter);
             this.groupFilament.Controls.Add(this.label6);
-            this.groupFilament.Location = new System.Drawing.Point(3, 154);
+            this.groupFilament.Location = new System.Drawing.Point(3, 131);
             this.groupFilament.Name = "groupFilament";
             this.groupFilament.Size = new System.Drawing.Size(330, 98);
             this.groupFilament.TabIndex = 1;
@@ -1019,7 +1039,6 @@
             // groupPrinter
             // 
             this.groupPrinter.Controls.Add(this.checkComments);
-            this.groupPrinter.Controls.Add(this.checkNoExtrusion);
             this.groupPrinter.Controls.Add(this.checkRelativeE);
             this.groupPrinter.Controls.Add(this.label5);
             this.groupPrinter.Controls.Add(this.label4);
@@ -1029,7 +1048,7 @@
             this.groupPrinter.Controls.Add(this.label2);
             this.groupPrinter.Location = new System.Drawing.Point(3, 3);
             this.groupPrinter.Name = "groupPrinter";
-            this.groupPrinter.Size = new System.Drawing.Size(330, 144);
+            this.groupPrinter.Size = new System.Drawing.Size(330, 121);
             this.groupPrinter.TabIndex = 0;
             this.groupPrinter.TabStop = false;
             this.groupPrinter.Text = "Printer";
@@ -1037,22 +1056,12 @@
             // checkComments
             // 
             this.checkComments.AutoSize = true;
-            this.checkComments.Location = new System.Drawing.Point(10, 115);
+            this.checkComments.Location = new System.Drawing.Point(10, 92);
             this.checkComments.Name = "checkComments";
             this.checkComments.Size = new System.Drawing.Size(96, 17);
             this.checkComments.TabIndex = 7;
             this.checkComments.Text = "Add comments";
             this.checkComments.UseVisualStyleBackColor = true;
-            // 
-            // checkNoExtrusion
-            // 
-            this.checkNoExtrusion.AutoSize = true;
-            this.checkNoExtrusion.Location = new System.Drawing.Point(10, 91);
-            this.checkNoExtrusion.Name = "checkNoExtrusion";
-            this.checkNoExtrusion.Size = new System.Drawing.Size(85, 17);
-            this.checkNoExtrusion.TabIndex = 6;
-            this.checkNoExtrusion.Text = "No extrusion";
-            this.checkNoExtrusion.UseVisualStyleBackColor = true;
             // 
             // checkRelativeE
             // 
@@ -1216,7 +1225,6 @@
         private System.Windows.Forms.Button buttonOK;
         private System.Windows.Forms.ErrorProvider errorProvider;
         private System.Windows.Forms.GroupBox groupPrinter;
-        private System.Windows.Forms.CheckBox checkNoExtrusion;
         private System.Windows.Forms.CheckBox checkRelativeE;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
@@ -1305,5 +1313,7 @@
         private System.Windows.Forms.TextBox textBridgeSpeed;
         private System.Windows.Forms.Label label51;
         private System.Windows.Forms.CheckBox checkComments;
+        private System.Windows.Forms.TextBox textFirstLayerHeightRatio;
+        private System.Windows.Forms.Label label52;
     }
 }

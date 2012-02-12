@@ -65,7 +65,6 @@ namespace RepetierHost.view
             textNozzleDiameter.Text = (string)c.GetValue("NozzleDiameter", textNozzleDiameter.Text);
             textZOffset.Text = (string)c.GetValue("ZOffset", textZOffset.Text);
             checkRelativeE.Checked  = ((int)c.GetValue("UseRelativeE", checkRelativeE.Checked ? 1 : 0))==1;
-            checkNoExtrusion.Checked = ((int)c.GetValue("NoExtrusion", checkNoExtrusion.Checked ? 1 : 0))==1;
             checkComments.Checked = ((int)c.GetValue("Comments", checkComments.Checked ? 1 : 0)) == 1;
             textDiameter.Text = (string)c.GetValue("FilamentDiameter", textDiameter.Text);
             textPackingDensity.Text = (string)c.GetValue("PackingDensity", textPackingDensity.Text);
@@ -75,6 +74,7 @@ namespace RepetierHost.view
             textPerimeterFeedrate.Text = (string)c.GetValue("PerimeterFeedrate", textPerimeterFeedrate.Text);
             textBottomLayerRatio.Text = (string)c.GetValue("BottomLayerRatio", textBottomLayerRatio.Text);
             textLayerHeight.Text = (string)c.GetValue("LayerHeight", textLayerHeight.Text);
+            textFirstLayerHeightRatio.Text = (string)c.GetValue("FirstLayerHeightRatio", textFirstLayerHeightRatio.Text);
             textInfillEvery.Text = (string)c.GetValue("InfillEvery", textInfillEvery.Text);
             textPerimeters.Text = (string)c.GetValue("Perimeters", textPerimeters.Text);
             textSolidLayers.Text = (string)c.GetValue("SolidLayers", textSolidLayers.Text);
@@ -102,7 +102,6 @@ namespace RepetierHost.view
             c.SetValue("NozzleDiameter", textNozzleDiameter.Text);
             c.SetValue("ZOffset", textZOffset.Text);
             c.SetValue("UseRelativeE", checkRelativeE.Checked ? 1 : 0);
-            c.SetValue("NoExtrusion", checkNoExtrusion.Checked ? 1 : 0);
             c.SetValue("Comments", checkComments.Checked ? 1 : 0);
             c.SetValue("FilamentDiameter", textDiameter.Text);
             c.SetValue("PackingDensity", textPackingDensity.Text);
@@ -112,6 +111,7 @@ namespace RepetierHost.view
             c.SetValue("PerimeterFeedrate", textPerimeterFeedrate.Text);
             c.SetValue("BottomLayerRatio", textBottomLayerRatio.Text);
             c.SetValue("LayerHeight", textLayerHeight.Text);
+            c.SetValue("FirstLayerHeightRatio", textFirstLayerHeightRatio.Text);
             c.SetValue("InfillEvery", textInfillEvery.Text);
             c.SetValue("Perimeters", textPerimeters.Text);
             c.SetValue("SolidLayers", textSolidLayers.Text);
@@ -245,8 +245,6 @@ namespace RepetierHost.view
                 sb.Append("--nozzle-diameter ");
                 sb.Append(textNozzleDiameter.Text);
                 sb.Append(" ");
-                if (checkNoExtrusion.Checked)
-                    sb.Append("--no-extrusion ");
                 if (checkRelativeE.Checked)
                     sb.Append("--use-relative-e-distances ");
                 if (checkComments.Checked)
@@ -279,6 +277,8 @@ namespace RepetierHost.view
                 sb.Append(textBridgeFlowRatio.Text);
                 sb.Append(" --layer-height ");
                 sb.Append(textLayerHeight.Text);
+                sb.Append(" --first-layer-height-ratio ");
+                sb.Append(textFirstLayerHeightRatio.Text);
                 sb.Append(" --infill-every-layers ");
                 sb.Append(textInfillEvery.Text);
                 sb.Append(" --perimeters ");

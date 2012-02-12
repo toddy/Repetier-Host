@@ -83,6 +83,7 @@
             this.toolKillJob = new System.Windows.Forms.ToolStripButton();
             this.toolStripSDCard = new System.Windows.Forms.ToolStripButton();
             this.toolShowLog = new System.Windows.Forms.ToolStripButton();
+            this.toolShowFilament = new System.Windows.Forms.ToolStripButton();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.openGCode = new System.Windows.Forms.OpenFileDialog();
             this.saveJobDialog = new System.Windows.Forms.SaveFileDialog();
@@ -91,10 +92,10 @@
             this.tab = new System.Windows.Forms.TabControl();
             this.tabModel = new System.Windows.Forms.TabPage();
             this.tabGCode = new System.Windows.Forms.TabPage();
-            this.splitJob = new System.Windows.Forms.SplitContainer();
             this.tabPrint = new System.Windows.Forms.TabPage();
             this.splitContainerPrinterGraphic = new System.Windows.Forms.SplitContainer();
-            this.toolShowFilament = new System.Windows.Forms.ToolStripButton();
+            this.toolStripEmergencyButton = new System.Windows.Forms.ToolStripButton();
+            this.splitJob = new System.Windows.Forms.SplitContainer();
             this.stlComposer1 = new RepetierHost.view.STLComposer();
             this.editor = new RepetierHost.view.RepetierEditor();
             this.menu.SuspendLayout();
@@ -105,10 +106,10 @@
             this.tab.SuspendLayout();
             this.tabModel.SuspendLayout();
             this.tabGCode.SuspendLayout();
-            this.splitJob.Panel1.SuspendLayout();
-            this.splitJob.SuspendLayout();
             this.tabPrint.SuspendLayout();
             this.splitContainerPrinterGraphic.SuspendLayout();
+            this.splitJob.Panel1.SuspendLayout();
+            this.splitJob.SuspendLayout();
             this.SuspendLayout();
             // 
             // menu
@@ -488,7 +489,8 @@
             this.toolKillJob,
             this.toolStripSDCard,
             this.toolShowLog,
-            this.toolShowFilament});
+            this.toolShowFilament,
+            this.toolStripEmergencyButton});
             this.toolStrip.Location = new System.Drawing.Point(0, 24);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Size = new System.Drawing.Size(1018, 39);
@@ -562,6 +564,16 @@
             this.toolShowLog.ToolTipText = "Hide log";
             this.toolShowLog.CheckedChanged += new System.EventHandler(this.toolShowLog_CheckedChanged);
             this.toolShowLog.Click += new System.EventHandler(this.toolShowLog_Click);
+            // 
+            // toolShowFilament
+            // 
+            this.toolShowFilament.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolShowFilament.Image = ((System.Drawing.Image)(resources.GetObject("toolShowFilament.Image")));
+            this.toolShowFilament.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolShowFilament.Name = "toolShowFilament";
+            this.toolShowFilament.Size = new System.Drawing.Size(36, 36);
+            this.toolShowFilament.Text = "Show filament";
+            this.toolShowFilament.Click += new System.EventHandler(this.toolShowFilament_Click);
             // 
             // imageList
             // 
@@ -643,23 +655,6 @@
             this.tabGCode.TabIndex = 1;
             this.tabGCode.Text = "G-Code visual editor";
             // 
-            // splitJob
-            // 
-            this.splitJob.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitJob.BackColor = System.Drawing.Color.Transparent;
-            this.splitJob.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitJob.Location = new System.Drawing.Point(3, 3);
-            this.splitJob.Name = "splitJob";
-            // 
-            // splitJob.Panel1
-            // 
-            this.splitJob.Panel1.Controls.Add(this.editor);
-            this.splitJob.Size = new System.Drawing.Size(1001, 310);
-            this.splitJob.SplitterDistance = 500;
-            this.splitJob.TabIndex = 3;
-            // 
             // tabPrint
             // 
             this.tabPrint.BackColor = System.Drawing.SystemColors.Control;
@@ -685,15 +680,37 @@
             this.splitContainerPrinterGraphic.SplitterDistance = 465;
             this.splitContainerPrinterGraphic.TabIndex = 0;
             // 
-            // toolShowFilament
+            // toolStripEmergencyButton
             // 
-            this.toolShowFilament.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolShowFilament.Image = ((System.Drawing.Image)(resources.GetObject("toolShowFilament.Image")));
-            this.toolShowFilament.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolShowFilament.Name = "toolShowFilament";
-            this.toolShowFilament.Size = new System.Drawing.Size(36, 36);
-            this.toolShowFilament.Text = "Show filament";
-            this.toolShowFilament.Click += new System.EventHandler(this.toolShowFilament_Click);
+            this.toolStripEmergencyButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripEmergencyButton.BackColor = System.Drawing.Color.Red;
+            this.toolStripEmergencyButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripEmergencyButton.Enabled = false;
+            this.toolStripEmergencyButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.toolStripEmergencyButton.ForeColor = System.Drawing.Color.White;
+            this.toolStripEmergencyButton.Image = ((System.Drawing.Image)(resources.GetObject("toolStripEmergencyButton.Image")));
+            this.toolStripEmergencyButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripEmergencyButton.Name = "toolStripEmergencyButton";
+            this.toolStripEmergencyButton.Size = new System.Drawing.Size(100, 36);
+            this.toolStripEmergencyButton.Text = "Emergency stop";
+            this.toolStripEmergencyButton.Click += new System.EventHandler(this.toolStripEmergencyButton_Click);
+            // 
+            // splitJob
+            // 
+            this.splitJob.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitJob.BackColor = System.Drawing.Color.Transparent;
+            this.splitJob.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitJob.Location = new System.Drawing.Point(3, 3);
+            this.splitJob.Name = "splitJob";
+            // 
+            // splitJob.Panel1
+            // 
+            this.splitJob.Panel1.Controls.Add(this.editor);
+            this.splitJob.Size = new System.Drawing.Size(1001, 310);
+            this.splitJob.SplitterDistance = 500;
+            this.splitJob.TabIndex = 3;
             // 
             // stlComposer1
             // 
@@ -710,7 +727,7 @@
             this.editor.autopreview = true;
             this.editor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.editor.Location = new System.Drawing.Point(0, 0);
-            this.editor.Margin = new System.Windows.Forms.Padding(4);
+            this.editor.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
             this.editor.MinimumSize = new System.Drawing.Size(160, 138);
             this.editor.Name = "editor";
             this.editor.Size = new System.Drawing.Size(500, 310);
@@ -729,7 +746,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menu;
             this.Name = "Main";
-            this.Text = "Repetier-Host V0.34";
+            this.Text = "Repetier-Host V0.35";
             this.Shown += new System.EventHandler(this.Main_Shown);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.Resize += new System.EventHandler(this.Main_Resize);
@@ -744,10 +761,10 @@
             this.tab.ResumeLayout(false);
             this.tabModel.ResumeLayout(false);
             this.tabGCode.ResumeLayout(false);
-            this.splitJob.Panel1.ResumeLayout(false);
-            this.splitJob.ResumeLayout(false);
             this.tabPrint.ResumeLayout(false);
             this.splitContainerPrinterGraphic.ResumeLayout(false);
+            this.splitJob.Panel1.ResumeLayout(false);
+            this.splitJob.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -822,6 +839,7 @@
         public System.Windows.Forms.ToolStripMenuItem skeinforgeToolStripMenuItem1;
         public System.Windows.Forms.ToolStripMenuItem skeinforgeConfigurationToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton toolShowFilament;
+        private System.Windows.Forms.ToolStripButton toolStripEmergencyButton;
     }
 }
 

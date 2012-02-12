@@ -28,6 +28,7 @@ using RepetierHost.view;
 using RepetierHost.view.utils;
 using Microsoft.Win32;
 using System.Threading;
+using System.Diagnostics;
 
 namespace RepetierHost
 {
@@ -70,6 +71,8 @@ namespace RepetierHost
             {
                 RepetierEditor ed = Main.main.editor;
                 string text = ed.getContent(1) + ed.getContent(0) + ed.getContent(2);
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
                 visual = new GCodeVisual();
                 visual.ParseText(text, true);
                 visual.Reduce();
@@ -77,6 +80,8 @@ namespace RepetierHost
                 Main.main.newVisual = visual;
                 Main.main.jobPreviewThreadFinished = true;
                 Main.main.previewThread = null;
+                sw.Stop();
+                Main.conn.log("Update time:" + sw.ElapsedMilliseconds, false, 3);
             }
         }
 		//From Managed.Windows.Forms/XplatUI
@@ -302,6 +307,7 @@ namespace RepetierHost
                 foreach (ToolStripItem it in toolConnect.DropDownItems)
                     it.Enabled = false;
                 eeprom.Enabled = true;
+                toolStripEmergencyButton.Enabled = true;
             }
             else
             {
@@ -312,6 +318,7 @@ namespace RepetierHost
                     eepromSettings.Close();
                 foreach (ToolStripItem it in toolConnect.DropDownItems)
                     it.Enabled = true;
+                toolStripEmergencyButton.Enabled = false;
             }
         }
         private void OnPrinterAction(string msg)
@@ -836,5 +843,17 @@ namespace RepetierHost
            // updateShowFilament();
         }
 
+        private void toolStripEmergencyButton_Click(object sender, EventArgs e)
+        {
+            if (!conn.connected) return;
+            conn.injectManualCommandFirst("M112");
+            conn.job.KillJob();
+            conn.log("Send emergency stop to printer. You may need to reset the printer for a restart!", false, 3);
+            while (conn.hasInjectedMCommand(112))
+            {
+                Application.DoEvents();
+            }
+            conn.close();
+        }
     }
 }

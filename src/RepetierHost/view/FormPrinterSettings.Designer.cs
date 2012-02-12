@@ -107,6 +107,7 @@
             this.buttonAbort = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.label38 = new System.Windows.Forms.Label();
             this.panelPrinterSelect.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPageConnection.SuspendLayout();
@@ -160,6 +161,7 @@
             // tabPageConnection
             // 
             this.tabPageConnection.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPageConnection.Controls.Add(this.label38);
             this.tabPageConnection.Controls.Add(this.checkPingPong);
             this.tabPageConnection.Controls.Add(this.label17);
             this.tabPageConnection.Controls.Add(this.textReceiveCacheSize);
@@ -177,7 +179,7 @@
             this.tabPageConnection.Controls.Add(this.label2);
             this.tabPageConnection.Location = new System.Drawing.Point(4, 22);
             this.tabPageConnection.Name = "tabPageConnection";
-            this.tabPageConnection.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageConnection.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageConnection.Size = new System.Drawing.Size(481, 404);
             this.tabPageConnection.TabIndex = 0;
             this.tabPageConnection.Text = "Connection";
@@ -185,7 +187,7 @@
             // checkPingPong
             // 
             this.checkPingPong.AutoSize = true;
-            this.checkPingPong.Location = new System.Drawing.Point(16, 174);
+            this.checkPingPong.Location = new System.Drawing.Point(16, 188);
             this.checkPingPong.Name = "checkPingPong";
             this.checkPingPong.Size = new System.Drawing.Size(264, 17);
             this.checkPingPong.TabIndex = 14;
@@ -207,7 +209,7 @@
             this.textReceiveCacheSize.Name = "textReceiveCacheSize";
             this.textReceiveCacheSize.Size = new System.Drawing.Size(106, 20);
             this.textReceiveCacheSize.TabIndex = 5;
-            this.textReceiveCacheSize.Text = "120";
+            this.textReceiveCacheSize.Text = "63";
             // 
             // label16
             // 
@@ -377,8 +379,8 @@
             this.tabPagePrinter.Controls.Add(this.label7);
             this.tabPagePrinter.Location = new System.Drawing.Point(4, 22);
             this.tabPagePrinter.Name = "tabPagePrinter";
-            this.tabPagePrinter.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabPagePrinter.Size = new System.Drawing.Size(481, 389);
+            this.tabPagePrinter.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPagePrinter.Size = new System.Drawing.Size(481, 404);
             this.tabPagePrinter.TabIndex = 1;
             this.tabPagePrinter.Text = "Printer";
             // 
@@ -675,7 +677,7 @@
             this.tabPageShape.Controls.Add(this.label18);
             this.tabPageShape.Location = new System.Drawing.Point(4, 22);
             this.tabPageShape.Name = "tabPageShape";
-            this.tabPageShape.Size = new System.Drawing.Size(481, 389);
+            this.tabPageShape.Size = new System.Drawing.Size(481, 404);
             this.tabPageShape.TabIndex = 2;
             this.tabPageShape.Text = "Printer shape";
             // 
@@ -926,6 +928,16 @@
             // 
             this.errorProvider.ContainerControl = this;
             // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label38.Location = new System.Drawing.Point(136, 168);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(305, 12);
+            this.label38.TabIndex = 15;
+            this.label38.Text = "From Arduino 1 on the receiving cache was reduced from 128 to 64 bytes!";
+            // 
             // FormPrinterSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1042,5 +1054,6 @@
         private System.Windows.Forms.TextBox textDefaultExtruderTemp;
         private System.Windows.Forms.Label label35;
         private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.Label label38;
     }
 }

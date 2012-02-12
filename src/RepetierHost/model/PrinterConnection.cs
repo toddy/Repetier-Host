@@ -146,7 +146,7 @@ namespace RepetierHost.model
         }
         public void Destroy()
         {
-            
+
             if (serial != null) close();
             if (logWriter != null)
             {
@@ -395,7 +395,8 @@ namespace RepetierHost.model
                         {
                             // Not ready yet
                             writeEvent.WaitOne(1);
-                        } else
+                        }
+                        else
                             writeEvent.WaitOne(1);
                         while (TrySendNextLine2()) { }
                     }
@@ -595,7 +596,8 @@ namespace RepetierHost.model
                     log(logtext, false, loglevel);
                 if (printeraction != null)
                     firePrinterAction(printeraction);
-                if (logprogress >= 0 && Math.Abs(lastlogprogress-logprogress)>0.3 && eventJobProgress != null) {
+                if (logprogress >= 0 && Math.Abs(lastlogprogress - logprogress) > 0.3 && eventJobProgress != null)
+                {
                     lastlogprogress = logprogress;
                     Main.main.Invoke(eventJobProgress, job.PercentDone);
                 }
@@ -789,22 +791,33 @@ namespace RepetierHost.model
                     if (!connected || serial == null || !serial.IsOpen) continue; // Not connected
                     if (serial.BytesToRead > 0)
                     {
-
-                        string indata = serial.ReadExisting();
-                        //Console.Write(indata);
-                        read += indata.Replace('\r', '\n');
-                        do
+                        try
                         {
-                            int pos = read.IndexOf('\n');
-                            if (pos < 0) break;
-                            string response = read.Substring(0, pos);
-                            read = read.Substring(pos + 1);
-                            if (response.Length > 0)
+                            string indata = serial.ReadExisting();
+                            //Console.Write(indata);
+                            read += indata.Replace('\r', '\n');
+                            do
                             {
-                                analyzeResponse(response);
-                            }
-                            TrySendNextLine();
-                        } while (true);
+                                int pos = read.IndexOf('\n');
+                                if (pos < 0) break;
+                                string response = read.Substring(0, pos);
+                                read = read.Substring(pos + 1);
+                                if (response.Length > 0)
+                                {
+                                    analyzeResponse(response);
+                                }
+                                TrySendNextLine();
+                            } while (true);
+                        }
+                        catch (ThreadAbortException)
+                        {
+                            return;
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                        }
+
                         lastReceived = DateTime.Now.Ticks / 10000;
                     }
                 }
