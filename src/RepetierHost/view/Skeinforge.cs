@@ -74,6 +74,15 @@ namespace RepetierHost.view
                 Main.conn.log(e.ToString(), false, 2);
             }
         }
+        public void KillSlice()
+        {
+            if (procConvert != null)
+            {
+                procConvert.Kill();
+                procConvert = null;
+                Main.conn.log("Skeinforge slicing process killed on user request.", false, 2);
+            }
+        }
         public void RunSlice(string file)
         {
             if (procConvert != null)
@@ -110,12 +119,13 @@ namespace RepetierHost.view
         public delegate void LoadGCode(String myString);
         private void ConversionExited(object sender, System.EventArgs e)
         {
-            SlicingInfo.f.Invoke(SlicingInfo.f.StopInfo);
-            LoadGCode lg = Main.main.LoadGCode;
+            if (procConvert == null) return;
+            try {
             procConvert.Close();
             procConvert = null;
             string gcodefile = StlToGCode(slicefile);
-            Main.main.Invoke(lg,gcodefile);
+            Main.slicer.Postprocess(gcodefile);
+            } catch {}
         }
         private void SkeinExited(object sender, System.EventArgs e)
         {

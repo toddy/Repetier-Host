@@ -1,3 +1,19 @@
+Version 0.35 18.02.2012
+  Added emergency stop
+  Updated 3d view. Toolbar now contains icons and is on the left.
+  Start view optimized.
+  Zoom optimized.
+  Added top view button.
+  G-Code selections better readable.
+  M105 commands can be removed from log.
+  Updated Slic3r parameter.
+  You can add an external post slice postprocessor, which is run after each slice.
+  You can kill a running slice job.
+  Moving the fan slider doesn't enable it.
+  Pause window is not modal any more. So you can use manual controls in pause mode!
+  Baudrate/Ping Pong mode/buffer slows down virtual printer. Use 250000 for max speed.
+  Multiple selections in object placement. Press strg to toggle right clicked object.
+  
 Version 0.34b 23.01.2012
   Updated Slic3r to version 0.6.0
 

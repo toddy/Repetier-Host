@@ -69,7 +69,7 @@ namespace RepetierHost.view
             STL m1 = new STL();
             viewCenter = new Vector3(0, 0, 0);
             rotX = 20;
-            userPosition = new Vector3(0, -2f * ps.PrintAreaDepth, 0.0f * ps.PrintAreaHeight);
+            userPosition = new Vector3(0, -1.7f * (float)Math.Sqrt(ps.PrintAreaDepth*ps.PrintAreaDepth+ps.PrintAreaWidth*ps.PrintAreaWidth), 0.0f * ps.PrintAreaHeight);
             gl.MouseWheel += gl_MouseWheel;
             // Controls.Remove(gl);
             timer.Start();
@@ -78,6 +78,7 @@ namespace RepetierHost.view
         {
             editor = ed;
             toolMoveObject.Visible = editor;
+            toolStripClear.Enabled = false;
         }
         public void MakeVisible(bool vis)
         {
@@ -102,6 +103,7 @@ namespace RepetierHost.view
         public void SetObjectSelected(bool sel)
         {
             toolMoveObject.Enabled = sel;
+            toolStripClear.Enabled = sel;
         }
         public bool AutoUpdateable
         {
@@ -639,9 +641,9 @@ namespace RepetierHost.view
         {
             if (e.Delta != 0)
             {
-                zoom *= 1f - e.Delta / 500f;
+                zoom *= 1f - e.Delta / 2000f;
                 if (zoom < 0.01) zoom = 0.01f;
-                if (zoom > 10) zoom = 10;
+                if (zoom > 5.9) zoom = 5.9f;
                 //userPosition.Y += e.Delta;
                 gl.Invalidate();
             }
@@ -692,8 +694,13 @@ namespace RepetierHost.view
                 gl.Invalidate();
             }
             else if (emode == 3)
-            {
-                userPosition.Y += (float)milliseconds * speedY * Math.Abs(speedY) / 10.0f;
+            {   
+                //userPosition.Y += (float)milliseconds * speedY * Math.Abs(speedY) / 10.0f;
+                zoom *= (1 - speedY);
+                speedY = 0;
+                if (zoom < 0.01) zoom = 0.01f;
+                if (zoom > 5.9) zoom = 5.9f;
+                yDown = yPos;
                 gl.Invalidate();
             }
             else if (emode == 4)
@@ -734,10 +741,10 @@ namespace RepetierHost.view
             rotX = 20;
             rotZ = 0;
             zoom = 1.0f;
-            viewCenter = new Vector3(0.25f * ps.PrintAreaWidth, ps.PrintAreaDepth * 0.25f, 0.0f * ps.PrintAreaHeight);
-            userPosition = new Vector3(0.25f * ps.PrintAreaWidth, -2f * ps.PrintAreaDepth, 2.0f * ps.PrintAreaHeight);
+            viewCenter = new Vector3(0f * ps.PrintAreaWidth, ps.PrintAreaDepth * 0.25f, 0.0f * ps.PrintAreaHeight);
+            userPosition = new Vector3(0f * ps.PrintAreaWidth, -1.7f *(float)Math.Sqrt(ps.PrintAreaDepth * ps.PrintAreaDepth + ps.PrintAreaWidth * ps.PrintAreaWidth), 0.0f * ps.PrintAreaHeight);
             viewCenter = new Vector3(0f * ps.PrintAreaWidth, ps.PrintAreaDepth * 0f, 0.0f * ps.PrintAreaHeight);
-            userPosition = new Vector3(0f * ps.PrintAreaWidth, -2f * ps.PrintAreaDepth, 0.0f * ps.PrintAreaHeight);
+            //userPosition = new Vector3(0f * ps.PrintAreaWidth, -2f * ps.PrintAreaDepth, 0.0f * ps.PrintAreaHeight);
             gl.Invalidate();
         }
 
@@ -793,6 +800,10 @@ namespace RepetierHost.view
 
         private void toolStripClear_Click(object sender, EventArgs e)
         {
+            if (editor)
+            {
+                Main.main.stlComposer1.buttonRemoveSTL_Click(null, null);
+            }
             foreach (ThreeDModel m in models)
             {
                 m.Clear();
@@ -803,6 +814,19 @@ namespace RepetierHost.view
         private void ThreeDControl_MouseEnter(object sender, EventArgs e)
         {
             // Focus();
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            rotX = 90;
+            rotZ = 0;
+            zoom = 1.0f;
+            viewCenter = new Vector3(0f * ps.PrintAreaWidth, ps.PrintAreaDepth * 0.25f, 0.0f * ps.PrintAreaHeight);
+            userPosition = new Vector3(0f * ps.PrintAreaWidth, -1.7f *(float)Math.Sqrt(ps.PrintAreaDepth * ps.PrintAreaDepth + ps.PrintAreaWidth * ps.PrintAreaWidth), 0.0f * ps.PrintAreaHeight);
+            viewCenter = new Vector3(0f * ps.PrintAreaWidth, ps.PrintAreaDepth * 0f, 0.0f * ps.PrintAreaHeight);
+            //userPosition = new Vector3(0f * ps.PrintAreaWidth, -2f * ps.PrintAreaDepth, 0.0f * ps.PrintAreaHeight);
+            gl.Invalidate();
+
         }
     }
 }

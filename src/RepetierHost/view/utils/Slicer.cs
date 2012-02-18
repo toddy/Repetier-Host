@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using Microsoft.Win32;
 using System.IO;
+using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace RepetierHost.view.utils
 {
@@ -35,6 +37,84 @@ namespace RepetierHost.view.utils
                 return _hasSkeinforge;
             }
         }
+        public string wrapQuotes(string text)
+        {
+            if (text.StartsWith("\"") && text.EndsWith("\"")) return text;
+            return "\"" + text.Replace("\"", "\\\"") + "\"";
+        }
+        public delegate void LoadGCode(String myString);
+        string postprocessFile = null;
+        Process postproc=null;
+        public void Postprocess(string file)
+        {
+            string dir = Main.globalSettings.Workdir;
+            if (Main.conn.runFilterEverySlice == false || postproc != null || dir.Length==0)
+            {
+                SlicingInfo.f.Invoke(SlicingInfo.f.StopInfo);
+                LoadGCode lg = Main.main.LoadGCode;
+                Main.main.Invoke(lg, file);
+                return; // Nothing to do
+            }
+            SlicingInfo.f.Invoke(SlicingInfo.f.PostprocInfo);
+            // Copy file to work dir
+            postprocessFile = file;
+            string tmpfile = dir + Path.DirectorySeparatorChar + "filter.gcode";
+            File.Copy(file, tmpfile,true);
+            // run filter
+            string full = Main.conn.filterCommand;
+            int p = full.IndexOf(' ');
+            if (p < 0) return;
+            string cmd = full.Substring(0, p);
+            string args = full.Substring(p + 1);
+            args = args.Replace("#in", wrapQuotes(tmpfile));
+            args = args.Replace("#out", wrapQuotes(file));
+            Main.conn.log(cmd + " " + args, false, 3);
+            postproc = new Process();
+            postproc.EnableRaisingEvents = true;
+            postproc.Exited += new EventHandler(PostprocessExited);
+            postproc.StartInfo.FileName = Main.IsMono ? cmd : wrapQuotes(cmd);
+            postproc.StartInfo.Arguments = args;
+            postproc.StartInfo.UseShellExecute = false;
+            postproc.StartInfo.RedirectStandardOutput = true;
+            postproc.OutputDataReceived += new DataReceivedEventHandler(OutputDataHandler);
+            postproc.StartInfo.RedirectStandardError = true;
+            postproc.ErrorDataReceived += new DataReceivedEventHandler(OutputDataHandler);
+            try
+            {
+                postproc.Start();
+            }
+            catch (Exception e)
+            {
+                postproc = null;
+                SlicingInfo.f.Invoke(SlicingInfo.f.StopInfo);
+                MessageBox.Show("Error starting postprocessor:" + e.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            // Start the asynchronous read of the standard output stream.
+            postproc.BeginOutputReadLine();
+            postproc.BeginErrorReadLine();
+
+
+        }
+        private void PostprocessExited(object sender, System.EventArgs e)
+        {
+            postproc.Close();
+            postproc = null;
+            SlicingInfo.f.Invoke(SlicingInfo.f.StopInfo);
+            LoadGCode lg = Main.main.LoadGCode;
+            Main.main.Invoke(lg, postprocessFile);
+
+        }
+        private static void OutputDataHandler(object sendingProcess,
+             DataReceivedEventArgs outLine)
+        {
+            // Collect the net view command output.
+            if (!String.IsNullOrEmpty(outLine.Data))
+            {
+                Main.conn.log(outLine.Data, false, 4);
+            }
+        }
+
         public SlicerID ActiveSlicer {
             get {return _ActiveSlicer;}
             set {

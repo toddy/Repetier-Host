@@ -17,7 +17,8 @@ namespace RepetierHost.view.utils
                 f = new SlicingInfo();
             f.labelSlicer.Text = slicerName;
             f.ResetTimer();
-            f.Show(Main.main);
+            if(f.Visible==false)
+                f.Show(Main.main);
             f.timer.Start();
         }
         public static void Stop()
@@ -31,6 +32,10 @@ namespace RepetierHost.view.utils
         public MethodInvoker StopInfo = delegate
         {
             SlicingInfo.Stop();
+        };
+        public MethodInvoker PostprocInfo = delegate
+        {
+            SetAction("Postprocessing...");
         };
         public static void SetAction(string action)
         {

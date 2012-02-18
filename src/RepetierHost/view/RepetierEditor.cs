@@ -297,7 +297,8 @@ namespace RepetierHost.view
         Brush backBrush = Brushes.White;
         Brush evenBackBrush = Brushes.Linen;
         Brush hostBrush = Brushes.SeaGreen;
-        Brush selectionBrush = Brushes.Aquamarine;
+        Brush selectionBrush = Brushes.DarkTurquoise;
+        Brush selectionTextColor = Brushes.White;
         Pen cursorBrush = Pens.Black;
         float fontHeight;
         float fontWidth;
@@ -443,30 +444,31 @@ namespace RepetierHost.view
             g.FillRectangle(((line & 1)==0?backBrush:evenBackBrush), linesWidth, y, editor.Width - linesWidth, fontHeight);
             string ln = line.ToString();
             line--;
+            int minc=-1, maxc=-1;
             if (line >= Math.Min(row, selRow) && line <= Math.Max(row, selRow))
             { // mark selection
-                int minc,maxc;
                 if(row<selRow || (row==selRow && col<selCol)) {
                     minc = col;maxc=selCol;
                 } else {
                     minc = selCol;maxc=col;
                 }
-                if (line > Math.Min(row, selRow)) s1 = linesWidth;
+                if (line > Math.Min(row, selRow)) { minc = 0; s1 = linesWidth; }
                 else s1 = linesWidth + minc * fontWidth;
-                if(line<Math.Max(row,selRow)) s2 = editor.Width;
-                else s2 = linesWidth + maxc*fontWidth;
+                if (line < Math.Max(row, selRow)) { s2 = editor.Width; maxc = 10000; }
+                else s2 = linesWidth + maxc * fontWidth;
                 g.FillRectangle(selectionBrush, s1, y, s2 - s1, fontHeight);
             }
             string comment = "";
             string command = "";
             string parameter = "";
             float ps = linesWidth + x;
-            int i;
+            int i,ac=0;
             if (text.StartsWith("@"))
             {
                 for (i = 0; i < text.Length; i++)
                 {
-                    g.DrawString(text[i].ToString(), drawFont, hostBrush, ps, y);
+                    g.DrawString(text[i].ToString(), drawFont,(ac >=minc && ac<=maxc ? selectionTextColor : hostBrush), ps, y);
+                    ac++;
                     ps += fontWidth;
                 }
                 text = "";
@@ -491,8 +493,9 @@ namespace RepetierHost.view
             {
                 for (i = 0; i < command.Length; i++)
                 {
-                    g.DrawString(command[i].ToString(), drawFont, commandBrush, ps, y);
+                    g.DrawString(command[i].ToString(), drawFont, (ac >=minc && ac<=maxc ? selectionTextColor :commandBrush), ps, y);
                     ps += fontWidth;
+                    ac++;
                 }
             }
             if (parameter.Length > 0)
@@ -501,18 +504,20 @@ namespace RepetierHost.view
                 {
                     char c = parameter[i];
                     if((c>='A' && c<='Z') || (c>='a' && c<='z')) 
-                        g.DrawString(c.ToString(), drawFont, paramTypeBrush, ps, y);
+                        g.DrawString(c.ToString(), drawFont,(ac >=minc && ac<=maxc ? selectionTextColor : paramTypeBrush), ps, y);
                     else
-                        g.DrawString(c.ToString(), drawFont, blackBrush, ps, y);
+                        g.DrawString(c.ToString(), drawFont, (ac >=minc && ac<=maxc ? selectionTextColor :blackBrush), ps, y);
                     ps += fontWidth;
+                    ac++;
                 }
             }
             if (comment.Length > 0)
             {
                 for (i = 0; i < comment.Length; i++)
                 {
-                    g.DrawString(comment[i].ToString(), drawFont, commentBrush, ps, y);
+                    g.DrawString(comment[i].ToString(), drawFont,(ac >=minc && ac<=maxc ? selectionTextColor : commentBrush), ps, y);
                     ps += fontWidth;
+                    ac++;
                 }
             }
             g.FillRectangle(linesBgColor, 0, y, linesWidth, fontHeight);

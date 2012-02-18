@@ -373,8 +373,9 @@ namespace RepetierHost.view
             float volt = 100f*trackFanVoltage.Value/255;
             labelVoltage.Text = "Output " + volt.ToString("0.0") + "%";
             if (!createCommands) return;
-            switchFanOn.On = true;
-            switchFanOn_Change(null);
+            //switchFanOn.On = true;
+            if(switchFanOn.On)
+                switchFanOn_Change(null);
         }
 
         private void buttonExtrude_Click(object sender, EventArgs e)
@@ -596,5 +597,6 @@ namespace RepetierHost.view
             if (!wasrel) con.injectManualCommand("G90");
             con.ReturnInjectLock();
         }
-    }
+
+     }
 }

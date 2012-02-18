@@ -109,7 +109,7 @@
             // 
             this.buttonLand.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonLand.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonLand.Location = new System.Drawing.Point(121, 563);
+            this.buttonLand.Location = new System.Drawing.Point(121, 579);
             this.buttonLand.Name = "buttonLand";
             this.buttonLand.Size = new System.Drawing.Size(114, 23);
             this.buttonLand.TabIndex = 14;
@@ -121,7 +121,7 @@
             // 
             this.buttonCenter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonCenter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonCenter.Location = new System.Drawing.Point(0, 563);
+            this.buttonCenter.Location = new System.Drawing.Point(0, 579);
             this.buttonCenter.Name = "buttonCenter";
             this.buttonCenter.Size = new System.Drawing.Size(121, 23);
             this.buttonCenter.TabIndex = 13;
@@ -156,9 +156,10 @@
             // label13
             // 
             this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label13.Location = new System.Drawing.Point(9, 191);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(64, 13);
+            this.label13.Size = new System.Drawing.Size(75, 13);
             this.label13.TabIndex = 7;
             this.label13.Text = "STL objects";
             // 
@@ -170,7 +171,8 @@
             this.listSTLObjects.FormattingEnabled = true;
             this.listSTLObjects.Location = new System.Drawing.Point(0, 211);
             this.listSTLObjects.Name = "listSTLObjects";
-            this.listSTLObjects.Size = new System.Drawing.Size(235, 355);
+            this.listSTLObjects.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.listSTLObjects.Size = new System.Drawing.Size(235, 368);
             this.listSTLObjects.TabIndex = 12;
             this.listSTLObjects.SelectedIndexChanged += new System.EventHandler(this.listSTLObjects_SelectedIndexChanged);
             // 

@@ -198,6 +198,15 @@ namespace RepetierHost.view
             if (text.StartsWith("\"") && text.EndsWith("\"")) return text;
             return "\"" + text.Replace("\"", "\\\"") + "\"";
         }
+        public void KillSlice()
+        {
+            if (procConvert != null)
+            {
+                procConvert.Kill();
+                procConvert = null;
+                Main.conn.log("Slic3r slicing process killed on user request.", false, 2);
+            }
+        }
         public void RunSlice(string file,float centerx,float centery)
         {
             if (procConvert != null)
@@ -347,13 +356,15 @@ namespace RepetierHost.view
         public delegate void LoadGCode(String myString);
         private void ConversionExited(object sender, System.EventArgs e)
         {
-            
-            SlicingInfo.f.Invoke(SlicingInfo.f.StopInfo);
-            LoadGCode lg = Main.main.LoadGCode;
-            procConvert.Close();
-            procConvert = null;
-            string gcodefile = StlToGCode(slicefile);
-            Main.main.Invoke(lg, gcodefile);
+            if (procConvert == null) return;
+            try
+            {
+                procConvert.Close();
+                procConvert = null;
+                string gcodefile = StlToGCode(slicefile);
+                Main.slicer.Postprocess(gcodefile);
+            }
+            catch { }
         }
         private static void OutputDataHandler(object sendingProcess,
             DataReceivedEventArgs outLine)

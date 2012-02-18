@@ -70,7 +70,8 @@ namespace RepetierHost.view
         }
         private void updateEnabled()
         {
-            if (listSTLObjects.SelectedItem == null)
+            int n = listSTLObjects.SelectedItems.Count;
+            if (n!=1)
             {
                 textRotX.Enabled = false;
                 textRotY.Enabled = false;
@@ -83,8 +84,8 @@ namespace RepetierHost.view
                 textTransY.Enabled = false;
                 textTransZ.Enabled = false;
                 buttonCenter.Enabled = false;
-                buttonLand.Enabled = false;
-                cont.SetObjectSelected(false);
+                buttonLand.Enabled = n>0;
+                cont.SetObjectSelected(n>0);
             }
             else
             {
@@ -102,7 +103,7 @@ namespace RepetierHost.view
                 buttonLand.Enabled = true;
                 cont.SetObjectSelected(true);
             }
-            if (listSTLObjects.Items.Count == 0)
+            if (n == 0)
             {
                 buttonRemoveSTL.Enabled = false;
                 buttonSave.Enabled = false;
@@ -110,7 +111,7 @@ namespace RepetierHost.view
             }
             else
             {
-                buttonRemoveSTL.Enabled = listSTLObjects.SelectedIndex>=0;
+                buttonRemoveSTL.Enabled = true;
                 buttonSave.Enabled = true;
                 buttonSlice.Enabled = true;
             }
@@ -160,8 +161,9 @@ namespace RepetierHost.view
             STL stl = (STL)listSTLObjects.SelectedItem;
             foreach (STL s in cont.models)
             {
-                s.Selected = s == stl;
+                s.Selected = listSTLObjects.SelectedItems.Contains(s);
             }
+            if (listSTLObjects.SelectedItems.Count > 1) stl = null;
             if (stl != null)
             {
                 textRotX.Text = stl.Rotation.x.ToString(GCode.format);
@@ -206,18 +208,40 @@ namespace RepetierHost.view
         }
         private void objectMoved(float dx, float dy)
         {
-            STL stl = (STL)listSTLObjects.SelectedItem;
-            if (stl == null) return;
-            stl.Position.x += dx;
-            stl.Position.y += dy;
-            textTransX.Text = stl.Position.x.ToString(GCode.format);
-            textTransY.Text = stl.Position.y.ToString(GCode.format);
-            updateSTLState(stl);
+            //STL stl = (STL)listSTLObjects.SelectedItem;
+            //if (stl == null) return;
+            foreach (STL stl in listSTLObjects.SelectedItems)
+            {
+                stl.Position.x += dx;
+                stl.Position.y += dy;
+                if (listSTLObjects.SelectedItems.Count == 1)
+                {
+                    textTransX.Text = stl.Position.x.ToString(GCode.format);
+                    textTransY.Text = stl.Position.y.ToString(GCode.format);
+                }
+                updateSTLState(stl);
+            }
             cont.UpdateChanges();
         }
         private void objectSelected(ThreeDModel sel)
         {
-            listSTLObjects.SelectedItem = sel;
+            if (Control.ModifierKeys == Keys.Shift)
+            {
+                if (!sel.Selected)
+                    listSTLObjects.SelectedItems.Add(sel);
+            } else
+            if (Control.ModifierKeys == Keys.Control)
+            {
+                if (sel.Selected)
+                    listSTLObjects.SelectedItems.Remove(sel);
+                else
+                    listSTLObjects.SelectedItems.Add(sel);
+            }
+            else
+            {
+                listSTLObjects.SelectedItems.Clear();
+                listSTLObjects.SelectedItem = sel;
+            }
         }
         private void textScaleX_TextChanged(object sender, EventArgs e)
         {
@@ -279,12 +303,19 @@ namespace RepetierHost.view
             cont.UpdateChanges();
         }
 
-        private void buttonRemoveSTL_Click(object sender, EventArgs e)
+        public void buttonRemoveSTL_Click(object sender, EventArgs e)
         {
-            STL stl = (STL)listSTLObjects.SelectedItem;
-            if (stl == null) return;
-            cont.models.Remove(stl);
-            listSTLObjects.Items.Remove(stl);
+            //STL stl = (STL)listSTLObjects.SelectedItem;
+            //if (stl == null) return;
+            LinkedList<STL> list = new LinkedList<STL>();
+            foreach (STL stl in listSTLObjects.SelectedItems)
+                list.AddLast(stl);
+            foreach (STL stl in list)
+            {
+                cont.models.Remove(stl);
+                listSTLObjects.Items.Remove(stl);
+            }
+            list.Clear();
             cont.UpdateChanges();
         }
 
@@ -362,19 +393,26 @@ namespace RepetierHost.view
 
         private void buttonLand_Click(object sender, EventArgs e)
         {
-            STL stl = (STL)listSTLObjects.SelectedItem;
-            if (stl == null) return;
-            stl.Land();
-            listSTLObjects_SelectedIndexChanged(null, null);
+            //STL stl = (STL)listSTLObjects.SelectedItem;
+            //if (stl == null) return;
+            foreach (STL stl in listSTLObjects.SelectedItems)
+            {
+                stl.Land();
+                listSTLObjects_SelectedIndexChanged(null, null);
+            }
             cont.UpdateChanges();
         }
 
         private void buttonCenter_Click(object sender, EventArgs e)
         {
-            STL stl = (STL)listSTLObjects.SelectedItem;
-            if (stl == null) return;
-            stl.Center(100f,100f);
-            listSTLObjects_SelectedIndexChanged(null, null);
+            //STL stl = (STL)listSTLObjects.SelectedItem;
+            //if (stl == null) return;
+            foreach (STL stl in listSTLObjects.SelectedItems)
+            {
+                stl.Center(100f, 100f);
+                listSTLObjects_SelectedIndexChanged(null, null);
+                
+            }
             cont.UpdateChanges();
         }
 

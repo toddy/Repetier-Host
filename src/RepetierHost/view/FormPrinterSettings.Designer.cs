@@ -35,6 +35,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageConnection = new System.Windows.Forms.TabPage();
+            this.label38 = new System.Windows.Forms.Label();
             this.checkPingPong = new System.Windows.Forms.CheckBox();
             this.label17 = new System.Windows.Forms.Label();
             this.textReceiveCacheSize = new System.Windows.Forms.TextBox();
@@ -51,6 +52,7 @@
             this.comboPort = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.tabPagePrinter = new System.Windows.Forms.TabPage();
+            this.logM105Checkbox = new System.Windows.Forms.CheckBox();
             this.label37 = new System.Windows.Forms.Label();
             this.label36 = new System.Windows.Forms.Label();
             this.textDefaultHeatedBedTemp = new System.Windows.Forms.TextBox();
@@ -102,18 +104,25 @@
             this.label20 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
+            this.tabAdvanced = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label40 = new System.Windows.Forms.Label();
+            this.checkRunFilterEverySlice = new System.Windows.Forms.CheckBox();
+            this.textFilterPath = new System.Windows.Forms.TextBox();
+            this.label39 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.buttonApply = new System.Windows.Forms.Button();
             this.buttonAbort = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this.label38 = new System.Windows.Forms.Label();
             this.panelPrinterSelect.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPageConnection.SuspendLayout();
             this.tabPagePrinter.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackTempPeriod)).BeginInit();
             this.tabPageShape.SuspendLayout();
+            this.tabAdvanced.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
@@ -151,6 +160,7 @@
             this.tabControl1.Controls.Add(this.tabPageConnection);
             this.tabControl1.Controls.Add(this.tabPagePrinter);
             this.tabControl1.Controls.Add(this.tabPageShape);
+            this.tabControl1.Controls.Add(this.tabAdvanced);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 30);
             this.tabControl1.Name = "tabControl1";
@@ -160,7 +170,7 @@
             // 
             // tabPageConnection
             // 
-            this.tabPageConnection.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPageConnection.BackColor = System.Drawing.Color.Transparent;
             this.tabPageConnection.Controls.Add(this.label38);
             this.tabPageConnection.Controls.Add(this.checkPingPong);
             this.tabPageConnection.Controls.Add(this.label17);
@@ -183,6 +193,17 @@
             this.tabPageConnection.Size = new System.Drawing.Size(481, 404);
             this.tabPageConnection.TabIndex = 0;
             this.tabPageConnection.Text = "Connection";
+            this.tabPageConnection.UseVisualStyleBackColor = true;
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label38.Location = new System.Drawing.Point(136, 168);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(305, 12);
+            this.label38.TabIndex = 15;
+            this.label38.Text = "From Arduino 1 on the receiving cache was reduced from 128 to 64 bytes!";
             // 
             // checkPingPong
             // 
@@ -197,7 +218,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(16, 145);
+            this.label17.Location = new System.Drawing.Point(13, 148);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(104, 13);
             this.label17.TabIndex = 13;
@@ -233,7 +254,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(16, 117);
+            this.label6.Location = new System.Drawing.Point(13, 117);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(87, 13);
             this.label6.TabIndex = 9;
@@ -340,7 +361,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(10, 7);
+            this.label2.Location = new System.Drawing.Point(13, 10);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(29, 13);
             this.label2.TabIndex = 0;
@@ -348,7 +369,8 @@
             // 
             // tabPagePrinter
             // 
-            this.tabPagePrinter.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPagePrinter.BackColor = System.Drawing.Color.Transparent;
+            this.tabPagePrinter.Controls.Add(this.logM105Checkbox);
             this.tabPagePrinter.Controls.Add(this.label37);
             this.tabPagePrinter.Controls.Add(this.label36);
             this.tabPagePrinter.Controls.Add(this.textDefaultHeatedBedTemp);
@@ -383,6 +405,19 @@
             this.tabPagePrinter.Size = new System.Drawing.Size(481, 404);
             this.tabPagePrinter.TabIndex = 1;
             this.tabPagePrinter.Text = "Printer";
+            this.tabPagePrinter.UseVisualStyleBackColor = true;
+            // 
+            // logM105Checkbox
+            // 
+            this.logM105Checkbox.AutoSize = true;
+            this.logM105Checkbox.Checked = true;
+            this.logM105Checkbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.logM105Checkbox.Location = new System.Drawing.Point(16, 127);
+            this.logM105Checkbox.Name = "logM105Checkbox";
+            this.logM105Checkbox.Size = new System.Drawing.Size(179, 17);
+            this.logM105Checkbox.TabIndex = 25;
+            this.logM105Checkbox.Text = "Remove M105 requests from log";
+            this.logM105Checkbox.UseVisualStyleBackColor = true;
             // 
             // label37
             // 
@@ -441,7 +476,7 @@
             // label33
             // 
             this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(422, 167);
+            this.label33.Location = new System.Drawing.Point(422, 187);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(29, 13);
             this.label33.TabIndex = 18;
@@ -449,7 +484,7 @@
             // 
             // textDisposeZ
             // 
-            this.textDisposeZ.Location = new System.Drawing.Point(346, 165);
+            this.textDisposeZ.Location = new System.Drawing.Point(346, 185);
             this.textDisposeZ.Name = "textDisposeZ";
             this.textDisposeZ.Size = new System.Drawing.Size(55, 20);
             this.textDisposeZ.TabIndex = 7;
@@ -459,7 +494,7 @@
             // label32
             // 
             this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(300, 167);
+            this.label32.Location = new System.Drawing.Point(300, 187);
             this.label32.Name = "label32";
             this.label32.Size = new System.Drawing.Size(37, 13);
             this.label32.TabIndex = 16;
@@ -468,7 +503,7 @@
             // checkDisbaleHeatedBedAfterJob
             // 
             this.checkDisbaleHeatedBedAfterJob.AutoSize = true;
-            this.checkDisbaleHeatedBedAfterJob.Location = new System.Drawing.Point(16, 238);
+            this.checkDisbaleHeatedBedAfterJob.Location = new System.Drawing.Point(16, 258);
             this.checkDisbaleHeatedBedAfterJob.Name = "checkDisbaleHeatedBedAfterJob";
             this.checkDisbaleHeatedBedAfterJob.Size = new System.Drawing.Size(193, 17);
             this.checkDisbaleHeatedBedAfterJob.TabIndex = 10;
@@ -480,7 +515,7 @@
             this.checkDisableExtruderAfterJob.AutoSize = true;
             this.checkDisableExtruderAfterJob.Checked = true;
             this.checkDisableExtruderAfterJob.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkDisableExtruderAfterJob.Location = new System.Drawing.Point(16, 214);
+            this.checkDisableExtruderAfterJob.Location = new System.Drawing.Point(16, 234);
             this.checkDisableExtruderAfterJob.Name = "checkDisableExtruderAfterJob";
             this.checkDisableExtruderAfterJob.Size = new System.Drawing.Size(177, 17);
             this.checkDisableExtruderAfterJob.TabIndex = 9;
@@ -492,7 +527,7 @@
             this.checkGoDisposeAfterJob.AutoSize = true;
             this.checkGoDisposeAfterJob.Checked = true;
             this.checkGoDisposeAfterJob.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkGoDisposeAfterJob.Location = new System.Drawing.Point(16, 191);
+            this.checkGoDisposeAfterJob.Location = new System.Drawing.Point(16, 211);
             this.checkGoDisposeAfterJob.Name = "checkGoDisposeAfterJob";
             this.checkGoDisposeAfterJob.Size = new System.Drawing.Size(190, 17);
             this.checkGoDisposeAfterJob.TabIndex = 8;
@@ -502,7 +537,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(208, 165);
+            this.label15.Location = new System.Drawing.Point(208, 185);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(17, 13);
             this.label15.TabIndex = 15;
@@ -510,7 +545,7 @@
             // 
             // textDisposeY
             // 
-            this.textDisposeY.Location = new System.Drawing.Point(233, 165);
+            this.textDisposeY.Location = new System.Drawing.Point(233, 185);
             this.textDisposeY.Name = "textDisposeY";
             this.textDisposeY.Size = new System.Drawing.Size(61, 20);
             this.textDisposeY.TabIndex = 6;
@@ -519,7 +554,7 @@
             // 
             // textDisposeX
             // 
-            this.textDisposeX.Location = new System.Drawing.Point(138, 165);
+            this.textDisposeX.Location = new System.Drawing.Point(138, 185);
             this.textDisposeX.Name = "textDisposeX";
             this.textDisposeX.Size = new System.Drawing.Size(64, 20);
             this.textDisposeX.TabIndex = 5;
@@ -529,7 +564,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(113, 165);
+            this.label14.Location = new System.Drawing.Point(113, 185);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(17, 13);
             this.label14.TabIndex = 12;
@@ -538,7 +573,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(13, 165);
+            this.label13.Location = new System.Drawing.Point(13, 185);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(101, 13);
             this.label13.TabIndex = 11;
@@ -547,7 +582,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(126, 129);
+            this.label12.Location = new System.Drawing.Point(126, 149);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(50, 13);
             this.label12.TabIndex = 3;
@@ -556,7 +591,7 @@
             // labelCheckInterval
             // 
             this.labelCheckInterval.AutoSize = true;
-            this.labelCheckInterval.Location = new System.Drawing.Point(92, 129);
+            this.labelCheckInterval.Location = new System.Drawing.Point(92, 149);
             this.labelCheckInterval.Name = "labelCheckInterval";
             this.labelCheckInterval.Size = new System.Drawing.Size(13, 13);
             this.labelCheckInterval.TabIndex = 2;
@@ -565,7 +600,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(13, 129);
+            this.label11.Location = new System.Drawing.Point(13, 149);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(67, 13);
             this.label11.TabIndex = 8;
@@ -573,8 +608,8 @@
             // 
             // trackTempPeriod
             // 
-            this.trackTempPeriod.BackColor = System.Drawing.SystemColors.Control;
-            this.trackTempPeriod.Location = new System.Drawing.Point(199, 128);
+            this.trackTempPeriod.BackColor = System.Drawing.Color.White;
+            this.trackTempPeriod.Location = new System.Drawing.Point(200, 135);
             this.trackTempPeriod.Maximum = 60;
             this.trackTempPeriod.Minimum = 1;
             this.trackTempPeriod.Name = "trackTempPeriod";
@@ -652,7 +687,7 @@
             // 
             // tabPageShape
             // 
-            this.tabPageShape.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPageShape.BackColor = System.Drawing.Color.Transparent;
             this.tabPageShape.Controls.Add(this.label31);
             this.tabPageShape.Controls.Add(this.label30);
             this.tabPageShape.Controls.Add(this.label29);
@@ -680,6 +715,7 @@
             this.tabPageShape.Size = new System.Drawing.Size(481, 404);
             this.tabPageShape.TabIndex = 2;
             this.tabPageShape.Text = "Printer shape";
+            this.tabPageShape.UseVisualStyleBackColor = true;
             // 
             // label31
             // 
@@ -883,6 +919,68 @@
             this.label18.Text = "Print area width:";
             this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // tabAdvanced
+            // 
+            this.tabAdvanced.Controls.Add(this.groupBox1);
+            this.tabAdvanced.Location = new System.Drawing.Point(4, 22);
+            this.tabAdvanced.Name = "tabAdvanced";
+            this.tabAdvanced.Size = new System.Drawing.Size(481, 404);
+            this.tabAdvanced.TabIndex = 3;
+            this.tabAdvanced.Text = "Advanced";
+            this.tabAdvanced.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label40);
+            this.groupBox1.Controls.Add(this.checkRunFilterEverySlice);
+            this.groupBox1.Controls.Add(this.textFilterPath);
+            this.groupBox1.Controls.Add(this.label39);
+            this.groupBox1.Location = new System.Drawing.Point(9, 4);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(464, 121);
+            this.groupBox1.TabIndex = 0;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Post Slice Filter";
+            // 
+            // label40
+            // 
+            this.label40.AutoSize = true;
+            this.label40.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label40.Location = new System.Drawing.Point(7, 82);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(447, 26);
+            this.label40.TabIndex = 3;
+            this.label40.Text = "You can run a filter program after each slicing action. The filter will be run on" +
+                " the G-Code\r\nproduced by the slicer. Use #in and #out to insert the input and ou" +
+                "tput filenames as parameter.";
+            // 
+            // checkRunFilterEverySlice
+            // 
+            this.checkRunFilterEverySlice.AutoSize = true;
+            this.checkRunFilterEverySlice.Location = new System.Drawing.Point(9, 58);
+            this.checkRunFilterEverySlice.Name = "checkRunFilterEverySlice";
+            this.checkRunFilterEverySlice.Size = new System.Drawing.Size(145, 17);
+            this.checkRunFilterEverySlice.TabIndex = 2;
+            this.checkRunFilterEverySlice.Text = "Run filter after every slice";
+            this.checkRunFilterEverySlice.UseVisualStyleBackColor = true;
+            // 
+            // textFilterPath
+            // 
+            this.textFilterPath.Location = new System.Drawing.Point(6, 32);
+            this.textFilterPath.Name = "textFilterPath";
+            this.textFilterPath.Size = new System.Drawing.Size(452, 20);
+            this.textFilterPath.TabIndex = 1;
+            this.textFilterPath.Text = "yourFilter #in #out";
+            // 
+            // label39
+            // 
+            this.label39.AutoSize = true;
+            this.label39.Location = new System.Drawing.Point(6, 16);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(127, 13);
+            this.label39.TabIndex = 0;
+            this.label39.Text = "Filter path and parameter:";
+            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.buttonApply);
@@ -928,16 +1026,6 @@
             // 
             this.errorProvider.ContainerControl = this;
             // 
-            // label38
-            // 
-            this.label38.AutoSize = true;
-            this.label38.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label38.Location = new System.Drawing.Point(136, 168);
-            this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(305, 12);
-            this.label38.TabIndex = 15;
-            this.label38.Text = "From Arduino 1 on the receiving cache was reduced from 128 to 64 bytes!";
-            // 
             // FormPrinterSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -969,6 +1057,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackTempPeriod)).EndInit();
             this.tabPageShape.ResumeLayout(false);
             this.tabPageShape.PerformLayout();
+            this.tabAdvanced.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
             this.ResumeLayout(false);
@@ -1055,5 +1146,12 @@
         private System.Windows.Forms.Label label35;
         private System.Windows.Forms.Label label34;
         private System.Windows.Forms.Label label38;
+        private System.Windows.Forms.CheckBox logM105Checkbox;
+        private System.Windows.Forms.TabPage tabAdvanced;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label39;
+        private System.Windows.Forms.Label label40;
+        private System.Windows.Forms.CheckBox checkRunFilterEverySlice;
+        private System.Windows.Forms.TextBox textFilterPath;
     }
 }

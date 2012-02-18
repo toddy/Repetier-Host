@@ -94,6 +94,9 @@ namespace RepetierHost.view
             p.SetValue("dumpAreaDepth", textDumpAreaDepth.Text);
             p.SetValue("defaultExtruderTemp", textDefaultExtruderTemp.Text);
             p.SetValue("defaultHeatedBedTemp", textDefaultHeatedBedTemp.Text);
+            p.SetValue("filterPath", textFilterPath.Text);
+            p.SetValue("runFilterEverySlice", checkRunFilterEverySlice.Checked ? 1 : 0);
+            p.SetValue("logM105", logM105Checkbox.Checked ? 1 : 0);
         }
         public void load(string printername)
         {
@@ -129,7 +132,9 @@ namespace RepetierHost.view
             textDumpAreaDepth.Text = (string)p.GetValue("dumpAreaDepth", textDumpAreaDepth.Text);
             textDefaultExtruderTemp.Text = (string)p.GetValue("defaultExtruderTemp", textDefaultExtruderTemp.Text);
             textDefaultHeatedBedTemp.Text = (string)p.GetValue("defaultHeatedBedTemp", textDefaultHeatedBedTemp.Text);
-
+            textFilterPath.Text = (string)p.GetValue("filterPath", textFilterPath.Text);
+            checkRunFilterEverySlice.Checked = 1 == (int)p.GetValue("runFilterEverySlice", checkRunFilterEverySlice.Checked ? 1 : 0);
+            logM105Checkbox.Checked = 1 == (int)p.GetValue("logM105", logM105Checkbox.Checked ? 1 : 0);
         }
         public void UpdateDimensions()
         {
@@ -174,6 +179,9 @@ namespace RepetierHost.view
             con.afterJobGoDispose = checkGoDisposeAfterJob.Checked;
             con.afterJobDisableExtruder = checkDisableExtruderAfterJob.Checked;
             con.afterJobDisablePrintbed = checkDisbaleHeatedBedAfterJob.Checked;
+            con.logM105 = logM105Checkbox.Checked;
+            con.runFilterEverySlice = checkRunFilterEverySlice.Checked;
+            con.filterCommand = textFilterPath.Text;
             int.TryParse(textReceiveCacheSize.Text, out con.receiveCacheSize);
             if (Main.main.printPanel != null)
             {
@@ -216,6 +224,9 @@ namespace RepetierHost.view
             checkDisbaleHeatedBedAfterJob.Checked = con.afterJobDisablePrintbed;
             labelCheckInterval.Text = trackTempPeriod.Value.ToString();
             textReceiveCacheSize.Text = con.receiveCacheSize.ToString();
+            textFilterPath.Text = con.filterCommand;
+            checkRunFilterEverySlice.Checked = con.runFilterEverySlice;
+            logM105Checkbox.Checked = con.logM105;
             if (Main.main.printPanel != null)
             {
                 textDefaultExtruderTemp.Text = Main.main.printPanel.textExtruderSetTemp.Text;

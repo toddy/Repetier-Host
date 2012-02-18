@@ -51,6 +51,8 @@
             this.slic3rConfigurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.skeinforgeConfigurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.skeinforgeToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.killSlicingProcessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.temperatureMonitorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.printerInformationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -84,6 +86,7 @@
             this.toolStripSDCard = new System.Windows.Forms.ToolStripButton();
             this.toolShowLog = new System.Windows.Forms.ToolStripButton();
             this.toolShowFilament = new System.Windows.Forms.ToolStripButton();
+            this.toolStripEmergencyButton = new System.Windows.Forms.ToolStripButton();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.openGCode = new System.Windows.Forms.OpenFileDialog();
             this.saveJobDialog = new System.Windows.Forms.SaveFileDialog();
@@ -92,10 +95,10 @@
             this.tab = new System.Windows.Forms.TabControl();
             this.tabModel = new System.Windows.Forms.TabPage();
             this.tabGCode = new System.Windows.Forms.TabPage();
+            this.splitJob = new System.Windows.Forms.SplitContainer();
             this.tabPrint = new System.Windows.Forms.TabPage();
             this.splitContainerPrinterGraphic = new System.Windows.Forms.SplitContainer();
-            this.toolStripEmergencyButton = new System.Windows.Forms.ToolStripButton();
-            this.splitJob = new System.Windows.Forms.SplitContainer();
+            this.toolPrinterSettings = new System.Windows.Forms.ToolStripButton();
             this.stlComposer1 = new RepetierHost.view.STLComposer();
             this.editor = new RepetierHost.view.RepetierEditor();
             this.menu.SuspendLayout();
@@ -106,10 +109,10 @@
             this.tab.SuspendLayout();
             this.tabModel.SuspendLayout();
             this.tabGCode.SuspendLayout();
-            this.tabPrint.SuspendLayout();
-            this.splitContainerPrinterGraphic.SuspendLayout();
             this.splitJob.Panel1.SuspendLayout();
             this.splitJob.SuspendLayout();
+            this.tabPrint.SuspendLayout();
+            this.splitContainerPrinterGraphic.SuspendLayout();
             this.SuspendLayout();
             // 
             // menu
@@ -230,7 +233,9 @@
             this.toolStripSeparator1,
             this.slic3rConfigurationToolStripMenuItem,
             this.skeinforgeConfigurationToolStripMenuItem,
-            this.skeinforgeToolStripMenuItem2});
+            this.skeinforgeToolStripMenuItem2,
+            this.toolStripMenuItem3,
+            this.killSlicingProcessToolStripMenuItem});
             this.slicerToolStripMenuItem.Name = "slicerToolStripMenuItem";
             this.slicerToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
             this.slicerToolStripMenuItem.Text = " Slicer";
@@ -283,6 +288,18 @@
             this.skeinforgeToolStripMenuItem2.Size = new System.Drawing.Size(205, 22);
             this.skeinforgeToolStripMenuItem2.Text = "Skeinforge setup";
             this.skeinforgeToolStripMenuItem2.Click += new System.EventHandler(this.skeinforgeSettingsToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(202, 6);
+            // 
+            // killSlicingProcessToolStripMenuItem
+            // 
+            this.killSlicingProcessToolStripMenuItem.Name = "killSlicingProcessToolStripMenuItem";
+            this.killSlicingProcessToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.killSlicingProcessToolStripMenuItem.Text = "Kill slicing process";
+            this.killSlicingProcessToolStripMenuItem.Click += new System.EventHandler(this.killSlicingProcessToolStripMenuItem_Click);
             // 
             // windowsToolStripMenuItem
             // 
@@ -479,7 +496,7 @@
             // 
             // toolStrip
             // 
-            this.toolStrip.BackColor = System.Drawing.Color.White;
+            this.toolStrip.BackColor = System.Drawing.Color.Transparent;
             this.toolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -490,64 +507,65 @@
             this.toolStripSDCard,
             this.toolShowLog,
             this.toolShowFilament,
-            this.toolStripEmergencyButton});
+            this.toolStripEmergencyButton,
+            this.toolPrinterSettings});
             this.toolStrip.Location = new System.Drawing.Point(0, 24);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(1018, 39);
+            this.toolStrip.Size = new System.Drawing.Size(1018, 54);
             this.toolStrip.TabIndex = 2;
             this.toolStrip.Text = "toolStrip1";
             // 
             // toolConnect
             // 
-            this.toolConnect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolConnect.Image = ((System.Drawing.Image)(resources.GetObject("toolConnect.Image")));
             this.toolConnect.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolConnect.Name = "toolConnect";
-            this.toolConnect.Size = new System.Drawing.Size(48, 36);
-            this.toolConnect.Text = "toolStripButton1";
+            this.toolConnect.Size = new System.Drawing.Size(68, 51);
+            this.toolConnect.Text = "Connect";
+            this.toolConnect.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolConnect.ToolTipText = "Connect printer";
             this.toolConnect.ButtonClick += new System.EventHandler(this.toolConnect_Click);
             // 
             // toolLoad
             // 
-            this.toolLoad.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolLoad.Image = ((System.Drawing.Image)(resources.GetObject("toolLoad.Image")));
             this.toolLoad.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolLoad.Name = "toolLoad";
-            this.toolLoad.Size = new System.Drawing.Size(48, 36);
-            this.toolLoad.Text = "toolStripSplitButton1";
+            this.toolLoad.Size = new System.Drawing.Size(49, 51);
+            this.toolLoad.Text = "Load";
+            this.toolLoad.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolLoad.ToolTipText = "Load file";
             this.toolLoad.ButtonClick += new System.EventHandler(this.toolGCodeLoad_Click);
             // 
             // toolRunJob
             // 
-            this.toolRunJob.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolRunJob.Image = ((System.Drawing.Image)(resources.GetObject("toolRunJob.Image")));
             this.toolRunJob.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolRunJob.Name = "toolRunJob";
-            this.toolRunJob.Size = new System.Drawing.Size(36, 36);
+            this.toolRunJob.Size = new System.Drawing.Size(52, 51);
             this.toolRunJob.Text = "Run job";
+            this.toolRunJob.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolRunJob.Click += new System.EventHandler(this.toolPrintJob_Click);
             // 
             // toolKillJob
             // 
-            this.toolKillJob.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolKillJob.Enabled = false;
             this.toolKillJob.Image = ((System.Drawing.Image)(resources.GetObject("toolKillJob.Image")));
             this.toolKillJob.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolKillJob.Name = "toolKillJob";
-            this.toolKillJob.Size = new System.Drawing.Size(36, 36);
+            this.toolKillJob.Size = new System.Drawing.Size(48, 51);
             this.toolKillJob.Text = "Kill Job";
+            this.toolKillJob.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolKillJob.Click += new System.EventHandler(this.toolKillJob_Click);
             // 
             // toolStripSDCard
             // 
-            this.toolStripSDCard.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripSDCard.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSDCard.Image")));
             this.toolStripSDCard.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripSDCard.Name = "toolStripSDCard";
-            this.toolStripSDCard.Size = new System.Drawing.Size(36, 36);
+            this.toolStripSDCard.Size = new System.Drawing.Size(50, 51);
             this.toolStripSDCard.Text = "SDCard";
+            this.toolStripSDCard.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolStripSDCard.ToolTipText = "SDCard management";
             this.toolStripSDCard.Click += new System.EventHandler(this.toolStripSDCard_Click);
             // 
@@ -555,25 +573,41 @@
             // 
             this.toolShowLog.Checked = true;
             this.toolShowLog.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.toolShowLog.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolShowLog.Image = ((System.Drawing.Image)(resources.GetObject("toolShowLog.Image")));
             this.toolShowLog.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolShowLog.Name = "toolShowLog";
-            this.toolShowLog.Size = new System.Drawing.Size(36, 36);
-            this.toolShowLog.Text = "toolShowLog";
+            this.toolShowLog.Size = new System.Drawing.Size(71, 51);
+            this.toolShowLog.Text = "Toggle Log";
+            this.toolShowLog.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolShowLog.ToolTipText = "Hide log";
             this.toolShowLog.CheckedChanged += new System.EventHandler(this.toolShowLog_CheckedChanged);
             this.toolShowLog.Click += new System.EventHandler(this.toolShowLog_Click);
             // 
             // toolShowFilament
             // 
-            this.toolShowFilament.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolShowFilament.Image = ((System.Drawing.Image)(resources.GetObject("toolShowFilament.Image")));
             this.toolShowFilament.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolShowFilament.Name = "toolShowFilament";
-            this.toolShowFilament.Size = new System.Drawing.Size(36, 36);
+            this.toolShowFilament.Size = new System.Drawing.Size(87, 51);
             this.toolShowFilament.Text = "Show filament";
+            this.toolShowFilament.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolShowFilament.Click += new System.EventHandler(this.toolShowFilament_Click);
+            // 
+            // toolStripEmergencyButton
+            // 
+            this.toolStripEmergencyButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripEmergencyButton.AutoToolTip = false;
+            this.toolStripEmergencyButton.BackColor = System.Drawing.Color.White;
+            this.toolStripEmergencyButton.Enabled = false;
+            this.toolStripEmergencyButton.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.toolStripEmergencyButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.toolStripEmergencyButton.Image = ((System.Drawing.Image)(resources.GetObject("toolStripEmergencyButton.Image")));
+            this.toolStripEmergencyButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripEmergencyButton.Name = "toolStripEmergencyButton";
+            this.toolStripEmergencyButton.Size = new System.Drawing.Size(96, 51);
+            this.toolStripEmergencyButton.Text = "Emergency stop";
+            this.toolStripEmergencyButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripEmergencyButton.Click += new System.EventHandler(this.toolStripEmergencyButton_Click);
             // 
             // imageList
             // 
@@ -609,15 +643,15 @@
             this.splitLog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.splitLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitLog.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.splitLog.Location = new System.Drawing.Point(0, 63);
+            this.splitLog.Location = new System.Drawing.Point(0, 78);
             this.splitLog.Name = "splitLog";
             this.splitLog.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // splitLog.Panel1
             // 
             this.splitLog.Panel1.Controls.Add(this.tab);
-            this.splitLog.Size = new System.Drawing.Size(1018, 445);
-            this.splitLog.SplitterDistance = 347;
+            this.splitLog.Size = new System.Drawing.Size(1018, 430);
+            this.splitLog.SplitterDistance = 332;
             this.splitLog.TabIndex = 4;
             // 
             // tab
@@ -629,7 +663,7 @@
             this.tab.Location = new System.Drawing.Point(0, 0);
             this.tab.Name = "tab";
             this.tab.SelectedIndex = 0;
-            this.tab.Size = new System.Drawing.Size(1016, 345);
+            this.tab.Size = new System.Drawing.Size(1016, 330);
             this.tab.TabIndex = 3;
             this.tab.SelectedIndexChanged += new System.EventHandler(this.tab_SelectedIndexChanged);
             // 
@@ -639,7 +673,7 @@
             this.tabModel.Controls.Add(this.stlComposer1);
             this.tabModel.Location = new System.Drawing.Point(4, 22);
             this.tabModel.Name = "tabModel";
-            this.tabModel.Size = new System.Drawing.Size(1008, 319);
+            this.tabModel.Size = new System.Drawing.Size(1008, 304);
             this.tabModel.TabIndex = 2;
             this.tabModel.Text = "Object placements";
             // 
@@ -651,49 +685,9 @@
             this.tabGCode.Location = new System.Drawing.Point(4, 22);
             this.tabGCode.Name = "tabGCode";
             this.tabGCode.Padding = new System.Windows.Forms.Padding(3);
-            this.tabGCode.Size = new System.Drawing.Size(1008, 319);
+            this.tabGCode.Size = new System.Drawing.Size(1008, 304);
             this.tabGCode.TabIndex = 1;
             this.tabGCode.Text = "G-Code visual editor";
-            // 
-            // tabPrint
-            // 
-            this.tabPrint.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPrint.Controls.Add(this.splitContainerPrinterGraphic);
-            this.tabPrint.Location = new System.Drawing.Point(4, 22);
-            this.tabPrint.Name = "tabPrint";
-            this.tabPrint.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPrint.Size = new System.Drawing.Size(1008, 319);
-            this.tabPrint.TabIndex = 0;
-            this.tabPrint.Text = "Manual control";
-            // 
-            // splitContainerPrinterGraphic
-            // 
-            this.splitContainerPrinterGraphic.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainerPrinterGraphic.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainerPrinterGraphic.Location = new System.Drawing.Point(3, 3);
-            this.splitContainerPrinterGraphic.Name = "splitContainerPrinterGraphic";
-            // 
-            // splitContainerPrinterGraphic.Panel1
-            // 
-            this.splitContainerPrinterGraphic.Panel1.BackColor = System.Drawing.Color.Transparent;
-            this.splitContainerPrinterGraphic.Size = new System.Drawing.Size(1002, 313);
-            this.splitContainerPrinterGraphic.SplitterDistance = 465;
-            this.splitContainerPrinterGraphic.TabIndex = 0;
-            // 
-            // toolStripEmergencyButton
-            // 
-            this.toolStripEmergencyButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.toolStripEmergencyButton.BackColor = System.Drawing.Color.Red;
-            this.toolStripEmergencyButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripEmergencyButton.Enabled = false;
-            this.toolStripEmergencyButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.toolStripEmergencyButton.ForeColor = System.Drawing.Color.White;
-            this.toolStripEmergencyButton.Image = ((System.Drawing.Image)(resources.GetObject("toolStripEmergencyButton.Image")));
-            this.toolStripEmergencyButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripEmergencyButton.Name = "toolStripEmergencyButton";
-            this.toolStripEmergencyButton.Size = new System.Drawing.Size(100, 36);
-            this.toolStripEmergencyButton.Text = "Emergency stop";
-            this.toolStripEmergencyButton.Click += new System.EventHandler(this.toolStripEmergencyButton_Click);
             // 
             // splitJob
             // 
@@ -708,9 +702,45 @@
             // splitJob.Panel1
             // 
             this.splitJob.Panel1.Controls.Add(this.editor);
-            this.splitJob.Size = new System.Drawing.Size(1001, 310);
+            this.splitJob.Size = new System.Drawing.Size(1001, 295);
             this.splitJob.SplitterDistance = 500;
             this.splitJob.TabIndex = 3;
+            // 
+            // tabPrint
+            // 
+            this.tabPrint.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPrint.Controls.Add(this.splitContainerPrinterGraphic);
+            this.tabPrint.Location = new System.Drawing.Point(4, 22);
+            this.tabPrint.Name = "tabPrint";
+            this.tabPrint.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPrint.Size = new System.Drawing.Size(1008, 304);
+            this.tabPrint.TabIndex = 0;
+            this.tabPrint.Text = "Manual control";
+            // 
+            // splitContainerPrinterGraphic
+            // 
+            this.splitContainerPrinterGraphic.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainerPrinterGraphic.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainerPrinterGraphic.Location = new System.Drawing.Point(3, 3);
+            this.splitContainerPrinterGraphic.Name = "splitContainerPrinterGraphic";
+            // 
+            // splitContainerPrinterGraphic.Panel1
+            // 
+            this.splitContainerPrinterGraphic.Panel1.BackColor = System.Drawing.Color.Transparent;
+            this.splitContainerPrinterGraphic.Size = new System.Drawing.Size(1002, 298);
+            this.splitContainerPrinterGraphic.SplitterDistance = 465;
+            this.splitContainerPrinterGraphic.TabIndex = 0;
+            // 
+            // toolPrinterSettings
+            // 
+            this.toolPrinterSettings.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolPrinterSettings.Image = ((System.Drawing.Image)(resources.GetObject("toolPrinterSettings.Image")));
+            this.toolPrinterSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolPrinterSettings.Name = "toolPrinterSettings";
+            this.toolPrinterSettings.Size = new System.Drawing.Size(90, 51);
+            this.toolPrinterSettings.Text = "Printer settings";
+            this.toolPrinterSettings.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolPrinterSettings.Click += new System.EventHandler(this.printerSettingsToolStripMenuItem_Click);
             // 
             // stlComposer1
             // 
@@ -718,7 +748,7 @@
             this.stlComposer1.Location = new System.Drawing.Point(0, 0);
             this.stlComposer1.Margin = new System.Windows.Forms.Padding(4);
             this.stlComposer1.Name = "stlComposer1";
-            this.stlComposer1.Size = new System.Drawing.Size(1008, 319);
+            this.stlComposer1.Size = new System.Drawing.Size(1008, 304);
             this.stlComposer1.TabIndex = 0;
             // 
             // editor
@@ -730,7 +760,7 @@
             this.editor.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
             this.editor.MinimumSize = new System.Drawing.Size(160, 138);
             this.editor.Name = "editor";
-            this.editor.Size = new System.Drawing.Size(500, 310);
+            this.editor.Size = new System.Drawing.Size(500, 295);
             this.editor.TabIndex = 0;
             // 
             // Main
@@ -761,10 +791,10 @@
             this.tab.ResumeLayout(false);
             this.tabModel.ResumeLayout(false);
             this.tabGCode.ResumeLayout(false);
-            this.tabPrint.ResumeLayout(false);
-            this.splitContainerPrinterGraphic.ResumeLayout(false);
             this.splitJob.Panel1.ResumeLayout(false);
             this.splitJob.ResumeLayout(false);
+            this.tabPrint.ResumeLayout(false);
+            this.splitContainerPrinterGraphic.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -795,7 +825,6 @@
         private System.Windows.Forms.ToolStripMenuItem skeinforgeSettingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem threeDSettingsMenu;
         private System.Windows.Forms.ToolStripMenuItem printerInformationsToolStripMenuItem;
-        private RepetierHost.view.STLComposer stlComposer1;
         private System.Windows.Forms.ToolStripMenuItem repetierSettingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem jobStatusToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem repetierHostHomepageToolStripMenuItem;
@@ -840,6 +869,10 @@
         public System.Windows.Forms.ToolStripMenuItem skeinforgeConfigurationToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton toolShowFilament;
         private System.Windows.Forms.ToolStripButton toolStripEmergencyButton;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem killSlicingProcessToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton toolPrinterSettings;
+        public RepetierHost.view.STLComposer stlComposer1;
     }
 }
 

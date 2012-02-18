@@ -92,10 +92,18 @@ namespace RepetierHost.model
         {
             if (code.hostCommand)
             {
-                if (code.getHostCommand().Equals("@hide"))
+                string cmd = code.getHostCommand();
+                if (cmd.Equals("@hide"))
                     drawing = false;
-                else if (code.getHostCommand().Equals("@show"))
+                else if (cmd.Equals("@show"))
                     drawing = true;
+                else if (cmd.Equals("@isathome"))
+                {
+                    hasXHome = hasYHome = hasZHome = true;
+                    x = xOffset = 0;
+                    y = yOffset = 0;
+                    z = zOffset = 0;
+                } 
                 return;
             }
             if (code.forceAscii) return; // Don't analyse host commands and unknown commands

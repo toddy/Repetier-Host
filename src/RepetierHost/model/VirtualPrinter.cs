@@ -14,6 +14,8 @@ namespace RepetierHost.model
         LinkedList<string> output;
         Thread writeThread = null;
         int cnt = 0;
+        int baudrate;
+        volatile int bytesin = 0;
 
         private void WriteThread()
         {
@@ -37,6 +39,11 @@ namespace RepetierHost.model
         void timer_Tick(object sender, EventArgs e)
         {
             string res = null;
+            if (baudrate >= 250000) bytesin = 0;
+            if (bytesin > 0)
+            {
+                bytesin -= baudrate / 4000;
+            } else
             do
             {
                 res = null;
@@ -71,6 +78,7 @@ namespace RepetierHost.model
 
         public void open()
         {
+            baudrate = Main.conn.baud;
             ana.start();
             output.AddLast("start");
             writeThread = new Thread(new ThreadStart(this.WriteThread));
@@ -83,6 +91,7 @@ namespace RepetierHost.model
         }
         public void receiveLine(GCode code)
         {
+            bytesin += code.orig.Length;
             ana.Analyze(code);
             lock (output)
             {

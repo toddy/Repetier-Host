@@ -23,6 +23,7 @@ using System.IO;
 using System.Timers;
 using System.Threading;
 using System.Windows.Forms;
+using RepetierHost.view.utils;
 
 namespace RepetierHost.model
 {
@@ -97,6 +98,7 @@ namespace RepetierHost.model
         public int bedTemp;
         public float x, y, z, e;
         public bool paused = false;
+        public bool logM105 = false;
         public int lastline = 0;
         long lastReceived = 0;
         public bool autocheckTemp = true;
@@ -119,6 +121,8 @@ namespace RepetierHost.model
         Thread writeThread = null;
         static AutoResetEvent writeEvent;
         public float lastlogprogress = -1000;
+        public string filterCommand = "yourFilter #in #out";
+        public bool runFilterEverySlice = false;
 
         public PrinterConnection()
         {
@@ -241,6 +245,7 @@ namespace RepetierHost.model
         {
             LogLine l;
             bool update = false;
+            if (logM105 && t.IndexOf("M105")>=0) return;
             if (useNextLog != null)
             {
                 l = useNextLog;
@@ -371,8 +376,9 @@ namespace RepetierHost.model
         {
             if (paused) return;
             paused = true;
-            MessageBox.Show(Main.main, text, "Printer paused", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-            paused = false;
+            PauseInfo.ShowPause(text);
+            //MessageBox.Show(Main.main, text, "Printer paused", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+            //paused = false;
         }
         public void TrySendNextLine()
         {
@@ -480,6 +486,9 @@ namespace RepetierHost.model
                                     gc.N = ++lastline;
                                     if (isVirtualActive)
                                     {
+                                        if (!pingpong && receivedCount() + gc.orig.Length > receiveCacheSize) { --lastline; return false; } // printer cache full
+                                        if (pingpong) readyForNextSend = false;
+                                        else { lock (nackLines) { nackLines.AddLast(gc.orig.Length); } }
                                         virtualPrinter.receiveLine(gc);
                                         bytesSend += gc.orig.Length;
                                     }
@@ -510,8 +519,8 @@ namespace RepetierHost.model
                                 linesSend++;
                                 lastCommandSend = DateTime.Now.Ticks;
                                 historygc = gc;
-                                analyzer.Analyze(gc);
                             }
+                            analyzer.Analyze(gc);
                             if (job.dataComplete == false)
                             {
                                 if (injectCommands.Count == 0)
@@ -540,6 +549,9 @@ namespace RepetierHost.model
                                     gc.N = ++lastline;
                                     if (isVirtualActive)
                                     {
+                                        if (!pingpong && receivedCount() + gc.orig.Length > receiveCacheSize) { --lastline; return false; } // printer cache full
+                                        if (pingpong) readyForNextSend = false;
+                                        else { lock (nackLines) { nackLines.AddLast(gc.orig.Length); } }
                                         virtualPrinter.receiveLine(gc);
                                         bytesSend += gc.orig.Length;
                                     }
@@ -570,10 +582,10 @@ namespace RepetierHost.model
                             {
                                 linesSend++;
                                 lastCommandSend = DateTime.Now.Ticks;
-                                analyzer.Analyze(gc);
                                 printeraction = "Printing...ETA " + job.ETA;
                                 logprogress = job.PercentDone;
                             }
+                            analyzer.Analyze(gc);
                             return true;
                         }
                     }

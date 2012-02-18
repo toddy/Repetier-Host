@@ -245,7 +245,6 @@ namespace RepetierHost.view
                     }
                     if (con.afterJobDisablePrintbed)
                         job.PushData("M140 S0");
-                    con.ReturnInjectLock();
                     if (con.afterJobGoDispose)
                     {
                         job.PushData("G90");

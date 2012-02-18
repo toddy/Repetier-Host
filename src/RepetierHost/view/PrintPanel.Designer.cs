@@ -65,6 +65,13 @@
             this.labelZ = new System.Windows.Forms.Label();
             this.buttonHomeAll = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textRetractAmount = new System.Windows.Forms.TextBox();
+            this.textExtrudeAmount = new System.Windows.Forms.TextBox();
+            this.textExtrudeSpeed = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.buttonRetract = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
             this.buttonExtrude = new System.Windows.Forms.Button();
             this.buttonExtruderSetTemp = new System.Windows.Forms.Button();
             this.textExtruderSetTemp = new System.Windows.Forms.TextBox();
@@ -82,6 +89,7 @@
             this.buttonSimulateOK = new System.Windows.Forms.Button();
             this.buttonStopMotor = new System.Windows.Forms.Button();
             this.timer = new System.Windows.Forms.Timer(this.components);
+            this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.switchFanOn = new RepetierHost.view.SwitchButton();
             this.switchBedHeat = new RepetierHost.view.SwitchButton();
             this.switchExtruderHeatOn = new RepetierHost.view.SwitchButton();
@@ -90,14 +98,6 @@
             this.switchInfo = new RepetierHost.view.SwitchButton();
             this.switchEcho = new RepetierHost.view.SwitchButton();
             this.switchPower = new RepetierHost.view.SwitchButton();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.textExtrudeSpeed = new System.Windows.Forms.TextBox();
-            this.textExtrudeAmount = new System.Windows.Forms.TextBox();
-            this.textRetractAmount = new System.Windows.Forms.TextBox();
-            this.buttonRetract = new System.Windows.Forms.Button();
-            this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -475,6 +475,70 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Extruder";
             // 
+            // textRetractAmount
+            // 
+            this.textRetractAmount.Location = new System.Drawing.Point(261, 66);
+            this.textRetractAmount.Name = "textRetractAmount";
+            this.textRetractAmount.Size = new System.Drawing.Size(66, 20);
+            this.textRetractAmount.TabIndex = 13;
+            this.textRetractAmount.Text = "3";
+            this.textRetractAmount.Validating += new System.ComponentModel.CancelEventHandler(this.floatPos_Validating);
+            // 
+            // textExtrudeAmount
+            // 
+            this.textExtrudeAmount.Location = new System.Drawing.Point(104, 66);
+            this.textExtrudeAmount.Name = "textExtrudeAmount";
+            this.textExtrudeAmount.Size = new System.Drawing.Size(66, 20);
+            this.textExtrudeAmount.TabIndex = 13;
+            this.textExtrudeAmount.Text = "10";
+            this.textExtrudeAmount.Validating += new System.ComponentModel.CancelEventHandler(this.floatPos_Validating);
+            // 
+            // textExtrudeSpeed
+            // 
+            this.textExtrudeSpeed.Location = new System.Drawing.Point(15, 66);
+            this.textExtrudeSpeed.Name = "textExtrudeSpeed";
+            this.textExtrudeSpeed.Size = new System.Drawing.Size(66, 20);
+            this.textExtrudeSpeed.TabIndex = 13;
+            this.textExtrudeSpeed.Text = "10";
+            this.textExtrudeSpeed.Validating += new System.ComponentModel.CancelEventHandler(this.floatPos_Validating);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(258, 50);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(67, 13);
+            this.label8.TabIndex = 12;
+            this.label8.Text = "Retract [mm]";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(103, 50);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(68, 13);
+            this.label7.TabIndex = 11;
+            this.label7.Text = "Extrude [mm]";
+            // 
+            // buttonRetract
+            // 
+            this.buttonRetract.Location = new System.Drawing.Point(336, 66);
+            this.buttonRetract.Name = "buttonRetract";
+            this.buttonRetract.Size = new System.Drawing.Size(75, 23);
+            this.buttonRetract.TabIndex = 6;
+            this.buttonRetract.Text = "Retract";
+            this.buttonRetract.UseVisualStyleBackColor = true;
+            this.buttonRetract.Click += new System.EventHandler(this.buttonRetract_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(12, 50);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(84, 13);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "Speed [mm/min]";
+            // 
             // buttonExtrude
             // 
             this.buttonExtrude.Location = new System.Drawing.Point(178, 64);
@@ -642,6 +706,10 @@
             // 
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
+            // errorProvider
+            // 
+            this.errorProvider.ContainerControl = this;
+            // 
             // switchFanOn
             // 
             this.switchFanOn.Location = new System.Drawing.Point(6, 19);
@@ -729,74 +797,6 @@
             this.switchPower.TextOff = "Power on";
             this.switchPower.TextOn = "Power off";
             this.switchPower.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchPower_Change);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 50);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(84, 13);
-            this.label5.TabIndex = 10;
-            this.label5.Text = "Speed [mm/min]";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(103, 50);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(68, 13);
-            this.label7.TabIndex = 11;
-            this.label7.Text = "Extrude [mm]";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(258, 50);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(67, 13);
-            this.label8.TabIndex = 12;
-            this.label8.Text = "Retract [mm]";
-            // 
-            // textExtrudeSpeed
-            // 
-            this.textExtrudeSpeed.Location = new System.Drawing.Point(15, 66);
-            this.textExtrudeSpeed.Name = "textExtrudeSpeed";
-            this.textExtrudeSpeed.Size = new System.Drawing.Size(66, 20);
-            this.textExtrudeSpeed.TabIndex = 13;
-            this.textExtrudeSpeed.Text = "10";
-            this.textExtrudeSpeed.Validating += new System.ComponentModel.CancelEventHandler(this.floatPos_Validating);
-            // 
-            // textExtrudeAmount
-            // 
-            this.textExtrudeAmount.Location = new System.Drawing.Point(104, 66);
-            this.textExtrudeAmount.Name = "textExtrudeAmount";
-            this.textExtrudeAmount.Size = new System.Drawing.Size(66, 20);
-            this.textExtrudeAmount.TabIndex = 13;
-            this.textExtrudeAmount.Text = "10";
-            this.textExtrudeAmount.Validating += new System.ComponentModel.CancelEventHandler(this.floatPos_Validating);
-            // 
-            // textRetractAmount
-            // 
-            this.textRetractAmount.Location = new System.Drawing.Point(261, 66);
-            this.textRetractAmount.Name = "textRetractAmount";
-            this.textRetractAmount.Size = new System.Drawing.Size(66, 20);
-            this.textRetractAmount.TabIndex = 13;
-            this.textRetractAmount.Text = "3";
-            this.textRetractAmount.Validating += new System.ComponentModel.CancelEventHandler(this.floatPos_Validating);
-            // 
-            // buttonRetract
-            // 
-            this.buttonRetract.Location = new System.Drawing.Point(336, 66);
-            this.buttonRetract.Name = "buttonRetract";
-            this.buttonRetract.Size = new System.Drawing.Size(75, 23);
-            this.buttonRetract.TabIndex = 6;
-            this.buttonRetract.Text = "Retract";
-            this.buttonRetract.UseVisualStyleBackColor = true;
-            this.buttonRetract.Click += new System.EventHandler(this.buttonRetract_Click);
-            // 
-            // errorProvider
-            // 
-            this.errorProvider.ContainerControl = this;
             // 
             // PrintPanel
             // 

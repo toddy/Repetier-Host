@@ -211,6 +211,8 @@ namespace RepetierHost
                  tabGCode.Controls.Remove(splitJob);
                  tabPrint.Controls.Remove(splitContainerPrinterGraphic);
             }
+            toolShowLog_CheckedChanged(null, null);
+            updateShowFilament();
         }
        
         public void UpdateConnections()
@@ -304,6 +306,7 @@ namespace RepetierHost
             {
                 toolConnect.Image = imageList.Images[0];
                 toolConnect.ToolTipText = "Disconnect printer";
+                toolConnect.Text = "Disconnect";
                 foreach (ToolStripItem it in toolConnect.DropDownItems)
                     it.Enabled = false;
                 eeprom.Enabled = true;
@@ -313,6 +316,7 @@ namespace RepetierHost
             {
                 toolConnect.Image = imageList.Images[1];
                 toolConnect.ToolTipText = "Connect printer";
+                toolConnect.Text = "Connect";
                 eeprom.Enabled = false;
                 if (eepromSettings != null && eepromSettings.Visible)
                     eepromSettings.Close();
@@ -364,7 +368,7 @@ namespace RepetierHost
             Title = f.Name;
             fileHistory.Save(file);
             UpdateHistory();
-            if (file.EndsWith(".stl"))
+            if (file.ToLower().EndsWith(".stl"))
             {
                 if (MessageBox.Show("Do you want to slice the STL-File? No adds it to the object grid.", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
@@ -538,6 +542,7 @@ namespace RepetierHost
                 Main.main.toolKillJob.Enabled = false;
                 Main.main.toolRunJob.Enabled = conn.connected;
                 Main.main.toolRunJob.ToolTipText = "Run job";
+                Main.main.toolRunJob.Text = "Run job";
                 Main.main.toolRunJob.Image = Main.main.imageList.Images[2];
             }
             else
@@ -546,6 +551,7 @@ namespace RepetierHost
                 Main.main.toolKillJob.Enabled = true;
                 Main.main.toolRunJob.Image = Main.main.imageList.Images[3];
                 Main.main.toolRunJob.ToolTipText = "Pause job";
+                Main.main.toolRunJob.Text = "Pause job";
                 Main.main.printVisual.Clear();
             }
         };
@@ -678,12 +684,14 @@ namespace RepetierHost
         {
             if (toolShowLog.Checked)
             {
-                toolShowLog.ToolTipText = "Hide logs";
+                toolShowLog.ToolTipText = "Hide log";
+                toolShowLog.Text = "Hide Log";
                 splitLog.Panel2Collapsed = false;
             }
             else
             {
                 toolShowLog.ToolTipText = "Show logs";
+                toolShowLog.Text = "Show Log";
                 splitLog.Panel2Collapsed = true;
             }
         }
@@ -830,11 +838,13 @@ namespace RepetierHost
             {
                 toolShowFilament.Image = imageList.Images[5];
                 toolShowFilament.ToolTipText = "Filament visualization disabled";
+                toolShowFilament.Text = "Show Filament";
             }
             else
             {
                 toolShowFilament.Image = imageList.Images[4];
                 toolShowFilament.ToolTipText = "Filament visualization enabled";
+                toolShowFilament.Text = "Hide Filament";
             }
         }
         private void toolShowFilament_Click(object sender, EventArgs e)
@@ -854,6 +864,13 @@ namespace RepetierHost
                 Application.DoEvents();
             }
             conn.close();
+        }
+
+        private void killSlicingProcessToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            skeinforge.KillSlice();
+            slic3r.KillSlice();
+            SlicingInfo.Stop();
         }
     }
 }
