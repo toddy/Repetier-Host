@@ -1,5 +1,4 @@
 src/RepetierHost/obj
-src/RepetierHost/bin
 src/RepetierHost/bin/debug
 src/RepetierHost/bin/MacOSX
 src/RepetierHost/bin/release/Slic3r
