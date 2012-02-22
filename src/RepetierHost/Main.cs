@@ -81,7 +81,7 @@ namespace RepetierHost
                 Main.main.jobPreviewThreadFinished = true;
                 Main.main.previewThread = null;
                 sw.Stop();
-                Main.conn.log("Update time:" + sw.ElapsedMilliseconds, false, 3);
+                //Main.conn.log("Update time:" + sw.ElapsedMilliseconds, false, 3);
             }
         }
 		//From Managed.Windows.Forms/XplatUI
@@ -109,7 +109,7 @@ namespace RepetierHost
         public Main()
         {
             executeHostCall = new executeHostCommandDelegate(this.executeHostCommand);
-            repetierKey = Registry.CurrentUser.CreateSubKey("Software\\Repetier");
+            repetierKey = Registry.CurrentUser.CreateSubKey("SOFTWARE\\Repetier");
 			repetierKey.SetValue("installPath",Application.StartupPath);
 			if(Path.DirectorySeparatorChar != '\\' && IsRunningOnMac())
 				IsMac = true;
