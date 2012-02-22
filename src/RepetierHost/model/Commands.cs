@@ -62,7 +62,7 @@ namespace RepetierHost.model
         }
         public void Read(string firmware, string lang)
         {
-            RegistryKey repetierKey = Registry.CurrentUser.CreateSubKey("Software\\Repetier");
+            RegistryKey repetierKey = Registry.CurrentUser.CreateSubKey("SOFTWARE\\Repetier");
 
             string basedir = (string)repetierKey.GetValue("installPath");
 

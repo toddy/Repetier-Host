@@ -36,7 +36,7 @@ namespace RepetierHost.model
 
         public GCodeGenerator()
         {
-            repetierKey = Registry.CurrentUser.CreateSubKey("Software\\Repetier");
+            repetierKey = Registry.CurrentUser.CreateSubKey("SOFTWARE\\Repetier");
             printerKey = repetierKey.CreateSubKey("printer");
             code = new StringBuilder();
         }

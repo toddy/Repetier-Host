@@ -38,7 +38,7 @@ namespace RepetierHost.view
         {
             InitializeComponent();
             RegMemory.RestoreWindowPos("skeinforgeWindow", this);
-            repetierKey = Registry.CurrentUser.CreateSubKey("Software\\Repetier");
+            repetierKey = Registry.CurrentUser.CreateSubKey("SOFTWARE\\Repetier");
             regToForm();
         }
         public string wrapQuotes(string text)

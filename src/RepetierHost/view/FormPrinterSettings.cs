@@ -50,7 +50,7 @@ namespace RepetierHost.view
         {
             InitializeComponent();
             RegMemory.RestoreWindowPos("printerSettingsWindow", this);
-            repetierKey = Registry.CurrentUser.CreateSubKey("Software\\Repetier");
+            repetierKey = Registry.CurrentUser.CreateSubKey("SOFTWARE\\Repetier");
             printerKey = repetierKey.CreateSubKey("printer");
             con = Main.conn;
             conToForm();
