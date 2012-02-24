@@ -1,4 +1,6 @@
 src/RepetierHost/obj
+src/RepetierHost
+src/RepetierHost/bin/Release
 src/RepetierHost/bin/debug
 src/RepetierHost/bin/MacOSX
 src/RepetierHost/bin/release/Slic3r
@@ -16,3 +18,9 @@ screenshots/Thumbs.db
 macosx/slic3r-osx-uni-0-5-5b.dmg
 
 linux/buildTest.sh
+
+src/RepetierHost/RepetierHost.suo
+
+src/RepetierHost/RepetierHost.suo
+
+src/RepetierHost/bin/Release/RepetierHost.exe
