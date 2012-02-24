@@ -87,6 +87,7 @@
             this.toolShowLog = new System.Windows.Forms.ToolStripButton();
             this.toolShowFilament = new System.Windows.Forms.ToolStripButton();
             this.toolStripEmergencyButton = new System.Windows.Forms.ToolStripButton();
+            this.toolPrinterSettings = new System.Windows.Forms.ToolStripButton();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.openGCode = new System.Windows.Forms.OpenFileDialog();
             this.saveJobDialog = new System.Windows.Forms.SaveFileDialog();
@@ -94,13 +95,12 @@
             this.splitLog = new System.Windows.Forms.SplitContainer();
             this.tab = new System.Windows.Forms.TabControl();
             this.tabModel = new System.Windows.Forms.TabPage();
+            this.stlComposer1 = new RepetierHost.view.STLComposer();
             this.tabGCode = new System.Windows.Forms.TabPage();
             this.splitJob = new System.Windows.Forms.SplitContainer();
+            this.editor = new RepetierHost.view.RepetierEditor();
             this.tabPrint = new System.Windows.Forms.TabPage();
             this.splitContainerPrinterGraphic = new System.Windows.Forms.SplitContainer();
-            this.toolPrinterSettings = new System.Windows.Forms.ToolStripButton();
-            this.stlComposer1 = new RepetierHost.view.STLComposer();
-            this.editor = new RepetierHost.view.RepetierEditor();
             this.menu.SuspendLayout();
             this.status.SuspendLayout();
             this.toolStrip.SuspendLayout();
@@ -609,6 +609,17 @@
             this.toolStripEmergencyButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolStripEmergencyButton.Click += new System.EventHandler(this.toolStripEmergencyButton_Click);
             // 
+            // toolPrinterSettings
+            // 
+            this.toolPrinterSettings.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolPrinterSettings.Image = ((System.Drawing.Image)(resources.GetObject("toolPrinterSettings.Image")));
+            this.toolPrinterSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolPrinterSettings.Name = "toolPrinterSettings";
+            this.toolPrinterSettings.Size = new System.Drawing.Size(90, 51);
+            this.toolPrinterSettings.Text = "Printer settings";
+            this.toolPrinterSettings.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolPrinterSettings.Click += new System.EventHandler(this.printerSettingsToolStripMenuItem_Click);
+            // 
             // imageList
             // 
             this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
@@ -677,6 +688,15 @@
             this.tabModel.TabIndex = 2;
             this.tabModel.Text = "Object placements";
             // 
+            // stlComposer1
+            // 
+            this.stlComposer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stlComposer1.Location = new System.Drawing.Point(0, 0);
+            this.stlComposer1.Margin = new System.Windows.Forms.Padding(4);
+            this.stlComposer1.Name = "stlComposer1";
+            this.stlComposer1.Size = new System.Drawing.Size(1008, 304);
+            this.stlComposer1.TabIndex = 0;
+            // 
             // tabGCode
             // 
             this.tabGCode.AutoScroll = true;
@@ -706,6 +726,18 @@
             this.splitJob.SplitterDistance = 500;
             this.splitJob.TabIndex = 3;
             // 
+            // editor
+            // 
+            this.editor.AccessibleRole = System.Windows.Forms.AccessibleRole.Caret;
+            this.editor.autopreview = true;
+            this.editor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.editor.Location = new System.Drawing.Point(0, 0);
+            this.editor.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
+            this.editor.MinimumSize = new System.Drawing.Size(160, 138);
+            this.editor.Name = "editor";
+            this.editor.Size = new System.Drawing.Size(500, 295);
+            this.editor.TabIndex = 0;
+            // 
             // tabPrint
             // 
             this.tabPrint.BackColor = System.Drawing.SystemColors.Control;
@@ -730,38 +762,6 @@
             this.splitContainerPrinterGraphic.Size = new System.Drawing.Size(1002, 298);
             this.splitContainerPrinterGraphic.SplitterDistance = 465;
             this.splitContainerPrinterGraphic.TabIndex = 0;
-            // 
-            // toolPrinterSettings
-            // 
-            this.toolPrinterSettings.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.toolPrinterSettings.Image = ((System.Drawing.Image)(resources.GetObject("toolPrinterSettings.Image")));
-            this.toolPrinterSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolPrinterSettings.Name = "toolPrinterSettings";
-            this.toolPrinterSettings.Size = new System.Drawing.Size(90, 51);
-            this.toolPrinterSettings.Text = "Printer settings";
-            this.toolPrinterSettings.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.toolPrinterSettings.Click += new System.EventHandler(this.printerSettingsToolStripMenuItem_Click);
-            // 
-            // stlComposer1
-            // 
-            this.stlComposer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.stlComposer1.Location = new System.Drawing.Point(0, 0);
-            this.stlComposer1.Margin = new System.Windows.Forms.Padding(4);
-            this.stlComposer1.Name = "stlComposer1";
-            this.stlComposer1.Size = new System.Drawing.Size(1008, 304);
-            this.stlComposer1.TabIndex = 0;
-            // 
-            // editor
-            // 
-            this.editor.AccessibleRole = System.Windows.Forms.AccessibleRole.Caret;
-            this.editor.autopreview = true;
-            this.editor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.editor.Location = new System.Drawing.Point(0, 0);
-            this.editor.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
-            this.editor.MinimumSize = new System.Drawing.Size(160, 138);
-            this.editor.Name = "editor";
-            this.editor.Size = new System.Drawing.Size(500, 295);
-            this.editor.TabIndex = 0;
             // 
             // Main
             // 
@@ -817,7 +817,6 @@
         private System.Windows.Forms.SplitContainer splitContainerPrinterGraphic;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem printerSettingsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem eeprom;
         private System.Windows.Forms.ImageList imageList;
         private System.Windows.Forms.OpenFileDialog openGCode;
         private System.Windows.Forms.ToolStripMenuItem windowsToolStripMenuItem;
@@ -873,6 +872,7 @@
         private System.Windows.Forms.ToolStripMenuItem killSlicingProcessToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton toolPrinterSettings;
         public RepetierHost.view.STLComposer stlComposer1;
+        public System.Windows.Forms.ToolStripMenuItem eeprom;
     }
 }
 

@@ -185,7 +185,7 @@ namespace RepetierHost.model
                         break;
                     case 92:
                         if (code.hasX) { xOffset = x-code.X; x = xOffset; }
-                        if (code.hasY) { yOffset = y-code.Y; y = zOffset; }
+                        if (code.hasY) { yOffset = y-code.Y; y = yOffset; }
                         if (code.hasZ) { zOffset = z-code.Z; z = zOffset; }
                         if (code.hasE) { eOffset = e-code.E; e = eOffset; }
                         if (eventPosChanged != null)

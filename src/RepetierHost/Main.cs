@@ -44,6 +44,7 @@ namespace RepetierHost
         private FormTempMonitor tempMonitor = null;
         public Skeinforge skeinforge = null;
         public EEPROMRepetier eepromSettings = null;
+        public EEPROMMarlin eepromSettingsm = null;
         public LogView logView = null;
         public PrintPanel printPanel = null;
         public RegistryKey repetierKey;
@@ -84,35 +85,41 @@ namespace RepetierHost
                 //Main.conn.log("Update time:" + sw.ElapsedMilliseconds, false, 3);
             }
         }
-		//From Managed.Windows.Forms/XplatUI
-	static bool IsRunningOnMac ()
-	{
-		IntPtr buf = IntPtr.Zero;
-		try {
-			buf = System.Runtime.InteropServices.Marshal.AllocHGlobal (8192);
-			// This is a hacktastic way of getting sysname from uname ()
-			if (uname (buf) == 0) {
-				string os = System.Runtime.InteropServices.Marshal.PtrToStringAnsi (buf);
-				if (os == "Darwin")
-					return true;
-			}
-		} catch {
-		} finally {
-			if (buf != IntPtr.Zero)
-				System.Runtime.InteropServices.Marshal.FreeHGlobal (buf);
-		}
-		return false;
-	}
- 
-	[System.Runtime.InteropServices.DllImport ("libc")]
-	static extern int uname (IntPtr buf);
+        //From Managed.Windows.Forms/XplatUI
+        static bool IsRunningOnMac()
+        {
+            IntPtr buf = IntPtr.Zero;
+            try
+            {
+                buf = System.Runtime.InteropServices.Marshal.AllocHGlobal(8192);
+                // This is a hacktastic way of getting sysname from uname ()
+                if (uname(buf) == 0)
+                {
+                    string os = System.Runtime.InteropServices.Marshal.PtrToStringAnsi(buf);
+                    if (os == "Darwin")
+                        return true;
+                }
+            }
+            catch
+            {
+            }
+            finally
+            {
+                if (buf != IntPtr.Zero)
+                    System.Runtime.InteropServices.Marshal.FreeHGlobal(buf);
+            }
+            return false;
+        }
+
+        [System.Runtime.InteropServices.DllImport("libc")]
+        static extern int uname(IntPtr buf);
         public Main()
         {
             executeHostCall = new executeHostCommandDelegate(this.executeHostCommand);
             repetierKey = Registry.CurrentUser.CreateSubKey("SOFTWARE\\Repetier");
-			repetierKey.SetValue("installPath",Application.StartupPath);
-			if(Path.DirectorySeparatorChar != '\\' && IsRunningOnMac())
-				IsMac = true;
+            repetierKey.SetValue("installPath", Application.StartupPath);
+            if (Path.DirectorySeparatorChar != '\\' && IsRunningOnMac())
+                IsMac = true;
             /*String[] parms = Environment.GetCommandLineArgs();
             string lastcom = "";
             foreach (string s in parms)
@@ -151,20 +158,20 @@ namespace RepetierHost
                 }
                 if (IsMac)
                 {
-					/*Application.Events.Quit += delegate (object sender, ApplicationEventArgs e) {
-						Application.Quit ();
-						e.Handled = true;
-					};
+                    /*Application.Events.Quit += delegate (object sender, ApplicationEventArgs e) {
+                        Application.Quit ();
+                        e.Handled = true;
+                    };
  
-					ApplicationEvents.Reopen += delegate (object sender, ApplicationEventArgs e) {
-						WindowState = FormWindowState.Normal;
-						e.Handled = true;
-					};*/
- 
-					MinimumSize = new Size(500,640);
-                    tab.MinimumSize = new Size(500,500);
+                    ApplicationEvents.Reopen += delegate (object sender, ApplicationEventArgs e) {
+                        WindowState = FormWindowState.Normal;
+                        e.Handled = true;
+                    };*/
+
+                    MinimumSize = new Size(500, 640);
+                    tab.MinimumSize = new Size(500, 500);
                     splitLog.Panel1MinSize = 520;
-					splitLog.Panel2MinSize = 100;
+                    splitLog.Panel2MinSize = 100;
                     splitLog.IsSplitterFixed = true;
                     splitJob.IsSplitterFixed = true;
                     //splitContainerPrinterGraphic.SplitterDistance -= 52;
@@ -183,7 +190,7 @@ namespace RepetierHost
             logView.Dock = DockStyle.Fill;
             splitLog.Panel2.Controls.Add(logView);
             skeinforge = new Skeinforge();
-            PrinterChanged(printerSettings.currentPrinterKey,true);
+            PrinterChanged(printerSettings.currentPrinterKey, true);
             printerSettings.eventPrinterChanged += PrinterChanged;
             // GCode print preview
             printPreview = new ThreeDControl();
@@ -207,14 +214,15 @@ namespace RepetierHost
             UpdateConnections();
             Main.slic3r = new Slic3r();
             slicer = new Slicer();
-            if(IsMac) {
-                 tabGCode.Controls.Remove(splitJob);
-                 tabPrint.Controls.Remove(splitContainerPrinterGraphic);
+            if (IsMac)
+            {
+                tabGCode.Controls.Remove(splitJob);
+                tabPrint.Controls.Remove(splitContainerPrinterGraphic);
             }
             toolShowLog_CheckedChanged(null, null);
             updateShowFilament();
         }
-       
+
         public void UpdateConnections()
         {
             toolConnect.DropDownItems.Clear();
@@ -230,7 +238,8 @@ namespace RepetierHost
             bool delFlag = false;
             LinkedList<ToolStripItem> delArray = new LinkedList<ToolStripItem>();
             int pos = 0;
-            foreach(ToolStripItem c in fileToolStripMenuItem.DropDownItems) {
+            foreach (ToolStripItem c in fileToolStripMenuItem.DropDownItems)
+            {
                 if (c == toolStripEndHistory) break;
                 if (!delFlag) pos++;
                 if (c == toolStripStartHistory)
@@ -244,14 +253,15 @@ namespace RepetierHost
             foreach (ToolStripItem i in delArray)
                 fileToolStripMenuItem.DropDownItems.Remove(i);
             toolLoad.DropDownItems.Clear();
-            foreach(RegMemory.HistoryFile f in fileHistory.list) {
+            foreach (RegMemory.HistoryFile f in fileHistory.list)
+            {
                 ToolStripMenuItem item = new ToolStripMenuItem(); // You would obviously calculate this value at runtime
                 item = new ToolStripMenuItem();
-                item.Name = "file" +pos;
+                item.Name = "file" + pos;
                 item.Tag = f;
                 item.Text = f.ToString();
                 item.Click += new EventHandler(HistoryHandler);
-                fileToolStripMenuItem.DropDownItems.Insert(pos++,item);
+                fileToolStripMenuItem.DropDownItems.Insert(pos++, item);
                 item = new ToolStripMenuItem();
                 item.Name = "filet" + pos;
                 item.Tag = f;
@@ -294,13 +304,14 @@ namespace RepetierHost
             /*f.TopMost = true;
             f.Focus();*/
             f.BringToFront();
-           // f.TopMost = false;
+            // f.TopMost = false;
         }
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
-        private void OnPrinterConnectionChange(string msg) {
+        private void OnPrinterConnectionChange(string msg)
+        {
             toolConnection.Text = msg;
             if (conn.connected)
             {
@@ -309,7 +320,7 @@ namespace RepetierHost
                 toolConnect.Text = "Disconnect";
                 foreach (ToolStripItem it in toolConnect.DropDownItems)
                     it.Enabled = false;
-                eeprom.Enabled = true;
+                //eeprom.Enabled = true;
                 toolStripEmergencyButton.Enabled = true;
             }
             else
@@ -319,7 +330,17 @@ namespace RepetierHost
                 toolConnect.Text = "Connect";
                 eeprom.Enabled = false;
                 if (eepromSettings != null && eepromSettings.Visible)
+                {
                     eepromSettings.Close();
+                    eepromSettings.Dispose();
+                    eepromSettings = null;
+                }
+                if (eepromSettingsm != null && eepromSettingsm.Visible)
+                {
+                    eepromSettingsm.Close();
+                    eepromSettingsm.Dispose();
+                    eepromSettingsm = null;
+                }
                 foreach (ToolStripItem it in toolConnect.DropDownItems)
                     it.Enabled = true;
                 toolStripEmergencyButton.Enabled = false;
@@ -336,23 +357,47 @@ namespace RepetierHost
 
         private void testToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (eepromSettings != null)
+            if (conn.isRepetier)
             {
-                if (eepromSettings.Visible)
+                if (eepromSettings != null)
                 {
-                    eepromSettings.BringToFront();
-                    return;
+                    if (eepromSettings.Visible)
+                    {
+                        eepromSettings.BringToFront();
+                        return;
+                    }
+                    else
+                    {
+                        eepromSettings.Dispose();
+                        eepromSettings = null;
+                    }
                 }
-                else
-                {
-                    eepromSettings.Dispose();
-                    eepromSettings = null;
-                }
+                if (eepromSettings == null)
+                    eepromSettings = new EEPROMRepetier();
+                eepromSettings.Show2();
             }
-            if (eepromSettings == null)
-                eepromSettings = new EEPROMRepetier();
-            eepromSettings.Show2();
+            if (conn.isMarlin)
+            {
+                if (eepromSettingsm != null)
+                {
+                    if (eepromSettingsm.Visible)
+                    {
+                        eepromSettingsm.BringToFront();
+                        return;
+                    }
+                    else
+                    {
+                        eepromSettingsm.Dispose();
+                        eepromSettingsm = null;
+                    }
+                }
+                if (eepromSettingsm == null)
+                    eepromSettingsm = new EEPROMMarlin();
+                eepromSettingsm.Show2();
+            }
         }
+
+
 
         private void toolGCodeLoad_Click(object sender, EventArgs e)
         {
@@ -390,13 +435,13 @@ namespace RepetierHost
         {
             try
             {
-                editor.setContent(0,System.IO.File.ReadAllText(file));
+                editor.setContent(0, System.IO.File.ReadAllText(file));
                 tab.SelectTab(tabGCode);
                 editor.selectContent(0);
                 fileHistory.Save(file);
                 UpdateHistory();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -405,7 +450,7 @@ namespace RepetierHost
         {
             try
             {
-                editor.setContent(0,text);
+                editor.setContent(0, text);
                 tab.SelectTab(tabGCode);
                 editor.selectContent(0);
             }
@@ -481,11 +526,11 @@ namespace RepetierHost
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
             conn.close();
-            RegMemory.StoreWindowPos("mainWindow",this, true, true);
+            RegMemory.StoreWindowPos("mainWindow", this, true, true);
             RegMemory.SetInt("logSplitterDistance", splitLog.SplitterDistance);
             RegMemory.SetBool("logShow", toolShowLog.Checked);
 
-            if(previewThread!=null)
+            if (previewThread != null)
                 previewThread.Join();
             conn.Destroy();
         }
@@ -556,38 +601,38 @@ namespace RepetierHost
             }
         };
 
-      /*  private void toolStripSaveGCode_Click(object sender, EventArgs e)
-        {
-            if (saveJobDialog.ShowDialog() == DialogResult.OK)
-            {
-                System.IO.File.WriteAllText(saveJobDialog.FileName, textGCode.Text, Encoding.Default);
-            }
-        }
+        /*  private void toolStripSaveGCode_Click(object sender, EventArgs e)
+          {
+              if (saveJobDialog.ShowDialog() == DialogResult.OK)
+              {
+                  System.IO.File.WriteAllText(saveJobDialog.FileName, textGCode.Text, Encoding.Default);
+              }
+          }
 
-        private void toolStripSavePrepend_Click(object sender, EventArgs e)
-        {
-            printerSettings.currentPrinterKey.SetValue("gcodePrepend", textGCodePrepend.Text);
-        }
+          private void toolStripSavePrepend_Click(object sender, EventArgs e)
+          {
+              printerSettings.currentPrinterKey.SetValue("gcodePrepend", textGCodePrepend.Text);
+          }
 
-        private void toolStripSaveAppend_Click(object sender, EventArgs e)
-        {
-            printerSettings.currentPrinterKey.SetValue("gcodeAppend", textGCodeAppend.Text);
-        }*/
+          private void toolStripSaveAppend_Click(object sender, EventArgs e)
+          {
+              printerSettings.currentPrinterKey.SetValue("gcodeAppend", textGCodeAppend.Text);
+          }*/
         bool recalcJobPreview = false;
         private void JobPreview()
         {
             if (editor.autopreview == false) return;
-     /*       if (splitJob.Panel2Collapsed)
-            {
-                splitJob.Panel2Collapsed = false;
-                splitJob.SplitterDistance = 300;
-                jobPreview = new ThreeDControl();
-                jobPreview.Dock = DockStyle.Fill;
-                splitJob.Panel2.Controls.Add(jobPreview);
-                jobPreview.SetEditor(false);
-                jobPreview.models.AddLast(jobVisual);
-                //jobPreview.SetObjectSelected(false);
-            }*/
+            /*       if (splitJob.Panel2Collapsed)
+                   {
+                       splitJob.Panel2Collapsed = false;
+                       splitJob.SplitterDistance = 300;
+                       jobPreview = new ThreeDControl();
+                       jobPreview.Dock = DockStyle.Fill;
+                       splitJob.Panel2.Controls.Add(jobPreview);
+                       jobPreview.SetEditor(false);
+                       jobPreview.models.AddLast(jobVisual);
+                       //jobPreview.SetObjectSelected(false);
+                   }*/
             /* Read the initial time. */
             recalcJobPreview = true;
             /*DateTime startTime = DateTime.Now;
@@ -677,7 +722,7 @@ namespace RepetierHost
 
         private void toolShowLog_Click(object sender, EventArgs e)
         {
-            toolShowLog.Checked = !toolShowLog.Checked;   
+            toolShowLog.Checked = !toolShowLog.Checked;
         }
 
         private void toolShowLog_CheckedChanged(object sender, EventArgs e)
@@ -750,7 +795,7 @@ namespace RepetierHost
         {
             //Console.WriteLine("index changed " + Environment.OSVersion.Platform + " Mac=" + PlatformID.MacOSX);
             //if (Environment.OSVersion.Platform == PlatformID.MacOSX )
-            if(IsMac)
+            if (IsMac)
             {
                 // In MacOSX the OpenGL windows shine through the
                 // tabs, so we need to disable all GL windows except the active.
@@ -791,7 +836,7 @@ namespace RepetierHost
                     if (!tabPrint.Controls.Contains(splitContainerPrinterGraphic))
                         tabPrint.Controls.Add(splitContainerPrinterGraphic);
                 }
-                
+
                 stlComposer1.cont.MakeVisible(tab.SelectedIndex == 0);
                 jobPreview.MakeVisible(tab.SelectedIndex == 1);
                 printPreview.MakeVisible(tab.SelectedIndex == 2);
@@ -807,9 +852,9 @@ namespace RepetierHost
                 if (Height < 740) Height = 740;
                 refreshCounter = 4;
                 Application.DoEvents();
-   /*             Invalidate();
-                Application.DoEvents();
-                tab.SelectedTab.Invalidate();*/
+                /*             Invalidate();
+                             Application.DoEvents();
+                             tab.SelectedTab.Invalidate();*/
             }
         }
 
@@ -850,7 +895,7 @@ namespace RepetierHost
         private void toolShowFilament_Click(object sender, EventArgs e)
         {
             threeDSettings.checkDisableFilamentVisualization.Checked = !threeDSettings.checkDisableFilamentVisualization.Checked;
-           // updateShowFilament();
+            // updateShowFilament();
         }
 
         private void toolStripEmergencyButton_Click(object sender, EventArgs e)

@@ -104,6 +104,7 @@
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
     <Compile Include="model\Commands.cs" />
+    <Compile Include="model\EEPROMMarlinParameter.cs" />
     <Compile Include="model\EEPROMParameter.cs" />
     <Compile Include="model\GCode.cs" />
     <Compile Include="model\GCodeAnalyzer.cs" />
@@ -174,6 +175,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="view\About.resx">
       <DependentUpon>About.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="view\EEPROMMarlin.resx">
+      <DependentUpon>EEPROMMarlin.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="view\EEPROMRepetier.resx">
@@ -298,6 +303,12 @@
     </Compile>
     <Compile Include="view\DoubleBufferPanel.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="view\EEPROMMarlin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="view\EEPROMMarlin.designer.cs">
+      <DependentUpon>EEPROMMarlin.cs</DependentUpon>
     </Compile>
     <Compile Include="view\EEPROMRepetier.cs">
       <SubType>Form</SubType>

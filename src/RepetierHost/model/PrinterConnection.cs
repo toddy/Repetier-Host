@@ -86,6 +86,7 @@ namespace RepetierHost.model
         public LinkedList<GCode> history = new LinkedList<GCode>();
         LinkedListNode<GCode> resendNode = null;
         public EEPROMStorage eeprom = new EEPROMStorage();
+        public EEPROMMarlinStorage eepromm = new EEPROMMarlinStorage();
         public Printjob job;
         private Object nextlineLock = new Object();
         // Printer data
@@ -123,6 +124,8 @@ namespace RepetierHost.model
         public float lastlogprogress = -1000;
         public string filterCommand = "yourFilter #in #out";
         public bool runFilterEverySlice = false;
+        public bool isRepetier = false;
+        public bool isMarlin = false;
 
         public PrinterConnection()
         {
@@ -632,6 +635,7 @@ namespace RepetierHost.model
                 writeThread = new Thread(new ThreadStart(this.WriteLoop));
                 writeThread.Start();
             }
+            isMarlin = isRepetier = false;
             try
             {
                 if (port.Equals("Virtual printer"))
@@ -941,6 +945,7 @@ namespace RepetierHost.model
         /// <param name="res"></param>
         public void analyzeResponse(string res)
         {
+            res = res.Trim();
             int level = 0;
             if (logWriter != null)
             {
@@ -960,6 +965,12 @@ namespace RepetierHost.model
             {
                 level = 3;
                 firmware = h;
+                if (h.IndexOf("Repetier") >= 0) isRepetier = true;
+                if (h.IndexOf("Marlin") >= 0) isMarlin = true;
+                if (isMarlin || isRepetier) // Activate special menus and function
+                {
+                    Main.main.eeprom.Enabled = true;
+                }
             }
             h = extract(res, "FIRMWARE_URL:");
             if (h != null)
@@ -1026,9 +1037,20 @@ namespace RepetierHost.model
                 int.TryParse(h, out bedTemp);
                 tempChange = true;
             }
-            if (res.StartsWith("EPR:"))
-            {
-                eeprom.Add(res);
+            if (isRepetier)
+            { // Repetier specific answers
+                if (res.StartsWith("EPR:"))
+                {
+                    eeprom.Add(res);
+                }
+            }
+            if (isMarlin)
+            { // Marlin specifix answers
+                if (res.StartsWith("echo:") && (res.IndexOf("M92")>0) || (res.IndexOf("M203")>0) || (res.IndexOf("M201")>0) || 
+                    (res.IndexOf("M204")>0) || (res.IndexOf("M205")>0) || (res.IndexOf("M301")>0))
+                {
+                    eepromm.Add(res);
+                }
             }
             if (res.StartsWith("MTEMP:")) // Temperature monitor 
             {
