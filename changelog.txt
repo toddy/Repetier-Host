@@ -1,5 +1,7 @@
 Version 0.36 25.02.2012
   Added EEPROM settings for Marlin (thanks scuba for providing the code)
+  You can addionally use an external Slic3r version with it's native .ini config
+  Upgraded Slic3r to 0.7.0
   Fixed G92 bug.
 
 Version 0.35 18.02.2012

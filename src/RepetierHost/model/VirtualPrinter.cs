@@ -99,6 +99,7 @@ namespace RepetierHost.model
                     {
                         case 115: // Firmware
                             output.AddLast("FIRMWARE_NAME:RepetierVirtualPrinter FIRMWARE_URL:https://github.com/repetier/Repetier-Firmware/ PROTOCOL_VERSION:1.0 MACHINE_TYPE:Mendel EXTRUDER_COUNT:1 REPETIER_PROTOCOL:1");
+                            //output.AddLast("FIRMWARE_NAME:Marlin FIRMWARE_URL:https://github.com/repetier/Repetier-Firmware/ PROTOCOL_VERSION:1.0 MACHINE_TYPE:Mendel EXTRUDER_COUNT:1 REPETIER_PROTOCOL:1");
                             break;
                         case 105: // Print Temperatures
                             output.AddLast("T:" + extruderTemp.ToString("0") + " B:" + bedTemp.ToString("0"));

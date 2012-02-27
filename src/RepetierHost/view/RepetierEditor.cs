@@ -467,7 +467,7 @@ namespace RepetierHost.view
             {
                 for (i = 0; i < text.Length; i++)
                 {
-                    g.DrawString(text[i].ToString(), drawFont,(ac >=minc && ac<=maxc ? selectionTextColor : hostBrush), ps, y);
+                    g.DrawString(text[i].ToString(), drawFont,(ac >=minc && ac<maxc ? selectionTextColor : hostBrush), ps, y);
                     ac++;
                     ps += fontWidth;
                 }
@@ -493,7 +493,7 @@ namespace RepetierHost.view
             {
                 for (i = 0; i < command.Length; i++)
                 {
-                    g.DrawString(command[i].ToString(), drawFont, (ac >=minc && ac<=maxc ? selectionTextColor :commandBrush), ps, y);
+                    g.DrawString(command[i].ToString(), drawFont, (ac >=minc && ac<maxc ? selectionTextColor :commandBrush), ps, y);
                     ps += fontWidth;
                     ac++;
                 }
@@ -504,9 +504,9 @@ namespace RepetierHost.view
                 {
                     char c = parameter[i];
                     if((c>='A' && c<='Z') || (c>='a' && c<='z')) 
-                        g.DrawString(c.ToString(), drawFont,(ac >=minc && ac<=maxc ? selectionTextColor : paramTypeBrush), ps, y);
+                        g.DrawString(c.ToString(), drawFont,(ac >=minc && ac<maxc ? selectionTextColor : paramTypeBrush), ps, y);
                     else
-                        g.DrawString(c.ToString(), drawFont, (ac >=minc && ac<=maxc ? selectionTextColor :blackBrush), ps, y);
+                        g.DrawString(c.ToString(), drawFont, (ac >=minc && ac<maxc ? selectionTextColor :blackBrush), ps, y);
                     ps += fontWidth;
                     ac++;
                 }
@@ -515,7 +515,7 @@ namespace RepetierHost.view
             {
                 for (i = 0; i < comment.Length; i++)
                 {
-                    g.DrawString(comment[i].ToString(), drawFont,(ac >=minc && ac<=maxc ? selectionTextColor : commentBrush), ps, y);
+                    g.DrawString(comment[i].ToString(), drawFont,(ac >=minc && ac<maxc ? selectionTextColor : commentBrush), ps, y);
                     ps += fontWidth;
                     ac++;
                 }

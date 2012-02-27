@@ -6,15 +6,18 @@ using Microsoft.Win32;
 using System.IO;
 using System.Diagnostics;
 using System.Windows.Forms;
+using RepetierHost.model;
 
 namespace RepetierHost.view.utils
 {
     public class Slicer
     {
-        public enum SlicerID  {Slic3r,Skeinforge};
+        public enum SlicerID  {Slic3r,Skeinforge,Slic3rExternal};
         private SlicerID _ActiveSlicer = SlicerID.Slic3r;
         bool _hasSlic3r = false;
         bool _hasSkeinforge = false;
+        bool _hasSlic3rExternal = false;
+
         private Skeinforge skein = null;
 
         public Slicer()
@@ -28,6 +31,13 @@ namespace RepetierHost.view.utils
             get
             {
                 return _hasSlic3r;
+            }
+        }
+        public bool hasSlic3rExternal
+        {
+            get
+            {
+                return _hasSlic3rExternal;
             }
         }
         public bool hasSkeinforge
@@ -111,7 +121,7 @@ namespace RepetierHost.view.utils
             // Collect the net view command output.
             if (!String.IsNullOrEmpty(outLine.Data))
             {
-                Main.conn.log(outLine.Data, false, 4);
+                Main.conn.log("<Postprocess> "+outLine.Data, false, 4);
             }
         }
 
@@ -124,6 +134,7 @@ namespace RepetierHost.view.utils
                 }
                 Main.main.slic3rToolStripMenuItem.Checked = _ActiveSlicer == SlicerID.Slic3r;
                 Main.main.skeinforgeToolStripMenuItem1.Checked = _ActiveSlicer == SlicerID.Skeinforge;
+                Main.main.externalSlic3rToolStripMenuItem.Checked = _ActiveSlicer == SlicerID.Slic3rExternal;
             }
         }
         public void Update()
@@ -138,6 +149,9 @@ namespace RepetierHost.view.utils
                     exname = "MacOS"+Path.DirectorySeparatorChar+"slic3r";
                 _hasSlic3r = File.Exists(basedir+Path.DirectorySeparatorChar+"Slic3r"+Path.DirectorySeparatorChar+exname);
             }
+            _hasSlic3rExternal = File.Exists(BasicConfiguration.basicConf.ExternalSlic3rIniFile) &&
+                (_hasSlic3r || File.Exists(BasicConfiguration.basicConf.ExternalSlic3rPath));
+
             _hasSkeinforge = false;
             if(skein.textPython.Text.Length>0 && skein.textSkeinforge.Text.Length>0 && 
                 skein.textSkeinforgeCraft.Text.Length>0) {
@@ -147,12 +161,19 @@ namespace RepetierHost.view.utils
             Main.main.slic3rToolStripMenuItem.Enabled = _hasSlic3r;
             Main.main.skeinforgeToolStripMenuItem1.Enabled = _hasSkeinforge;
             Main.main.skeinforgeConfigurationToolStripMenuItem.Enabled = _hasSkeinforge;
+            Main.main.externalSlic3rToolStripMenuItem.Enabled = _hasSlic3rExternal;
+            Main.main.externalSlic3rConfigurationToolStripMenuItem.Enabled = _hasSlic3r || File.Exists(BasicConfiguration.basicConf.ExternalSlic3rPath);
             // Check if active slicer is possible
             if (ActiveSlicer == SlicerID.Slic3r && !_hasSlic3r && _hasSkeinforge)
             {
-                ActiveSlicer = SlicerID.Skeinforge;
+                if (_hasSlic3rExternal)
+                    ActiveSlicer = SlicerID.Slic3rExternal;
+                else
+                    ActiveSlicer = SlicerID.Skeinforge;
             }
             else if (ActiveSlicer == SlicerID.Skeinforge && !_hasSkeinforge && _hasSlic3r)
+                ActiveSlicer = SlicerID.Slic3r;
+            else if (ActiveSlicer == SlicerID.Slic3rExternal && _hasSlic3rExternal)
                 ActiveSlicer = SlicerID.Slic3r;
             else ActiveSlicer = _ActiveSlicer;
         }
@@ -166,6 +187,9 @@ namespace RepetierHost.view.utils
             {
                 case SlicerID.Slic3r:
                     Main.slic3r.RunSlice(file, Main.printerSettings.PrintAreaWidth / 2, Main.printerSettings.PrintAreaDepth / 2);
+                    break;
+                case SlicerID.Slic3rExternal:
+                    Main.slic3r.RunSliceExternal(file, Main.printerSettings.PrintAreaWidth / 2, Main.printerSettings.PrintAreaDepth / 2);
                     break;
                 case SlicerID.Skeinforge:
                     skein.RunSlice(file);

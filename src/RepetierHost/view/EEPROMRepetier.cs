@@ -80,7 +80,6 @@ namespace RepetierHost.view
 
         private void EEPROMRepetier_Activated(object sender, EventArgs e)
         {
-            Console.WriteLine("Aktiviert");
             if (reinit)
             {
                 reinit = false;

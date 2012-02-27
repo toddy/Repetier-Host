@@ -917,5 +917,20 @@ namespace RepetierHost
             slic3r.KillSlice();
             SlicingInfo.Stop();
         }
+
+        private void externalSlic3rSetupToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Slic3rSetup.Execute();
+        }
+
+        private void externalSlic3rToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            slicer.ActiveSlicer = Slicer.SlicerID.Slic3rExternal;
+        }
+
+        private void externalSlic3rConfigurationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            slic3r.RunExternalConfig();
+        }
     }
 }

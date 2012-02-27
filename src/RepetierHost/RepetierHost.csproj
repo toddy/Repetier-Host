@@ -54,6 +54,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOSX|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -103,6 +104,7 @@
     <Compile Include="Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
+    <Compile Include="model\BasicConfiguration.cs" />
     <Compile Include="model\Commands.cs" />
     <Compile Include="model\EEPROMMarlinParameter.cs" />
     <Compile Include="model\EEPROMParameter.cs" />
@@ -209,6 +211,10 @@
       <DependentUpon>LogView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="view\Preferences.resx">
+      <DependentUpon>Preferences.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="view\PrinterInfo.resx">
       <DependentUpon>PrinterInfo.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -235,6 +241,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="view\Slic3r.resx">
       <DependentUpon>Slic3r.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="view\Slic3rSetup.resx">
+      <DependentUpon>Slic3rSetup.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="view\SlicingParameter.resx">
@@ -352,6 +362,12 @@
     <Compile Include="view\LogView.Designer.cs">
       <DependentUpon>LogView.cs</DependentUpon>
     </Compile>
+    <Compile Include="view\Preferences.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="view\Preferences.Designer.cs">
+      <DependentUpon>Preferences.cs</DependentUpon>
+    </Compile>
     <Compile Include="view\PrinterInfo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -393,6 +409,12 @@
     </Compile>
     <Compile Include="view\Slic3r.Designer.cs">
       <DependentUpon>Slic3r.cs</DependentUpon>
+    </Compile>
+    <Compile Include="view\Slic3rSetup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="view\Slic3rSetup.Designer.cs">
+      <DependentUpon>Slic3rSetup.cs</DependentUpon>
     </Compile>
     <Compile Include="view\SlicingParameter.cs">
       <SubType>Form</SubType>
@@ -483,6 +505,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

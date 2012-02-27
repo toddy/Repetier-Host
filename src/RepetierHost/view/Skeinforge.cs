@@ -138,7 +138,7 @@ namespace RepetierHost.view
             // Collect the net view command output.
             if (!String.IsNullOrEmpty(outLine.Data))
             {
-                Main.conn.log(outLine.Data, false, 4);
+                Main.conn.log("<Skeinforge> "+outLine.Data, false, 4);
             }
         }
 

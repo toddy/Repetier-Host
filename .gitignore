@@ -24,3 +24,7 @@ src/RepetierHost/RepetierHost.suo
 src/RepetierHost/RepetierHost.suo
 
 src/RepetierHost/bin/Release/RepetierHost.exe
+
+repetierHostLinux*
+
+setupRepetierHost*
