@@ -111,6 +111,9 @@ namespace RepetierHost.view
             comboGCodeFlavor.SelectedIndex = (int)c.GetValue("GCodeFlavor", comboGCodeFlavor.SelectedIndex);
             comboSupportMaterialTool.SelectedIndex = (int)c.GetValue("SupportMaterialTool", comboSupportMaterialTool.SelectedIndex);
             textFirstLayerTemperature.Text = (string)c.GetValue("FirstLayerTemperature", textFirstLayerTemperature.Text);
+            checkFanAlwaysEnabled.Checked = ((int)c.GetValue("FanAlwaysEnabled", checkFanAlwaysEnabled.Checked ? 1 : 0)) == 1;
+            textFirstLayerBedTemperature.Text = (string)c.GetValue("FirstLayerBedTemperature", textFirstLayerBedTemperature.Text);
+            textBedTemperature.Text = (string)c.GetValue("BedTemperature", textBedTemperature.Text);
         }
         private void saveConfig(string name)
         {
@@ -160,6 +163,9 @@ namespace RepetierHost.view
             c.SetValue("GCodeFlavor", comboGCodeFlavor.SelectedIndex);
             c.SetValue("SupportMaterialTool", comboSupportMaterialTool.SelectedIndex);
             c.SetValue("FirstLayerTemperature", textFirstLayerTemperature.Text);
+            c.SetValue("FanAlwaysEnabled", checkFanAlwaysEnabled.Checked ? 1 : 0);
+            c.SetValue("FirstLayerBedTemperature", textFirstLayerBedTemperature.Text);
+            c.SetValue("BedTemperature", textBedTemperature.Text);
 
         }
         private void buttonOK_Click(object sender, EventArgs e)
@@ -259,7 +265,7 @@ namespace RepetierHost.view
                 if (File.Exists(BasicConfiguration.basicConf.ExternalSlic3rIniFile))
                 {
                     sb.Append("--load ");
-                    sb.Append(BasicConfiguration.basicConf.ExternalSlic3rIniFile);
+                    sb.Append(wrapQuotes(BasicConfiguration.basicConf.ExternalSlic3rIniFile));
                 }
                 procSlic3r.EnableRaisingEvents = true;
                 procSlic3r.Exited += new EventHandler(Slic3rExited);
@@ -411,7 +417,7 @@ namespace RepetierHost.view
                     sb.Append(textCoolBridgeFanSpeed.Text);
                     sb.Append(" --disable-fan-first-layers ");
                     sb.Append(textCoolDisableLayer.Text);
-                    sb.Append(" --disable-fan-first-layers ");
+                    sb.Append(" --fan-below-layer-time ");
                     sb.Append(textCoolEnableBelow.Text);
                     sb.Append(" --max-fan-speed ");
                     sb.Append(textCoolMaxFanSpeed.Text);
@@ -419,7 +425,7 @@ namespace RepetierHost.view
                     sb.Append(textCoolMinFanSpeed.Text);
                     sb.Append(" --min-print-speed ");
                     sb.Append(textCoolMinPrintSpeed.Text);
-                    sb.Append(" --disable-fan-first-layers ");
+                    sb.Append(" --slowdown-below-layer-time ");
                     sb.Append(textCoolSlowDownBelow.Text);
                 }
                 if (checkGenerateSupportMaterial.Checked)
@@ -446,8 +452,16 @@ namespace RepetierHost.view
                         sb.Append("no-extrusion");
                         break;
                 }
-                sb.Append(" --fisrt-layer-temperature ");
+                sb.Append(" --first-layer-temperature ");
                 sb.Append(textFirstLayerTemperature.Text);
+                sb.Append(" --bed-temperature ");
+                sb.Append(textBedTemperature.Text);
+                sb.Append(" --first-layer-bed-temperature ");
+                sb.Append(textFirstLayerBedTemperature.Text);
+                if (checkFanAlwaysEnabled.Checked)
+                {
+                    sb.Append(" --fan-always-on");
+                }
                 sb.Append(" --start-gcode ");
                 sb.Append(wrapQuotes(basedir+Path.DirectorySeparatorChar+"empty.txt"));
                 sb.Append(" --end-gcode ");
@@ -520,7 +534,7 @@ namespace RepetierHost.view
                 procConvert.StartInfo.FileName = Main.IsMono ? exe : wrapQuotes(exe);
                 StringBuilder sb = new StringBuilder();
                 sb.Append("--load ");
-                sb.Append(BasicConfiguration.basicConf.ExternalSlic3rIniFile);
+                sb.Append(wrapQuotes(BasicConfiguration.basicConf.ExternalSlic3rIniFile));
                 sb.Append(" --print-center ");
                 sb.Append(centerx.ToString("0", GCode.format));
                 sb.Append(",");

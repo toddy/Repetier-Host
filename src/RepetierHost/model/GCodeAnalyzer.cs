@@ -22,19 +22,21 @@ using RepetierHost.view;
 
 namespace RepetierHost.model
 {
-    public delegate void OnPosChange(GCode code,float x,float y,float z);
+    public delegate void OnPosChange(GCode code, float x, float y, float z);
+    public delegate void OnPosChangeFast(float x, float y, float z, float e);
     public delegate void OnAnalyzerChange();
 
     public class GCodeAnalyzer
     {
         public event OnPosChange eventPosChanged;
+        public event OnPosChangeFast eventPosChangedFast;
         public event OnAnalyzerChange eventChange;
         public int activeExtruder = 0;
-        public int extruderTemp=0;
+        public int extruderTemp = 0;
         public bool uploading = false;
-        public int bedTemp=0;
-        public float x=0, y=0, z=0, e=0,emax=0;
-        public float xOffset=0, yOffset=0, zOffset=0, eOffset=0;
+        public int bedTemp = 0;
+        public float x = 0, y = 0, z = 0, e = 0, emax = 0;
+        public float xOffset = 0, yOffset = 0, zOffset = 0, eOffset = 0;
         public bool fanOn = false;
         public int fanVoltage = 0;
         public bool powerOn = true;
@@ -46,13 +48,15 @@ namespace RepetierHost.model
         public bool privateAnalyzer = false;
         public int maxDrawMethod = 2;
         public bool drawing = true;
+        public int layer = 0;
+        public bool isG1Move = false;
         public float printerWidth, printerHeight, printerDepth;
         public GCodeAnalyzer(bool privAnal)
         {
             privateAnalyzer = privAnal;
             extruderTemp = 0;
             bedTemp = 0;
-         }
+        }
         public void fireChanged()
         {
             if (eventChange != null)
@@ -78,6 +82,7 @@ namespace RepetierHost.model
             maxDrawMethod = 2;
             drawing = true;
             lastline = 0;
+            layer = 0;
             x = y = z = e = emax = 0;
             xOffset = yOffset = zOffset = eOffset = 0;
             hasXHome = hasYHome = hasZHome = false;
@@ -103,7 +108,7 @@ namespace RepetierHost.model
                     x = xOffset = 0;
                     y = yOffset = 0;
                     z = zOffset = 0;
-                } 
+                }
                 return;
             }
             if (code.forceAscii) return; // Don't analyse host commands and unknown commands
@@ -118,16 +123,26 @@ namespace RepetierHost.model
                     case 1:
                         if (relative)
                         {
-                            if(code.hasX) x += code.X;
-                            if(code.hasY) y += code.Y;
-                            if(code.hasZ) z += code.Z;
-                            if(code.hasE) e += code.E;
+                            if (code.hasX) x += code.X;
+                            if (code.hasY) y += code.Y;
+                            if (code.hasZ) { z += code.Z; if (code.Z != 0) layer++;
+                                if (!privateAnalyzer && Main.conn.job.hasData() && Main.conn.job.maxLayer >= 0)
+                                {
+                                    PrinterConnection.logInfo("Printing layer " + layer.ToString() + " of " + Main.conn.job.maxLayer.ToString());
+                                }
+                            }
+                            if (code.hasE) e += code.E;
                         }
                         else
                         {
-                            if (code.hasX) x = xOffset+code.X;
-                            if (code.hasY) y = yOffset+code.Y;
-                            if (code.hasZ) z = zOffset+code.Z;
+                            if (code.hasX) x = xOffset + code.X;
+                            if (code.hasY) y = yOffset + code.Y;
+                            if (code.hasZ) { float oldz = z; z = zOffset + code.Z; if (z != oldz) layer++;
+                                if (!privateAnalyzer && Main.conn.job.hasData() && Main.conn.job.maxLayer >= 0)
+                                {
+                                    PrinterConnection.logInfo("Printing layer " + layer.ToString() + " of " + Main.conn.job.maxLayer.ToString());
+                                }
+                            }
                             if (code.hasE)
                             {
                                 if (eRelative)
@@ -147,7 +162,7 @@ namespace RepetierHost.model
                             if (privateAnalyzer)
                                 eventPosChanged(code, x, y, z);
                             else
-                                Main.main.Invoke(eventPosChanged,code, x, y, z);
+                                Main.main.Invoke(eventPosChanged, code, x, y, z);
                         break;
                     case 28:
                     case 161:
@@ -160,8 +175,8 @@ namespace RepetierHost.model
                             if (eventPosChanged != null)
                                 if (privateAnalyzer)
                                     eventPosChanged(code, x, y, z);
-                            else
-                                Main.main.Invoke(eventPosChanged, code, x, y, z);
+                                else
+                                    Main.main.Invoke(eventPosChanged, code, x, y, z);
                         }
                         break;
                     case 162:
@@ -173,8 +188,8 @@ namespace RepetierHost.model
                             if (eventPosChanged != null)
                                 if (privateAnalyzer)
                                     eventPosChanged(code, x, y, z);
-                            else
-                                Main.main.Invoke(eventPosChanged, code, x, y, z);
+                                else
+                                    Main.main.Invoke(eventPosChanged, code, x, y, z);
                         }
                         break;
                     case 90:
@@ -184,10 +199,10 @@ namespace RepetierHost.model
                         relative = true;
                         break;
                     case 92:
-                        if (code.hasX) { xOffset = x-code.X; x = xOffset; }
-                        if (code.hasY) { yOffset = y-code.Y; y = yOffset; }
-                        if (code.hasZ) { zOffset = z-code.Z; z = zOffset; }
-                        if (code.hasE) { eOffset = e-code.E; e = eOffset; }
+                        if (code.hasX) { xOffset = x - code.X; x = xOffset; }
+                        if (code.hasY) { yOffset = y - code.Y; y = yOffset; }
+                        if (code.hasZ) { zOffset = z - code.Z; z = zOffset; }
+                        if (code.hasE) { eOffset = e - code.E; e = eOffset; }
                         if (eventPosChanged != null)
                             if (privateAnalyzer)
                                 eventPosChanged(code, x, y, z);
@@ -254,6 +269,134 @@ namespace RepetierHost.model
             {
                 activeExtruder = code.T;
             }
+        }
+        public void analyzeShort(GCodeShort code)
+        {
+            isG1Move = false;
+            switch (code.compressedCommand)
+            {
+                case 1:
+                    isG1Move = true;
+                    if (relative)
+                    {
+                        if (code.hasX)
+                        {
+                            x += code.x;
+                            //if (x < 0) { x = 0; hasXHome = NO; }
+                            //if (x > printerWidth) { hasXHome = NO; }
+                        }
+                        if (code.hasY)
+                        {
+                            y += code.y;
+                            //if (y < 0) { y = 0; hasYHome = NO; }
+                            //if (y > printerDepth) { hasYHome = NO; }
+                        }
+                        if (code.hasZ)
+                        {
+                            if (code.z != 0) layer++;
+                            z += code.z;
+                            //if (z < 0) { z = 0; hasZHome = NO; }
+                            //if (z > printerHeight) { hasZHome = NO; }
+                        }
+                        if (code.hasE)
+                        {
+                            e += code.e;
+                            if (e > emax) emax = e;
+                        }
+                    }
+                    else
+                    {
+                        if (code.x != -99999)
+                        {
+                            x = xOffset + code.x;
+                            //if (x < 0) { x = 0; hasXHome = NO; }
+                            //if (x > printerWidth) { hasXHome = NO; }
+                        }
+                        if (code.y != -99999)
+                        {
+                            y = yOffset + code.y;
+                            //if (y < 0) { y = 0; hasYHome = NO; }
+                            //if (y > printerDepth) { hasYHome = NO; }
+                        }
+                        if (code.z != -99999)
+                        {
+                            float lastz = z;
+                            z = zOffset + code.z;
+                            if (z != lastz) layer++;
+                            //if (z < 0) { z = 0; hasZHome = NO; }
+                            //if (z > printerHeight) { hasZHome = NO; }
+                        }
+                        if (code.e != -99999)
+                        {
+                            if (eRelative)
+                                e += code.e;
+                            else
+                                e = eOffset + code.e;
+                            if (e > emax) emax = e;
+                        }
+                    }
+                    if(eventPosChangedFast!=null)
+                        eventPosChangedFast(x, y, z, e);
+                    break;
+                case 4:
+                    {
+                        bool homeAll = !(code.hasX || code.hasY || code.hasZ);
+                        if (code.hasX || homeAll) { xOffset = 0; x = 0; hasXHome = true; }
+                        if (code.hasY || homeAll) { yOffset = 0; y = 0; hasYHome = true; }
+                        if (code.hasZ || homeAll) { zOffset = 0; z = 0; hasZHome = true; }
+                        if (code.hasE) { eOffset = 0; e = 0; emax = 0; }
+                        // [delegate positionChangedFastX:x y:y z:z e:e];
+                    }
+                    break;
+                case 5:
+                    {
+                        bool homeAll = !(code.hasX || code.hasY || code.hasZ);
+                        if (code.hasX || homeAll) { xOffset = 0; x = Main.printerSettings.PrintAreaWidth; hasXHome = true; }
+                        if (code.hasY || homeAll) { yOffset = 0; y = Main.printerSettings.PrintAreaDepth; hasYHome = true; }
+                        if (code.hasZ || homeAll) { zOffset = 0; z = Main.printerSettings.PrintAreaHeight; hasZHome = true; }
+                        //[delegate positionChangedFastX:x y:y z:z e:e];
+                    }
+                    break;
+                case 6:
+                    relative = false;
+                    break;
+                case 7:
+                    relative = true;
+                    break;
+                case 8:
+                    if (code.hasX) { xOffset = x - code.x; x = xOffset; }
+                    if (code.hasY) { yOffset = y - code.y; y = yOffset; }
+                    if (code.hasZ) { zOffset = z - code.z; z = zOffset; }
+                    if (code.hasE) { eOffset = e - code.e; e = eOffset; }
+                    break;
+                case 12: // Host command
+                    {
+                        string hc = code.text.Trim();
+                        if (hc == "@hide")
+                            drawing = false;
+                        else if (hc == "@show")
+                            drawing = true;
+                        else if (hc == "@isathome")
+                        {
+                            hasXHome = hasYHome = hasZHome = true;
+                            x = xOffset = 0;
+                            y = yOffset = 0;
+                            z = zOffset = 0;
+                        }
+                    }
+                    break;
+                case 9:
+                    eRelative = false;
+                    break;
+                case 10:
+                    eRelative = true;
+                    break;
+                case 11:
+                    activeExtruder = code.tool;
+                    break;
+            }
+            code.layer = layer;
+            code.tool = activeExtruder;
         }
     }
 }

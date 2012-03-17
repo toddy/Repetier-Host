@@ -64,6 +64,9 @@ namespace RepetierHost
         public static bool IsMac = false;
         public int refreshCounter = 0;
         public executeHostCommandDelegate executeHostCall;
+        bool recalcJobPreview = false;
+        List<GCodeShort> previewArray;
+
         public class JobUpdater
         {
             GCodeVisual visual = null;
@@ -71,11 +74,26 @@ namespace RepetierHost
             public void DoWork()
             {
                 RepetierEditor ed = Main.main.editor;
-                string text = ed.getContent(1) + ed.getContent(0) + ed.getContent(2);
+                
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
                 visual = new GCodeVisual();
-                visual.ParseText(text, true);
+                switch (ed.ShowMode)
+                {
+                    case 0:
+                        visual.minLayer = 0;
+                        visual.maxLayer = 999999;
+                        break;
+                    case 1:
+                        visual.minLayer = visual.maxLayer = ed.ShowMinLayer;
+                        break;
+                    case 2:
+                        visual.minLayer = ed.ShowMinLayer;
+                        visual.maxLayer = ed.ShowMaxLayer;
+                        break;
+                }
+                visual.parseGCodeShortArray(Main.main.previewArray, true);
+                Main.main.previewArray = null;
                 visual.Reduce();
                 //visual.stats();
                 Main.main.newVisual = visual;
@@ -344,6 +362,7 @@ namespace RepetierHost
                 foreach (ToolStripItem it in toolConnect.DropDownItems)
                     it.Enabled = true;
                 toolStripEmergencyButton.Enabled = false;
+                SDCard.Disconnected();
             }
         }
         private void OnPrinterAction(string msg)
@@ -459,6 +478,10 @@ namespace RepetierHost
                 MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        public MethodInvoker StartJob = delegate
+        {
+            Main.main.toolPrintJob_Click(null, null);
+        };
         private void toolPrintJob_Click(object sender, EventArgs e)
         {
             Printjob job = conn.job;
@@ -468,11 +491,12 @@ namespace RepetierHost
             }
             else
             {
+                tab.SelectedTab = tabPrint;
                 toolRunJob.Image = imageList.Images[3];
                 job.BeginJob();
-                job.PushData(editor.getContent(1));
-                job.PushData(editor.getContent(0));
-                job.PushData(editor.getContent(2));
+                job.PushGCodeShortArray(editor.getContentArray(1));
+                job.PushGCodeShortArray(editor.getContentArray(0));
+                job.PushGCodeShortArray(editor.getContentArray(2));
                 job.EndJob();
             }
         }
@@ -591,7 +615,7 @@ namespace RepetierHost
                 Main.main.toolRunJob.Image = Main.main.imageList.Images[2];
             }
             else
-            {
+            {                
                 Main.main.toolRunJob.Enabled = true;
                 Main.main.toolKillJob.Enabled = true;
                 Main.main.toolRunJob.Image = Main.main.imageList.Images[3];
@@ -600,7 +624,15 @@ namespace RepetierHost
                 Main.main.printVisual.Clear();
             }
         };
+        public MethodInvoker UpdateEEPROM = delegate
+        {
+            if (conn.isMarlin || conn.isRepetier) // Activate special menus and function
+            {
+                main.eeprom.Enabled = true;
+            }
+            else main.eeprom.Enabled = false;
 
+        };
         /*  private void toolStripSaveGCode_Click(object sender, EventArgs e)
           {
               if (saveJobDialog.ShowDialog() == DialogResult.OK)
@@ -618,7 +650,6 @@ namespace RepetierHost
           {
               printerSettings.currentPrinterKey.SetValue("gcodeAppend", textGCodeAppend.Text);
           }*/
-        bool recalcJobPreview = false;
         private void JobPreview()
         {
             if (editor.autopreview == false) return;
@@ -688,9 +719,15 @@ namespace RepetierHost
                 jobPreview.UpdateChanges();
                 newVisual = null;
                 editor.toolUpdating.Text = "";
+                editor.UpdateLayerInfo();
+                editor.MaxLayer = editor.getContentArray(0).Last<GCodeShort>().layer;
             }
             if (recalcJobPreview && jobPreviewThreadFinished)
             {
+                previewArray = new List<GCodeShort>();
+                previewArray.AddRange(((RepetierEditor.Content)editor.toolFile.Items[1]).textArray);
+                previewArray.AddRange(((RepetierEditor.Content)editor.toolFile.Items[0]).textArray);
+                previewArray.AddRange(((RepetierEditor.Content)editor.toolFile.Items[2]).textArray);
                 recalcJobPreview = false;
                 jobPreviewThreadFinished = false;
                 JobUpdater workerObject = new JobUpdater();
@@ -841,7 +878,7 @@ namespace RepetierHost
                 jobPreview.MakeVisible(tab.SelectedIndex == 1);
                 printPreview.MakeVisible(tab.SelectedIndex == 2);
                 //Invalidate();
-                refreshCounter = 3;
+                refreshCounter = 6;
             }
         }
 
@@ -850,7 +887,7 @@ namespace RepetierHost
             if (IsMac)
             {
                 if (Height < 740) Height = 740;
-                refreshCounter = 4;
+                refreshCounter = 8;
                 Application.DoEvents();
                 /*             Invalidate();
                              Application.DoEvents();
@@ -931,6 +968,11 @@ namespace RepetierHost
         private void externalSlic3rConfigurationToolStripMenuItem_Click(object sender, EventArgs e)
         {
             slic3r.RunExternalConfig();
+        }
+
+        private void Main_Activated(object sender, EventArgs e)
+        {
+            stlComposer1.recheckChangedFiles();
         }
     }
 }

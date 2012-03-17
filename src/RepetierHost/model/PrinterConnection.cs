@@ -240,6 +240,7 @@ namespace RepetierHost.model
 
         }
         LogLine useNextLog = null;
+
         public static void logInfo(string text)
         {
             Main.conn.log(text, false, 3);
@@ -969,7 +970,8 @@ namespace RepetierHost.model
                 if (h.IndexOf("Marlin") >= 0) isMarlin = true;
                 if (isMarlin || isRepetier) // Activate special menus and function
                 {
-                    Main.main.eeprom.Enabled = true;
+
+                    Main.main.Invoke(Main.main.UpdateEEPROM);
                 }
             }
             h = extract(res, "FIRMWARE_URL:");

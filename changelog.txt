@@ -1,3 +1,14 @@
+Version 0.40 17.03.2012
+  Upgraded Slic3r to version 0.7.1
+  Reduced memory usage, allowing larger prints.
+  Write current printing layer of x layer into log.
+  G-Code editor now has layer and layer range visual preview.
+  Auto position of objects.
+  Copy one or more selected objects x times.
+  Asks for reload if stl file changed on disk.
+  Load multiple STL files at once with add STL file.
+  Automatic start of a job after slicing (selectable).
+
 Version 0.36 25.02.2012
   Added EEPROM settings for Marlin (thanks scuba for providing the code)
   You can addionally use an external Slic3r version with it's native .ini config

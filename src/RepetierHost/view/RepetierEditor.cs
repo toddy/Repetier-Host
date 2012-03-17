@@ -57,7 +57,7 @@ namespace RepetierHost.view
             public void DeleteSelection(RepetierEditor e,int cstart,int rstart,int cend,int rend)
             {
                 // start row = begin first + end last row
-                e.lines[rstart] = e.lines[rstart].Substring(0, cstart) + e.lines[rend].Substring(cend);
+                e.lines[rstart] = new GCodeShort(e.lines[rstart].text.Substring(0, cstart) + e.lines[rend].text.Substring(cend));
                 if (rend > rstart)
                     e.lines.RemoveRange(rstart + 1, rend - rstart);
                 e.row = e.selRow = rstart;
@@ -82,20 +82,23 @@ namespace RepetierHost.view
                 s = s.Replace("\r\n", "\n");
                 s = s.Replace('\r', '\n');
                 string[] la = s.Split('\n');
-                string l = e.lines[e.row];
+                string l = e.lines[e.row].text;
                 if (e.col > l.Length) e.col = l.Length;
                 la[0] = l.Substring(0, e.col) + la[0];
                 int nc = la[la.Length - 1].Length;
                 la[la.Length - 1] = la[la.Length - 1] + l.Substring(e.col);
                 e.col = nc;
-                e.lines[rstart] = la[0];
+                e.lines[rstart] = new GCodeShort(la[0]);
                 string[] la2 = new string[la.Length - 1];
                 for (int i = 1; i < la.Length; i++)
                 {
                     la2[i - 1] = la[i];
                 }
-                if(la.Length>1)
-                    e.lines.InsertRange(e.row + 1, la2);
+                if (la.Length > 1)
+                {
+                    for (int j = 0; j < la2.Length; j++)
+                        e.lines.Insert(e.row + 1 + j, new GCodeShort(la2[j]));
+                }
                 e.row += la.Length - 1;
             }
             private void EndPos(RepetierEditor e, string s,out int cpos,out int rpos)
@@ -114,7 +117,7 @@ namespace RepetierHost.view
                 s = s.Replace("\r\n", "\n");
                 s = s.Replace('\r', '\n');
                 string[] la = s.Split('\n');
-                string l = e.lines[rstart];
+                string l = e.lines[rstart].text;
                 if (cstart > l.Length) cstart = l.Length;
                 la[0] = l.Substring(0, cstart) + la[0];
                 int nc = la[la.Length - 1].Length;
@@ -182,7 +185,8 @@ namespace RepetierHost.view
         }
         public class Content
         {
-            public string Text;
+            //public string Text;
+            public List<GCodeShort> textArray;
             int col=0, row=0, selCol=0, selRow=0;
             int topRow=0, topCol=0;
             bool hasSel;
@@ -194,10 +198,34 @@ namespace RepetierHost.view
             public Content(RepetierEditor e, int tp, string _name)
             {
                 name = _name;
-                Text = "";
+                //Text = "";
+                textArray = new List<GCodeShort>();
+                textArray.Add(new GCodeShort(""));
                 editor = e;
                 etype = tp;
             }
+            public string Text
+            {
+                get
+                {
+                    StringBuilder sb = new StringBuilder();
+                    foreach (GCodeShort code in textArray)
+                        sb.AppendLine(code.text);
+                    return sb.ToString();
+                }
+                set
+                {
+                    string[] la = value.Replace("\r\n", "\n").Replace('\r', '\n').Split('\n');
+                    textArray.Clear();
+                    if (la.Length == 0) la = new string[] { "" };
+                    foreach (string s in la)
+                    {
+                        textArray.Add(new GCodeShort(s));
+                    }
+                    row = col = topRow = topCol = selRow = selCol = 0;
+                }
+            }
+
             public void ResetPos()
             {
                 col = row = selCol = selRow = topCol = topRow = topCol = 0;
@@ -212,11 +240,11 @@ namespace RepetierHost.view
                 topCol = editor.topCol;
                 topRow = editor.topRow;
                 hasSel = editor.hasSel;
-                Text = editor.Text;
+                //Text = editor.Text;
             }
             public void ToActive()
             {
-                editor.Text = Text;
+                editor.lines = textArray;
                 editor._col = col;
                 editor._row = row;
                 editor._topRow = topRow;
@@ -306,8 +334,16 @@ namespace RepetierHost.view
         int linesWidth = 100;
         bool ignoreMouseDown = true;
         bool blink = true;
+        int _maxLayer = 0;
+        int _showMode = 0;
+        int _showMinLayer = 0;
+        int _showMaxLayer = 1;
+        public event EventHandler ShowModeChanged;
+        public event EventHandler ShowMinLayerChanged;
+        public event EventHandler ShowMaxLayerChanged;
+        public event EventHandler MaxLayerChanged;
 
-        List<string> lines = new List<string>();
+        List<GCodeShort> lines=null;
         [DllImport("User32.dll")]
         static extern bool CreateCaret(IntPtr hWnd, int hBitmap, int nWidth, int nHeight);
 
@@ -331,12 +367,118 @@ namespace RepetierHost.view
             
     //        Text = System.IO.File.ReadAllText("d:\\arduino\\Mendel\\models\\work\\oozetest.gcode");
             Content c = new Content(this, 0, "G-Code");
-            c.Text = ""; // System.IO.File.ReadAllText("d:\\arduino\\Mendel\\models\\foambowl_export.gcode");
+            //c.Text = ""; // System.IO.File.ReadAllText("d:\\arduino\\Mendel\\models\\foambowl_export.gcode");
             toolFile.Items.Clear();
             toolFile.Items.Add(c);
             toolFile.Items.Add(new Content(this, 1, "Prepend"));
             toolFile.Items.Add(new Content(this, 2, "Append"));
             toolFile.SelectedIndex = 0;
+            labelMaxLayer.DataBindings.Add("Text",
+                           this, "MaxLayer");
+            numericShowMinLayer.DataBindings.Add("Value",
+                           this, "ShowMinLayer");
+            numericShowMaxLayer.DataBindings.Add("Value",
+                           this, "ShowMaxLayer");
+            sliderShowFirstLayer.DataBindings.Add("value", this, "ShowMinLayer");
+            sliderShowMaxLayer.DataBindings.Add("value", this, "ShowMaxLayer");
+        }
+        protected void OnShowModeChanged(EventArgs e)
+        {
+            if (ShowModeChanged != null)
+            {
+                ShowModeChanged(this, e);
+            }
+        }
+        protected void OnShowMinLayerChanged(EventArgs e)
+        {
+            if (ShowMinLayerChanged != null)
+            {
+                ShowMinLayerChanged(this, e);
+            }
+        }
+        protected void OnShowMaxLayerChanged(EventArgs e)
+        {
+            if (ShowMaxLayerChanged != null)
+            {
+                ShowMaxLayerChanged(this, e);
+            }
+        }
+        protected void OnMaxLayerChanged(EventArgs e)
+        {
+            if (MaxLayerChanged != null)
+            {
+                MaxLayerChanged(this, e);
+            }
+        }
+        public int ShowMode
+        {
+            get { return _showMode; }
+            set
+            {
+                if (value != _showMode)
+                {
+                    _showMode = value;
+                    OnShowModeChanged(EventArgs.Empty);
+                    if (contentChangedEvent != null)
+                        contentChangedEvent();
+                }
+            }
+        }
+        public int ShowMinLayer
+        {
+            get { return _showMinLayer; }
+            set
+            {
+                if (value < 0) value = 0;
+                if (value > _maxLayer) value = MaxLayer;
+                if (value != _showMinLayer)
+                {
+                    _showMinLayer = value;
+                    OnShowMinLayerChanged(EventArgs.Empty);
+                    sliderShowFirstLayer.Value = value;
+                    if (_showMode == 1 || _showMinLayer>_showMaxLayer)
+                        ShowMaxLayer = value;
+                    if (_showMode != 0)
+                        if (contentChangedEvent != null)
+                            contentChangedEvent();
+                }
+            }
+        }
+        public int ShowMaxLayer
+        {
+            get { return _showMaxLayer; }
+            set
+            {
+                if (value < 0) value = 0;
+                if (value > _maxLayer) value = MaxLayer;
+                if (value != _showMaxLayer)
+                {
+                    _showMaxLayer = value;
+                    OnShowMaxLayerChanged(EventArgs.Empty);
+                    sliderShowMaxLayer.Value = value;
+                    if (_showMode == 1 || _showMaxLayer<_showMinLayer)
+                        ShowMinLayer = value;
+                    if(_showMode!=0)
+                        if(contentChangedEvent != null)
+                            contentChangedEvent();
+                }
+            }
+        }
+        public int MaxLayer
+        {
+            get { return _maxLayer; }
+            set
+            {
+                if (value != _maxLayer)
+                {
+                    _maxLayer = value;
+                    OnMaxLayerChanged(EventArgs.Empty);
+                    sliderShowFirstLayer.Maximum = _maxLayer;
+                    sliderShowMaxLayer.Maximum = _maxLayer;
+                    numericShowMinLayer.Maximum = _maxLayer;
+                    numericShowMaxLayer.Maximum = _maxLayer;
+                }
+            }
         }
         private int MaxCol
         {
@@ -354,6 +496,13 @@ namespace RepetierHost.view
                 scrollColumns.Value = _topCol; 
             }
         }
+        public void UpdateLayerInfo()
+        {
+            if (_row < 0 || _row >= lines.Count) return;
+            GCodeShort s = lines[_row];
+            toolLayer.Text = "Layer " + (!s.hasLayer ? "-" : s.layer.ToString());
+            toolExtruder.Text = "Extruder " + (!s.hasLayer ? "-" : s.tool.ToString());
+        }
         private int col
         {
             get { return _col; }
@@ -366,7 +515,7 @@ namespace RepetierHost.view
         private int row
         {
             get { return _row; }
-            set { _row = value; toolRow.Text = "R" + (row + 1).ToString(); }
+            set { _row = value; toolRow.Text = "R" + (row + 1).ToString(); UpdateLayerInfo(); }
         }
         private int topRow
         {
@@ -385,7 +534,7 @@ namespace RepetierHost.view
         }
         public void AppendLine(string l)
         {
-            lines.Add(l);
+            lines.Add(new GCodeShort(l));
             MaxCol = Math.Max(maxCol, l.Length);
             scrollRows.Maximum = lines.Count;
         }
@@ -394,7 +543,13 @@ namespace RepetierHost.view
         /// </summary>
         public override string Text
         {
-            get { string[] la = lines.ToArray(); return string.Join("\r\n", la); }
+            get
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach (GCodeShort code in lines)
+                    sb.AppendLine(code.text);
+                return sb.ToString();
+            }
             set
             {
                 ignoreMouseDown = Control.MouseButtons != MouseButtons.None;
@@ -407,7 +562,7 @@ namespace RepetierHost.view
                 if (la.Length == 0) la = new string[] { "" };
                 foreach (string s in la)
                 {
-                    lines.Add(s);
+                    lines.Add(new GCodeShort(s));
                     MaxCol = Math.Max(maxCol, s.Length);
                 }
                 scrollRows.Maximum = lines.Count();
@@ -571,7 +726,7 @@ namespace RepetierHost.view
                 rmax = lines.Count - topRow;
             for (r = 0; r < rmax; r++)
             {
-                DrawRow(g, topRow + r + 1, lines.ElementAt(topRow + r), -fontWidth*topCol, r * fontHeight);
+                DrawRow(g, topRow + r + 1, lines[topRow + r].text, -fontWidth*topCol, r * fontHeight);
             }
             if (Main.IsMono && blink && editor.Focused && _col>=topCol && _row>=topRow && _row<=topRow+rowsVisible)
             {
@@ -736,12 +891,12 @@ namespace RepetierHost.view
             cur.AddUndo(new Undo(UndoAction.ReplaceSelection, c.ToString(), getSelection(), col, row, selCol, selRow));
             if (hasSelection)
                 DeleteSelection(false);
-            string l = lines[row];
+            string l = lines[row].text;
             if(col>l.Length) col = l.Length;
             if(_overwrite && col < l.Length)
-                lines[row] = l.Substring(0, col) + c.ToString() + l.Substring(col+1);
+                lines[row] = new GCodeShort(l.Substring(0, col) + c.ToString() + l.Substring(col+1));
             else
-                lines[row] = l.Substring(0,col)+c.ToString()+l.Substring(col);
+                lines[row] = new GCodeShort(l.Substring(0,col)+c.ToString()+l.Substring(col));
             col++;
             PositionShowCursor(true, false);
             Changed();
@@ -754,19 +909,20 @@ namespace RepetierHost.view
             s = s.Replace("\r\n", "\n");
             s = s.Replace('\r', '\n');
             string[] la = s.Split('\n');
-            string l = lines[row];
+            string l = lines[row].text;
             if (col > l.Length) col = l.Length;
             la[0] = l.Substring(0, col) + la[0];
             int nc = la[la.Length - 1].Length;
             la[la.Length - 1] = la[la.Length - 1] + l.Substring(col);
             col = nc;
-            lines[row] = la[0];
+            lines[row] = new GCodeShort(la[0]);
             string[] la2 = new string[la.Length - 1];
             for (int i = 1; i < la.Length; i++)
             {
                 la2[i - 1] = la[i];
             }
-            lines.InsertRange(row + 1, la2);
+            for (int i = 0; i < la2.Length; i++)
+                lines.Insert(row + 1 + i, new GCodeShort(la2[i]));
             row += la.Length - 1;
             PositionShowCursor(true,false);
             Changed();
@@ -790,7 +946,7 @@ namespace RepetierHost.view
             StringBuilder sb = new StringBuilder();
             for (i = rstart; i <= rend; i++)
             {
-                string l = lines[i];
+                string l = lines[i].text;
                 if (i == rend)
                 {
                     cend = Math.Min(cend, l.Length);
@@ -823,7 +979,7 @@ namespace RepetierHost.view
             cend = Math.Min(cend, lines[rend].Length);
             cur.AddUndo(new Undo(UndoAction.ReplaceSelection, "", getSelection(), col, row, selCol, selRow));
             // start row = begin first + end last row
-            lines[rstart] = lines[rstart].Substring(0, cstart) + lines[rend].Substring(cend);
+            lines[rstart] = new GCodeShort(lines[rstart].text.Substring(0, cstart) + lines[rend].text.Substring(cend));
             if(rend>rstart)
                 lines.RemoveRange(rstart + 1, rend - rstart);
             row = selRow = rstart;
@@ -835,25 +991,25 @@ namespace RepetierHost.view
         }
         public void DeleteChar()
         {
-            string t = lines[row];
+            string t = lines[row].text;
             if (t.Length == col)
             { // Join with next line
                 if (row == lines.Count - 1) return;
-                lines[row] += lines[row + 1];
+                lines[row] = new GCodeShort(lines[row].text+lines[row + 1].text);
                 lines.RemoveAt(row + 1);
                 cur.AddUndo(new Undo(UndoAction.ReplaceSelection,"","\n",col,row,0,row+1));
             }
             else
             {
                 cur.AddUndo(new Undo(UndoAction.ReplaceSelection,"",t.Substring(col,1),col,row,col+1,row));
-                lines[row] = t.Substring(0, col) + t.Substring(col + 1);
+                lines[row] = new GCodeShort(t.Substring(0, col) + t.Substring(col + 1));
             }
             editor.Invalidate();
             Changed();
         }
         public void Backspace()
         {
-            string t = lines[row];
+            string t = lines[row].text;
             if (col > t.Length)
             {
                 col = t.Length;
@@ -863,14 +1019,14 @@ namespace RepetierHost.view
                 if (row == 0) return;
                 cur.AddUndo(new Undo(UndoAction.ReplaceSelection, "", "\n", col, row, lines[row-1].Length, row -1));
                 col = lines[row-1].Length;
-                lines[row - 1] += lines[row];
+                lines[row - 1] = new GCodeShort(lines[row - 1].text+lines[row].text);
                 lines.RemoveAt(row);
                 row--;
             }
             else
             {
                 cur.AddUndo(new Undo(UndoAction.ReplaceSelection, "", t.Substring(col-1, 1), col, row, col -1, row));
-                lines[row] = t.Substring(0, col-1) + t.Substring(col );
+                lines[row] = new GCodeShort(t.Substring(0, col-1) + t.Substring(col ));
                 CursorLeft();
             }
             PositionShowCursor(true, false);
@@ -882,7 +1038,8 @@ namespace RepetierHost.view
         }
         private void editor_Click(object sender, EventArgs e)
         {
-            
+            if(!editor.Focused)
+                editor.Focus();
         }
 
         private void RepetierEditor_KeyDown(object sender, KeyEventArgs e)
@@ -1204,11 +1361,29 @@ namespace RepetierHost.view
             c.ResetPos();
             if (c == cur) c.ToActive();
         }
+        public List<GCodeShort> getContentArray(int idx)
+        {
+            Content c = (Content)toolFile.Items[idx];
+            return c.textArray;
+        }
         public string getContent(int idx)
         {
             Content c = (Content)toolFile.Items[idx];
-            if (c == cur) return Text;
-            return c.Text;
+            StringBuilder sb = new StringBuilder();
+            foreach (GCodeShort code in c.textArray)
+                sb.AppendLine(code.text);
+            return sb.ToString();
+        }
+        public void fastLayerUpdate()
+        {
+            GCodeAnalyzer a = new GCodeAnalyzer(true);
+            foreach (GCodeShort code in getContentArray(1))
+                a.analyzeShort(code);
+            foreach (GCodeShort code in getContentArray(0))
+                a.analyzeShort(code);
+            foreach (GCodeShort code in getContentArray(2))
+                a.analyzeShort(code);
+            MaxLayer = a.layer;
         }
         public void setContent(int idx,string text)
         {
@@ -1221,6 +1396,7 @@ namespace RepetierHost.view
             {
                 c.Text = text;
             }
+            fastLayerUpdate();
         }
         public void selectContent(int idx)
         {
@@ -1256,7 +1432,7 @@ namespace RepetierHost.view
         public void UpdateHelp()
         {
             if (commands == null) return;
-            string l = lines[row].Trim();
+            string l = lines[row].text.Trim();
             int p = l.IndexOf(' ');
             if (p == -1)
             {
@@ -1309,6 +1485,21 @@ namespace RepetierHost.view
         private void editor_MouseLeave(object sender, EventArgs e)
         {
             ignoreMouseDown = true;
+        }
+
+        private void radioShowMode_Click(object sender, EventArgs e)
+        {
+            ShowMode = int.Parse((string)((RadioButton)sender).Tag);
+        }
+
+        private void sliderShowFirstLayer_ValueChanged(object sender, EventArgs e)
+        {
+            ShowMinLayer = sliderShowFirstLayer.Value;
+        }
+
+        private void sliderShowMaxLayer_ValueChanged(object sender, EventArgs e)
+        {
+            ShowMaxLayer = sliderShowMaxLayer.Value;
         }
     }
 }

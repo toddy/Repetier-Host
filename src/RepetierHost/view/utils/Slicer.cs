@@ -23,7 +23,8 @@ namespace RepetierHost.view.utils
         public Slicer()
         {
             skein = Main.main.skeinforge;
-            _ActiveSlicer = (Slicer.SlicerID)(int)Main.main.repetierKey.GetValue("ActiveSlicer", (int)ActiveSlicer);
+            ActiveSlicer = (Slicer.SlicerID)(int)Main.main.repetierKey.GetValue("ActiveSlicer", (int)ActiveSlicer);
+
             Update();
         }
         public bool hasSlic3r
@@ -63,6 +64,8 @@ namespace RepetierHost.view.utils
                 SlicingInfo.f.Invoke(SlicingInfo.f.StopInfo);
                 LoadGCode lg = Main.main.LoadGCode;
                 Main.main.Invoke(lg, file);
+                if (SlicingInfo.f.checkStartBoxAfterSlicing.Checked && Main.conn.connected)
+                    Main.main.Invoke(Main.main.StartJob);
                 return; // Nothing to do
             }
             SlicingInfo.f.Invoke(SlicingInfo.f.PostprocInfo);
@@ -113,7 +116,8 @@ namespace RepetierHost.view.utils
             SlicingInfo.f.Invoke(SlicingInfo.f.StopInfo);
             LoadGCode lg = Main.main.LoadGCode;
             Main.main.Invoke(lg, postprocessFile);
-
+            if (SlicingInfo.f.checkStartBoxAfterSlicing.Checked && Main.conn.connected)
+                Main.main.Invoke(Main.main.StartJob);
         }
         private static void OutputDataHandler(object sendingProcess,
              DataReceivedEventArgs outLine)
@@ -173,7 +177,7 @@ namespace RepetierHost.view.utils
             }
             else if (ActiveSlicer == SlicerID.Skeinforge && !_hasSkeinforge && _hasSlic3r)
                 ActiveSlicer = SlicerID.Slic3r;
-            else if (ActiveSlicer == SlicerID.Slic3rExternal && _hasSlic3rExternal)
+            else if (ActiveSlicer == SlicerID.Slic3rExternal && !_hasSlic3rExternal)
                 ActiveSlicer = SlicerID.Slic3r;
             else ActiveSlicer = _ActiveSlicer;
         }

@@ -46,10 +46,14 @@
             this.slicerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.activeSlicerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.slic3rToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.externalSlic3rToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.skeinforgeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.slic3rConfigurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.externalSlic3rConfigurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.skeinforgeConfigurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            this.externalSlic3rSetupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.skeinforgeToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.killSlicingProcessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -95,16 +99,12 @@
             this.splitLog = new System.Windows.Forms.SplitContainer();
             this.tab = new System.Windows.Forms.TabControl();
             this.tabModel = new System.Windows.Forms.TabPage();
+            this.stlComposer1 = new RepetierHost.view.STLComposer();
             this.tabGCode = new System.Windows.Forms.TabPage();
             this.splitJob = new System.Windows.Forms.SplitContainer();
+            this.editor = new RepetierHost.view.RepetierEditor();
             this.tabPrint = new System.Windows.Forms.TabPage();
             this.splitContainerPrinterGraphic = new System.Windows.Forms.SplitContainer();
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
-            this.externalSlic3rSetupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.externalSlic3rToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.externalSlic3rConfigurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.stlComposer1 = new RepetierHost.view.STLComposer();
-            this.editor = new RepetierHost.view.RepetierEditor();
             this.menu.SuspendLayout();
             this.status.SuspendLayout();
             this.toolStrip.SuspendLayout();
@@ -265,6 +265,14 @@
             this.slic3rToolStripMenuItem.Text = "Internal Slic3r";
             this.slic3rToolStripMenuItem.Click += new System.EventHandler(this.slic3rToolStripMenuItem_Click);
             // 
+            // externalSlic3rToolStripMenuItem
+            // 
+            this.externalSlic3rToolStripMenuItem.Name = "externalSlic3rToolStripMenuItem";
+            this.externalSlic3rToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D2)));
+            this.externalSlic3rToolStripMenuItem.Size = new System.Drawing.Size(346, 22);
+            this.externalSlic3rToolStripMenuItem.Text = "External Slic3r";
+            this.externalSlic3rToolStripMenuItem.Click += new System.EventHandler(this.externalSlic3rToolStripMenuItem_Click);
+            // 
             // skeinforgeToolStripMenuItem1
             // 
             this.skeinforgeToolStripMenuItem1.Name = "skeinforgeToolStripMenuItem1";
@@ -287,6 +295,15 @@
             this.slic3rConfigurationToolStripMenuItem.Text = "Internal Slic3r configuration";
             this.slic3rConfigurationToolStripMenuItem.Click += new System.EventHandler(this.slic3rConfigurationToolStripMenuItem_Click);
             // 
+            // externalSlic3rConfigurationToolStripMenuItem
+            // 
+            this.externalSlic3rConfigurationToolStripMenuItem.Name = "externalSlic3rConfigurationToolStripMenuItem";
+            this.externalSlic3rConfigurationToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+                        | System.Windows.Forms.Keys.D2)));
+            this.externalSlic3rConfigurationToolStripMenuItem.Size = new System.Drawing.Size(346, 22);
+            this.externalSlic3rConfigurationToolStripMenuItem.Text = "External Slic3r configuration";
+            this.externalSlic3rConfigurationToolStripMenuItem.Click += new System.EventHandler(this.externalSlic3rConfigurationToolStripMenuItem_Click);
+            // 
             // skeinforgeConfigurationToolStripMenuItem
             // 
             this.skeinforgeConfigurationToolStripMenuItem.Name = "skeinforgeConfigurationToolStripMenuItem";
@@ -295,6 +312,18 @@
             this.skeinforgeConfigurationToolStripMenuItem.Size = new System.Drawing.Size(346, 22);
             this.skeinforgeConfigurationToolStripMenuItem.Text = "Skeinforge configuration";
             this.skeinforgeConfigurationToolStripMenuItem.Click += new System.EventHandler(this.skeinforgeToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(343, 6);
+            // 
+            // externalSlic3rSetupToolStripMenuItem
+            // 
+            this.externalSlic3rSetupToolStripMenuItem.Name = "externalSlic3rSetupToolStripMenuItem";
+            this.externalSlic3rSetupToolStripMenuItem.Size = new System.Drawing.Size(346, 22);
+            this.externalSlic3rSetupToolStripMenuItem.Text = "Slic3r setup";
+            this.externalSlic3rSetupToolStripMenuItem.Click += new System.EventHandler(this.externalSlic3rSetupToolStripMenuItem_Click);
             // 
             // skeinforgeToolStripMenuItem2
             // 
@@ -660,7 +689,6 @@
             // timer
             // 
             this.timer.Enabled = true;
-            this.timer.Interval = 200;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
             // splitLog
@@ -702,6 +730,15 @@
             this.tabModel.TabIndex = 2;
             this.tabModel.Text = "Object placements";
             // 
+            // stlComposer1
+            // 
+            this.stlComposer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stlComposer1.Location = new System.Drawing.Point(0, 0);
+            this.stlComposer1.Margin = new System.Windows.Forms.Padding(4);
+            this.stlComposer1.Name = "stlComposer1";
+            this.stlComposer1.Size = new System.Drawing.Size(1008, 304);
+            this.stlComposer1.TabIndex = 0;
+            // 
             // tabGCode
             // 
             this.tabGCode.AutoScroll = true;
@@ -731,6 +768,22 @@
             this.splitJob.SplitterDistance = 500;
             this.splitJob.TabIndex = 3;
             // 
+            // editor
+            // 
+            this.editor.AccessibleRole = System.Windows.Forms.AccessibleRole.Caret;
+            this.editor.autopreview = true;
+            this.editor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.editor.Location = new System.Drawing.Point(0, 0);
+            this.editor.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
+            this.editor.MaxLayer = 0;
+            this.editor.MinimumSize = new System.Drawing.Size(160, 138);
+            this.editor.Name = "editor";
+            this.editor.ShowMaxLayer = 0;
+            this.editor.ShowMinLayer = 0;
+            this.editor.ShowMode = 0;
+            this.editor.Size = new System.Drawing.Size(500, 295);
+            this.editor.TabIndex = 0;
+            // 
             // tabPrint
             // 
             this.tabPrint.BackColor = System.Drawing.SystemColors.Control;
@@ -756,56 +809,6 @@
             this.splitContainerPrinterGraphic.SplitterDistance = 465;
             this.splitContainerPrinterGraphic.TabIndex = 0;
             // 
-            // toolStripMenuItem4
-            // 
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(343, 6);
-            // 
-            // externalSlic3rSetupToolStripMenuItem
-            // 
-            this.externalSlic3rSetupToolStripMenuItem.Name = "externalSlic3rSetupToolStripMenuItem";
-            this.externalSlic3rSetupToolStripMenuItem.Size = new System.Drawing.Size(346, 22);
-            this.externalSlic3rSetupToolStripMenuItem.Text = "Slic3r setup";
-            this.externalSlic3rSetupToolStripMenuItem.Click += new System.EventHandler(this.externalSlic3rSetupToolStripMenuItem_Click);
-            // 
-            // externalSlic3rToolStripMenuItem
-            // 
-            this.externalSlic3rToolStripMenuItem.Name = "externalSlic3rToolStripMenuItem";
-            this.externalSlic3rToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D2)));
-            this.externalSlic3rToolStripMenuItem.Size = new System.Drawing.Size(346, 22);
-            this.externalSlic3rToolStripMenuItem.Text = "External Slic3r";
-            this.externalSlic3rToolStripMenuItem.Click += new System.EventHandler(this.externalSlic3rToolStripMenuItem_Click);
-            // 
-            // externalSlic3rConfigurationToolStripMenuItem
-            // 
-            this.externalSlic3rConfigurationToolStripMenuItem.Name = "externalSlic3rConfigurationToolStripMenuItem";
-            this.externalSlic3rConfigurationToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-                        | System.Windows.Forms.Keys.D2)));
-            this.externalSlic3rConfigurationToolStripMenuItem.Size = new System.Drawing.Size(346, 22);
-            this.externalSlic3rConfigurationToolStripMenuItem.Text = "External Slic3r configuration";
-            this.externalSlic3rConfigurationToolStripMenuItem.Click += new System.EventHandler(this.externalSlic3rConfigurationToolStripMenuItem_Click);
-            // 
-            // stlComposer1
-            // 
-            this.stlComposer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.stlComposer1.Location = new System.Drawing.Point(0, 0);
-            this.stlComposer1.Margin = new System.Windows.Forms.Padding(4);
-            this.stlComposer1.Name = "stlComposer1";
-            this.stlComposer1.Size = new System.Drawing.Size(1008, 304);
-            this.stlComposer1.TabIndex = 0;
-            // 
-            // editor
-            // 
-            this.editor.AccessibleRole = System.Windows.Forms.AccessibleRole.Caret;
-            this.editor.autopreview = true;
-            this.editor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.editor.Location = new System.Drawing.Point(0, 0);
-            this.editor.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
-            this.editor.MinimumSize = new System.Drawing.Size(160, 138);
-            this.editor.Name = "editor";
-            this.editor.Size = new System.Drawing.Size(500, 295);
-            this.editor.TabIndex = 0;
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -819,8 +822,9 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menu;
             this.Name = "Main";
-            this.Text = "Repetier-Host V0.36";
+            this.Text = "Repetier-Host V0.40";
             this.Shown += new System.EventHandler(this.Main_Shown);
+            this.Activated += new System.EventHandler(this.Main_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.Resize += new System.EventHandler(this.Main_Resize);
             this.menu.ResumeLayout(false);

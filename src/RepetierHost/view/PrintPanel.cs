@@ -23,6 +23,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using RepetierHost.model;
+using RepetierHost.view.utils;
 
 namespace RepetierHost.view
 {
@@ -45,6 +46,10 @@ namespace RepetierHost.view
           //  ann.eventPosChanged += coordUpdate;
             ann.eventChange += analyzerChange;
             UpdateConStatus(false);
+            textExtrudeSpeed.Text = RegMemory.GetString("panelExtrudeSpeed", textExtrudeSpeed.Text);
+            textExtrudeAmount.Text = RegMemory.GetString("panelExtrudeAmount", textExtrudeAmount.Text);
+            textRetractAmount.Text = RegMemory.GetString("panelRetractAmount", textRetractAmount.Text);
+
             float volt = 100f * trackFanVoltage.Value / 255;
             labelVoltage.Text = "Output " + volt.ToString("0.0") + "%";
             timer.Start();
@@ -81,7 +86,7 @@ namespace RepetierHost.view
             createCommands = true;
         }
         private void coordUpdate(GCode code,float x,float y,float z) {
-            if (x != -lastx)
+            if (x != -lastx || x==0)
             {
                 labelX.Text = "X=" + x.ToString("0.00");
                 if (ann.hasXHome)
@@ -90,7 +95,7 @@ namespace RepetierHost.view
                     labelX.ForeColor = Color.Red;
                 lastx = x;
             }
-            if (y != lasty)
+            if (y != lasty || y==0)
             {
                 labelY.Text = "Y=" + y.ToString("0.00");
                 if (ann.hasYHome)
@@ -99,7 +104,7 @@ namespace RepetierHost.view
                     labelY.ForeColor = Color.Red;
                 lasty = y;
             }
-            if (z != lastz)
+            if (z != lastz || z==0)
             {
                 labelZ.Text = "Z=" + z.ToString("0.00");
                 if (ann.hasZHome)
@@ -596,6 +601,21 @@ namespace RepetierHost.view
             con.injectManualCommand("G1 E-" + textRetractAmount.Text.Trim() + " F" + textExtrudeSpeed.Text.Trim());
             if (!wasrel) con.injectManualCommand("G90");
             con.ReturnInjectLock();
+        }
+
+        private void textExtrudeSpeed_TextChanged(object sender, EventArgs e)
+        {
+            RegMemory.SetString("panelExtrudeSpeed", textExtrudeSpeed.Text);
+        }
+
+        private void textExtrudeAmount_TextChanged(object sender, EventArgs e)
+        {
+            RegMemory.SetString("panelExtrudeAmount", textExtrudeAmount.Text);
+        }
+
+        private void textRetractAmount_TextChanged(object sender, EventArgs e)
+        {
+            RegMemory.SetString("panelRetractAmount", textRetractAmount.Text);
         }
 
      }

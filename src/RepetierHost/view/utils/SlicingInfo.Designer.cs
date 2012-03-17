@@ -37,6 +37,7 @@
             this.labelAction = new System.Windows.Forms.Label();
             this.labelDuration = new System.Windows.Forms.Label();
             this.timer = new System.Windows.Forms.Timer(this.components);
+            this.checkStartBoxAfterSlicing = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -98,12 +99,23 @@
             this.timer.Interval = 1000;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
+            // checkStartBoxAfterSlicing
+            // 
+            this.checkStartBoxAfterSlicing.AutoSize = true;
+            this.checkStartBoxAfterSlicing.Location = new System.Drawing.Point(16, 73);
+            this.checkStartBoxAfterSlicing.Name = "checkStartBoxAfterSlicing";
+            this.checkStartBoxAfterSlicing.Size = new System.Drawing.Size(121, 17);
+            this.checkStartBoxAfterSlicing.TabIndex = 6;
+            this.checkStartBoxAfterSlicing.Text = "Start job after slicing";
+            this.checkStartBoxAfterSlicing.UseVisualStyleBackColor = true;
+            // 
             // SlicingInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(188, 75);
+            this.ClientSize = new System.Drawing.Size(184, 102);
             this.ControlBox = false;
+            this.Controls.Add(this.checkStartBoxAfterSlicing);
             this.Controls.Add(this.labelDuration);
             this.Controls.Add(this.labelAction);
             this.Controls.Add(this.labelSlicer);
@@ -129,5 +141,6 @@
         private System.Windows.Forms.Label labelAction;
         private System.Windows.Forms.Label labelDuration;
         private System.Windows.Forms.Timer timer;
+        public System.Windows.Forms.CheckBox checkStartBoxAfterSlicing;
     }
 }

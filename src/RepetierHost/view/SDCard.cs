@@ -46,9 +46,15 @@ namespace RepetierHost.view
             {
                 f = new SDCard();
                 Main.conn.eventResponse += f.analyzeEvent;
-                f.RefreshFilenames();
             }
+            f.RefreshFilenames();
             f.Show();            
+        }
+        public static void Disconnected()
+        {
+            if (f == null) return;
+            if (f.Visible)
+                f.Hide();
         }
         public SDCard()
         {
@@ -214,10 +220,10 @@ namespace RepetierHost.view
                 job.exclusive = true;
                 job.PushData("M28 " + f.textFilename.Text);
                 if(f.checkAppendPrepend.Checked)
-                    job.PushData(Main.main.editor.getContent(1));
+                    job.PushGCodeShortArray(Main.main.editor.getContentArray(1));
                 if (f.radioCurrent.Checked)
                 {
-                    job.PushData(Main.main.editor.getContent(0));
+                    job.PushGCodeShortArray(Main.main.editor.getContentArray(0));
                 }
                 else
                 {
@@ -235,7 +241,7 @@ namespace RepetierHost.view
                     }
                 }
                 if (f.checkAppendPrepend.Checked)
-                    job.PushData(Main.main.editor.getContent(2));
+                    job.PushGCodeShortArray(Main.main.editor.getContentArray(2));
                 if (f.checkJobFinished.Checked)
                 {
                     PrinterConnection con = Main.conn;

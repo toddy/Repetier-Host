@@ -32,6 +32,7 @@ namespace RepetierHost.model
         public int totalLines;
         public int linesSend;
         public bool exclusive = false;
+        public int maxLayer = -1;
         public int mode = 0; // 0 = no job defines, 1 = printing, 2 = finished, 3 = aborted
         public DateTime jobStarted, jobFinished;
         LinkedList<GCode> jobList = new LinkedList<GCode>();
@@ -51,6 +52,7 @@ namespace RepetierHost.model
             times.Clear();
             totalLines = 0;
             linesSend = 0;
+            maxLayer = -1;
             mode = 1;
             Main.main.Invoke(Main.main.UpdateJobButtons);
         }
@@ -112,6 +114,22 @@ namespace RepetierHost.model
                     jobList.AddLast(gcode);
                     totalLines++;
                 }
+            }
+        }
+        public void PushGCodeShortArray(List<GCodeShort> codes)
+        {
+            foreach (GCodeShort line in codes)
+            {
+                if (line.Length == 0) continue;
+                GCode gcode = new GCode();
+                gcode.Parse(line.text);
+                if (!gcode.comment)
+                {
+                    jobList.AddLast(gcode);
+                    totalLines++;
+                }
+                if (line.hasLayer)
+                    maxLayer = line.layer;
             }
         }
         /// <summary>

@@ -63,13 +63,17 @@
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.openFileSTL = new System.Windows.Forms.OpenFileDialog();
             this.saveSTL = new System.Windows.Forms.SaveFileDialog();
+            this.buttonCopyObjects = new System.Windows.Forms.Button();
+            this.buttonAutoplace = new System.Windows.Forms.Button();
             this.panelControls.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
             // 
             // panelControls
             // 
+            this.panelControls.Controls.Add(this.buttonAutoplace);
             this.panelControls.Controls.Add(this.buttonLand);
+            this.panelControls.Controls.Add(this.buttonCopyObjects);
             this.panelControls.Controls.Add(this.buttonCenter);
             this.panelControls.Controls.Add(this.buttonRemoveSTL);
             this.panelControls.Controls.Add(this.buttonAddSTL);
@@ -109,7 +113,7 @@
             // 
             this.buttonLand.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonLand.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonLand.Location = new System.Drawing.Point(121, 579);
+            this.buttonLand.Location = new System.Drawing.Point(121, 578);
             this.buttonLand.Name = "buttonLand";
             this.buttonLand.Size = new System.Drawing.Size(114, 23);
             this.buttonLand.TabIndex = 14;
@@ -121,7 +125,7 @@
             // 
             this.buttonCenter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonCenter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonCenter.Location = new System.Drawing.Point(0, 579);
+            this.buttonCenter.Location = new System.Drawing.Point(0, 578);
             this.buttonCenter.Name = "buttonCenter";
             this.buttonCenter.Size = new System.Drawing.Size(121, 23);
             this.buttonCenter.TabIndex = 13;
@@ -172,7 +176,7 @@
             this.listSTLObjects.Location = new System.Drawing.Point(0, 211);
             this.listSTLObjects.Name = "listSTLObjects";
             this.listSTLObjects.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.listSTLObjects.Size = new System.Drawing.Size(235, 368);
+            this.listSTLObjects.Size = new System.Drawing.Size(235, 342);
             this.listSTLObjects.TabIndex = 12;
             this.listSTLObjects.SelectedIndexChanged += new System.EventHandler(this.listSTLObjects_SelectedIndexChanged);
             // 
@@ -408,6 +412,7 @@
             // 
             this.openFileSTL.DefaultExt = "stl";
             this.openFileSTL.Filter = "STL-Files|*.stl|All files|*.*";
+            this.openFileSTL.Multiselect = true;
             this.openFileSTL.Title = "Add STL file";
             // 
             // saveSTL
@@ -415,6 +420,30 @@
             this.saveSTL.DefaultExt = "stl";
             this.saveSTL.Filter = "STL-Files|*.stl";
             this.saveSTL.Title = "Save composition";
+            // 
+            // buttonCopyObjects
+            // 
+            this.buttonCopyObjects.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonCopyObjects.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonCopyObjects.Location = new System.Drawing.Point(0, 555);
+            this.buttonCopyObjects.Name = "buttonCopyObjects";
+            this.buttonCopyObjects.Size = new System.Drawing.Size(121, 23);
+            this.buttonCopyObjects.TabIndex = 13;
+            this.buttonCopyObjects.Text = "Copy object(s)";
+            this.buttonCopyObjects.UseVisualStyleBackColor = true;
+            this.buttonCopyObjects.Click += new System.EventHandler(this.buttonCopyObjects_Click);
+            // 
+            // buttonAutoplace
+            // 
+            this.buttonAutoplace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonAutoplace.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonAutoplace.Location = new System.Drawing.Point(121, 555);
+            this.buttonAutoplace.Name = "buttonAutoplace";
+            this.buttonAutoplace.Size = new System.Drawing.Size(114, 23);
+            this.buttonAutoplace.TabIndex = 14;
+            this.buttonAutoplace.Text = "Auto position";
+            this.buttonAutoplace.UseVisualStyleBackColor = true;
+            this.buttonAutoplace.Click += new System.EventHandler(this.buttonAutoplace_Click);
             // 
             // STLComposer
             // 
@@ -466,5 +495,7 @@
         private System.Windows.Forms.SaveFileDialog saveSTL;
         private System.Windows.Forms.Button buttonLand;
         private System.Windows.Forms.Button buttonCenter;
+        private System.Windows.Forms.Button buttonAutoplace;
+        private System.Windows.Forms.Button buttonCopyObjects;
     }
 }

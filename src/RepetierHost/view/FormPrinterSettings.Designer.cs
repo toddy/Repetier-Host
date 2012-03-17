@@ -157,15 +157,17 @@
             // 
             // tabControl1
             // 
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPageConnection);
             this.tabControl1.Controls.Add(this.tabPagePrinter);
             this.tabControl1.Controls.Add(this.tabPageShape);
             this.tabControl1.Controls.Add(this.tabAdvanced);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 30);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(489, 430);
+            this.tabControl1.Size = new System.Drawing.Size(489, 374);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPageConnection
@@ -190,7 +192,7 @@
             this.tabPageConnection.Location = new System.Drawing.Point(4, 22);
             this.tabPageConnection.Name = "tabPageConnection";
             this.tabPageConnection.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageConnection.Size = new System.Drawing.Size(481, 404);
+            this.tabPageConnection.Size = new System.Drawing.Size(481, 348);
             this.tabPageConnection.TabIndex = 0;
             this.tabPageConnection.Text = "Connection";
             this.tabPageConnection.UseVisualStyleBackColor = true;
@@ -203,7 +205,7 @@
             this.label38.Name = "label38";
             this.label38.Size = new System.Drawing.Size(305, 12);
             this.label38.TabIndex = 15;
-            this.label38.Text = "From Arduino 1 on the receiving cache was reduced from 128 to 64 bytes!";
+            this.label38.Text = "From Arduino 1 on the receiving cache was reduced from 127 to 63 bytes!";
             // 
             // checkPingPong
             // 
@@ -404,7 +406,7 @@
             this.tabPagePrinter.Location = new System.Drawing.Point(4, 22);
             this.tabPagePrinter.Name = "tabPagePrinter";
             this.tabPagePrinter.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPagePrinter.Size = new System.Drawing.Size(481, 404);
+            this.tabPagePrinter.Size = new System.Drawing.Size(481, 348);
             this.tabPagePrinter.TabIndex = 1;
             this.tabPagePrinter.Text = "Printer";
             this.tabPagePrinter.UseVisualStyleBackColor = true;
@@ -714,7 +716,7 @@
             this.tabPageShape.Controls.Add(this.label18);
             this.tabPageShape.Location = new System.Drawing.Point(4, 22);
             this.tabPageShape.Name = "tabPageShape";
-            this.tabPageShape.Size = new System.Drawing.Size(481, 404);
+            this.tabPageShape.Size = new System.Drawing.Size(481, 348);
             this.tabPageShape.TabIndex = 2;
             this.tabPageShape.Text = "Printer shape";
             this.tabPageShape.UseVisualStyleBackColor = true;
@@ -926,7 +928,7 @@
             this.tabAdvanced.Controls.Add(this.groupBox1);
             this.tabAdvanced.Location = new System.Drawing.Point(4, 22);
             this.tabAdvanced.Name = "tabAdvanced";
-            this.tabAdvanced.Size = new System.Drawing.Size(481, 404);
+            this.tabAdvanced.Size = new System.Drawing.Size(481, 348);
             this.tabAdvanced.TabIndex = 3;
             this.tabAdvanced.Text = "Advanced";
             this.tabAdvanced.UseVisualStyleBackColor = true;
@@ -985,10 +987,10 @@
             // 
             // panel1
             // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.panel1.Controls.Add(this.buttonApply);
             this.panel1.Controls.Add(this.buttonAbort);
             this.panel1.Controls.Add(this.buttonOK);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel1.Location = new System.Drawing.Point(0, 408);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(489, 52);
@@ -1032,7 +1034,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(489, 460);
+            this.ClientSize = new System.Drawing.Size(489, 477);
             this.ControlBox = false;
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.tabControl1);

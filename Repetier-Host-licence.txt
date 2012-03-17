@@ -115,3 +115,7 @@ Graph library:
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN 
  THE SOFTWARE.
  
+ Slider
+    Author: Michal Brylka
+    Licence: The GNU Lesser General Public License (LGPLv3)
+    http://www.codeproject.com/Articles/17395/Owner-drawn-trackbar-slider

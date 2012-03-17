@@ -17,6 +17,7 @@ namespace RepetierHost.view.utils
                 f = new SlicingInfo();
             f.labelSlicer.Text = slicerName;
             f.ResetTimer();
+            f.checkStartBoxAfterSlicing.Checked = false;
             if(f.Visible==false)
                 f.Show(Main.main);
             f.timer.Start();

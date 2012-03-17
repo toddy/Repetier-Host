@@ -111,6 +111,7 @@
     <Compile Include="model\GCode.cs" />
     <Compile Include="model\GCodeAnalyzer.cs" />
     <Compile Include="model\GCodeGenerator.cs" />
+    <Compile Include="model\GCodeShort.cs" />
     <Compile Include="model\GCodeVisual.cs" />
     <Compile Include="model\LogLine.cs" />
     <Compile Include="model\ModelAnimation.cs" />
@@ -145,6 +146,7 @@
       <DependentUpon>PrintPreviewForm.cs</DependentUpon>
     </Compile>
     <Compile Include="model\PulseAnimation.cs" />
+    <Compile Include="model\RectPacker.cs" />
     <Compile Include="model\STL.cs" />
     <Compile Include="model\ThreeDModel.cs" />
     <Compile Include="model\VirtualPrinter.cs" />
@@ -177,6 +179,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="view\About.resx">
       <DependentUpon>About.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="view\CopyObjectsDialog.resx">
+      <DependentUpon>CopyObjectsDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="view\EEPROMMarlin.resx">
@@ -271,6 +277,10 @@
       <DependentUpon>ThreeDSettings.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="view\utils\ColorSlider.resx">
+      <DependentUpon>ColorSlider.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="view\utils\PauseInfo.resx">
       <DependentUpon>PauseInfo.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -288,6 +298,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="Properties\DataSources\RepetierHost.view.RepetierEditor.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -310,6 +321,12 @@
     </Compile>
     <Compile Include="view\About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
+    </Compile>
+    <Compile Include="view\CopyObjectsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="view\CopyObjectsDialog.Designer.cs">
+      <DependentUpon>CopyObjectsDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="view\DoubleBufferPanel.cs">
       <SubType>Component</SubType>
@@ -451,6 +468,12 @@
     </Compile>
     <Compile Include="view\ThreeDSettings.Designer.cs">
       <DependentUpon>ThreeDSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="view\utils\ColorSlider.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="view\utils\ColorSlider.designer.cs">
+      <DependentUpon>ColorSlider.cs</DependentUpon>
     </Compile>
     <Compile Include="view\utils\PauseInfo.cs">
       <SubType>Form</SubType>

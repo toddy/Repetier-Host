@@ -32,6 +32,8 @@ namespace RepetierHost.view
     public partial class STLComposer : UserControl
     {
         public ThreeDControl cont;
+        private bool autosizeFailed = false;
+        private CopyObjectsDialog copyDialog = new CopyObjectsDialog();
         public STLComposer()
         {
             InitializeComponent();
@@ -52,7 +54,8 @@ namespace RepetierHost.view
             }
             catch { }
         }
-        public void Update3D() {
+        public void Update3D()
+        {
             cont.UpdateChanges();
         }
         private void float_Validating(object sender, CancelEventArgs e)
@@ -71,7 +74,7 @@ namespace RepetierHost.view
         private void updateEnabled()
         {
             int n = listSTLObjects.SelectedItems.Count;
-            if (n!=1)
+            if (n != 1)
             {
                 textRotX.Enabled = false;
                 textRotY.Enabled = false;
@@ -84,11 +87,15 @@ namespace RepetierHost.view
                 textTransY.Enabled = false;
                 textTransZ.Enabled = false;
                 buttonCenter.Enabled = false;
-                buttonLand.Enabled = n>0;
-                cont.SetObjectSelected(n>0);
+                buttonAutoplace.Enabled = listSTLObjects.Items.Count > 1;
+                buttonLand.Enabled = n > 0;
+                cont.SetObjectSelected(n > 0);
+                buttonCopyObjects.Enabled = n>0;
             }
             else
             {
+                buttonAutoplace.Enabled = listSTLObjects.Items.Count > 1;
+                buttonCopyObjects.Enabled = true;
                 textRotX.Enabled = true;
                 textRotY.Enabled = true;
                 textRotZ.Enabled = true;
@@ -103,38 +110,32 @@ namespace RepetierHost.view
                 buttonLand.Enabled = true;
                 cont.SetObjectSelected(true);
             }
-            if (n == 0)
-            {
-                buttonRemoveSTL.Enabled = false;
-                buttonSave.Enabled = false;
-                buttonSlice.Enabled = false;
-            }
-            else
-            {
-                buttonRemoveSTL.Enabled = true;
-                buttonSave.Enabled = true;
-                buttonSlice.Enabled = true;
-            }
+            buttonRemoveSTL.Enabled = n!=0;
+            buttonSlice.Enabled = listSTLObjects.Items.Count > 0;
+            buttonSave.Enabled = listSTLObjects.Items.Count > 0;
         }
-        public void openAndAddObject(string file) {
-                STL stl = new STL();
-                stl.Load(file);
-                stl.Center(Main.printerSettings.PrintAreaWidth / 2, Main.printerSettings.PrintAreaDepth / 2);
-                stl.Land();
-                if (stl.list.Count > 0)
-                {
-                    listSTLObjects.Items.Add(stl);
-                    cont.models.AddLast(stl);
-                    listSTLObjects.SelectedItem = stl;
-                    stl.addAnimation(new DropAnimation("drop"));
-                    updateSTLState(stl);
-                }
+        public void openAndAddObject(string file)
+        {
+            STL stl = new STL();
+            stl.Load(file);
+            stl.Center(Main.printerSettings.PrintAreaWidth / 2, Main.printerSettings.PrintAreaDepth / 2);
+            stl.Land();
+            if (stl.list.Count > 0)
+            {
+                listSTLObjects.Items.Add(stl);
+                cont.models.AddLast(stl);
+                listSTLObjects.SelectedItem = stl;
+                Autoposition();
+                stl.addAnimation(new DropAnimation("drop"));
+                updateSTLState(stl);
+            }
         }
         private void buttonAddSTL_Click(object sender, EventArgs e)
         {
             if (openFileSTL.ShowDialog() == DialogResult.OK)
             {
-                openAndAddObject(openFileSTL.FileName);
+                foreach(string fname in openFileSTL.FileNames)
+                openAndAddObject(fname);
             }
         }
         /// <summary>
@@ -147,7 +148,7 @@ namespace RepetierHost.view
             if (stl.xMin < 0 || stl.yMin < 0 || stl.zMin < -0.001 || stl.xMax > Main.printerSettings.PrintAreaWidth ||
                 stl.yMax > Main.printerSettings.PrintAreaDepth || stl.zMax > Main.printerSettings.PrintAreaHeight)
             {
-                if(!stl.hasAnimationWithName("pulse"))
+                if (!stl.hasAnimationWithName("pulse"))
                     stl.addAnimation(new PulseAnimation("pulse", 0.05, 0.05, 0.05, 0.5));
             }
             else
@@ -183,7 +184,7 @@ namespace RepetierHost.view
         private void textTransX_TextChanged(object sender, EventArgs e)
         {
             STL stl = (STL)listSTLObjects.SelectedItem;
-            if(stl==null) return;
+            if (stl == null) return;
             float.TryParse(textTransX.Text, NumberStyles.Float, GCode.format, out stl.Position.x);
             updateSTLState(stl);
             cont.UpdateChanges();
@@ -229,19 +230,20 @@ namespace RepetierHost.view
             {
                 if (!sel.Selected)
                     listSTLObjects.SelectedItems.Add(sel);
-            } else
-            if (Control.ModifierKeys == Keys.Control)
-            {
-                if (sel.Selected)
-                    listSTLObjects.SelectedItems.Remove(sel);
-                else
-                    listSTLObjects.SelectedItems.Add(sel);
             }
             else
-            {
-                listSTLObjects.SelectedItems.Clear();
-                listSTLObjects.SelectedItem = sel;
-            }
+                if (Control.ModifierKeys == Keys.Control)
+                {
+                    if (sel.Selected)
+                        listSTLObjects.SelectedItems.Remove(sel);
+                    else
+                        listSTLObjects.SelectedItems.Add(sel);
+                }
+                else
+                {
+                    listSTLObjects.SelectedItems.Clear();
+                    listSTLObjects.SelectedItem = sel;
+                }
         }
         private void textScaleX_TextChanged(object sender, EventArgs e)
         {
@@ -314,6 +316,7 @@ namespace RepetierHost.view
             {
                 cont.models.Remove(stl);
                 listSTLObjects.Items.Remove(stl);
+                autosizeFailed = false; // Reset autoposition
             }
             list.Clear();
             cont.UpdateChanges();
@@ -411,7 +414,7 @@ namespace RepetierHost.view
             {
                 stl.Center(100f, 100f);
                 listSTLObjects_SelectedIndexChanged(null, null);
-                
+
             }
             cont.UpdateChanges();
         }
@@ -430,7 +433,7 @@ namespace RepetierHost.view
             if (listSTLObjects.Items.Count > 1)
                 t += " + " + (listSTLObjects.Items.Count - 1).ToString();
             Main.main.Title = t;
-            dir+=Path.DirectorySeparatorChar+"composition.stl";
+            dir += Path.DirectorySeparatorChar + "composition.stl";
             saveComposition(dir);
             Main.slicer.RunSlice(dir); // Slice it and load
         }
@@ -439,6 +442,134 @@ namespace RepetierHost.view
         {
             textScaleY.Enabled = !checkScaleAll.Checked;
             textScaleZ.Enabled = !checkScaleAll.Checked;
+        }
+        public void Autoposition()
+        {
+            if (autosizeFailed) return;
+            RectPacker packer = new RectPacker(1, 1);
+            int border = 3;
+            FormPrinterSettings ps = Main.printerSettings;
+            float maxW = ps.PrintAreaWidth;
+            float maxH = ps.PrintAreaDepth;
+            float xOff = 0, yOff = 0;
+            if (ps.HasDumpArea)
+            {
+                if (ps.DumpAreaFront <= 0)
+                {
+                    yOff = ps.DumpAreaDepth - ps.DumpAreaFront;
+                    maxH -= yOff;
+                }
+                else if (ps.DumpAreaDepth + ps.DumpAreaFront >= maxH)
+                {
+                    yOff = -(maxH - ps.DumpAreaFront);
+                    maxH += yOff;
+                }
+                else if (ps.DumpAreaLeft <= 0)
+                {
+                    xOff = ps.DumpAreaWidth - ps.DumpAreaLeft;
+                    maxW -= xOff;
+                }
+                else if (ps.DumpAreaWidth + ps.DumpAreaLeft >= maxW)
+                {
+                    xOff = maxW - ps.DumpAreaLeft;
+                    maxW += xOff;
+                }
+            }
+            foreach (STL stl in listSTLObjects.Items)
+            {
+                int w = 2 * border + (int)Math.Ceiling(stl.xMax - stl.xMin);
+                int h = 2 * border + (int)Math.Ceiling(stl.yMax - stl.yMin);
+                if (!packer.addAtEmptySpotAutoGrow(new PackerRect(0, 0, w, h, stl), (int)maxW, (int)maxH))
+                {
+                    autosizeFailed = true;
+                }
+            }
+            if (autosizeFailed)
+            {
+                MessageBox.Show("Too many objects on printer bed for automatic packing.\r\nPacking disabled until elements are removed.",
+                "Printer bed full", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            float xAdd = (maxW - packer.w) / 2.0f;
+            float yAdd = (maxH - packer.h) / 2.0f;
+            foreach (PackerRect rect in packer.vRects)
+            {
+                STL s = (STL)rect.obj;
+                float xPos = xOff + xAdd + rect.x + border;
+                float yPos = yOff + yAdd + rect.y + border;
+                s.Position.x += xPos - s.xMin;
+                s.Position.y += yPos - s.yMin;
+                s.UpdateBoundingBox();
+            }
+            cont.UpdateChanges();
+        }
+        private void buttonAutoplace_Click(object sender, EventArgs e)
+        {
+            Autoposition();
+        }
+
+        private void buttonCopyObjects_Click(object sender, EventArgs e)
+        {
+            if (copyDialog.ShowDialog(Main.main) == DialogResult.Cancel) return;
+            int numberOfCopies = (int)copyDialog.numericCopies.Value;
+
+            List<STL> newSTL = new List<STL>();
+            foreach (STL act in listSTLObjects.SelectedItems)
+            {
+                STL last = act;
+                for (int i = 0; i < numberOfCopies; i++)
+                {
+                    STL stl = last.copySTL();
+                    last = stl;
+                    newSTL.Add(stl);
+                }
+            }
+            foreach (STL stl in newSTL)
+            {
+                listSTLObjects.Items.Add(stl);
+                cont.models.AddLast(stl);
+            }
+            if (copyDialog.checkAutoposition.Checked)
+            {
+                Autoposition();
+            }
+            cont.UpdateChanges();
+        }
+        static bool inRecheckFiles = false;
+        public void recheckChangedFiles()
+        {
+            if (inRecheckFiles) return;
+            inRecheckFiles = true;
+            bool changed = false;
+            foreach (STL stl in listSTLObjects.Items)
+            {
+                if (stl.changedOnDisk())
+                {
+                    changed = true;
+                    break;
+                }
+            }
+            if (changed)
+            {
+                if (MessageBox.Show("One or more objects files are changed.\r\nReload objects?", "Files changed", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    foreach (STL stl in listSTLObjects.Items)
+                    {
+                        if (stl.changedOnDisk())
+                            stl.reload();
+                    }
+                    cont.UpdateChanges();
+                }
+                else
+                {
+                    foreach (STL stl in listSTLObjects.Items)
+                    {
+                        if (stl.changedOnDisk())
+                            stl.resetModifiedDate();
+                    }
+                }
+            }
+            inRecheckFiles = false;
         }
     }
 }
