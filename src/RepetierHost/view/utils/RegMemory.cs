@@ -6,6 +6,8 @@ using System.Windows.Forms;
 using System.Drawing;
 using Microsoft.Win32;
 using System.IO;
+using RepetierHost.model;
+using System.Globalization;
 
 namespace RepetierHost.view.utils
 {
@@ -31,6 +33,19 @@ namespace RepetierHost.view.utils
             initKeys();
             windowKey.SetValue(r, val);
         }
+        public static double GetDouble(string r, double def)
+        {
+            initKeys();
+            string sval = (string)windowKey.GetValue(r, def.ToString(GCode.format));
+            double val = def;
+            double.TryParse(sval, NumberStyles.Float, GCode.format, out val);
+            return val;
+        }
+        public static void SetDouble(string r, double val)
+        {
+            initKeys();
+            windowKey.SetValue(r, val.ToString(GCode.format));
+        }
         public static bool GetBool(string r, bool def)
         {
             initKeys();
@@ -50,6 +65,15 @@ namespace RepetierHost.view.utils
         {
             initKeys();
             windowKey.SetValue(r, val);
+        }
+        public static Color GetColor(string r, Color def)
+        {
+            int v = GetInt(r, def.ToArgb());
+            return Color.FromArgb(v);
+        }
+        public static void SetColor(string r, Color val)
+        {
+            SetInt(r, val.ToArgb());
         }
         public static string WindowPosToString(Form f,bool state)
         {

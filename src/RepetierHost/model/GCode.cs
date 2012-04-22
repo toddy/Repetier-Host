@@ -336,7 +336,7 @@ namespace RepetierHost.model
                     {
                         AddCode(code,line.Substring(p1, i - p1));
                         mode = 0;
-                        if (hasM && (m == 23 || m == 28 || m == 29 || m == 30))
+                        if (hasM && (m == 23 || m == 28 || m == 29 || m == 30 || m == 117))
                         {
                             int pos = i;
                             while (pos < line.Length && char.IsWhiteSpace(line[pos])) pos++;

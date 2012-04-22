@@ -24,6 +24,7 @@ using System.Timers;
 using System.Threading;
 using System.Windows.Forms;
 using RepetierHost.view.utils;
+using System.Globalization;
 
 namespace RepetierHost.model
 {
@@ -39,6 +40,7 @@ namespace RepetierHost.model
     public delegate void OnTempUpdate(int extruder, int printbed);
     public delegate void OnJobProgress(float percent);
     public delegate void OnTempMonitor(UInt32 time, int temp, int target, int output);
+    public delegate void OnTempHistory(TemperatureEntry ent);
     public delegate void OnResponse(string response);
     public class PrinterConnection
     {
@@ -52,6 +54,7 @@ namespace RepetierHost.model
         public event OnJobProgress eventJobProgress;
         public event OnTempMonitor eventTempMonitor;
         public event OnResponse eventResponse;
+        public event OnTempHistory eventTempHistory;
         TextWriter logWriter = null;
         public GCodeAnalyzer analyzer = new GCodeAnalyzer(false);
         public bool connected = false;
@@ -97,6 +100,7 @@ namespace RepetierHost.model
         public int numberExtruder = 1;
         public int extruderTemp;
         public int bedTemp;
+        public int extruderOutput = -1;
         public float x, y, z, e;
         public bool paused = false;
         public bool logM105 = false;
@@ -126,6 +130,7 @@ namespace RepetierHost.model
         public bool runFilterEverySlice = false;
         public bool isRepetier = false;
         public bool isMarlin = false;
+        public int speedMultiply = 100;
 
         public PrinterConnection()
         {
@@ -249,7 +254,7 @@ namespace RepetierHost.model
         {
             LogLine l;
             bool update = false;
-            if (logM105 && t.IndexOf("M105")>=0) return;
+            if (logM105 && t.IndexOf("M105") >= 0) return;
             if (useNextLog != null)
             {
                 l = useNextLog;
@@ -587,6 +592,8 @@ namespace RepetierHost.model
                                 linesSend++;
                                 lastCommandSend = DateTime.Now.Ticks;
                                 printeraction = "Printing...ETA " + job.ETA;
+                                if (job.maxLayer > 0)
+                                    printeraction += " Layer " + analyzer.layer + "/" + job.maxLayer;
                                 logprogress = job.PercentDone;
                             }
                             analyzer.Analyze(gc);
@@ -966,13 +973,17 @@ namespace RepetierHost.model
             {
                 level = 3;
                 firmware = h;
-                if (h.IndexOf("Repetier") >= 0) isRepetier = true;
+                if (h.IndexOf("Repetier") >= 0)
+                {
+                    isRepetier = true;
+                }
                 if (h.IndexOf("Marlin") >= 0) isMarlin = true;
                 if (isMarlin || isRepetier) // Activate special menus and function
                 {
-
                     Main.main.Invoke(Main.main.UpdateEEPROM);
+                    injectManualCommand("M220 S" + speedMultiply.ToString());
                 }
+                Main.main.Invoke(Main.main.FirmwareDetected);
             }
             h = extract(res, "FIRMWARE_URL:");
             if (h != null)
@@ -1002,26 +1013,63 @@ namespace RepetierHost.model
             if (h != null)
             {
                 level = 3;
-                float.TryParse(h, out x);
+                float.TryParse(h, NumberStyles.Float, GCode.format, out x);
+                analyzer.x = x;
+                analyzer.hasXHome = true;
             }
             h = extract(res, "Y:");
             if (h != null)
             {
                 level = 3;
-                float.TryParse(h, out y);
+                float.TryParse(h, NumberStyles.Float, GCode.format, out y);
+                analyzer.y = y;
+                analyzer.hasYHome = true;
             }
             h = extract(res, "Z:");
             if (h != null)
             {
                 level = 3;
-                float.TryParse(h, out z);
+                float.TryParse(h, NumberStyles.Float, GCode.format, out z);
+                analyzer.z = z;
+                analyzer.hasZHome = true;
             }
             h = extract(res, "E:");
             if (h != null)
             {
                 level = 3;
-                float.TryParse(h, out e);
+                float.TryParse(h, NumberStyles.Float, GCode.format, out e);
+                analyzer.e = e;
             }
+            if ((h = extract(res, "SpeedMultiply:")) != null)
+            {
+                int.TryParse(h,out speedMultiply);
+                if (speedMultiply < 25) speedMultiply = 25;
+                if (speedMultiply > 300) speedMultiply = 300;
+                analyzer.fireChanged();
+            }
+            if ((h = extract(res, "TargetExtr0:")) != null)
+            {
+                if (analyzer.activeExtruder == 0)
+                    int.TryParse(h,out analyzer.extruderTemp);
+                analyzer.fireChanged();
+            }
+            if ((h = extract(res, "TargetExtr1:")) != null)
+            {
+                if (analyzer.activeExtruder == 1)
+                    int.TryParse(h,out analyzer.extruderTemp);
+                analyzer.fireChanged();
+            }
+            if ((h = extract(res, "TargetBed:")) != null)
+            {
+                int.TryParse(h,out analyzer.bedTemp);
+                analyzer.fireChanged();
+            }
+            if ((h = extract(res, "Fanspeed:")) != null)
+            {
+                int.TryParse(h, out analyzer.fanVoltage);
+                analyzer.fireChanged();
+            }
+
             bool tempChange = false;
             h = extract(res, "T:");
             if (h != null)
@@ -1030,6 +1078,10 @@ namespace RepetierHost.model
                 if (h.IndexOf('.') > 0) h = h.Substring(0, h.IndexOf('.'));
                 int.TryParse(h, out extruderTemp);
                 tempChange = true;
+                extruderOutput = -1;
+                h = extract(res, "@:");
+                int.TryParse(h, out extruderOutput);
+                if (isMarlin) extruderOutput *= 2;
             }
             h = extract(res, "B:");
             if (h != null)
@@ -1048,8 +1100,8 @@ namespace RepetierHost.model
             }
             if (isMarlin)
             { // Marlin specifix answers
-                if (res.StartsWith("echo:") && (res.IndexOf("M92")>0) || (res.IndexOf("M203")>0) || (res.IndexOf("M201")>0) || 
-                    (res.IndexOf("M204")>0) || (res.IndexOf("M205")>0) || (res.IndexOf("M301")>0))
+                if (res.StartsWith("echo:") && (res.IndexOf("M92") > 0) || (res.IndexOf("M203") > 0) || (res.IndexOf("M201") > 0) ||
+                    (res.IndexOf("M204") > 0) || (res.IndexOf("M205") > 0) || (res.IndexOf("M301") > 0))
                 {
                     eepromm.Add(res);
                 }
@@ -1073,6 +1125,11 @@ namespace RepetierHost.model
                             Main.main.Invoke(eventTempMonitor, time, temp, target, output);
                         }
                         catch { }
+                    }
+                    if (eventTempHistory != null)
+                    {
+                        TemperatureEntry te = new TemperatureEntry(analyzer.tempMonitor, temp, output, analyzer.bedTemp, analyzer.extruderTemp);
+                        Main.main.Invoke(eventTempHistory, te);
                     }
                 }
             }
@@ -1102,6 +1159,13 @@ namespace RepetierHost.model
             if (tempChange && eventTempChange != null)
             {
                 Main.main.Invoke(eventTempChange, extruderTemp, bedTemp);
+            }
+            if (tempChange && eventTempHistory != null)
+            {
+                TemperatureEntry te = new TemperatureEntry(extruderTemp, bedTemp, analyzer.bedTemp, analyzer.extruderTemp);
+                if (extruderOutput >= 0)
+                    te.output = extruderOutput;
+                Main.main.Invoke(eventTempHistory, te);
             }
             h = extract(res, "Resend:");
             if (h != null)

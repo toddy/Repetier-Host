@@ -82,6 +82,11 @@ namespace RepetierHost.view
             if (t.StartsWith("ok") || t.StartsWith("wait")) return true;
             if (t.IndexOf("SD printing byte")!=-1) return true;
             if (t.IndexOf("Not SD printing")!=-1) return true;
+            if (t.IndexOf("SpeedMultiply:")!=-1) return true;
+            if (t.IndexOf("TargetExtr0:")!=-1) return true;
+            if (t.IndexOf("TargetExtr1:")!=-1) return true;
+            if (t.IndexOf("TargetBed:")!=-1) return true;
+            if (t.IndexOf("Fanspeed:")!=-1) return true;
             return false;
         }
         private void UpdateNewEntries(object sender, EventArgs e)

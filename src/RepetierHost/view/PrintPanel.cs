@@ -35,6 +35,7 @@ namespace RepetierHost.view
         int commandPos = 0;
         bool createCommands = true;
         float lastx = -1000, lasty = -1000, lastz = -1000;
+
         public PrintPanel()
         {
             InitializeComponent();
@@ -72,7 +73,7 @@ namespace RepetierHost.view
             }
             Main.main.toolTempReading.Text = tr;
         }
-        private void analyzerChange() {
+        public void analyzerChange() {
             createCommands = false;
             if (ann.extruderTemp > 0)
                 textExtruderSetTemp.Text = ann.extruderTemp.ToString();
@@ -83,6 +84,9 @@ namespace RepetierHost.view
             trackFanVoltage.Value = ann.fanVoltage;
             switchBedHeat.On = ann.bedTemp > 0;
             switchPower.On = ann.powerOn;
+            sliderSpeed.Value = con.speedMultiply;
+            labelSpeed.Text = sliderSpeed.Value.ToString() + "%";
+            tempUpdate(con.extruderTemp, con.bedTemp);
             createCommands = true;
         }
         private void coordUpdate(GCode code,float x,float y,float z) {
@@ -169,6 +173,7 @@ namespace RepetierHost.view
             buttonGoDisposeArea.Enabled = c;
             buttonSimulateOK.Enabled = c;
             buttonJobStatus.Enabled = c;
+            sliderSpeed.Enabled = c;
             if (c) sendDebug();
         }
 
@@ -616,6 +621,15 @@ namespace RepetierHost.view
         private void textRetractAmount_TextChanged(object sender, EventArgs e)
         {
             RegMemory.SetString("panelRetractAmount", textRetractAmount.Text);
+        }
+
+        private void sliderSpeed_ValueChanged(object sender, EventArgs e)
+        {
+            if (!createCommands) return;
+            labelSpeed.Text = sliderSpeed.Value.ToString() + "%";
+            con.speedMultiply = sliderSpeed.Value;
+            if(con.connected && (con.isMarlin || con.isRepetier))
+                con.injectManualCommand("M220 S"+sliderSpeed.Value.ToString());
         }
 
      }

@@ -9,7 +9,7 @@ namespace RepetierHost.model
 {
     class VirtualPrinter
     {
-        float bedTemp = 20, extruderTemp = 20;
+        float bedTemp = 20, extruderTemp = 20,extruderOut=0;
         GCodeAnalyzer ana;
         LinkedList<string> output;
         Thread writeThread = null;
@@ -68,6 +68,10 @@ namespace RepetierHost.model
                 if (ana.extruderTemp > 20 && extruderTemp > ana.extruderTemp) extruderTemp = ana.extruderTemp;
                 if (bedTemp < 20) bedTemp = 20;
                 if (extruderTemp < 20) extruderTemp = 20;
+                extruderOut = (float)((ana.extruderTemp - 20.0) * 255.0 / 350 * (1.0 + 0.05 * Math.Sin((DateTime.Now.Ticks/10000 % 9000) * 0.000897)));
+                if (extruderOut < 0) extruderOut = 0;
+                if (extruderOut > 255) extruderOut = 255;
+ 
             }
         }
         public VirtualPrinter()
@@ -102,7 +106,7 @@ namespace RepetierHost.model
                             //output.AddLast("FIRMWARE_NAME:Marlin FIRMWARE_URL:https://github.com/repetier/Repetier-Firmware/ PROTOCOL_VERSION:1.0 MACHINE_TYPE:Mendel EXTRUDER_COUNT:1 REPETIER_PROTOCOL:1");
                             break;
                         case 105: // Print Temperatures
-                            output.AddLast("T:" + extruderTemp.ToString("0") + " B:" + bedTemp.ToString("0"));
+                            output.AddLast("T:" + extruderTemp.ToString("0") + " B:" + bedTemp.ToString("0")+" @:"+extruderOut.ToString("0"));
                             break;
                         case 205: // EEPROM Settings
                             output.AddLast("EPR:2 75 76800 Baudrate");

@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Repetier-Host"
-#define MyAppVersion "0.40"
+#define MyAppVersion "0.50"
 #define MyAppPublisher "repetier"
 #define MyAppURL "https://github.com/repetier/Repetier-Host"
 #define MyAppExeName "RepetierHost.exe"
@@ -24,7 +24,7 @@ DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 LicenseFile=Repetier-Host-licence.txt
 OutputDir=.
-OutputBaseFilename=setupRepetierHost
+OutputBaseFilename=setupRepetierHost_0_50
 Compression=lzma
 SolidCompression=yes
 

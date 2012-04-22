@@ -280,6 +280,7 @@ namespace RepetierHost.view
 
         public string getSelection()
         {
+            if (lines.Count == 0) return ""; // Nothing to copy
             int rstart = row;
             int rend = selRow;
             if (row > selRow)

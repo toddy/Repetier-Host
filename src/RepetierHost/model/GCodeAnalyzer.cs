@@ -50,7 +50,9 @@ namespace RepetierHost.model
         public bool drawing = true;
         public int layer = 0;
         public bool isG1Move = false;
+        public int speedMultiply = 100;
         public float printerWidth, printerHeight, printerDepth;
+        public int tempMonitor = 0;
         public GCodeAnalyzer(bool privAnal)
         {
             privateAnalyzer = privAnal;
@@ -262,6 +264,14 @@ namespace RepetierHost.model
                     case 141:
                         if (code.hasS) bedTemp = code.S;
                         fireChanged();
+                        break;
+                    case 203: // Temp monitor
+                        if(code.hasS)
+                            tempMonitor = code.S;
+                        break;
+                    case 220:
+                        if(code.hasS)
+                            speedMultiply = code.S;
                         break;
                 }
             }

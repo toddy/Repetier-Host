@@ -210,7 +210,7 @@ namespace MB.Controls
             get { return barMinimum; }
             set
             {
-                if (value < barMaximum)
+                if (value <= barMaximum)
                 {
                     barMinimum = value;
                     if (trackerValue < barMinimum)
@@ -239,7 +239,7 @@ namespace MB.Controls
             get { return barMaximum; }
             set
             {
-                if (value > barMinimum)
+                if (value >= barMinimum)
                 {
                     barMaximum = value;
                     if (trackerValue > barMaximum)

@@ -31,54 +31,56 @@ using RepetierHost.model;
 
 namespace RepetierHost.view
 {
-    public delegate void onObjectMoved(float dx, float dy);
-    public delegate void onObjectSelected(ThreeDModel selModel);
+    //public delegate void onObjectMoved(float dx, float dy);
+    //public delegate void onObjectSelected(ThreeDModel selModel);
     public partial class ThreeDControl : UserControl
     {
         FormPrinterSettings ps = Main.printerSettings;
-        public onObjectMoved eventObjectMoved;
-        public onObjectSelected eventObjectSelected;
+        //public onObjectMoved eventObjectMoved;
+        //public onObjectSelected eventObjectSelected;
         bool loaded = false;
         float xDown, yDown;
         float xPos, yPos;
         float speedX, speedY;
-        float zoom = 1.0f;
-        Vector3 viewCenter, startViewCenter;
-        Vector3 userPosition, startUserPosition;
-        Matrix4 lookAt,persp,modelView;
+       // float zoom = 1.0f;
+        Vector3 startViewCenter;
+        Vector3 startUserPosition;
+      //  Matrix4 lookAt,persp,modelView;
         double normX=0, normY=0;
-        float nearDist, farDist, aspectRatio,nearHeight;
-        float rotZ = 0, rotX = 0;
+       // float nearDist, farDist, aspectRatio,nearHeight;
+      //  float rotZ = 0, rotX = 0;
         float startRotZ = 0, startRotX = 0;
         float lastX, lastY;
         Stopwatch sw = new Stopwatch();
         Stopwatch fpsTimer = new Stopwatch();
         int mode = 0;
-        bool editor = false;
-        bool autoupdateable = false;
+      //  bool editor = false;
+      //  bool autoupdateable = false;
         int slowCounter = 0; // Indicates slow framerates
         uint timeCall=0;
 
-        public LinkedList<ThreeDModel> models;
+      //  public LinkedList<ThreeDModel> models;
+
+        public ThreeDView view = null;
+
         public ThreeDControl()
         {
-            models = new LinkedList<ThreeDModel>();
             InitializeComponent();
-            toolStripClear.Visible = autoupdateable;
-            //Application.Idle += Application_Idle;
-            STL m1 = new STL();
-            viewCenter = new Vector3(0, 0, 0);
-            rotX = 20;
-            userPosition = new Vector3(0, -1.7f * (float)Math.Sqrt(ps.PrintAreaDepth*ps.PrintAreaDepth+ps.PrintAreaWidth*ps.PrintAreaWidth), 0.0f * ps.PrintAreaHeight);
             gl.MouseWheel += gl_MouseWheel;
-            // Controls.Remove(gl);
             timer.Start();
         }
-        public void SetEditor(bool ed)
+        public void SetView(ThreeDView view)
         {
-            editor = ed;
-            toolMoveObject.Visible = editor;
-            toolStripClear.Enabled = false;
+            this.view = view;
+            toolStripClear.Visible = view.autoupdateable;
+            if (view.editor)
+            {
+                toolMoveObject.Visible = true;
+                toolStripClear.Enabled = false;
+            }
+            toolMoveObject.Enabled = view.objectsSelected;
+            toolStripClear.Enabled = view.objectsSelected;
+            UpdateChanges();
         }
         public void MakeVisible(bool vis)
         {
@@ -104,14 +106,15 @@ namespace RepetierHost.view
         {
             toolMoveObject.Enabled = sel;
             toolStripClear.Enabled = sel;
+            view.objectsSelected = sel;
         }
         public bool AutoUpdateable
         {
-            get { return autoupdateable; }
+            get { return view.autoupdateable; }
             set
             {
-                autoupdateable = value;
-                if (autoupdateable)
+                view.autoupdateable = value;
+                if (view.autoupdateable)
                 {
                     timer.Start();
                 }
@@ -139,13 +142,13 @@ namespace RepetierHost.view
                 GL.Viewport(0, 0, w, h); // Use all of the glControl painting area
                 GL.MatrixMode(MatrixMode.Projection);
                 //GL.LoadIdentity();
-                float dx = viewCenter.X - userPosition.X;
-                float dy = viewCenter.Y - userPosition.Y;
-                float dz = viewCenter.Z - userPosition.Z;
+                float dx = view.viewCenter.X - view.userPosition.X;
+                float dy = view.viewCenter.Y - view.userPosition.Y;
+                float dz = view.viewCenter.Z - view.userPosition.Z;
                 float dist = (float)Math.Sqrt(dx * dx + dy * dy + dz * dz);
-                persp = Matrix4.CreatePerspectiveFieldOfView((float)(zoom * 30f * Math.PI / 180f),aspectRatio= (float)w / (float)h, nearDist = Math.Max(10, dist - 2f * ps.PrintAreaDepth),farDist = dist + 2 * ps.PrintAreaDepth);
-                nearHeight = 2.0f*(float)Math.Tan(zoom * 15f * Math.PI / 180f)*nearDist;
-                GL.LoadMatrix(ref persp);
+                view.persp = Matrix4.CreatePerspectiveFieldOfView((float)(view.zoom * 30f * Math.PI / 180f),view.aspectRatio= (float)w / (float)h, view.nearDist = Math.Max(10, dist - 2f * ps.PrintAreaDepth),view.farDist = dist + 2 * ps.PrintAreaDepth);
+                view.nearHeight = 2.0f*(float)Math.Tan(view.zoom * 15f * Math.PI / 180f)*view.nearDist;
+                GL.LoadMatrix(ref view.persp);
                 // GL.Ortho(0, w, 0, h, -1, 1); // Bottom-left corner pixel has coordinate (0, 0)
 
             }
@@ -154,6 +157,7 @@ namespace RepetierHost.view
 
         private void gl_Paint(object sender, PaintEventArgs e)
         {
+            if (view == null) return;
             try
             {
                 if (!loaded) return;
@@ -186,10 +190,10 @@ namespace RepetierHost.view
                 GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
                 GL.Enable(EnableCap.DepthTest);
                 SetupViewport();
-                lookAt = Matrix4.LookAt(userPosition.X, userPosition.Y, userPosition.Z, viewCenter.X, viewCenter.Y, viewCenter.Z, 0, 0, 1.0f);
+                view.lookAt = Matrix4.LookAt(view.userPosition.X, view.userPosition.Y, view.userPosition.Z, view.viewCenter.X, view.viewCenter.Y, view.viewCenter.Z, 0, 0, 1.0f);
                 
                 GL.MatrixMode(MatrixMode.Modelview);
-                GL.LoadMatrix(ref lookAt);
+                GL.LoadMatrix(ref view.lookAt);
                 GL.ShadeModel(ShadingModel.Smooth);
                // GL.Enable(EnableCap.LineSmooth);
                 //Enable lighting
@@ -253,10 +257,10 @@ namespace RepetierHost.view
                 GL.Vertex3(viewCenter.X, viewCenter.Y, viewCenter.Z + 2);
                 GL.End();*/
 
-                GL.Rotate(rotX, 1, 0, 0);
-                GL.Rotate(rotZ, 0, 0, 1);
+                GL.Rotate(view.rotX, 1, 0, 0);
+                GL.Rotate(view.rotZ, 0, 0, 1);
                 GL.Translate(-ps.PrintAreaWidth * 0.5f, -ps.PrintAreaDepth * 0.5f, -0.5f * ps.PrintAreaHeight);
-                GL.GetFloat(GetPName.ModelviewMatrix, out modelView);
+                GL.GetFloat(GetPName.ModelviewMatrix, out view.modelView);
                 GL.Material(
                     MaterialFace.Front,
                     MaterialParameter.Specular,
@@ -343,7 +347,7 @@ namespace RepetierHost.view
                     }
                     GL.End();
                 }
-                foreach (ThreeDModel model in models)
+                foreach (ThreeDModel model in view.models)
                 {
                     GL.PushMatrix();
                     model.AnimationBefore();
@@ -445,7 +449,7 @@ namespace RepetierHost.view
                     if (slowCounter >= 10)
                     {
                         slowCounter = 0;
-                        foreach (ThreeDModel model in models)
+                        foreach (ThreeDModel model in view.models)
                         {
                             model.ReduceQuality();
                         }
@@ -470,6 +474,13 @@ namespace RepetierHost.view
                     string sv = GL.GetString(StringName.Version).Trim() ;
                     int p = sv.IndexOf(" ");
                     if (p > 0) sv = sv.Substring(0, p);
+                    p = sv.IndexOf('.');
+                    if (p > 0)
+                    {
+                        p = sv.IndexOf('.', p + 1);
+                        if (p > 0)
+                            sv = sv.Substring(0, p);
+                    }
                     try
                     {
                         float val = 0;
@@ -483,7 +494,7 @@ namespace RepetierHost.view
                     Main.threeDSettings.useVBOs = false;
                     foreach (string s in extensions.Split(' '))
                     {
-                        if (s.Equals("GL_ARB_vertex_buffer_object") && Main.threeDSettings.openGLVersion>1.49)
+                        if (s.Equals("GL_ARB_vertex_buffer_object")/* && Main.threeDSettings.openGLVersion>1.49*/)
                         {
                             Main.threeDSettings.useVBOs = true;
                         }
@@ -539,23 +550,23 @@ namespace RepetierHost.view
 
             //GluPerspective(45, 32 / 24, 0.1f, 100.0f);
             //Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView((float)Math.PI / 4, 1, 0.1f, 100.0f);
-            GL.MultMatrix(ref persp);
+            GL.MultMatrix(ref view.persp);
 
             GL.MatrixMode(MatrixMode.Modelview);
             GL.ClearColor(Main.threeDSettings.background.BackColor);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             GL.Enable(EnableCap.DepthTest);
-            lookAt = Matrix4.LookAt(userPosition.X, userPosition.Y, userPosition.Z, viewCenter.X, viewCenter.Y, viewCenter.Z, 0, 0, 1.0f);
+            view.lookAt = Matrix4.LookAt(view.userPosition.X, view.userPosition.Y, view.userPosition.Z, view.viewCenter.X, view.viewCenter.Y, view.viewCenter.Z, 0, 0, 1.0f);
 
             GL.MatrixMode(MatrixMode.Modelview);
-            GL.LoadMatrix(ref lookAt);
-            GL.Rotate(rotX, 1, 0, 0);
-            GL.Rotate(rotZ, 0, 0, 1);
+            GL.LoadMatrix(ref view.lookAt);
+            GL.Rotate(view.rotX, 1, 0, 0);
+            GL.Rotate(view.rotZ, 0, 0, 1);
             GL.Translate(-ps.PrintAreaWidth * 0.5f, -ps.PrintAreaDepth * 0.5f, -0.5f * ps.PrintAreaHeight);
 
             GL.InitNames();
             int pos = 0;
-            foreach (ThreeDModel model in models)
+            foreach (ThreeDModel model in view.models)
             {
                 GL.PushName(pos++);
                 GL.PushMatrix();
@@ -578,14 +589,14 @@ namespace RepetierHost.view
             ThreeDModel selected = null;
             if (hits > 0)
             {
-                selected = models.ElementAt((int)selectBuffer[3]);
+                selected = view.models.ElementAt((int)selectBuffer[3]);
                 uint depth = selectBuffer[1];
                 for (int i = 1; i < hits; i++)
                 {
                     if (selectBuffer[4 * i + 1] < depth)
                     {
                         depth = selectBuffer[i * 4 + 1];
-                        selected = models.ElementAt((int)selectBuffer[i * 4 + 3]);
+                        selected = view.models.ElementAt((int)selectBuffer[i * 4 + 3]);
                     }
                 }
             }
@@ -602,15 +613,15 @@ namespace RepetierHost.view
         {
             lastX = xDown = e.X;
             lastY = yDown = e.Y;
-            startRotX = rotX;
-            startRotZ = rotZ;
-            startViewCenter = viewCenter;
-            startUserPosition = userPosition;
+            startRotX = view.rotX;
+            startRotZ = view.rotZ;
+            startViewCenter = view.viewCenter;
+            startUserPosition = view.userPosition;
             if (e.Button == MouseButtons.Right)
             {
                 ThreeDModel sel = Picktest(e.X, e.Y);
-                if(sel!=null && eventObjectMoved != null)
-                    eventObjectSelected(sel);
+                if(sel!=null && view.eventObjectMoved != null)
+                    view.eventObjectSelected(sel);
                 //computeRay();
             }
         }
@@ -641,9 +652,9 @@ namespace RepetierHost.view
         {
             if (e.Delta != 0)
             {
-                zoom *= 1f - e.Delta / 2000f;
-                if (zoom < 0.01) zoom = 0.01f;
-                if (zoom > 5.9) zoom = 5.9f;
+                view.zoom *= 1f - e.Delta / 2000f;
+                if (view.zoom < 0.01) view.zoom = 0.01f;
+                if (view.zoom > 5.9) view.zoom = 5.9f;
                 //userPosition.Y += e.Delta;
                 gl.Invalidate();
             }
@@ -667,8 +678,8 @@ namespace RepetierHost.view
                 float d = Math.Min(gl.Width, gl.Height) / 3;
                 speedX = (xPos - xDown) / d;
                 speedY = (yPos - yDown) / d;
-                rotZ = startRotZ + speedX * 50;
-                rotX = startRotX + speedY * 50;
+                view.rotZ = startRotZ + speedX * 50;
+                view.rotX = startRotX + speedY * 50;
                 //rotZ += (float)milliseconds * speedX *Math.Abs(speedX)/ 15.0f;
                 //rotX += (float)milliseconds * speedY*Math.Abs(speedY) / 15.0f;
                 gl.Invalidate();
@@ -677,8 +688,8 @@ namespace RepetierHost.view
             {
                 speedX = (xPos - xDown) / gl.Width;
                 speedY = (yPos - yDown) / gl.Height;
-                userPosition.X = startUserPosition.X + speedX * 200 * zoom;
-                userPosition.Z = startUserPosition.Z - speedY * 200 * zoom;
+                view.userPosition.X = startUserPosition.X + speedX * 200 * view.zoom;
+                view.userPosition.Z = startUserPosition.Z - speedY * 200 * view.zoom;
                 //userPosition.X += (float)milliseconds * speedX * Math.Abs(speedX) / 10.0f;
                 //userPosition.Z -= (float)milliseconds * speedY *Math.Abs(speedY)/ 10.0f;
                 gl.Invalidate();
@@ -687,8 +698,8 @@ namespace RepetierHost.view
             {
                 speedX = (xPos - xDown) / gl.Width;
                 speedY = (yPos - yDown) / gl.Height;
-                viewCenter.X = startViewCenter.X - speedX * 200 * zoom;
-                viewCenter.Z = startViewCenter.Z + speedY * 200 * zoom;
+                view.viewCenter.X = startViewCenter.X - speedX * 200 * view.zoom;
+                view.viewCenter.Z = startViewCenter.Z + speedY * 200 * view.zoom;
                 //viewCenter.X -= (float)milliseconds * speedX * Math.Abs(speedX) / 10.0f;
                 //viewCenter.Z += (float)milliseconds * speedY * Math.Abs(speedY)/ 10.0f;
                 gl.Invalidate();
@@ -696,19 +707,19 @@ namespace RepetierHost.view
             else if (emode == 3)
             {   
                 //userPosition.Y += (float)milliseconds * speedY * Math.Abs(speedY) / 10.0f;
-                zoom *= (1 - speedY);
+                view.zoom *= (1 - speedY);
                 speedY = 0;
-                if (zoom < 0.01) zoom = 0.01f;
-                if (zoom > 5.9) zoom = 5.9f;
+                if (view.zoom < 0.01) view.zoom = 0.01f;
+                if (view.zoom > 5.9) view.zoom = 5.9f;
                 yDown = yPos;
                 gl.Invalidate();
             }
             else if (emode == 4)
             {
-                speedX = (xPos - lastX) * 200 * zoom / gl.Width;
-                speedY = (yPos - lastY) * 200 * zoom / gl.Height;
-                if (eventObjectMoved != null)
-                    eventObjectMoved(speedX, -speedY);
+                speedX = (xPos - lastX) * 200 * view.zoom / gl.Width;
+                speedY = (yPos - lastY) * 200 * view.zoom / gl.Height;
+                if (view.eventObjectMoved != null)
+                    view.eventObjectMoved(speedX, -speedY);
                 //eventObjectMoved((float)milliseconds * speedX * Math.Abs(speedX) / 10.0f,
                 //   -(float)milliseconds * speedY * Math.Abs(speedY) / 10.0f);
                 lastX = xPos;
@@ -738,12 +749,12 @@ namespace RepetierHost.view
 
         private void toolResetView_Click(object sender, EventArgs e)
         {
-            rotX = 20;
-            rotZ = 0;
-            zoom = 1.0f;
-            viewCenter = new Vector3(0f * ps.PrintAreaWidth, ps.PrintAreaDepth * 0.25f, 0.0f * ps.PrintAreaHeight);
-            userPosition = new Vector3(0f * ps.PrintAreaWidth, -1.7f *(float)Math.Sqrt(ps.PrintAreaDepth * ps.PrintAreaDepth + ps.PrintAreaWidth * ps.PrintAreaWidth), 0.0f * ps.PrintAreaHeight);
-            viewCenter = new Vector3(0f * ps.PrintAreaWidth, ps.PrintAreaDepth * 0f, 0.0f * ps.PrintAreaHeight);
+            view.rotX = 20;
+            view.rotZ = 0;
+            view.zoom = 1.0f;
+            view.viewCenter = new Vector3(0f * ps.PrintAreaWidth, ps.PrintAreaDepth * 0.25f, 0.0f * ps.PrintAreaHeight);
+            view.userPosition = new Vector3(0f * ps.PrintAreaWidth, -1.7f *(float)Math.Sqrt(ps.PrintAreaDepth * ps.PrintAreaDepth + ps.PrintAreaWidth * ps.PrintAreaWidth), 0.0f * ps.PrintAreaHeight);
+            view.viewCenter = new Vector3(0f * ps.PrintAreaWidth, ps.PrintAreaDepth * 0f, 0.0f * ps.PrintAreaHeight);
             //userPosition = new Vector3(0f * ps.PrintAreaWidth, -2f * ps.PrintAreaDepth, 0.0f * ps.PrintAreaHeight);
             gl.Invalidate();
         }
@@ -767,14 +778,14 @@ namespace RepetierHost.view
         {
             if (e.KeyChar == '-')
             {
-                zoom *= 1.05f;
-                if (zoom > 10) zoom = 10;
+                view.zoom *= 1.05f;
+                if (view.zoom > 10) view.zoom = 10;
                 gl.Invalidate();
             }
             if (e.KeyChar == '+')
             {
-                zoom *= 0.95f;
-                if (zoom < 0.01) zoom = 0.01f;
+                view.zoom *= 0.95f;
+                if (view.zoom < 0.01) view.zoom = 0.01f;
                 gl.Invalidate();
             }
         }
@@ -783,7 +794,7 @@ namespace RepetierHost.view
         {
             Application_Idle(sender, e);
             timeCall++;
-            foreach (ThreeDModel m in models)
+            foreach (ThreeDModel m in view.models)
             {
                 if (m.Changed || m.hasAnimations)
                 {
@@ -800,11 +811,11 @@ namespace RepetierHost.view
 
         private void toolStripClear_Click(object sender, EventArgs e)
         {
-            if (editor)
+            if (view.editor)
             {
                 Main.main.stlComposer1.buttonRemoveSTL_Click(null, null);
             }
-            foreach (ThreeDModel m in models)
+            foreach (ThreeDModel m in view.models)
             {
                 m.Clear();
             }
@@ -818,12 +829,12 @@ namespace RepetierHost.view
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            rotX = 90;
-            rotZ = 0;
-            zoom = 1.0f;
-            viewCenter = new Vector3(0f * ps.PrintAreaWidth, ps.PrintAreaDepth * 0.25f, 0.0f * ps.PrintAreaHeight);
-            userPosition = new Vector3(0f * ps.PrintAreaWidth, -1.7f *(float)Math.Sqrt(ps.PrintAreaDepth * ps.PrintAreaDepth + ps.PrintAreaWidth * ps.PrintAreaWidth), 0.0f * ps.PrintAreaHeight);
-            viewCenter = new Vector3(0f * ps.PrintAreaWidth, ps.PrintAreaDepth * 0f, 0.0f * ps.PrintAreaHeight);
+            view.rotX = 90;
+            view.rotZ = 0;
+            view.zoom = 1.0f;
+            view.viewCenter = new Vector3(0f * ps.PrintAreaWidth, ps.PrintAreaDepth * 0.25f, 0.0f * ps.PrintAreaHeight);
+            view.userPosition = new Vector3(0f * ps.PrintAreaWidth, -1.7f *(float)Math.Sqrt(ps.PrintAreaDepth * ps.PrintAreaDepth + ps.PrintAreaWidth * ps.PrintAreaWidth), 0.0f * ps.PrintAreaHeight);
+            view.viewCenter = new Vector3(0f * ps.PrintAreaWidth, ps.PrintAreaDepth * 0f, 0.0f * ps.PrintAreaHeight);
             //userPosition = new Vector3(0f * ps.PrintAreaWidth, -2f * ps.PrintAreaDepth, 0.0f * ps.PrintAreaHeight);
             gl.Invalidate();
 

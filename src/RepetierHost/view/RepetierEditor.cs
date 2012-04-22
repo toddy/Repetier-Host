@@ -434,10 +434,14 @@ namespace RepetierHost.view
                 if (value != _showMinLayer)
                 {
                     _showMinLayer = value;
-                    OnShowMinLayerChanged(EventArgs.Empty);
                     sliderShowFirstLayer.Value = value;
-                    if (_showMode == 1 || _showMinLayer>_showMaxLayer)
-                        ShowMaxLayer = value;
+                    OnShowMinLayerChanged(EventArgs.Empty);
+                    if (_showMode == 1 || _showMinLayer > _showMaxLayer)
+                    {
+                        _showMaxLayer = value;
+                        sliderShowMaxLayer.Value = value;
+                        OnShowMaxLayerChanged(EventArgs.Empty);
+                    }
                     if (_showMode != 0)
                         if (contentChangedEvent != null)
                             contentChangedEvent();
@@ -454,10 +458,14 @@ namespace RepetierHost.view
                 if (value != _showMaxLayer)
                 {
                     _showMaxLayer = value;
-                    OnShowMaxLayerChanged(EventArgs.Empty);
                     sliderShowMaxLayer.Value = value;
-                    if (_showMode == 1 || _showMaxLayer<_showMinLayer)
-                        ShowMinLayer = value;
+                    OnShowMaxLayerChanged(EventArgs.Empty);
+                    if (_showMode == 1 || _showMaxLayer < _showMinLayer)
+                    {
+                        _showMinLayer = value;
+                        sliderShowFirstLayer.Value = value;
+                        OnShowMinLayerChanged(EventArgs.Empty);
+                    }
                     if(_showMode!=0)
                         if(contentChangedEvent != null)
                             contentChangedEvent();
@@ -1500,6 +1508,21 @@ namespace RepetierHost.view
         private void sliderShowMaxLayer_ValueChanged(object sender, EventArgs e)
         {
             ShowMaxLayer = sliderShowMaxLayer.Value;
+        }
+
+        private void numericShowMinLayer_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            ShowMinLayer = (int)numericShowMinLayer.Value;
+        }
+
+        private void numericShowMinLayer_ValueChanged(object sender, EventArgs e)
+        {
+            ShowMinLayer = (int)numericShowMinLayer.Value;
+        }
+
+        private void numericShowMaxLayer_ValueChanged(object sender, EventArgs e)
+        {
+            ShowMaxLayer = (int)numericShowMaxLayer.Value;
         }
     }
 }

@@ -31,7 +31,7 @@ namespace RepetierHost.view
 {
     public partial class STLComposer : UserControl
     {
-        public ThreeDControl cont;
+        public ThreeDView cont;
         private bool autosizeFailed = false;
         private CopyObjectsDialog copyDialog = new CopyObjectsDialog();
         public STLComposer()
@@ -39,24 +39,24 @@ namespace RepetierHost.view
             InitializeComponent();
             try
             {
-                cont = new ThreeDControl();
-                cont.Dock = DockStyle.None;
-                cont.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
-                cont.Width = Width - panelControls.Width;
-                cont.Height = Height;
-                Controls.Add(cont);
+                cont = new ThreeDView();
+              //  cont.Dock = DockStyle.None;
+              //  cont.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
+              //  cont.Width = Width - panelControls.Width;
+              //  cont.Height = Height;
+              //  Controls.Add(cont);
                 cont.SetEditor(true);
-                cont.SetObjectSelected(false);
+                cont.objectsSelected = false;
                 cont.eventObjectMoved += objectMoved;
                 cont.eventObjectSelected += objectSelected;
-                cont.AutoUpdateable = true;
+                cont.autoupdateable = true;
                 updateEnabled();
             }
             catch { }
         }
         public void Update3D()
         {
-            cont.UpdateChanges();
+            Main.main.threedview.UpdateChanges();
         }
         private void float_Validating(object sender, CancelEventArgs e)
         {
@@ -89,7 +89,7 @@ namespace RepetierHost.view
                 buttonCenter.Enabled = false;
                 buttonAutoplace.Enabled = listSTLObjects.Items.Count > 1;
                 buttonLand.Enabled = n > 0;
-                cont.SetObjectSelected(n > 0);
+                Main.main.threedview.SetObjectSelected(n > 0);
                 buttonCopyObjects.Enabled = n>0;
             }
             else
@@ -108,7 +108,7 @@ namespace RepetierHost.view
                 textTransZ.Enabled = true;
                 buttonCenter.Enabled = true;
                 buttonLand.Enabled = true;
-                cont.SetObjectSelected(true);
+                Main.main.threedview.SetObjectSelected(true);
             }
             buttonRemoveSTL.Enabled = n!=0;
             buttonSlice.Enabled = listSTLObjects.Items.Count > 0;
@@ -178,7 +178,7 @@ namespace RepetierHost.view
                 textTransZ.Text = stl.Position.z.ToString(GCode.format);
                 checkScaleAll.Checked = (stl.Scale.x == stl.Scale.y && stl.Scale.x == stl.Scale.z);
             }
-            cont.UpdateChanges();
+            Main.main.threedview.UpdateChanges();
         }
 
         private void textTransX_TextChanged(object sender, EventArgs e)
@@ -187,7 +187,7 @@ namespace RepetierHost.view
             if (stl == null) return;
             float.TryParse(textTransX.Text, NumberStyles.Float, GCode.format, out stl.Position.x);
             updateSTLState(stl);
-            cont.UpdateChanges();
+            Main.main.threedview.UpdateChanges();
         }
 
         private void textTransY_TextChanged(object sender, EventArgs e)
@@ -196,7 +196,7 @@ namespace RepetierHost.view
             if (stl == null) return;
             float.TryParse(textTransY.Text, NumberStyles.Float, GCode.format, out stl.Position.y);
             updateSTLState(stl);
-            cont.UpdateChanges();
+            Main.main.threedview.UpdateChanges();
         }
 
         private void textTransZ_TextChanged(object sender, EventArgs e)
@@ -205,7 +205,7 @@ namespace RepetierHost.view
             if (stl == null) return;
             float.TryParse(textTransZ.Text, NumberStyles.Float, GCode.format, out stl.Position.z);
             updateSTLState(stl);
-            cont.UpdateChanges();
+            Main.main.threedview.UpdateChanges();
         }
         private void objectMoved(float dx, float dy)
         {
@@ -222,7 +222,7 @@ namespace RepetierHost.view
                 }
                 updateSTLState(stl);
             }
-            cont.UpdateChanges();
+            Main.main.threedview.UpdateChanges();
         }
         private void objectSelected(ThreeDModel sel)
         {
@@ -257,7 +257,7 @@ namespace RepetierHost.view
                 textScaleZ.Text = stl.Scale.z.ToString(GCode.format);
             }
             updateSTLState(stl);
-            cont.UpdateChanges();
+            Main.main.threedview.UpdateChanges();
         }
 
         private void textScaleY_TextChanged(object sender, EventArgs e)
@@ -266,7 +266,7 @@ namespace RepetierHost.view
             if (stl == null) return;
             float.TryParse(textScaleY.Text, NumberStyles.Float, GCode.format, out stl.Scale.y);
             updateSTLState(stl);
-            cont.UpdateChanges();
+            Main.main.threedview.UpdateChanges();
         }
 
         private void textScaleZ_TextChanged(object sender, EventArgs e)
@@ -275,7 +275,7 @@ namespace RepetierHost.view
             if (stl == null) return;
             float.TryParse(textScaleZ.Text, NumberStyles.Float, GCode.format, out stl.Scale.z);
             updateSTLState(stl);
-            cont.UpdateChanges();
+            Main.main.threedview.UpdateChanges();
         }
 
         private void textRotX_TextChanged(object sender, EventArgs e)
@@ -284,7 +284,7 @@ namespace RepetierHost.view
             if (stl == null) return;
             float.TryParse(textRotX.Text, NumberStyles.Float, GCode.format, out stl.Rotation.x);
             updateSTLState(stl);
-            cont.UpdateChanges();
+            Main.main.threedview.UpdateChanges();
         }
 
         private void textRotY_TextChanged(object sender, EventArgs e)
@@ -293,7 +293,7 @@ namespace RepetierHost.view
             if (stl == null) return;
             float.TryParse(textRotY.Text, NumberStyles.Float, GCode.format, out stl.Rotation.y);
             updateSTLState(stl);
-            cont.UpdateChanges();
+            Main.main.threedview.UpdateChanges();
         }
 
         private void textRotZ_TextChanged(object sender, EventArgs e)
@@ -302,7 +302,7 @@ namespace RepetierHost.view
             if (stl == null) return;
             float.TryParse(textRotZ.Text, NumberStyles.Float, GCode.format, out stl.Rotation.z);
             updateSTLState(stl);
-            cont.UpdateChanges();
+            Main.main.threedview.UpdateChanges();
         }
 
         public void buttonRemoveSTL_Click(object sender, EventArgs e)
@@ -319,7 +319,7 @@ namespace RepetierHost.view
                 autosizeFailed = false; // Reset autoposition
             }
             list.Clear();
-            cont.UpdateChanges();
+            Main.main.threedview.UpdateChanges();
         }
 
         private void buttonSave_Click(object sender, EventArgs e)
@@ -403,7 +403,7 @@ namespace RepetierHost.view
                 stl.Land();
                 listSTLObjects_SelectedIndexChanged(null, null);
             }
-            cont.UpdateChanges();
+            Main.main.threedview.UpdateChanges();
         }
 
         private void buttonCenter_Click(object sender, EventArgs e)
@@ -416,7 +416,7 @@ namespace RepetierHost.view
                 listSTLObjects_SelectedIndexChanged(null, null);
 
             }
-            cont.UpdateChanges();
+            Main.main.threedview.UpdateChanges();
         }
 
         private void buttonSlice_Click(object sender, EventArgs e)
@@ -501,7 +501,7 @@ namespace RepetierHost.view
                 s.Position.y += yPos - s.yMin;
                 s.UpdateBoundingBox();
             }
-            cont.UpdateChanges();
+            Main.main.threedview.UpdateChanges();
         }
         private void buttonAutoplace_Click(object sender, EventArgs e)
         {
@@ -533,7 +533,7 @@ namespace RepetierHost.view
             {
                 Autoposition();
             }
-            cont.UpdateChanges();
+            Main.main.threedview.UpdateChanges();
         }
         static bool inRecheckFiles = false;
         public void recheckChangedFiles()
@@ -558,7 +558,7 @@ namespace RepetierHost.view
                         if (stl.changedOnDisk())
                             stl.reload();
                     }
-                    cont.UpdateChanges();
+                    Main.main.threedview.UpdateChanges();
                 }
                 else
                 {

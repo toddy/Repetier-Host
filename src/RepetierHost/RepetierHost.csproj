@@ -97,7 +97,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GraphLib\BackBuffer.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -120,56 +119,17 @@
     <Compile Include="model\ProtectedSerialPort.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="GraphLib\PlotterGraphEx.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="GraphLib\PlotterGraphEx.designer.cs">
-      <DependentUpon>PlotterGraphEx.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GraphLib\PlotterGraphPaneEx.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="GraphLib\PlotterGraphPaneEx.designer.cs">
-      <DependentUpon>PlotterGraphPaneEx.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GraphLib\PlotterGraphPropertiesForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GraphLib\PlotterGraphPropertiesForm.designer.cs">
-      <DependentUpon>PlotterGraphPropertiesForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GraphLib\PlotterGraphTypes.cs" />
-    <Compile Include="GraphLib\PrintPreviewForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GraphLib\PrintPreviewForm.designer.cs">
-      <DependentUpon>PrintPreviewForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="model\PulseAnimation.cs" />
     <Compile Include="model\RectPacker.cs" />
     <Compile Include="model\STL.cs" />
+    <Compile Include="model\TemperatureHistory.cs" />
     <Compile Include="model\ThreeDModel.cs" />
+    <Compile Include="model\ThreeDView.cs" />
     <Compile Include="model\VirtualPrinter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GraphLib\PlotterGraphEx.resx">
-      <DependentUpon>PlotterGraphEx.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GraphLib\PlotterGraphPaneEx.resx">
-      <DependentUpon>PlotterGraphPaneEx.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GraphLib\PlotterGraphPropertiesForm.resx">
-      <DependentUpon>PlotterGraphPropertiesForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GraphLib\PrintPreviewForm.resx">
-      <DependentUpon>PrintPreviewForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -195,10 +155,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="view\FormPrinterSettings.resx">
       <DependentUpon>FormPrinterSettings.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="view\FormTempMonitor.resx">
-      <DependentUpon>FormTempMonitor.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="view\GlobalSettings.resx">
@@ -265,6 +221,10 @@
       <DependentUpon>SwitchButton.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="view\TemperatureView.resx">
+      <DependentUpon>TemperatureView.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="view\TestGenerator.resx">
       <DependentUpon>TestGenerator.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -309,13 +269,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="GraphLib\SelectCurvesForm.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="GraphLib\SelectCurvesForm.designer.cs">
-      <DependentUpon>SelectCurvesForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GraphLib\Utils.cs" />
     <Compile Include="view\About.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -348,12 +301,6 @@
     </Compile>
     <Compile Include="view\FormPrinterSettings.Designer.cs">
       <DependentUpon>FormPrinterSettings.cs</DependentUpon>
-    </Compile>
-    <Compile Include="view\FormTempMonitor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="view\FormTempMonitor.Designer.cs">
-      <DependentUpon>FormTempMonitor.cs</DependentUpon>
     </Compile>
     <Compile Include="view\GlobalSettings.cs">
       <SubType>Form</SubType>
@@ -450,6 +397,12 @@
     </Compile>
     <Compile Include="view\SwitchButton.Designer.cs">
       <DependentUpon>SwitchButton.cs</DependentUpon>
+    </Compile>
+    <Compile Include="view\TemperatureView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="view\TemperatureView.Designer.cs">
+      <DependentUpon>TemperatureView.cs</DependentUpon>
     </Compile>
     <Compile Include="view\TestGenerator.cs">
       <SubType>Form</SubType>

@@ -41,15 +41,15 @@ namespace RepetierHost
         public static FormPrinterSettings printerSettings;
         public static ThreeDSettings threeDSettings;
         public static GlobalSettings globalSettings;
-        private FormTempMonitor tempMonitor = null;
         public Skeinforge skeinforge = null;
         public EEPROMRepetier eepromSettings = null;
         public EEPROMMarlin eepromSettingsm = null;
         public LogView logView = null;
         public PrintPanel printPanel = null;
         public RegistryKey repetierKey;
-        public ThreeDControl jobPreview = null;
-        public ThreeDControl printPreview = null;
+        public ThreeDControl threedview = null;
+        public ThreeDView jobPreview = null;
+        public ThreeDView printPreview = null;
         public GCodeVisual jobVisual = new GCodeVisual();
         public GCodeVisual printVisual = null;
         public static GCodeGenerator generator = null;
@@ -66,7 +66,8 @@ namespace RepetierHost
         public executeHostCommandDelegate executeHostCall;
         bool recalcJobPreview = false;
         List<GCodeShort> previewArray;
-
+        public TemperatureHistory history = null;
+        public TemperatureView tempView = null;
         public class JobUpdater
         {
             GCodeVisual visual = null;
@@ -164,11 +165,11 @@ namespace RepetierHost
             if (WindowState == FormWindowState.Maximized)
                 Application.DoEvents();
             splitLog.SplitterDistance = RegMemory.GetInt("logSplitterDistance", splitLog.SplitterDistance);
+            splitInfoEdit.SplitterDistance = RegMemory.GetInt("infoEditSplitterDistance", Width-470);
             if (IsMono)
             {
                 if (!IsMac)
                 {
-                    splitContainerPrinterGraphic.SplitterDistance += 52;
                     foreach (ToolStripItem m in menu.Items)
                     {
                         m.Text = m.Text.Replace("&", null);
@@ -191,7 +192,6 @@ namespace RepetierHost
                     splitLog.Panel1MinSize = 520;
                     splitLog.Panel2MinSize = 100;
                     splitLog.IsSplitterFixed = true;
-                    splitJob.IsSplitterFixed = true;
                     //splitContainerPrinterGraphic.SplitterDistance -= 52;
                     splitLog.SplitterDistance = splitLog.Height - 100;
                 }
@@ -202,7 +202,7 @@ namespace RepetierHost
             conn.eventJobProgress += OnJobProgress;
             printPanel = new PrintPanel();
             printPanel.Dock = DockStyle.Fill;
-            splitContainerPrinterGraphic.Panel1.Controls.Add(printPanel);
+            tabPrint.Controls.Add(printPanel);
             printerSettings.formToCon();
             logView = new LogView();
             logView.Dock = DockStyle.Fill;
@@ -211,18 +211,22 @@ namespace RepetierHost
             PrinterChanged(printerSettings.currentPrinterKey, true);
             printerSettings.eventPrinterChanged += PrinterChanged;
             // GCode print preview
-            printPreview = new ThreeDControl();
-            printPreview.Dock = DockStyle.Fill;
-            splitContainerPrinterGraphic.Panel2.Controls.Add(printPreview);
+            threedview = new ThreeDControl();
+            threedview.Dock = DockStyle.Fill;
+            tabPage3DView.Controls.Add(threedview);
+
+            printPreview = new ThreeDView();
+           // printPreview.Dock = DockStyle.Fill;
+          //  splitContainerPrinterGraphic.Panel2.Controls.Add(printPreview);
             printPreview.SetEditor(false);
-            printPreview.AutoUpdateable = true;
+            printPreview.autoupdateable = true;
             printVisual = new GCodeVisual(conn.analyzer);
             printVisual.liveView = true;
             printPreview.models.AddLast(printVisual);
             basicTitle = Text;
-            jobPreview = new ThreeDControl();
-            jobPreview.Dock = DockStyle.Fill;
-            splitJob.Panel2.Controls.Add(jobPreview);
+            jobPreview = new ThreeDView();
+         //   jobPreview.Dock = DockStyle.Fill;
+         //   splitJob.Panel2.Controls.Add(jobPreview);
             jobPreview.SetEditor(false);
             jobPreview.models.AddLast(jobVisual);
             editor.contentChangedEvent += JobPreview;
@@ -232,13 +236,13 @@ namespace RepetierHost
             UpdateConnections();
             Main.slic3r = new Slic3r();
             slicer = new Slicer();
-            if (IsMac)
-            {
-                tabGCode.Controls.Remove(splitJob);
-                tabPrint.Controls.Remove(splitContainerPrinterGraphic);
-            }
             toolShowLog_CheckedChanged(null, null);
             updateShowFilament();
+            assign3DView();
+            history = new TemperatureHistory();
+            tempView = new TemperatureView();
+            tempView.Dock = DockStyle.Fill;
+            tabPageTemp.Controls.Add(tempView);
         }
 
         public void UpdateConnections()
@@ -347,6 +351,7 @@ namespace RepetierHost
                 toolConnect.ToolTipText = "Connect printer";
                 toolConnect.Text = "Connect";
                 eeprom.Enabled = false;
+                continuousMonitoringMenuItem.Enabled = false;
                 if (eepromSettings != null && eepromSettings.Visible)
                 {
                     eepromSettings.Close();
@@ -514,14 +519,6 @@ namespace RepetierHost
             FormToFront(printerSettings);
         }
 
-        private void temperatureMonitorToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (tempMonitor == null)
-                tempMonitor = new FormTempMonitor();
-            tempMonitor.Show();
-            tempMonitor.BringToFront();
-        }
-
         private void skeinforgeSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             skeinforge.Show();
@@ -552,6 +549,8 @@ namespace RepetierHost
             conn.close();
             RegMemory.StoreWindowPos("mainWindow", this, true, true);
             RegMemory.SetInt("logSplitterDistance", splitLog.SplitterDistance);
+            RegMemory.SetInt("infoEditSplitterDistance", splitInfoEdit.SplitterDistance);
+
             RegMemory.SetBool("logShow", toolShowLog.Checked);
 
             if (previewThread != null)
@@ -603,7 +602,13 @@ namespace RepetierHost
         {
             openLink("https://github.com/repetier/Repetier-Host/wiki");
         }
-
+        public MethodInvoker FirmwareDetected = delegate
+        {
+            if (conn.isRepetier)
+            {
+                Main.main.continuousMonitoringMenuItem.Enabled = true;
+            }
+        };
         public MethodInvoker UpdateJobButtons = delegate
         {
             if (conn.job.mode != 1)
@@ -677,20 +682,8 @@ namespace RepetierHost
         }
         public void Update3D()
         {
-            if (tab == null) return;
-            switch (tab.SelectedIndex)
-            {
-                case 2:
-                    printPreview.UpdateChanges();
-                    break;
-                case 1:
-                    if (jobPreview != null)
-                        jobPreview.UpdateChanges();
-                    break;
-                case 0:
-                    stlComposer1.Update3D();
-                    break;
-            }
+            if(threedview!=null)
+                threedview.UpdateChanges();
         }
 
         private void testCaseGeneratorToolStripMenuItem_Click(object sender, EventArgs e)
@@ -716,7 +709,7 @@ namespace RepetierHost
                 jobVisual.Clear();
                 jobVisual = newVisual;
                 jobPreview.models.AddLast(jobVisual);
-                jobPreview.UpdateChanges();
+                threedview.UpdateChanges();
                 newVisual = null;
                 editor.toolUpdating.Text = "";
                 editor.UpdateLayerInfo();
@@ -827,7 +820,22 @@ namespace RepetierHost
             slic3r.Show();
             slic3r.BringToFront();
         }
-
+        public void assign3DView()
+        {
+            if (tab == null) return;
+            switch (tab.SelectedIndex)
+            {
+                case 0:
+                    threedview.SetView(stlComposer1.cont);
+                    break;
+                case 1:
+                    threedview.SetView(jobPreview);
+                    break;
+                case 2:
+                    threedview.SetView(printPreview);
+                    break;
+            }
+        }
         private void tab_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Console.WriteLine("index changed " + Environment.OSVersion.Platform + " Mac=" + PlatformID.MacOSX);
@@ -843,43 +851,14 @@ namespace RepetierHost
                         tabModel.Controls.Remove(stlComposer1);
                     }
                 }
-                if (tab.SelectedTab != tabGCode)
-                {
-                    if (tabGCode.Controls.Contains(splitJob))
-                    {
-                        tabGCode.Controls.Remove(splitJob);
-                    }
-                }
-                if (tab.SelectedTab != tabPrint)
-                {
-                    if (tabPrint.Controls.Contains(splitContainerPrinterGraphic))
-                    {
-                        tabPrint.Controls.Remove(splitContainerPrinterGraphic);
-                    }
-                }
                 if (tab.SelectedTab == tabModel)
                 {
                     if (!tabModel.Controls.Contains(stlComposer1))
                         tabModel.Controls.Add(stlComposer1);
                 }
-                if (tab.SelectedTab == tabGCode)
-                {
-                    if (!tabGCode.Controls.Contains(splitJob))
-                        tabGCode.Controls.Add(splitJob);
-                    splitJob.Dock = DockStyle.Fill;
-                }
-                if (tab.SelectedTab == tabPrint)
-                {
-                    if (!tabPrint.Controls.Contains(splitContainerPrinterGraphic))
-                        tabPrint.Controls.Add(splitContainerPrinterGraphic);
-                }
-
-                stlComposer1.cont.MakeVisible(tab.SelectedIndex == 0);
-                jobPreview.MakeVisible(tab.SelectedIndex == 1);
-                printPreview.MakeVisible(tab.SelectedIndex == 2);
-                //Invalidate();
                 refreshCounter = 6;
             }
+            assign3DView();
         }
 
         private void Main_Resize(object sender, EventArgs e)
@@ -973,6 +952,68 @@ namespace RepetierHost
         private void Main_Activated(object sender, EventArgs e)
         {
             stlComposer1.recheckChangedFiles();
+        }
+        public void selectTimePeriod(object sender, EventArgs e)
+        {
+            history.CurrentPos = (int)((ToolStripMenuItem)sender).Tag;
+        }
+        public void selectAverage(object sender, EventArgs e)
+        {
+            history.AvgPeriod = int.Parse(((ToolStripMenuItem)sender).Tag.ToString());
+        }
+        public void selectZoom(object sender, EventArgs e)
+        {
+            history.CurrentZoomLevel = int.Parse(((ToolStripMenuItem)sender).Tag.ToString());
+        }
+
+        private void showExtruderTemperaturesMenuItem_Click(object sender, EventArgs e)
+        {
+            history.ShowExtruder = !history.ShowExtruder;
+        }
+
+        private void showHeatedBedTemperaturesMenuItem_Click(object sender, EventArgs e)
+        {
+            history.ShowBed = !history.ShowBed;
+        }
+
+        private void showTargetTemperaturesMenuItem_Click(object sender, EventArgs e)
+        {
+            history.ShowTarget = !history.ShowTarget;
+        }
+
+        private void showAverageTemperaturesMenuItem_Click(object sender, EventArgs e)
+        {
+            history.ShowAverage = !history.ShowAverage;
+        }
+
+        private void showHeaterPowerMenuItem_Click(object sender, EventArgs e)
+        {
+            history.ShowOutput = !history.ShowOutput;
+        }
+
+        private void autoscrollTemperatureViewMenuItem_Click(object sender, EventArgs e)
+        {
+            history.Autoscroll = !history.Autoscroll;
+        }
+
+        private void disableToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            conn.injectManualCommand("M203 S255");
+        }
+
+        private void extruder1ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            conn.injectManualCommand("M203 S0");
+        }
+
+        private void extruder2ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            conn.injectManualCommand("M203 S1");
+        }
+
+        private void heatedBedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            conn.injectManualCommand("M203 S100");
         }
     }
 }

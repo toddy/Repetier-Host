@@ -58,7 +58,6 @@
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.killSlicingProcessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.temperatureMonitorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.printerInformationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.jobStatusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSDCardManager = new System.Windows.Forms.ToolStripMenuItem();
@@ -97,26 +96,54 @@
             this.saveJobDialog = new System.Windows.Forms.SaveFileDialog();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.splitLog = new System.Windows.Forms.SplitContainer();
+            this.splitInfoEdit = new System.Windows.Forms.SplitContainer();
+            this.tabControlView = new System.Windows.Forms.TabControl();
+            this.tabPage3DView = new System.Windows.Forms.TabPage();
+            this.tabPageTemp = new System.Windows.Forms.TabPage();
             this.tab = new System.Windows.Forms.TabControl();
             this.tabModel = new System.Windows.Forms.TabPage();
-            this.stlComposer1 = new RepetierHost.view.STLComposer();
             this.tabGCode = new System.Windows.Forms.TabPage();
-            this.splitJob = new System.Windows.Forms.SplitContainer();
-            this.editor = new RepetierHost.view.RepetierEditor();
             this.tabPrint = new System.Windows.Forms.TabPage();
-            this.splitContainerPrinterGraphic = new System.Windows.Forms.SplitContainer();
+            this.temperatureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showExtruderTemperaturesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showHeatedBedTemperaturesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showTargetTemperaturesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showAverageTemperaturesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showHeaterPowerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.autoscrollTemperatureViewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
+            this.timeperiodMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.temperatureZoomMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buildAverageOverMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.continuousMonitoringMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.secondsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.minuteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.minutesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.minutesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.minuesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.minutesToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.minutesToolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.minutesToolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.minutesToolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
+            this.minuteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.disableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.extruder1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.extruder2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.heatedBedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stlComposer1 = new RepetierHost.view.STLComposer();
+            this.editor = new RepetierHost.view.RepetierEditor();
             this.menu.SuspendLayout();
             this.status.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.splitLog.Panel1.SuspendLayout();
             this.splitLog.SuspendLayout();
+            this.splitInfoEdit.Panel1.SuspendLayout();
+            this.splitInfoEdit.Panel2.SuspendLayout();
+            this.splitInfoEdit.SuspendLayout();
+            this.tabControlView.SuspendLayout();
             this.tab.SuspendLayout();
             this.tabModel.SuspendLayout();
             this.tabGCode.SuspendLayout();
-            this.splitJob.Panel1.SuspendLayout();
-            this.splitJob.SuspendLayout();
-            this.tabPrint.SuspendLayout();
-            this.splitContainerPrinterGraphic.SuspendLayout();
             this.SuspendLayout();
             // 
             // menu
@@ -125,6 +152,7 @@
             this.fileToolStripMenuItem,
             this.settingsToolStripMenuItem,
             this.slicerToolStripMenuItem,
+            this.temperatureToolStripMenuItem,
             this.windowsToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menu.Location = new System.Drawing.Point(0, 0);
@@ -347,7 +375,6 @@
             // windowsToolStripMenuItem
             // 
             this.windowsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.temperatureMonitorToolStripMenuItem,
             this.printerInformationsToolStripMenuItem,
             this.jobStatusToolStripMenuItem,
             this.menuSDCardManager,
@@ -356,19 +383,11 @@
             this.windowsToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
             this.windowsToolStripMenuItem.Text = "&Printer";
             // 
-            // temperatureMonitorToolStripMenuItem
-            // 
-            this.temperatureMonitorToolStripMenuItem.Name = "temperatureMonitorToolStripMenuItem";
-            this.temperatureMonitorToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.T)));
-            this.temperatureMonitorToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
-            this.temperatureMonitorToolStripMenuItem.Text = "Temperature monitor";
-            this.temperatureMonitorToolStripMenuItem.Click += new System.EventHandler(this.temperatureMonitorToolStripMenuItem_Click);
-            // 
             // printerInformationsToolStripMenuItem
             // 
             this.printerInformationsToolStripMenuItem.Name = "printerInformationsToolStripMenuItem";
             this.printerInformationsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.P)));
-            this.printerInformationsToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.printerInformationsToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.printerInformationsToolStripMenuItem.Text = "Printer information";
             this.printerInformationsToolStripMenuItem.Click += new System.EventHandler(this.printerInformationsToolStripMenuItem_Click);
             // 
@@ -376,7 +395,7 @@
             // 
             this.jobStatusToolStripMenuItem.Name = "jobStatusToolStripMenuItem";
             this.jobStatusToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.J)));
-            this.jobStatusToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.jobStatusToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.jobStatusToolStripMenuItem.Text = "Job status";
             this.jobStatusToolStripMenuItem.Click += new System.EventHandler(this.jobStatusToolStripMenuItem_Click);
             // 
@@ -384,14 +403,14 @@
             // 
             this.menuSDCardManager.Name = "menuSDCardManager";
             this.menuSDCardManager.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.C)));
-            this.menuSDCardManager.Size = new System.Drawing.Size(225, 22);
+            this.menuSDCardManager.Size = new System.Drawing.Size(212, 22);
             this.menuSDCardManager.Text = "SD card manager";
             this.menuSDCardManager.Click += new System.EventHandler(this.toolStripSDCard_Click);
             // 
             // testCaseGeneratorToolStripMenuItem
             // 
             this.testCaseGeneratorToolStripMenuItem.Name = "testCaseGeneratorToolStripMenuItem";
-            this.testCaseGeneratorToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.testCaseGeneratorToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.testCaseGeneratorToolStripMenuItem.Text = "Test case generator";
             this.testCaseGeneratorToolStripMenuItem.Click += new System.EventHandler(this.testCaseGeneratorToolStripMenuItem_Click);
             // 
@@ -702,10 +721,59 @@
             // 
             // splitLog.Panel1
             // 
-            this.splitLog.Panel1.Controls.Add(this.tab);
+            this.splitLog.Panel1.Controls.Add(this.splitInfoEdit);
             this.splitLog.Size = new System.Drawing.Size(1018, 430);
             this.splitLog.SplitterDistance = 332;
             this.splitLog.TabIndex = 4;
+            // 
+            // splitInfoEdit
+            // 
+            this.splitInfoEdit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitInfoEdit.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitInfoEdit.Location = new System.Drawing.Point(0, 0);
+            this.splitInfoEdit.Name = "splitInfoEdit";
+            // 
+            // splitInfoEdit.Panel1
+            // 
+            this.splitInfoEdit.Panel1.Controls.Add(this.tabControlView);
+            // 
+            // splitInfoEdit.Panel2
+            // 
+            this.splitInfoEdit.Panel2.Controls.Add(this.tab);
+            this.splitInfoEdit.Size = new System.Drawing.Size(1016, 330);
+            this.splitInfoEdit.SplitterDistance = 537;
+            this.splitInfoEdit.TabIndex = 4;
+            // 
+            // tabControlView
+            // 
+            this.tabControlView.Controls.Add(this.tabPage3DView);
+            this.tabControlView.Controls.Add(this.tabPageTemp);
+            this.tabControlView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControlView.Location = new System.Drawing.Point(0, 0);
+            this.tabControlView.Name = "tabControlView";
+            this.tabControlView.SelectedIndex = 0;
+            this.tabControlView.Size = new System.Drawing.Size(537, 330);
+            this.tabControlView.TabIndex = 0;
+            // 
+            // tabPage3DView
+            // 
+            this.tabPage3DView.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3DView.Name = "tabPage3DView";
+            this.tabPage3DView.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3DView.Size = new System.Drawing.Size(529, 304);
+            this.tabPage3DView.TabIndex = 0;
+            this.tabPage3DView.Text = "3D View";
+            this.tabPage3DView.UseVisualStyleBackColor = true;
+            // 
+            // tabPageTemp
+            // 
+            this.tabPageTemp.Location = new System.Drawing.Point(4, 22);
+            this.tabPageTemp.Name = "tabPageTemp";
+            this.tabPageTemp.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageTemp.Size = new System.Drawing.Size(529, 304);
+            this.tabPageTemp.TabIndex = 1;
+            this.tabPageTemp.Text = "Temperature Curve";
+            this.tabPageTemp.UseVisualStyleBackColor = true;
             // 
             // tab
             // 
@@ -716,7 +784,7 @@
             this.tab.Location = new System.Drawing.Point(0, 0);
             this.tab.Name = "tab";
             this.tab.SelectedIndex = 0;
-            this.tab.Size = new System.Drawing.Size(1016, 330);
+            this.tab.Size = new System.Drawing.Size(475, 330);
             this.tab.TabIndex = 3;
             this.tab.SelectedIndexChanged += new System.EventHandler(this.tab_SelectedIndexChanged);
             // 
@@ -726,9 +794,246 @@
             this.tabModel.Controls.Add(this.stlComposer1);
             this.tabModel.Location = new System.Drawing.Point(4, 22);
             this.tabModel.Name = "tabModel";
-            this.tabModel.Size = new System.Drawing.Size(1008, 304);
+            this.tabModel.Size = new System.Drawing.Size(467, 304);
             this.tabModel.TabIndex = 2;
             this.tabModel.Text = "Object placements";
+            // 
+            // tabGCode
+            // 
+            this.tabGCode.AutoScroll = true;
+            this.tabGCode.BackColor = System.Drawing.SystemColors.Control;
+            this.tabGCode.Controls.Add(this.editor);
+            this.tabGCode.Location = new System.Drawing.Point(4, 22);
+            this.tabGCode.Name = "tabGCode";
+            this.tabGCode.Padding = new System.Windows.Forms.Padding(3);
+            this.tabGCode.Size = new System.Drawing.Size(467, 304);
+            this.tabGCode.TabIndex = 1;
+            this.tabGCode.Text = "G-Code visual editor";
+            // 
+            // tabPrint
+            // 
+            this.tabPrint.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPrint.Location = new System.Drawing.Point(4, 22);
+            this.tabPrint.Name = "tabPrint";
+            this.tabPrint.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPrint.Size = new System.Drawing.Size(467, 304);
+            this.tabPrint.TabIndex = 0;
+            this.tabPrint.Text = "Manual control";
+            // 
+            // temperatureToolStripMenuItem
+            // 
+            this.temperatureToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showExtruderTemperaturesMenuItem,
+            this.showHeatedBedTemperaturesMenuItem,
+            this.showTargetTemperaturesMenuItem,
+            this.showAverageTemperaturesMenuItem,
+            this.showHeaterPowerMenuItem,
+            this.autoscrollTemperatureViewMenuItem,
+            this.toolStripMenuItem5,
+            this.timeperiodMenuItem,
+            this.temperatureZoomMenuItem,
+            this.buildAverageOverMenuItem,
+            this.continuousMonitoringMenuItem});
+            this.temperatureToolStripMenuItem.Name = "temperatureToolStripMenuItem";
+            this.temperatureToolStripMenuItem.Size = new System.Drawing.Size(87, 20);
+            this.temperatureToolStripMenuItem.Text = "&Temperature";
+            // 
+            // showExtruderTemperaturesMenuItem
+            // 
+            this.showExtruderTemperaturesMenuItem.Name = "showExtruderTemperaturesMenuItem";
+            this.showExtruderTemperaturesMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.showExtruderTemperaturesMenuItem.Text = "Show extruder temperatures";
+            this.showExtruderTemperaturesMenuItem.Click += new System.EventHandler(this.showExtruderTemperaturesMenuItem_Click);
+            // 
+            // showHeatedBedTemperaturesMenuItem
+            // 
+            this.showHeatedBedTemperaturesMenuItem.Name = "showHeatedBedTemperaturesMenuItem";
+            this.showHeatedBedTemperaturesMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.showHeatedBedTemperaturesMenuItem.Text = "Show heated bed temperatures";
+            this.showHeatedBedTemperaturesMenuItem.Click += new System.EventHandler(this.showHeatedBedTemperaturesMenuItem_Click);
+            // 
+            // showTargetTemperaturesMenuItem
+            // 
+            this.showTargetTemperaturesMenuItem.Name = "showTargetTemperaturesMenuItem";
+            this.showTargetTemperaturesMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.showTargetTemperaturesMenuItem.Text = "Show target temperatures";
+            this.showTargetTemperaturesMenuItem.Click += new System.EventHandler(this.showTargetTemperaturesMenuItem_Click);
+            // 
+            // showAverageTemperaturesMenuItem
+            // 
+            this.showAverageTemperaturesMenuItem.Name = "showAverageTemperaturesMenuItem";
+            this.showAverageTemperaturesMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.showAverageTemperaturesMenuItem.Text = "Show average temperatures";
+            this.showAverageTemperaturesMenuItem.Click += new System.EventHandler(this.showAverageTemperaturesMenuItem_Click);
+            // 
+            // showHeaterPowerMenuItem
+            // 
+            this.showHeaterPowerMenuItem.Name = "showHeaterPowerMenuItem";
+            this.showHeaterPowerMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.showHeaterPowerMenuItem.Text = "Show heater power";
+            this.showHeaterPowerMenuItem.Click += new System.EventHandler(this.showHeaterPowerMenuItem_Click);
+            // 
+            // autoscrollTemperatureViewMenuItem
+            // 
+            this.autoscrollTemperatureViewMenuItem.Name = "autoscrollTemperatureViewMenuItem";
+            this.autoscrollTemperatureViewMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.autoscrollTemperatureViewMenuItem.Text = "Autoscroll temperature view";
+            this.autoscrollTemperatureViewMenuItem.Click += new System.EventHandler(this.autoscrollTemperatureViewMenuItem_Click);
+            // 
+            // toolStripMenuItem5
+            // 
+            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(235, 6);
+            // 
+            // timeperiodMenuItem
+            // 
+            this.timeperiodMenuItem.Name = "timeperiodMenuItem";
+            this.timeperiodMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.timeperiodMenuItem.Text = "Timeperiod";
+            // 
+            // temperatureZoomMenuItem
+            // 
+            this.temperatureZoomMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.minuesToolStripMenuItem,
+            this.minutesToolStripMenuItem2,
+            this.minutesToolStripMenuItem3,
+            this.minutesToolStripMenuItem4,
+            this.minutesToolStripMenuItem5,
+            this.minuteToolStripMenuItem1});
+            this.temperatureZoomMenuItem.Name = "temperatureZoomMenuItem";
+            this.temperatureZoomMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.temperatureZoomMenuItem.Text = "Zoom";
+            // 
+            // buildAverageOverMenuItem
+            // 
+            this.buildAverageOverMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.secondsToolStripMenuItem,
+            this.minuteToolStripMenuItem,
+            this.minutesToolStripMenuItem,
+            this.minutesToolStripMenuItem1});
+            this.buildAverageOverMenuItem.Name = "buildAverageOverMenuItem";
+            this.buildAverageOverMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.buildAverageOverMenuItem.Text = "Build average over ...";
+            // 
+            // continuousMonitoringMenuItem
+            // 
+            this.continuousMonitoringMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.disableToolStripMenuItem,
+            this.extruder1ToolStripMenuItem,
+            this.extruder2ToolStripMenuItem,
+            this.heatedBedToolStripMenuItem});
+            this.continuousMonitoringMenuItem.Enabled = false;
+            this.continuousMonitoringMenuItem.Name = "continuousMonitoringMenuItem";
+            this.continuousMonitoringMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.continuousMonitoringMenuItem.Text = "Continuous monitoring";
+            // 
+            // secondsToolStripMenuItem
+            // 
+            this.secondsToolStripMenuItem.Name = "secondsToolStripMenuItem";
+            this.secondsToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.secondsToolStripMenuItem.Tag = "30";
+            this.secondsToolStripMenuItem.Text = "30 seconds";
+            this.secondsToolStripMenuItem.Click += new System.EventHandler(this.selectAverage);
+            // 
+            // minuteToolStripMenuItem
+            // 
+            this.minuteToolStripMenuItem.Name = "minuteToolStripMenuItem";
+            this.minuteToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.minuteToolStripMenuItem.Tag = "60";
+            this.minuteToolStripMenuItem.Text = "1 Minute";
+            this.minuteToolStripMenuItem.Click += new System.EventHandler(this.selectAverage);
+            // 
+            // minutesToolStripMenuItem
+            // 
+            this.minutesToolStripMenuItem.Name = "minutesToolStripMenuItem";
+            this.minutesToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.minutesToolStripMenuItem.Tag = "120";
+            this.minutesToolStripMenuItem.Text = "2 Minutes";
+            this.minutesToolStripMenuItem.Click += new System.EventHandler(this.selectAverage);
+            // 
+            // minutesToolStripMenuItem1
+            // 
+            this.minutesToolStripMenuItem1.Name = "minutesToolStripMenuItem1";
+            this.minutesToolStripMenuItem1.Size = new System.Drawing.Size(132, 22);
+            this.minutesToolStripMenuItem1.Tag = "300";
+            this.minutesToolStripMenuItem1.Text = "5 Minutes";
+            this.minutesToolStripMenuItem1.Click += new System.EventHandler(this.selectAverage);
+            // 
+            // minuesToolStripMenuItem
+            // 
+            this.minuesToolStripMenuItem.Name = "minuesToolStripMenuItem";
+            this.minuesToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.minuesToolStripMenuItem.Tag = "60";
+            this.minuesToolStripMenuItem.Text = "60 Minues";
+            this.minuesToolStripMenuItem.Click += new System.EventHandler(this.selectZoom);
+            // 
+            // minutesToolStripMenuItem2
+            // 
+            this.minutesToolStripMenuItem2.Name = "minutesToolStripMenuItem2";
+            this.minutesToolStripMenuItem2.Size = new System.Drawing.Size(132, 22);
+            this.minutesToolStripMenuItem2.Tag = "30";
+            this.minutesToolStripMenuItem2.Text = "30 Minutes";
+            this.minutesToolStripMenuItem2.Click += new System.EventHandler(this.selectZoom);
+            // 
+            // minutesToolStripMenuItem3
+            // 
+            this.minutesToolStripMenuItem3.Name = "minutesToolStripMenuItem3";
+            this.minutesToolStripMenuItem3.Size = new System.Drawing.Size(132, 22);
+            this.minutesToolStripMenuItem3.Tag = "15";
+            this.minutesToolStripMenuItem3.Text = "15 Minutes";
+            this.minutesToolStripMenuItem3.Click += new System.EventHandler(this.selectZoom);
+            // 
+            // minutesToolStripMenuItem4
+            // 
+            this.minutesToolStripMenuItem4.Name = "minutesToolStripMenuItem4";
+            this.minutesToolStripMenuItem4.Size = new System.Drawing.Size(132, 22);
+            this.minutesToolStripMenuItem4.Tag = "10";
+            this.minutesToolStripMenuItem4.Text = "10 Minutes";
+            this.minutesToolStripMenuItem4.Click += new System.EventHandler(this.selectZoom);
+            // 
+            // minutesToolStripMenuItem5
+            // 
+            this.minutesToolStripMenuItem5.Name = "minutesToolStripMenuItem5";
+            this.minutesToolStripMenuItem5.Size = new System.Drawing.Size(132, 22);
+            this.minutesToolStripMenuItem5.Tag = "5";
+            this.minutesToolStripMenuItem5.Text = "5 Minutes";
+            this.minutesToolStripMenuItem5.Click += new System.EventHandler(this.selectZoom);
+            // 
+            // minuteToolStripMenuItem1
+            // 
+            this.minuteToolStripMenuItem1.Name = "minuteToolStripMenuItem1";
+            this.minuteToolStripMenuItem1.Size = new System.Drawing.Size(132, 22);
+            this.minuteToolStripMenuItem1.Tag = "1";
+            this.minuteToolStripMenuItem1.Text = "1 Minute";
+            this.minuteToolStripMenuItem1.Click += new System.EventHandler(this.selectZoom);
+            // 
+            // disableToolStripMenuItem
+            // 
+            this.disableToolStripMenuItem.Name = "disableToolStripMenuItem";
+            this.disableToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.disableToolStripMenuItem.Text = "Disable";
+            this.disableToolStripMenuItem.Click += new System.EventHandler(this.disableToolStripMenuItem_Click);
+            // 
+            // extruder1ToolStripMenuItem
+            // 
+            this.extruder1ToolStripMenuItem.Name = "extruder1ToolStripMenuItem";
+            this.extruder1ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.extruder1ToolStripMenuItem.Text = "Extruder 1";
+            this.extruder1ToolStripMenuItem.Click += new System.EventHandler(this.extruder1ToolStripMenuItem_Click);
+            // 
+            // extruder2ToolStripMenuItem
+            // 
+            this.extruder2ToolStripMenuItem.Name = "extruder2ToolStripMenuItem";
+            this.extruder2ToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.extruder2ToolStripMenuItem.Text = "Extruder 2";
+            this.extruder2ToolStripMenuItem.Click += new System.EventHandler(this.extruder2ToolStripMenuItem_Click);
+            // 
+            // heatedBedToolStripMenuItem
+            // 
+            this.heatedBedToolStripMenuItem.Name = "heatedBedToolStripMenuItem";
+            this.heatedBedToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.heatedBedToolStripMenuItem.Text = "Heated Bed";
+            this.heatedBedToolStripMenuItem.Click += new System.EventHandler(this.heatedBedToolStripMenuItem_Click);
             // 
             // stlComposer1
             // 
@@ -736,44 +1041,15 @@
             this.stlComposer1.Location = new System.Drawing.Point(0, 0);
             this.stlComposer1.Margin = new System.Windows.Forms.Padding(4);
             this.stlComposer1.Name = "stlComposer1";
-            this.stlComposer1.Size = new System.Drawing.Size(1008, 304);
+            this.stlComposer1.Size = new System.Drawing.Size(467, 304);
             this.stlComposer1.TabIndex = 0;
-            // 
-            // tabGCode
-            // 
-            this.tabGCode.AutoScroll = true;
-            this.tabGCode.BackColor = System.Drawing.SystemColors.Control;
-            this.tabGCode.Controls.Add(this.splitJob);
-            this.tabGCode.Location = new System.Drawing.Point(4, 22);
-            this.tabGCode.Name = "tabGCode";
-            this.tabGCode.Padding = new System.Windows.Forms.Padding(3);
-            this.tabGCode.Size = new System.Drawing.Size(1008, 304);
-            this.tabGCode.TabIndex = 1;
-            this.tabGCode.Text = "G-Code visual editor";
-            // 
-            // splitJob
-            // 
-            this.splitJob.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitJob.BackColor = System.Drawing.Color.Transparent;
-            this.splitJob.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitJob.Location = new System.Drawing.Point(3, 3);
-            this.splitJob.Name = "splitJob";
-            // 
-            // splitJob.Panel1
-            // 
-            this.splitJob.Panel1.Controls.Add(this.editor);
-            this.splitJob.Size = new System.Drawing.Size(1001, 295);
-            this.splitJob.SplitterDistance = 500;
-            this.splitJob.TabIndex = 3;
             // 
             // editor
             // 
             this.editor.AccessibleRole = System.Windows.Forms.AccessibleRole.Caret;
             this.editor.autopreview = true;
             this.editor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.editor.Location = new System.Drawing.Point(0, 0);
+            this.editor.Location = new System.Drawing.Point(3, 3);
             this.editor.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
             this.editor.MaxLayer = 0;
             this.editor.MinimumSize = new System.Drawing.Size(160, 138);
@@ -781,33 +1057,8 @@
             this.editor.ShowMaxLayer = 0;
             this.editor.ShowMinLayer = 0;
             this.editor.ShowMode = 0;
-            this.editor.Size = new System.Drawing.Size(500, 295);
+            this.editor.Size = new System.Drawing.Size(461, 298);
             this.editor.TabIndex = 0;
-            // 
-            // tabPrint
-            // 
-            this.tabPrint.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPrint.Controls.Add(this.splitContainerPrinterGraphic);
-            this.tabPrint.Location = new System.Drawing.Point(4, 22);
-            this.tabPrint.Name = "tabPrint";
-            this.tabPrint.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPrint.Size = new System.Drawing.Size(1008, 304);
-            this.tabPrint.TabIndex = 0;
-            this.tabPrint.Text = "Manual control";
-            // 
-            // splitContainerPrinterGraphic
-            // 
-            this.splitContainerPrinterGraphic.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainerPrinterGraphic.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainerPrinterGraphic.Location = new System.Drawing.Point(3, 3);
-            this.splitContainerPrinterGraphic.Name = "splitContainerPrinterGraphic";
-            // 
-            // splitContainerPrinterGraphic.Panel1
-            // 
-            this.splitContainerPrinterGraphic.Panel1.BackColor = System.Drawing.Color.Transparent;
-            this.splitContainerPrinterGraphic.Size = new System.Drawing.Size(1002, 298);
-            this.splitContainerPrinterGraphic.SplitterDistance = 465;
-            this.splitContainerPrinterGraphic.TabIndex = 0;
             // 
             // Main
             // 
@@ -822,7 +1073,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menu;
             this.Name = "Main";
-            this.Text = "Repetier-Host V0.40";
+            this.Text = "Repetier-Host V0.50";
             this.Shown += new System.EventHandler(this.Main_Shown);
             this.Activated += new System.EventHandler(this.Main_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
@@ -835,13 +1086,13 @@
             this.toolStrip.PerformLayout();
             this.splitLog.Panel1.ResumeLayout(false);
             this.splitLog.ResumeLayout(false);
+            this.splitInfoEdit.Panel1.ResumeLayout(false);
+            this.splitInfoEdit.Panel2.ResumeLayout(false);
+            this.splitInfoEdit.ResumeLayout(false);
+            this.tabControlView.ResumeLayout(false);
             this.tab.ResumeLayout(false);
             this.tabModel.ResumeLayout(false);
             this.tabGCode.ResumeLayout(false);
-            this.splitJob.Panel1.ResumeLayout(false);
-            this.splitJob.ResumeLayout(false);
-            this.tabPrint.ResumeLayout(false);
-            this.splitContainerPrinterGraphic.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -861,13 +1112,11 @@
         private System.Windows.Forms.ToolStripStatusLabel toolConnection;
         private System.Windows.Forms.ToolStripStatusLabel toolAction;
         private System.Windows.Forms.ToolStripProgressBar toolProgress;
-        private System.Windows.Forms.SplitContainer splitContainerPrinterGraphic;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem printerSettingsToolStripMenuItem;
         private System.Windows.Forms.ImageList imageList;
         private System.Windows.Forms.OpenFileDialog openGCode;
         private System.Windows.Forms.ToolStripMenuItem windowsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem temperatureMonitorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem skeinforgeSettingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem threeDSettingsMenu;
         private System.Windows.Forms.ToolStripMenuItem printerInformationsToolStripMenuItem;
@@ -888,7 +1137,6 @@
         public System.Windows.Forms.ToolStripMenuItem menuSDCardManager;
         public System.Windows.Forms.SaveFileDialog saveJobDialog;
         public System.Windows.Forms.TabPage tabGCode;
-        private System.Windows.Forms.SplitContainer splitJob;
         public RepetierHost.view.RepetierEditor editor;
         private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.ToolStripSplitButton toolConnect;
@@ -924,6 +1172,36 @@
         private System.Windows.Forms.ToolStripMenuItem externalSlic3rSetupToolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem externalSlic3rToolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem externalSlic3rConfigurationToolStripMenuItem;
+        private System.Windows.Forms.SplitContainer splitInfoEdit;
+        public System.Windows.Forms.TabControl tabControlView;
+        public System.Windows.Forms.TabPage tabPage3DView;
+        public System.Windows.Forms.TabPage tabPageTemp;
+        private System.Windows.Forms.ToolStripMenuItem temperatureToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
+        private System.Windows.Forms.ToolStripMenuItem minuesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem minutesToolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem secondsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem minuteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem minutesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem minutesToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem minutesToolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem minutesToolStripMenuItem4;
+        private System.Windows.Forms.ToolStripMenuItem minutesToolStripMenuItem5;
+        private System.Windows.Forms.ToolStripMenuItem minuteToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem disableToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem extruder1ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem extruder2ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem heatedBedToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem showExtruderTemperaturesMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem showHeatedBedTemperaturesMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem showTargetTemperaturesMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem showAverageTemperaturesMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem showHeaterPowerMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem autoscrollTemperatureViewMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem timeperiodMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem temperatureZoomMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem buildAverageOverMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem continuousMonitoringMenuItem;
     }
 }
 
