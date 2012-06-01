@@ -195,6 +195,7 @@ namespace RepetierHost.model
                 Main.conn.firePrinterAction("Finished in "+s.ToString());
                 DoEndKillActions();
                 Main.main.Invoke(Main.main.UpdateJobButtons);
+                RepetierHost.view.SoundConfig.PlayPrintFinished(false);
             }
             return gc;
         }

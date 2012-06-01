@@ -36,7 +36,7 @@ namespace RepetierHost.model
         public bool uploading = false;
         public int bedTemp = 0;
         public float x = 0, y = 0, z = 0, e = 0, emax = 0;
-        public float xOffset = 0, yOffset = 0, zOffset = 0, eOffset = 0;
+        public float xOffset = 0, yOffset = 0, zOffset = 0, eOffset = 0,lastZPrint = 0;
         public bool fanOn = false;
         public int fanVoltage = 0;
         public bool powerOn = true;
@@ -85,7 +85,7 @@ namespace RepetierHost.model
             drawing = true;
             lastline = 0;
             layer = 0;
-            x = y = z = e = emax = 0;
+            x = y = z = e = emax = lastZPrint = 0;
             xOffset = yOffset = zOffset = eOffset = 0;
             hasXHome = hasYHome = hasZHome = false;
             printerWidth = Main.printerSettings.PrintAreaWidth;
@@ -127,23 +127,16 @@ namespace RepetierHost.model
                         {
                             if (code.hasX) x += code.X;
                             if (code.hasY) y += code.Y;
-                            if (code.hasZ) { z += code.Z; if (code.Z != 0) layer++;
-                                if (!privateAnalyzer && Main.conn.job.hasData() && Main.conn.job.maxLayer >= 0)
-                                {
-                                    PrinterConnection.logInfo("Printing layer " + layer.ToString() + " of " + Main.conn.job.maxLayer.ToString());
-                                }
-                            }
+                            if (code.hasZ) z += code.Z;
                             if (code.hasE) e += code.E;
                         }
                         else
                         {
                             if (code.hasX) x = xOffset + code.X;
                             if (code.hasY) y = yOffset + code.Y;
-                            if (code.hasZ) { float oldz = z; z = zOffset + code.Z; if (z != oldz) layer++;
-                                if (!privateAnalyzer && Main.conn.job.hasData() && Main.conn.job.maxLayer >= 0)
-                                {
-                                    PrinterConnection.logInfo("Printing layer " + layer.ToString() + " of " + Main.conn.job.maxLayer.ToString());
-                                }
+                            if (code.hasZ)
+                            {
+                                 z = zOffset + code.Z; 
                             }
                             if (code.hasE)
                             {
@@ -159,7 +152,19 @@ namespace RepetierHost.model
                         if (x > printerWidth) { hasXHome = false; }
                         if (y > printerDepth) { hasYHome = false; }
                         if (z > printerHeight) { hasZHome = false; }
-                        if (e > emax) emax = e;
+                        if (e > emax)
+                        {
+                            emax = e;
+                            if (z > lastZPrint)
+                            {
+                                layer++;
+                                lastZPrint = z;
+                                if (!privateAnalyzer && Main.conn.job.hasData() && Main.conn.job.maxLayer >= 0)
+                                {
+                                    PrinterConnection.logInfo("Printing layer " + layer.ToString() + " of " + Main.conn.job.maxLayer.ToString());
+                                }
+                            }
+                        }
                         if (eventPosChanged != null)
                             if (privateAnalyzer)
                                 eventPosChanged(code, x, y, z);
@@ -261,7 +266,7 @@ namespace RepetierHost.model
                         }
                         break;
                     case 140:
-                    case 141:
+                    case 190:
                         if (code.hasS) bedTemp = code.S;
                         fireChanged();
                         break;
@@ -303,7 +308,6 @@ namespace RepetierHost.model
                         }
                         if (code.hasZ)
                         {
-                            if (code.z != 0) layer++;
                             z += code.z;
                             //if (z < 0) { z = 0; hasZHome = NO; }
                             //if (z > printerHeight) { hasZHome = NO; }
@@ -311,7 +315,15 @@ namespace RepetierHost.model
                         if (code.hasE)
                         {
                             e += code.e;
-                            if (e > emax) emax = e;
+                            if (e > emax)
+                            {
+                                emax = e;
+                                if (z > lastZPrint)
+                                {
+                                    lastZPrint = z;
+                                    layer++;
+                                }
+                            }
                         }
                     }
                     else
@@ -330,9 +342,7 @@ namespace RepetierHost.model
                         }
                         if (code.z != -99999)
                         {
-                            float lastz = z;
                             z = zOffset + code.z;
-                            if (z != lastz) layer++;
                             //if (z < 0) { z = 0; hasZHome = NO; }
                             //if (z > printerHeight) { hasZHome = NO; }
                         }
@@ -342,7 +352,15 @@ namespace RepetierHost.model
                                 e += code.e;
                             else
                                 e = eOffset + code.e;
-                            if (e > emax) emax = e;
+                            if (e > emax)
+                            {
+                                emax = e;
+                                if (z > lastZPrint)
+                                {
+                                    lastZPrint = z;
+                                    layer++;
+                                }
+                            }
                         }
                     }
                     if(eventPosChangedFast!=null)

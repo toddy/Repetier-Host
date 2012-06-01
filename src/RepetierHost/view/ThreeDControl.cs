@@ -313,25 +313,14 @@ namespace RepetierHost.view
                         GL.Vertex3(dx1, dy2, 0);
                         GL.Vertex3(dx1, dy1, 0);
                     }
-                    float dx = ps.PrintAreaWidth / 20f;
-                    float dy = ps.PrintAreaDepth / 20f;
+                    float dx = 10; // ps.PrintAreaWidth / 20f;
+                    float dy = 10; // ps.PrintAreaDepth / 20f;
                     float x, y;
-                    for (i = 0; i < 21; i++)
+                    for (i = 0; i < 200; i++)
                     {
                         x = (float)i * dx;
-                        y = (float)i * dy;
-                        if (ps.HasDumpArea && y >= dy1 && y <= dy2)
-                        {
-                            GL.Vertex3(0, y, 0);
-                            GL.Vertex3(dx1, y, 0);
-                            GL.Vertex3(dx2, y, 0);
-                            GL.Vertex3(ps.PrintAreaWidth, y, 0);
-                        }
-                        else
-                        {
-                            GL.Vertex3(0, y, 0);
-                            GL.Vertex3(ps.PrintAreaWidth, y, 0);
-                        }
+                        if (x >= ps.PrintAreaWidth) 
+                            x=ps.PrintAreaWidth;
                         if (ps.HasDumpArea && x >= dx1 && x <= dx2)
                         {
                             GL.Vertex3(x, 0, 0);
@@ -344,6 +333,27 @@ namespace RepetierHost.view
                             GL.Vertex3(x, 0, 0);
                             GL.Vertex3(x, ps.PrintAreaDepth, 0);
                         }
+                        if (x >= ps.PrintAreaWidth) break;
+                    }
+                    for (i = 0; i < 200; i++)
+                    {
+                        y = (float)i * dy;
+                        if (y > ps.PrintAreaDepth)
+                            y = ps.PrintAreaDepth;
+                        if (ps.HasDumpArea && y >= dy1 && y <= dy2)
+                        {
+                            GL.Vertex3(0, y, 0);
+                            GL.Vertex3(dx1, y, 0);
+                            GL.Vertex3(dx2, y, 0);
+                            GL.Vertex3(ps.PrintAreaWidth, y, 0);
+                        }
+                        else
+                        {
+                            GL.Vertex3(0, y, 0);
+                            GL.Vertex3(ps.PrintAreaWidth, y, 0);
+                        }
+                        if (y >= ps.PrintAreaDepth) 
+                            break;
                     }
                     GL.End();
                 }
@@ -441,9 +451,9 @@ namespace RepetierHost.view
                 fpsTimer.Stop();
                // double time = fpsTimer.Elapsed.Milliseconds / 1000.0;
                // PrinterConnection.logInfo("OpenGL update time:" + time.ToString());
-                double framerate = 10000000.0 / fpsTimer.ElapsedTicks;
+                double framerate = 1.0 / fpsTimer.Elapsed.TotalSeconds;
                 Main.main.fpsLabel.Text = framerate.ToString("0") + " FPS";
-                if (framerate < 30)
+                if (framerate < 30 && Main.globalSettings.DisableQualityReduction==false)
                 {
                     slowCounter++;
                     if (slowCounter >= 10)
@@ -457,6 +467,7 @@ namespace RepetierHost.view
                 }
                 else if (slowCounter > 0)
                     slowCounter--;
+                
             }
             catch { }
         }
@@ -776,17 +787,43 @@ namespace RepetierHost.view
 
         private void ThreeDControl_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
         {
+            /*if (e.KeyChar == Keys.Left)
+            {
+                view.rotZ -= 5;
+                gl.Invalidate();
+                e.Handled = true;
+            }
+            if (e.KeyCode == Keys.Right)
+            {
+                view.rotZ += 5;
+                gl.Invalidate();
+                e.Handled = true;
+            }
+            if (e.KeyCode == Keys.Up)
+            {
+                view.rotX -= 5;
+                gl.Invalidate();
+                e.Handled = true;
+            }
+            if (e.KeyCode == Keys.Down)
+            {
+                view.rotX += 5;
+                gl.Invalidate();
+                e.Handled = true;
+            }*/
             if (e.KeyChar == '-')
             {
                 view.zoom *= 1.05f;
                 if (view.zoom > 10) view.zoom = 10;
                 gl.Invalidate();
+                e.Handled = true;
             }
             if (e.KeyChar == '+')
             {
                 view.zoom *= 0.95f;
                 if (view.zoom < 0.01) view.zoom = 0.01f;
                 gl.Invalidate();
+                e.Handled = true;
             }
         }
 
@@ -838,6 +875,68 @@ namespace RepetierHost.view
             //userPosition = new Vector3(0f * ps.PrintAreaWidth, -2f * ps.PrintAreaDepth, 0.0f * ps.PrintAreaHeight);
             gl.Invalidate();
 
+        }
+        protected override bool IsInputKey(Keys keyData)
+        {
+            switch (keyData)
+            {
+                case Keys.Right:
+                case Keys.Left:
+                case Keys.Up:
+                case Keys.Down:
+                    return true;
+                case Keys.Shift | Keys.Right:
+                case Keys.Shift | Keys.Left:
+                case Keys.Shift | Keys.Up:
+                case Keys.Shift | Keys.Down:
+                    return true;
+            }
+            return base.IsInputKey(keyData);
+        }
+        public void ThreeDControl_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Left)
+            {
+                view.rotZ -= 5;
+                gl.Invalidate();
+                e.Handled = true;
+            }
+            if (e.KeyCode == Keys.Right)
+            {
+                view.rotZ += 5;
+                gl.Invalidate();
+                e.Handled = true;
+            }
+            if (e.KeyCode == Keys.Up)
+            {
+                view.rotX -= 5;
+                gl.Invalidate();
+                e.Handled = true;
+            }
+            if (e.KeyCode == Keys.Down)
+            {
+                view.rotX += 5;
+                gl.Invalidate();
+                e.Handled = true;
+            }
+            if (e.KeyValue == '-')
+            {
+                view.zoom *= 1.05f;
+                if (view.zoom > 10) view.zoom = 10;
+                gl.Invalidate();
+                e.Handled = true;
+            }
+            if (e.KeyValue == '+')
+            {
+                view.zoom *= 0.95f;
+                if (view.zoom < 0.01) view.zoom = 0.01f;
+                gl.Invalidate();
+                e.Handled = true;
+            }
+            if (Main.main.tab.SelectedTab == Main.main.tabModel && e.Handled == false)
+            {
+                Main.main.stlComposer1.listSTLObjects_KeyDown(sender, e);
+            }
         }
     }
 }

@@ -215,8 +215,8 @@
             this.toolFile.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.toolFile.Items.AddRange(new object[] {
             "G-Code",
-            "Prepend",
-            "Append"});
+            "Start code",
+            "End code"});
             this.toolFile.Name = "toolFile";
             this.toolFile.Size = new System.Drawing.Size(85, 25);
             this.toolFile.SelectedIndexChanged += new System.EventHandler(this.toolFile_SelectedIndexChanged);

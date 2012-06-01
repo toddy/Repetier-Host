@@ -173,6 +173,9 @@
             this.textCoolMinFanSpeed = new System.Windows.Forms.TextBox();
             this.checkFanAlwaysEnabled = new System.Windows.Forms.CheckBox();
             this.checkEnableCooling = new System.Windows.Forms.CheckBox();
+            this.checkRandomizeStartingPoints = new System.Windows.Forms.CheckBox();
+            this.label75 = new System.Windows.Forms.Label();
+            this.textNumberOfThreads = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.groupSkirt.SuspendLayout();
             this.groupAccuracy.SuspendLayout();
@@ -598,6 +601,8 @@
             // 
             // groupPrintSettings
             // 
+            this.groupPrintSettings.Controls.Add(this.label75);
+            this.groupPrintSettings.Controls.Add(this.checkRandomizeStartingPoints);
             this.groupPrintSettings.Controls.Add(this.comboSupportMaterialTool);
             this.groupPrintSettings.Controls.Add(this.label67);
             this.groupPrintSettings.Controls.Add(this.checkGenerateSupportMaterial);
@@ -613,10 +618,11 @@
             this.groupPrintSettings.Controls.Add(this.textFillAngle);
             this.groupPrintSettings.Controls.Add(this.textFillDensity);
             this.groupPrintSettings.Controls.Add(this.textSolidLayers);
+            this.groupPrintSettings.Controls.Add(this.textNumberOfThreads);
             this.groupPrintSettings.Controls.Add(this.textPerimeters);
             this.groupPrintSettings.Location = new System.Drawing.Point(349, 7);
             this.groupPrintSettings.Name = "groupPrintSettings";
-            this.groupPrintSettings.Size = new System.Drawing.Size(330, 235);
+            this.groupPrintSettings.Size = new System.Drawing.Size(330, 288);
             this.groupPrintSettings.TabIndex = 3;
             this.groupPrintSettings.TabStop = false;
             this.groupPrintSettings.Text = "Print settings";
@@ -628,7 +634,7 @@
             this.comboSupportMaterialTool.Items.AddRange(new object[] {
             "Primary",
             "Secondary"});
-            this.comboSupportMaterialTool.Location = new System.Drawing.Point(144, 208);
+            this.comboSupportMaterialTool.Location = new System.Drawing.Point(144, 232);
             this.comboSupportMaterialTool.Name = "comboSupportMaterialTool";
             this.comboSupportMaterialTool.Size = new System.Drawing.Size(129, 21);
             this.comboSupportMaterialTool.TabIndex = 7;
@@ -636,7 +642,7 @@
             // label67
             // 
             this.label67.AutoSize = true;
-            this.label67.Location = new System.Drawing.Point(10, 206);
+            this.label67.Location = new System.Drawing.Point(10, 230);
             this.label67.Name = "label67";
             this.label67.Size = new System.Drawing.Size(123, 13);
             this.label67.TabIndex = 12;
@@ -645,7 +651,7 @@
             // checkGenerateSupportMaterial
             // 
             this.checkGenerateSupportMaterial.AutoSize = true;
-            this.checkGenerateSupportMaterial.Location = new System.Drawing.Point(10, 182);
+            this.checkGenerateSupportMaterial.Location = new System.Drawing.Point(10, 206);
             this.checkGenerateSupportMaterial.Name = "checkGenerateSupportMaterial";
             this.checkGenerateSupportMaterial.Size = new System.Drawing.Size(147, 17);
             this.checkGenerateSupportMaterial.TabIndex = 6;
@@ -1643,6 +1649,36 @@
             this.checkEnableCooling.Text = "Enable cooling";
             this.checkEnableCooling.UseVisualStyleBackColor = true;
             // 
+            // checkRandomizeStartingPoints
+            // 
+            this.checkRandomizeStartingPoints.AutoSize = true;
+            this.checkRandomizeStartingPoints.Checked = true;
+            this.checkRandomizeStartingPoints.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkRandomizeStartingPoints.Location = new System.Drawing.Point(10, 182);
+            this.checkRandomizeStartingPoints.Name = "checkRandomizeStartingPoints";
+            this.checkRandomizeStartingPoints.Size = new System.Drawing.Size(147, 17);
+            this.checkRandomizeStartingPoints.TabIndex = 13;
+            this.checkRandomizeStartingPoints.Text = "Randomize starting points";
+            this.checkRandomizeStartingPoints.UseVisualStyleBackColor = true;
+            // 
+            // label75
+            // 
+            this.label75.AutoSize = true;
+            this.label75.Location = new System.Drawing.Point(13, 260);
+            this.label75.Name = "label75";
+            this.label75.Size = new System.Drawing.Size(97, 13);
+            this.label75.TabIndex = 14;
+            this.label75.Text = "Number of threads:";
+            // 
+            // textNumberOfThreads
+            // 
+            this.textNumberOfThreads.Location = new System.Drawing.Point(144, 259);
+            this.textNumberOfThreads.Name = "textNumberOfThreads";
+            this.textNumberOfThreads.Size = new System.Drawing.Size(106, 20);
+            this.textNumberOfThreads.TabIndex = 0;
+            this.textNumberOfThreads.Text = "2";
+            this.textNumberOfThreads.Validating += new System.ComponentModel.CancelEventHandler(this.int_Validating);
+            // 
             // Slic3r
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1832,5 +1868,8 @@
         private System.Windows.Forms.TextBox textFirstLayerBedTemperature;
         private System.Windows.Forms.TextBox textBedTemperature;
         private System.Windows.Forms.CheckBox checkFanAlwaysEnabled;
+        private System.Windows.Forms.Label label75;
+        private System.Windows.Forms.CheckBox checkRandomizeStartingPoints;
+        private System.Windows.Forms.TextBox textNumberOfThreads;
     }
 }

@@ -243,6 +243,9 @@ namespace RepetierHost
             tempView = new TemperatureView();
             tempView.Dock = DockStyle.Fill;
             tabPageTemp.Controls.Add(tempView);
+            if (IsMono)
+                showWorkdirectoryToolStripMenuItem.Visible = false;
+            new SoundConfig();
         }
 
         public void UpdateConnections()
@@ -464,6 +467,10 @@ namespace RepetierHost
                 editor.selectContent(0);
                 fileHistory.Save(file);
                 UpdateHistory();
+            }
+            catch (System.IO.FileNotFoundException)
+            {
+                GCodeNotFound.execute(file);
             }
             catch (Exception e)
             {
@@ -890,7 +897,12 @@ namespace RepetierHost
             }
             else if (com.Equals("@pause"))
             {
+                SoundConfig.PlayPrintPaused(false);
                 conn.pause(param);
+            }
+            else if (com.Equals("@sound"))
+            {
+                SoundConfig.PlaySoundCommand(false);
             }
         }
         public void updateShowFilament()
@@ -1014,6 +1026,30 @@ namespace RepetierHost
         private void heatedBedToolStripMenuItem_Click(object sender, EventArgs e)
         {
             conn.injectManualCommand("M203 S100");
+        }
+
+        private void showWorkdirectoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Directory.Exists(Main.globalSettings.Workdir))
+                Process.Start("explorer.exe", Main.globalSettings.Workdir);
+        }
+
+        private void soundConfigurationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SoundConfig.config.ShowDialog();
+        }
+
+        private void toolStripSaveJob_Click(object sender, EventArgs e)
+        {
+            StoreCode.Execute();
+        }
+
+        private void Main_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (tabControlView.SelectedIndex == 0)
+            {
+                threedview.ThreeDControl_KeyDown(sender, e);
+            }
         }
     }
 }

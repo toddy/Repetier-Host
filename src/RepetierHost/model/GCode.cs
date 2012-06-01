@@ -44,6 +44,7 @@ namespace RepetierHost.model
         private String text = null;
         public String orig;
 
+        public bool hasCode { get { return fields != 128; } }
         public bool hasText { get { return (fields & 32768) != 0; } }
         public String Text
         {

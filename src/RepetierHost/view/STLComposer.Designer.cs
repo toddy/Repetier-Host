@@ -30,6 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panelControls = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.buttonSave = new System.Windows.Forms.Button();
+            this.buttonSlice = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.buttonCopyObjects = new System.Windows.Forms.Button();
             this.buttonAddSTL = new System.Windows.Forms.Button();
@@ -61,16 +64,13 @@
             this.label5 = new System.Windows.Forms.Label();
             this.textTransX = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.buttonSlice = new System.Windows.Forms.Button();
-            this.buttonSave = new System.Windows.Forms.Button();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.openFileSTL = new System.Windows.Forms.OpenFileDialog();
             this.saveSTL = new System.Windows.Forms.SaveFileDialog();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panelControls.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
-            this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelControls
@@ -106,6 +106,50 @@
             this.panelControls.Name = "panelControls";
             this.panelControls.Size = new System.Drawing.Size(236, 624);
             this.panelControls.TabIndex = 0;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel2.ColumnCount = 2;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.Controls.Add(this.buttonSave, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.buttonSlice, 1, 0);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(236, 30);
+            this.tableLayoutPanel2.TabIndex = 18;
+            // 
+            // buttonSave
+            // 
+            this.buttonSave.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buttonSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonSave.Location = new System.Drawing.Point(0, 0);
+            this.buttonSave.Margin = new System.Windows.Forms.Padding(0);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(118, 30);
+            this.buttonSave.TabIndex = 0;
+            this.buttonSave.Text = "Save as STL";
+            this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
+            // 
+            // buttonSlice
+            // 
+            this.buttonSlice.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buttonSlice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonSlice.Location = new System.Drawing.Point(118, 0);
+            this.buttonSlice.Margin = new System.Windows.Forms.Padding(0);
+            this.buttonSlice.Name = "buttonSlice";
+            this.buttonSlice.Size = new System.Drawing.Size(118, 30);
+            this.buttonSlice.TabIndex = 1;
+            this.buttonSlice.Text = "Generate G-Code";
+            this.buttonSlice.UseVisualStyleBackColor = true;
+            this.buttonSlice.Click += new System.EventHandler(this.buttonSlice_Click);
             // 
             // tableLayoutPanel1
             // 
@@ -232,6 +276,7 @@
             this.listSTLObjects.Size = new System.Drawing.Size(236, 316);
             this.listSTLObjects.TabIndex = 12;
             this.listSTLObjects.SelectedIndexChanged += new System.EventHandler(this.listSTLObjects_SelectedIndexChanged);
+            this.listSTLObjects.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listSTLObjects_KeyDown);
             // 
             // checkScaleAll
             // 
@@ -435,32 +480,6 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "Translation:";
             // 
-            // buttonSlice
-            // 
-            this.buttonSlice.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonSlice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonSlice.Location = new System.Drawing.Point(118, 0);
-            this.buttonSlice.Margin = new System.Windows.Forms.Padding(0);
-            this.buttonSlice.Name = "buttonSlice";
-            this.buttonSlice.Size = new System.Drawing.Size(118, 30);
-            this.buttonSlice.TabIndex = 1;
-            this.buttonSlice.Text = "Generate G-Code";
-            this.buttonSlice.UseVisualStyleBackColor = true;
-            this.buttonSlice.Click += new System.EventHandler(this.buttonSlice_Click);
-            // 
-            // buttonSave
-            // 
-            this.buttonSave.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonSave.Location = new System.Drawing.Point(0, 0);
-            this.buttonSave.Margin = new System.Windows.Forms.Padding(0);
-            this.buttonSave.Name = "buttonSave";
-            this.buttonSave.Size = new System.Drawing.Size(118, 30);
-            this.buttonSave.TabIndex = 0;
-            this.buttonSave.Text = "Save as STL";
-            this.buttonSave.UseVisualStyleBackColor = true;
-            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
-            // 
             // errorProvider
             // 
             this.errorProvider.ContainerControl = this;
@@ -478,24 +497,6 @@
             this.saveSTL.Filter = "STL-Files|*.stl";
             this.saveSTL.Title = "Save composition";
             // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Controls.Add(this.buttonSave, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.buttonSlice, 1, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(236, 30);
-            this.tableLayoutPanel2.TabIndex = 18;
-            // 
             // STLComposer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -505,10 +506,10 @@
             this.Size = new System.Drawing.Size(236, 624);
             this.panelControls.ResumeLayout(false);
             this.panelControls.PerformLayout();
+            this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
-            this.tableLayoutPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

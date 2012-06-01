@@ -1,3 +1,15 @@
+Version 0.51 1.6.2012
+  Upgraded Slic3r to version 0.8.2
+  Grid has now 1cm spacing as site reference.
+  Added "Show workdirectory" menu entry to show it in file explorer.
+  Sounds for job finished/paused/error/@sound command
+  Added save job function to save a job for local storage on sd card.
+  Added ctrl+a and delete/backspace shortcut in object placement.
+  Use cursor keys to rotate graphic.
+  Better error messages if a sliced file was not found.
+  Some minor changes.
+  Fixed graphic bug in layer preview
+
 Version 0.50 22.4.2012
   Upgraded Slic3r to version 0.7.2b.
   New main window arrangement.

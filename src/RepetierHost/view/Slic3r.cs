@@ -114,6 +114,9 @@ namespace RepetierHost.view
             checkFanAlwaysEnabled.Checked = ((int)c.GetValue("FanAlwaysEnabled", checkFanAlwaysEnabled.Checked ? 1 : 0)) == 1;
             textFirstLayerBedTemperature.Text = (string)c.GetValue("FirstLayerBedTemperature", textFirstLayerBedTemperature.Text);
             textBedTemperature.Text = (string)c.GetValue("BedTemperature", textBedTemperature.Text);
+            checkRandomizeStartingPoints.Checked = ((int)c.GetValue("RandomizeStartingPoints", checkRandomizeStartingPoints.Checked ? 1 : 0)) == 1;
+            textNumberOfThreads.Text = (string)c.GetValue("NumberOfThreads", textNumberOfThreads.Text);
+
         }
         private void saveConfig(string name)
         {
@@ -166,7 +169,8 @@ namespace RepetierHost.view
             c.SetValue("FanAlwaysEnabled", checkFanAlwaysEnabled.Checked ? 1 : 0);
             c.SetValue("FirstLayerBedTemperature", textFirstLayerBedTemperature.Text);
             c.SetValue("BedTemperature", textBedTemperature.Text);
-
+            c.SetValue("RandomizeStartingPoints", checkRandomizeStartingPoints.Checked ? 1 : 0);
+            c.SetValue("NumberOfThreads", textNumberOfThreads.Text);
         }
         private void buttonOK_Click(object sender, EventArgs e)
         {
@@ -201,7 +205,7 @@ namespace RepetierHost.view
             TextBox box = (TextBox)sender;
             try
             {
-                float f = float.Parse(box.Text);
+                float f = float.Parse(box.Text, NumberStyles.AllowDecimalPoint, GCode.format);
                 if(f>=0) 
                     errorProvider.SetError(box, "");
                 else
@@ -347,7 +351,11 @@ namespace RepetierHost.view
                     sb.Append("--gcode-comments ");
                // else
                //     sb.Append("--gcode-comments 0 ");
-                sb.Append("--z-offset ");
+                sb.Append("-j ");
+                sb.Append(textNumberOfThreads.Text);
+                if (checkRandomizeStartingPoints.Checked)
+                    sb.Append(" --randomize-start");
+                sb.Append(" --z-offset ");
                 sb.Append(textZOffset.Text);
                 sb.Append(" --filament-diameter ");
                 sb.Append(textDiameter.Text);

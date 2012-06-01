@@ -157,6 +157,10 @@
       <DependentUpon>FormPrinterSettings.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="view\GCodeNotFound.resx">
+      <DependentUpon>GCodeNotFound.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="view\GlobalSettings.resx">
       <DependentUpon>GlobalSettings.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -213,8 +217,16 @@
       <DependentUpon>SlicingParameter.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="view\SoundConfig.resx">
+      <DependentUpon>SoundConfig.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="view\STLComposer.resx">
       <DependentUpon>STLComposer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="view\StoreCode.resx">
+      <DependentUpon>StoreCode.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="view\SwitchButton.resx">
@@ -302,6 +314,12 @@
     <Compile Include="view\FormPrinterSettings.Designer.cs">
       <DependentUpon>FormPrinterSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="view\GCodeNotFound.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="view\GCodeNotFound.Designer.cs">
+      <DependentUpon>GCodeNotFound.cs</DependentUpon>
+    </Compile>
     <Compile Include="view\GlobalSettings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -386,11 +404,23 @@
     <Compile Include="view\SlicingParameter.Designer.cs">
       <DependentUpon>SlicingParameter.cs</DependentUpon>
     </Compile>
+    <Compile Include="view\SoundConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="view\SoundConfig.Designer.cs">
+      <DependentUpon>SoundConfig.cs</DependentUpon>
+    </Compile>
     <Compile Include="view\STLComposer.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="view\STLComposer.Designer.cs">
       <DependentUpon>STLComposer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="view\StoreCode.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="view\StoreCode.Designer.cs">
+      <DependentUpon>StoreCode.cs</DependentUpon>
     </Compile>
     <Compile Include="view\SwitchButton.cs">
       <SubType>UserControl</SubType>
@@ -435,6 +465,9 @@
       <DependentUpon>PauseInfo.cs</DependentUpon>
     </Compile>
     <Compile Include="view\utils\RegMemory.cs" />
+    <Compile Include="view\utils\RHOpenGL.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="view\utils\Slicer.cs" />
     <Compile Include="view\utils\SlicingInfo.cs">
       <SubType>Form</SubType>

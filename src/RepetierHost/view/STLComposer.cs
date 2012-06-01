@@ -319,6 +319,8 @@ namespace RepetierHost.view
                 autosizeFailed = false; // Reset autoposition
             }
             list.Clear();
+            if (listSTLObjects.Items.Count > 0)
+                listSTLObjects.SelectedIndex = 0;
             Main.main.threedview.UpdateChanges();
         }
 
@@ -570,6 +572,21 @@ namespace RepetierHost.view
                 }
             }
             inRecheckFiles = false;
+        }
+
+        public void listSTLObjects_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Modifiers == Keys.Control && e.KeyCode == Keys.A)
+            {
+                for(int i=0;i<listSTLObjects.Items.Count;i++)
+                    listSTLObjects.SetSelected(i,true);
+                e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.Delete || e.KeyCode == Keys.Back)
+            {
+                buttonRemoveSTL_Click(sender,null);
+                e.Handled = true;
+            }
         }
     }
 }

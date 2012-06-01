@@ -370,8 +370,8 @@ namespace RepetierHost.view
             //c.Text = ""; // System.IO.File.ReadAllText("d:\\arduino\\Mendel\\models\\foambowl_export.gcode");
             toolFile.Items.Clear();
             toolFile.Items.Add(c);
-            toolFile.Items.Add(new Content(this, 1, "Prepend"));
-            toolFile.Items.Add(new Content(this, 2, "Append"));
+            toolFile.Items.Add(new Content(this, 1, "Start code"));
+            toolFile.Items.Add(new Content(this, 2, "End code"));
             toolFile.SelectedIndex = 0;
             labelMaxLayer.DataBindings.Add("Text",
                            this, "MaxLayer");

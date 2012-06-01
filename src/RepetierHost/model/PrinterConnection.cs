@@ -351,6 +351,7 @@ namespace RepetierHost.model
             {
                 log("Receiving only error messages. Stopped communication.", false, 2);
                 close();
+                RepetierHost.view.SoundConfig.PlayError(false);
                 return; // give up, something is terribly wrong
             }
             line &= 65535;
@@ -689,6 +690,9 @@ namespace RepetierHost.model
                 serial.RtsEnable = false;
                 serial.DtrEnable = false;
                 serial.Open();
+              //  serial.DtrEnable = true;
+             //   Thread.Sleep(400);
+             //   serial.DtrEnable = false;
                 // If we didn't restart the connection we need to eat
                 // all unread data on this port.
                 serial.DiscardInBuffer();
@@ -725,6 +729,7 @@ namespace RepetierHost.model
                 log(ex.Message, true, 2);
                 if (eventConnectionChange != null)
                     eventConnectionChange("Conn. error");
+                RepetierHost.view.SoundConfig.PlayError(false);
             }
         }
 
@@ -1155,6 +1160,7 @@ namespace RepetierHost.model
             if (extract(res, "Error:") != null)
             {
                 level = 2;
+                RepetierHost.view.SoundConfig.PlayError(false);
             }
             if (tempChange && eventTempChange != null)
             {

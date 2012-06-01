@@ -54,11 +54,13 @@ namespace RepetierHost.view
         {
             repetierKey.SetValue("workdir", Workdir);
             repetierKey.SetValue("logEnabled", LogEnabled ? 1 : 0);
+            repetierKey.SetValue("disableQualityReduction", DisableQualityReduction ? 1 : 0);
         }
         public void RegToForm()
         {
             Workdir = (string)repetierKey.GetValue("workdir", Workdir);
             checkLogfile.Checked = 1== (int) repetierKey.GetValue("logEnabled", LogEnabled ? 1 : 0);
+            checkDisableQualityReduction.Checked = 1 == (int)repetierKey.GetValue("disableQualityReduction", DisableQualityReduction ? 1 : 0);
         }
         public string Workdir
         {
@@ -68,6 +70,10 @@ namespace RepetierHost.view
         public Boolean LogEnabled
         {
             get { return checkLogfile.Checked; }
+        }
+        public Boolean DisableQualityReduction
+        {
+            get { return checkDisableQualityReduction.Checked; }
         }
         private void buttonAbort_Click(object sender, EventArgs e)
         {

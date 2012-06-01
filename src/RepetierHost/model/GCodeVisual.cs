@@ -42,6 +42,7 @@ namespace RepetierHost.model
         public int[] elements = null;
         public int[] buf = new int[3];
         public bool hasBuf = false;
+        public int elementsLength;
         public LinkedList<LinkedList<GCodePoint>> pointsLists = new LinkedList<LinkedList<GCodePoint>>();
         public void Add(Vector3 v, float e, float d)
         {
@@ -70,14 +71,15 @@ namespace RepetierHost.model
             {
                 if (true && path.elements != null && drawMethod == path.drawMethod) // both parts are already up to date, so just join them
                 {
-                    int[] newelements = new int[elements.Length + path.elements.Length];
-                    int p, l = elements.Length, i;
+                    int[] newelements = new int[elementsLength + path.elementsLength];
+                    int p, l = elementsLength, i;
                     for (p = 0; p < l; p++) newelements[p] = elements[p];
                     int[] pe = path.elements;
-                    l = pe.Length;
+                    l = path.elementsLength;
                     int pointsold = positions.Length / 3;
                     for (i = 0; i < l; i++) newelements[p++] = pe[i] + pointsold;
                     elements = newelements;
+                    elementsLength = elements.Length;
                     float[] newnormals = null;
                     if (normals != null) newnormals = new float[normals.Length + path.normals.Length];
                     float[] newpoints = new float[positions.Length + path.positions.Length];
@@ -164,7 +166,7 @@ namespace RepetierHost.model
                 GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(normals.Length * sizeof(float)), normals, BufferUsageHint.StaticDraw);
             }
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, buf[2]);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(elements.Length * sizeof(int)), elements, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(elementsLength * sizeof(int)), elements, BufferUsageHint.StaticDraw);
             hasBuf = true;
         }
         public void UpdateVBO(bool buffer)
@@ -333,6 +335,7 @@ namespace RepetierHost.model
                         first = false;
                     }
                 }
+                elementsLength = pos;
                 if (buffer)
                 {
                     GL.GenBuffers(3, buf);
@@ -341,7 +344,7 @@ namespace RepetierHost.model
                     GL.BindBuffer(BufferTarget.ArrayBuffer, buf[1]);
                     GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(normals.Length * sizeof(float)), normals, BufferUsageHint.StaticDraw);
                     GL.BindBuffer(BufferTarget.ElementArrayBuffer, buf[2]);
-                    GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(elements.Length * sizeof(int)), elements, BufferUsageHint.StaticDraw);
+                    GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(elementsLength * sizeof(int)), elements, BufferUsageHint.StaticDraw);
                     // GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
                     hasBuf = true;
                 }
@@ -352,6 +355,8 @@ namespace RepetierHost.model
                 bool first = true;
                 foreach (LinkedList<GCodePoint> points in pointsLists)
                 {
+                    if (points.Count < 2)
+                        continue;
                     first = true;
                     foreach (GCodePoint pt in points)
                     {
@@ -362,20 +367,23 @@ namespace RepetierHost.model
 
                         if (!first)
                         {
-                            elements[pos] = pos / 2;
-                            elements[pos + 1] = pos / 2 + 1;
+                           // elements[pos] = pos / 2;
+                           // elements[pos + 1] = pos / 2 + 1;
+                            elements[pos] = vpos / 3-1;
+                            elements[pos + 1] = vpos / 3-2;
                             pos += 2;
                         }
                         first = false;
                     }
                 }
+                elementsLength = pos;
                 if (buffer)
                 {
                     GL.GenBuffers(3, buf);
                     GL.BindBuffer(BufferTarget.ArrayBuffer, buf[0]);
                     GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(positions.Length * sizeof(float)), positions, BufferUsageHint.StaticDraw);
                     GL.BindBuffer(BufferTarget.ElementArrayBuffer, buf[2]);
-                    GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(elements.Length * sizeof(int)), elements, BufferUsageHint.StaticDraw);
+                    GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(elementsLength * sizeof(int)), elements, BufferUsageHint.StaticDraw);
                     hasBuf = true;
                 }
             }
@@ -408,6 +416,7 @@ namespace RepetierHost.model
         bool fixedH;
         float dfac;
         float lastx = 1e20f, lasty = 0, lastz = 0;
+        int lastLayer = 0;
         bool changed = false;
         public bool startOnClear = false;
         public int minLayer, maxLayer;
@@ -443,14 +452,16 @@ namespace RepetierHost.model
             if (ana.maxDrawMethod > 0)
             {
                 ana.maxDrawMethod--;
-                Main.conn.log("Reduced visual quality for better framerates and to protect print quality", false, 1);
+                Main.conn.log("Reduced visual quality for better framerates and to protect print quality.", false, 1);
+                Main.conn.log("You can disable this in Config->Repetier settings->Behaviour.", false, 1);
             }
             else
             {
                 if (ana.drawing)
                 {
                     ana.drawing = false;
-                    Main.conn.log("Disabled additional filament drawing for better framerates and to protect print quality", false, 1);
+                    Main.conn.log("Disabled additional filament drawing for better framerates and to protect print quality.", false, 1);
+                    Main.conn.log("You can disable this in Config->Repetier settings->Behaviour.", false, 1);
                 }
             }
         }
@@ -597,17 +608,30 @@ namespace RepetierHost.model
         }
         void OnPosChangeFast(float x, float y, float z, float e)
         {
-            if (!ana.drawing || ana.layer<minLayer || ana.layer>maxLayer)
+            if (!ana.drawing || ana.layer < minLayer || ana.layer > maxLayer)
             {
                 lastx = x;
                 lasty = y;
                 lastz = z;
                 laste = ana.emax;
+                lastLayer = ana.layer;
                 return;
             }
             float locDist = (float)Math.Sqrt((x - lastx) * (x - lastx) + (y - lasty) * (y - lasty) + (z - lastz) * (z - lastz));
             bool isLastPos = locDist < 0.00001;
             //if (!act.hasG || (act.G > 1 && act.G != 28)) return;
+            if (lastLayer == minLayer - 1 && laste < e)
+            {
+                GCodePath p = new GCodePath();
+                p.Add(new Vector3(lastx, lasty, lastz), laste, totalDist);
+
+                if (segments.Count > 0 && segments.Last.Value.pointsLists.Last.Value.Count == 1)
+                {
+                    segments.RemoveLast();
+                }
+                segments.AddLast(p);
+            }
+
             if (segments.Count == 0 || laste >= ana.e) // start new segment
             {
                 if (!isLastPos) // no move, no action
@@ -750,7 +774,7 @@ namespace RepetierHost.model
                 if (method == 0)
                 {
                     GL.BindBuffer(BufferTarget.ElementArrayBuffer, path.buf[2]);
-                    GL.DrawElements(BeginMode.Lines, path.elements.Length, DrawElementsType.UnsignedInt, 0);
+                    GL.DrawElements(BeginMode.Lines, path.elementsLength, DrawElementsType.UnsignedInt, 0);
                 }
                 else
                 {
@@ -758,7 +782,7 @@ namespace RepetierHost.model
                     GL.BindBuffer(BufferTarget.ArrayBuffer, path.buf[1]);
                     GL.NormalPointer(NormalPointerType.Float, 0, 0);
                     GL.BindBuffer(BufferTarget.ElementArrayBuffer, path.buf[2]);
-                    GL.DrawElements(BeginMode.Quads, path.elements.Length, DrawElementsType.UnsignedInt, 0);
+                    GL.DrawElements(BeginMode.Quads, path.elementsLength, DrawElementsType.UnsignedInt, 0);
                     GL.DisableClientState(ArrayCap.NormalArray);
                 }
                 if (liveView && path.lastDist > minHotDist)
@@ -805,12 +829,12 @@ namespace RepetierHost.model
                         GL.ColorPointer(3, ColorPointerType.Float, 0, cp);
                     }
                     if (method == 0)
-                        GL.DrawElements(BeginMode.Lines, path.elements.Length, DrawElementsType.UnsignedInt, path.elements);
+                        GL.DrawElements(BeginMode.Lines, path.elementsLength, DrawElementsType.UnsignedInt, path.elements);
                     else
                     {
                         GL.EnableClientState(ArrayCap.NormalArray);
                         GL.NormalPointer(NormalPointerType.Float, 0, path.normals);
-                        GL.DrawElements(BeginMode.Quads, path.elements.Length, DrawElementsType.UnsignedInt, path.elements);
+                        GL.DrawElements(BeginMode.Quads, path.elementsLength, DrawElementsType.UnsignedInt, path.elements);
                         GL.DisableClientState(ArrayCap.NormalArray);
                     }
                     /*ErrorCode err = GL.GetError();
@@ -829,7 +853,7 @@ namespace RepetierHost.model
                 {
                     if (!liveView || path.lastDist < minHotDist)
                     {
-                        int i, l = path.elements.Length;
+                        int i, l = path.elementsLength;
                         if (method == 0)
                         {
                             GL.Begin(BeginMode.Lines);

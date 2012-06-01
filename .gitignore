@@ -27,3 +27,5 @@ src/RepetierHost/bin/Release/RepetierHost.exe
 repetierHostLinux*
 
 setupRepetierHost*
+
+src/RepetierHost/images/Thumbs.db
