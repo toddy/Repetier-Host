@@ -95,6 +95,10 @@ namespace RepetierHost.model
                 Main.main.jobVisual.ResetQuality();
             fireChanged();
         }
+        public void StartJob() {
+            layer = 0;
+            lastZPrint = 0;
+        }
         public void Analyze(GCode code)
         {
             if (code.hostCommand)

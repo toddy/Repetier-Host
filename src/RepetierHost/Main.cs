@@ -504,6 +504,7 @@ namespace RepetierHost
             else
             {
                 tab.SelectedTab = tabPrint;
+                conn.analyzer.StartJob();
                 toolRunJob.Image = imageList.Images[3];
                 job.BeginJob();
                 job.PushGCodeShortArray(editor.getContentArray(1));
