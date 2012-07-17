@@ -62,6 +62,7 @@
             this.label33 = new System.Windows.Forms.Label();
             this.textDisposeZ = new System.Windows.Forms.TextBox();
             this.label32 = new System.Windows.Forms.Label();
+            this.checkDisableMotors = new System.Windows.Forms.CheckBox();
             this.checkDisbaleHeatedBedAfterJob = new System.Windows.Forms.CheckBox();
             this.checkDisableExtruderAfterJob = new System.Windows.Forms.CheckBox();
             this.checkGoDisposeAfterJob = new System.Windows.Forms.CheckBox();
@@ -115,6 +116,9 @@
             this.buttonAbort = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.label41 = new System.Windows.Forms.Label();
+            this.textAddPrintingTime = new System.Windows.Forms.TextBox();
+            this.label42 = new System.Windows.Forms.Label();
             this.panelPrinterSelect.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPageConnection.SuspendLayout();
@@ -374,6 +378,9 @@
             // tabPagePrinter
             // 
             this.tabPagePrinter.BackColor = System.Drawing.Color.Transparent;
+            this.tabPagePrinter.Controls.Add(this.label42);
+            this.tabPagePrinter.Controls.Add(this.textAddPrintingTime);
+            this.tabPagePrinter.Controls.Add(this.label41);
             this.tabPagePrinter.Controls.Add(this.logM105Checkbox);
             this.tabPagePrinter.Controls.Add(this.label37);
             this.tabPagePrinter.Controls.Add(this.label36);
@@ -384,6 +391,7 @@
             this.tabPagePrinter.Controls.Add(this.label33);
             this.tabPagePrinter.Controls.Add(this.textDisposeZ);
             this.tabPagePrinter.Controls.Add(this.label32);
+            this.tabPagePrinter.Controls.Add(this.checkDisableMotors);
             this.tabPagePrinter.Controls.Add(this.checkDisbaleHeatedBedAfterJob);
             this.tabPagePrinter.Controls.Add(this.checkDisableExtruderAfterJob);
             this.tabPagePrinter.Controls.Add(this.checkGoDisposeAfterJob);
@@ -503,6 +511,16 @@
             this.label32.Size = new System.Drawing.Size(37, 13);
             this.label32.TabIndex = 16;
             this.label32.Text = "Z-Min:";
+            // 
+            // checkDisableMotors
+            // 
+            this.checkDisableMotors.AutoSize = true;
+            this.checkDisableMotors.Location = new System.Drawing.Point(16, 281);
+            this.checkDisableMotors.Name = "checkDisableMotors";
+            this.checkDisableMotors.Size = new System.Drawing.Size(170, 17);
+            this.checkDisableMotors.TabIndex = 10;
+            this.checkDisableMotors.Text = "Disable motors after job/job kill";
+            this.checkDisableMotors.UseVisualStyleBackColor = true;
             // 
             // checkDisbaleHeatedBedAfterJob
             // 
@@ -1030,10 +1048,37 @@
             // 
             this.errorProvider.ContainerControl = this;
             // 
+            // label41
+            // 
+            this.label41.AutoSize = true;
+            this.label41.Location = new System.Drawing.Point(13, 305);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(132, 13);
+            this.label41.TabIndex = 26;
+            this.label41.Text = "Add to comp. printing time:";
+            // 
+            // textAddPrintingTime
+            // 
+            this.textAddPrintingTime.Location = new System.Drawing.Point(152, 305);
+            this.textAddPrintingTime.Name = "textAddPrintingTime";
+            this.textAddPrintingTime.Size = new System.Drawing.Size(54, 20);
+            this.textAddPrintingTime.TabIndex = 27;
+            this.textAddPrintingTime.Text = "8";
+            this.textAddPrintingTime.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
+            // 
+            // label42
+            // 
+            this.label42.AutoSize = true;
+            this.label42.Location = new System.Drawing.Point(233, 304);
+            this.label42.Name = "label42";
+            this.label42.Size = new System.Drawing.Size(21, 13);
+            this.label42.TabIndex = 28;
+            this.label42.Text = "[%]";
+            // 
             // FormPrinterSettings
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(489, 477);
             this.ControlBox = false;
             this.Controls.Add(this.panel1);
@@ -1157,5 +1202,9 @@
         private System.Windows.Forms.Label label40;
         private System.Windows.Forms.CheckBox checkRunFilterEverySlice;
         private System.Windows.Forms.TextBox textFilterPath;
+        private System.Windows.Forms.CheckBox checkDisableMotors;
+        private System.Windows.Forms.Label label42;
+        private System.Windows.Forms.TextBox textAddPrintingTime;
+        private System.Windows.Forms.Label label41;
     }
 }

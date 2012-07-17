@@ -34,6 +34,9 @@ namespace RepetierHost.view
             comboSolidFillPattern.SelectedIndex = 0;
             comboGCodeFlavor.SelectedIndex = 0;
             comboSupportMaterialTool.SelectedIndex = 0;
+            comboSupportPattern.SelectedIndex = 0;
+            comboSupportPattern.Text = "rectilinear";
+
             RegMemory.RestoreWindowPos("slic3rWindow", this);
             rconfigs = Main.main.repetierKey.CreateSubKey("slic3r");
             foreach (string s in rconfigs.GetSubKeyNames())
@@ -76,9 +79,8 @@ namespace RepetierHost.view
             textPrintFeedrate.Text = (string)c.GetValue("PrintFeedrate", textPrintFeedrate.Text);
             textTravelFeedrate.Text = (string)c.GetValue("TravelFeedrate", textTravelFeedrate.Text);
             textPerimeterFeedrate.Text = (string)c.GetValue("PerimeterFeedrate", textPerimeterFeedrate.Text);
-            textBottomLayerRatio.Text = (string)c.GetValue("BottomLayerRatio", textBottomLayerRatio.Text);
             textLayerHeight.Text = (string)c.GetValue("LayerHeight", textLayerHeight.Text);
-            textFirstLayerHeightRatio.Text = (string)c.GetValue("FirstLayerHeightRatio", textFirstLayerHeightRatio.Text);
+            textFirstLayerHeight.Text = (string)c.GetValue("FirstLayerHeight", textFirstLayerHeight.Text);
             textInfillEvery.Text = (string)c.GetValue("InfillEvery", textInfillEvery.Text);
             textPerimeters.Text = (string)c.GetValue("Perimeters", textPerimeters.Text);
             textSolidLayers.Text = (string)c.GetValue("SolidLayers", textSolidLayers.Text);
@@ -94,7 +96,7 @@ namespace RepetierHost.view
             textSkirtLoops.Text = (string)c.GetValue("SkirtLoops", textSkirtLoops.Text);
             textSkirtHeight.Text = (string)c.GetValue("SkirtHeight", textSkirtHeight.Text);
             textSkirtDistance.Text = (string)c.GetValue("SkirtDistance", textSkirtDistance.Text);
-            textExtrusionWidthRatio.Text = (string)c.GetValue("ExtrusionWidthRatio", textExtrusionWidthRatio.Text);
+            textExtrusionWidth.Text = (string)c.GetValue("ExtrusionWidth", textExtrusionWidth.Text);
             textBridgeFlowRatio.Text = (string) c.GetValue("BridgeFlowRatio", textBridgeFlowRatio.Text);
             textBridgeSpeed.Text = (string) c.GetValue("BridgeSpeed", textBridgeSpeed.Text);
             textSolidInfillSpeed.Text = (string) c.GetValue("SolidInfillSpeed", textSolidInfillSpeed.Text);
@@ -116,7 +118,12 @@ namespace RepetierHost.view
             textBedTemperature.Text = (string)c.GetValue("BedTemperature", textBedTemperature.Text);
             checkRandomizeStartingPoints.Checked = ((int)c.GetValue("RandomizeStartingPoints", checkRandomizeStartingPoints.Checked ? 1 : 0)) == 1;
             textNumberOfThreads.Text = (string)c.GetValue("NumberOfThreads", textNumberOfThreads.Text);
-
+            textFirstLayerSpeed.Text = (string)c.GetValue("FirstLayerSpeed", textFirstLayerSpeed.Text);
+            textOverhangTreshold.Text = (string)c.GetValue("OverhangTreshold", textOverhangTreshold.Text);
+            textPatternSpacing.Text = (string)c.GetValue("PatternSpacing", textPatternSpacing.Text);
+            textPatternAngle.Text = (string)c.GetValue("PatternAngle", textPatternAngle.Text);
+            comboSupportPattern.Text = (string)c.GetValue("SupportPattern", comboSupportPattern.Text);
+            textBrim.Text = (string)c.GetValue("BrimWidth",textBrim.Text);
         }
         private void saveConfig(string name)
         {
@@ -131,9 +138,8 @@ namespace RepetierHost.view
             c.SetValue("PrintFeedrate", textPrintFeedrate.Text);
             c.SetValue("TravelFeedrate", textTravelFeedrate.Text);
             c.SetValue("PerimeterFeedrate", textPerimeterFeedrate.Text);
-            c.SetValue("BottomLayerRatio", textBottomLayerRatio.Text);
             c.SetValue("LayerHeight", textLayerHeight.Text);
-            c.SetValue("FirstLayerHeightRatio", textFirstLayerHeightRatio.Text);
+            c.SetValue("FirstLayerHeight", textFirstLayerHeight.Text);
             c.SetValue("InfillEvery", textInfillEvery.Text);
             c.SetValue("Perimeters", textPerimeters.Text);
             c.SetValue("SolidLayers", textSolidLayers.Text);
@@ -149,7 +155,7 @@ namespace RepetierHost.view
             c.SetValue("SkirtLoops", textSkirtLoops.Text);
             c.SetValue("SkirtHeight", textSkirtHeight.Text);
             c.SetValue("SkirtDistance", textSkirtDistance.Text);
-            c.SetValue("ExtrusionWidthRatio", textExtrusionWidthRatio.Text);
+            c.SetValue("ExtrusionWidth", textExtrusionWidth.Text);
             c.SetValue("BridgeFlowRatio", textBridgeFlowRatio.Text);
             c.SetValue("BridgeSpeed", textBridgeSpeed.Text);
             c.SetValue("SolidInfillSpeed", textSolidInfillSpeed.Text);
@@ -171,6 +177,12 @@ namespace RepetierHost.view
             c.SetValue("BedTemperature", textBedTemperature.Text);
             c.SetValue("RandomizeStartingPoints", checkRandomizeStartingPoints.Checked ? 1 : 0);
             c.SetValue("NumberOfThreads", textNumberOfThreads.Text);
+            c.SetValue("FirstLayerSpeed", textFirstLayerSpeed.Text);
+            c.SetValue("OverhangTreshold", textOverhangTreshold.Text);
+            c.SetValue("PatternSpacing", textPatternSpacing.Text);
+            c.SetValue("PatternAngle", textPatternAngle.Text);
+            c.SetValue("SupportPattern", comboSupportPattern.Text);
+            c.SetValue("BrimWidth",textBrim.Text);
         }
         private void buttonOK_Click(object sender, EventArgs e)
         {
@@ -207,6 +219,24 @@ namespace RepetierHost.view
             {
                 float f = float.Parse(box.Text, NumberStyles.AllowDecimalPoint, GCode.format);
                 if(f>=0) 
+                    errorProvider.SetError(box, "");
+                else
+                    errorProvider.SetError(box, "No negative values allowed.");
+            }
+            catch
+            {
+                errorProvider.SetError(box, "Not a number.");
+            }
+        }
+        private void floatOrPercent_Validating(object sender, CancelEventArgs e)
+        {
+            TextBox box = (TextBox)sender;
+            try
+            {
+                String t = box.Text;
+                if (t.EndsWith("%")) t = t.Substring(0, t.Length - 1);
+                float f = float.Parse(t, NumberStyles.AllowDecimalPoint, GCode.format);
+                if (f >= 0)
                     errorProvider.SetError(box, "");
                 else
                     errorProvider.SetError(box, "No negative values allowed.");
@@ -335,6 +365,9 @@ namespace RepetierHost.view
                 exname = "MacOS" + Path.DirectorySeparatorChar + "slic3r";
             string exe = basedir + Path.DirectorySeparatorChar + "Slic3r" + Path.DirectorySeparatorChar + exname;
                 slicefile = file;
+                string target = StlToGCode(file);
+                if (File.Exists(target))
+                    File.Delete(target);
                 procConvert.EnableRaisingEvents = true;
                 procConvert.Exited += new EventHandler(ConversionExited);
                 procConvert.StartInfo.FileName = Main.IsMono ? exe : wrapQuotes(exe);
@@ -375,14 +408,14 @@ namespace RepetierHost.view
                 sb.Append(textPerimeterFeedrate.Text);
                 sb.Append(" --small-perimeter-speed ");
                 sb.Append(textSmallPerimeterSpeed.Text);
-                sb.Append(" --bottom-layer-speed-ratio ");
-                sb.Append(textBottomLayerRatio.Text);
                 sb.Append(" --bridge-flow-ratio ");
                 sb.Append(textBridgeFlowRatio.Text);
                 sb.Append(" --layer-height ");
                 sb.Append(textLayerHeight.Text);
-                sb.Append(" --first-layer-height-ratio ");
-                sb.Append(textFirstLayerHeightRatio.Text);
+                sb.Append(" --first-layer-speed ");
+                sb.Append(textFirstLayerSpeed.Text);
+                sb.Append(" --first-layer-height ");
+                sb.Append(textFirstLayerHeight.Text);
                 sb.Append(" --infill-every-layers ");
                 sb.Append(textInfillEvery.Text);
                 sb.Append(" --perimeters ");
@@ -394,9 +427,9 @@ namespace RepetierHost.view
                 sb.Append(" --fill-angle ");
                 sb.Append(textFillAngle.Text);
                 sb.Append(" --fill-pattern ");
-                sb.Append(comboFillPattern.Text);
+                sb.Append(comboFillPattern.SelectedItem);
                 sb.Append(" --solid-fill-pattern ");
-                sb.Append(comboSolidFillPattern.Text);
+                sb.Append(comboSolidFillPattern.SelectedItem);
                 sb.Append(" --retract-length ");
                 sb.Append(textRetLength.Text);
                 sb.Append(" --retract-speed ");
@@ -413,8 +446,18 @@ namespace RepetierHost.view
                 sb.Append(textSkirtDistance.Text);
                 sb.Append(" --skirt-height ");
                 sb.Append(textSkirtHeight.Text);
-                sb.Append(" --extrusion-width-ratio ");
-                sb.Append(textExtrusionWidthRatio.Text);
+                sb.Append(" --extrusion-width ");
+                sb.Append(textExtrusionWidth.Text);
+                sb.Append(" --brim-width ");
+                sb.Append(textBrim.Text);
+                sb.Append(" --support-material-threshold ");
+                sb.Append(textOverhangTreshold.Text);
+                sb.Append(" --support-material-pattern ");
+                sb.Append(comboSupportPattern.SelectedItem);
+                sb.Append(" --support-material-spacing ");
+                sb.Append(textPatternSpacing.Text);
+                sb.Append(" --support-material-angle ");
+                sb.Append(textPatternAngle.Text);
                 sb.Append(" --print-center ");
                 sb.Append(centerx.ToString("0",GCode.format));
                 sb.Append(",");
@@ -476,7 +519,7 @@ namespace RepetierHost.view
                 sb.Append(wrapQuotes(basedir+Path.DirectorySeparatorChar+"empty.txt"));
                 sb.Append(" ");
                 sb.Append(wrapQuotes(file));
-                //Main.conn.log(sb.ToString(), false, 3);
+                Main.conn.log(sb.ToString(), false, 3);
                 procConvert.StartInfo.Arguments = sb.ToString();
                 procConvert.StartInfo.UseShellExecute = false;
                 procConvert.StartInfo.RedirectStandardOutput = true;
@@ -537,6 +580,9 @@ namespace RepetierHost.view
                     exe = BasicConfiguration.basicConf.ExternalSlic3rPath;
 
                 slicefile = file;
+                string target = StlToGCode(file);
+                if (File.Exists(target))
+                    File.Delete(target);
                 procConvert.EnableRaisingEvents = true;
                 procConvert.Exited += new EventHandler(ConversionExited);
                 procConvert.StartInfo.FileName = Main.IsMono ? exe : wrapQuotes(exe);

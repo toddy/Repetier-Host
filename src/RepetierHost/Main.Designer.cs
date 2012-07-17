@@ -131,10 +131,10 @@
             this.tabPageTemp = new System.Windows.Forms.TabPage();
             this.tab = new System.Windows.Forms.TabControl();
             this.tabModel = new System.Windows.Forms.TabPage();
-            this.tabGCode = new System.Windows.Forms.TabPage();
-            this.tabPrint = new System.Windows.Forms.TabPage();
             this.stlComposer1 = new RepetierHost.view.STLComposer();
+            this.tabGCode = new System.Windows.Forms.TabPage();
             this.editor = new RepetierHost.view.RepetierEditor();
+            this.tabPrint = new System.Windows.Forms.TabPage();
             this.menu.SuspendLayout();
             this.status.SuspendLayout();
             this.toolStrip.SuspendLayout();
@@ -1044,6 +1044,15 @@
             this.tabModel.TabIndex = 2;
             this.tabModel.Text = "Object placements";
             // 
+            // stlComposer1
+            // 
+            this.stlComposer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stlComposer1.Location = new System.Drawing.Point(0, 0);
+            this.stlComposer1.Margin = new System.Windows.Forms.Padding(4);
+            this.stlComposer1.Name = "stlComposer1";
+            this.stlComposer1.Size = new System.Drawing.Size(467, 304);
+            this.stlComposer1.TabIndex = 0;
+            // 
             // tabGCode
             // 
             this.tabGCode.AutoScroll = true;
@@ -1055,25 +1064,6 @@
             this.tabGCode.Size = new System.Drawing.Size(467, 304);
             this.tabGCode.TabIndex = 1;
             this.tabGCode.Text = "G-Code visual editor";
-            // 
-            // tabPrint
-            // 
-            this.tabPrint.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPrint.Location = new System.Drawing.Point(4, 22);
-            this.tabPrint.Name = "tabPrint";
-            this.tabPrint.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPrint.Size = new System.Drawing.Size(467, 304);
-            this.tabPrint.TabIndex = 0;
-            this.tabPrint.Text = "Manual control";
-            // 
-            // stlComposer1
-            // 
-            this.stlComposer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.stlComposer1.Location = new System.Drawing.Point(0, 0);
-            this.stlComposer1.Margin = new System.Windows.Forms.Padding(4);
-            this.stlComposer1.Name = "stlComposer1";
-            this.stlComposer1.Size = new System.Drawing.Size(467, 304);
-            this.stlComposer1.TabIndex = 0;
             // 
             // editor
             // 
@@ -1091,6 +1081,16 @@
             this.editor.Size = new System.Drawing.Size(461, 298);
             this.editor.TabIndex = 0;
             // 
+            // tabPrint
+            // 
+            this.tabPrint.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPrint.Location = new System.Drawing.Point(4, 22);
+            this.tabPrint.Name = "tabPrint";
+            this.tabPrint.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPrint.Size = new System.Drawing.Size(467, 304);
+            this.tabPrint.TabIndex = 0;
+            this.tabPrint.Text = "Manual control";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1103,8 +1103,9 @@
             this.Controls.Add(this.menu);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menu;
+            this.MaximizeBox = false;
             this.Name = "Main";
-            this.Text = "Repetier-Host V0.51";
+            this.Text = "Repetier-Host V0.52";
             this.Shown += new System.EventHandler(this.Main_Shown);
             this.Activated += new System.EventHandler(this.Main_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);

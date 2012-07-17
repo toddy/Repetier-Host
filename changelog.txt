@@ -1,3 +1,11 @@
+Version 0.52 17.7.2012
+  Upgraded to Slic3r 0.8.4
+  Better check if slicing was successful.
+  Show active slicer.
+  Show estimated printing time before print starts.
+  ETA is now based on computed printing time.
+  Added disable motors after job option.
+  
 Version 0.51 1.6.2012
   Upgraded Slic3r to version 0.8.2
   Grid has now 1cm spacing as site reference.

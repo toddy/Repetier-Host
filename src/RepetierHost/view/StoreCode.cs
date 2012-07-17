@@ -125,6 +125,9 @@ namespace RepetierHost.view
                     writeString(file, "G90", binary);
                     writeString(file, "G1 X" + con.disposeX.ToString(GCode.format) + " Y" + con.disposeY.ToString(GCode.format) + " F" + con.travelFeedRate.ToString(GCode.format), binary);
                 }
+                if (con.afterJobDisableMotors)
+                    writeString(file,"M84",binary);
+
             }
             file.Close();
         }

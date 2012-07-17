@@ -63,6 +63,7 @@ namespace RepetierHost.model
         public int transferProtocol = 0; // 0 = auto, 1 = force ascii, 2 = force binary
         public int binaryVersion = 0;
         public int baud = 57600;
+        public float addPrintingTime = 8;
         public bool garbageCleared = false; // Skip old output
         public Parity parity = Parity.None;
         public StopBits stopbits = StopBits.One;
@@ -78,6 +79,7 @@ namespace RepetierHost.model
         public bool afterJobGoDispose = true;
         public bool afterJobDisableExtruder = true;
         public bool afterJobDisablePrintbed = true;
+        public bool afterJobDisableMotors = false;
         public bool sdcardMounted = true;
         string read = "";
         public LinkedList<LogLine> logList = new LinkedList<LogLine>();
@@ -130,6 +132,7 @@ namespace RepetierHost.model
         public bool runFilterEverySlice = false;
         public bool isRepetier = false;
         public bool isMarlin = false;
+        public bool isSprinter = false;
         public int speedMultiply = 100;
 
         public PrinterConnection()

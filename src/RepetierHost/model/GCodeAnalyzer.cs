@@ -35,7 +35,8 @@ namespace RepetierHost.model
         public int extruderTemp = 0;
         public bool uploading = false;
         public int bedTemp = 0;
-        public float x = 0, y = 0, z = 0, e = 0, emax = 0;
+        public float x = 0, y = 0, z = 0, e = 0, emax = 0,f=1000;
+        public float lastX=0, lastY=0, lastZ=0, lastE=0;
         public float xOffset = 0, yOffset = 0, zOffset = 0, eOffset = 0,lastZPrint = 0;
         public bool fanOn = false;
         public int fanVoltage = 0;
@@ -53,6 +54,8 @@ namespace RepetierHost.model
         public int speedMultiply = 100;
         public float printerWidth, printerHeight, printerDepth;
         public int tempMonitor = 0;
+        public double printingTime = 0;
+
         public GCodeAnalyzer(bool privAnal)
         {
             privateAnalyzer = privAnal;
@@ -87,6 +90,7 @@ namespace RepetierHost.model
             layer = 0;
             x = y = z = e = emax = lastZPrint = 0;
             xOffset = yOffset = zOffset = eOffset = 0;
+            lastX = 0; lastY = 0; lastZ = 0; lastE = 0;
             hasXHome = hasYHome = hasZHome = false;
             printerWidth = Main.printerSettings.PrintAreaWidth;
             printerDepth = Main.printerSettings.PrintAreaDepth;
@@ -98,6 +102,12 @@ namespace RepetierHost.model
         public void StartJob() {
             layer = 0;
             lastZPrint = 0;
+            printingTime = 0;
+            lastX = 0; lastY = 0; lastZ = 0; lastE = 0;
+            drawing = true;
+            uploading = false;
+            if (!privateAnalyzer)
+                Main.main.jobVisual.ResetQuality();
         }
         public void Analyze(GCode code)
         {
@@ -127,6 +137,7 @@ namespace RepetierHost.model
                 {
                     case 0:
                     case 1:
+                        if (code.hasF) f = code.F;
                         if (relative)
                         {
                             if (code.hasX) x += code.X;
@@ -174,6 +185,19 @@ namespace RepetierHost.model
                                 eventPosChanged(code, x, y, z);
                             else
                                 Main.main.Invoke(eventPosChanged, code, x, y, z);
+                        float dx = Math.Abs(x - lastX);
+                        float dy = Math.Abs(y - lastY);
+                        float dz = Math.Abs(z - lastZ);
+                        float de = Math.Abs(e - lastE);
+                        if (dx + dy + dz > 0.001)
+                        {
+                            printingTime += Math.Sqrt(dx * dx + dy * dy + dz * dz) * 60.0f / f;
+                        }
+                        else printingTime += de * 60.0f / f;
+                        lastX = x;
+                        lastY = y;
+                        lastZ = z;
+                        lastE = e;
                         break;
                     case 28:
                     case 161:
@@ -213,7 +237,7 @@ namespace RepetierHost.model
                         if (code.hasX) { xOffset = x - code.X; x = xOffset; }
                         if (code.hasY) { yOffset = y - code.Y; y = yOffset; }
                         if (code.hasZ) { zOffset = z - code.Z; z = zOffset; }
-                        if (code.hasE) { eOffset = e - code.E; e = eOffset; }
+                        if (code.hasE) { eOffset = e - code.E; lastE = e = eOffset; }
                         if (eventPosChanged != null)
                             if (privateAnalyzer)
                                 eventPosChanged(code, x, y, z);
@@ -296,6 +320,7 @@ namespace RepetierHost.model
             {
                 case 1:
                     isG1Move = true;
+                    if (code.hasF) f = code.f;
                     if (relative)
                     {
                         if (code.hasX)
@@ -369,6 +394,19 @@ namespace RepetierHost.model
                     }
                     if(eventPosChangedFast!=null)
                         eventPosChangedFast(x, y, z, e);
+                    float dx = Math.Abs(x - lastX);
+                    float dy = Math.Abs(y - lastY);
+                    float dz = Math.Abs(z - lastZ);
+                    float de = Math.Abs(e - lastE);
+                    if (dx + dy + dz > 0.001)
+                    {
+                        printingTime += Math.Sqrt(dx * dx + dy * dy + dz * dz) * 60.0f / f;
+                    }
+                    else printingTime += de * 60.0f / f;
+                    lastX = x;
+                    lastY = y;
+                    lastZ = z;
+                    lastE = e;
                     break;
                 case 4:
                     {
@@ -399,7 +437,7 @@ namespace RepetierHost.model
                     if (code.hasX) { xOffset = x - code.x; x = xOffset; }
                     if (code.hasY) { yOffset = y - code.y; y = yOffset; }
                     if (code.hasZ) { zOffset = z - code.z; z = zOffset; }
-                    if (code.hasE) { eOffset = e - code.e; e = eOffset; }
+                    if (code.hasE) { eOffset = e - code.e; lastE = e = eOffset; }
                     break;
                 case 12: // Host command
                     {

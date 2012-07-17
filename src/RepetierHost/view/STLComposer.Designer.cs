@@ -517,7 +517,6 @@
         #endregion
 
         private System.Windows.Forms.Panel panelControls;
-        private System.Windows.Forms.Button buttonSlice;
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.TextBox textTransZ;
         private System.Windows.Forms.TextBox textTransY;
@@ -554,5 +553,6 @@
         private System.Windows.Forms.Button buttonCopyObjects;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        public System.Windows.Forms.Button buttonSlice;
     }
 }

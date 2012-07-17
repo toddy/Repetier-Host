@@ -338,6 +338,7 @@ namespace RepetierHost.view
         int _showMode = 0;
         int _showMinLayer = 0;
         int _showMaxLayer = 1;
+        double printingTime = 0;
         public event EventHandler ShowModeChanged;
         public event EventHandler ShowMinLayerChanged;
         public event EventHandler ShowMaxLayerChanged;
@@ -1392,6 +1393,14 @@ namespace RepetierHost.view
             foreach (GCodeShort code in getContentArray(2))
                 a.analyzeShort(code);
             MaxLayer = a.layer;
+            if (a.printingTime > 0)
+            {
+                printingTime = a.printingTime;
+                int sec = (int)(printingTime*(1+0.01*Main.conn.addPrintingTime));
+                int min = sec/60;
+                sec-=min*60;
+                toolPrintingTime.Text = "Printing time:" + min.ToString() + " min";
+            }
         }
         public void setContent(int idx,string text)
         {

@@ -200,5 +200,20 @@ namespace RepetierHost.view.utils
                     break;
             }
         }
+        public string SlicerName
+        {
+            get {
+                switch (_ActiveSlicer)
+                {
+                    case SlicerID.Slic3r:
+                        return "internal Slic3r";
+                    case SlicerID.Slic3rExternal:
+                        return "external Slic3r";
+                    case SlicerID.Skeinforge:
+                        return "Skeinforge";
+                }
+                return "Unknown";
+            }
+        }
     }
 }

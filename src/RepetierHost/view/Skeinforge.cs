@@ -21,6 +21,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.IO;
 using System.Windows.Forms;
 using System.Diagnostics;
 using Microsoft.Win32;
@@ -59,6 +60,7 @@ namespace RepetierHost.view
                 procSkein.Exited += new EventHandler(SkeinExited);
                 procSkein.StartInfo.FileName = Main.IsMono ? textPython.Text : wrapQuotes(textPython.Text);
                 procSkein.StartInfo.Arguments = wrapQuotes(textSkeinforge.Text);
+                procSkein.StartInfo.WorkingDirectory = textWorkingDirectory.Text;
                 procSkein.StartInfo.UseShellExecute = false;
                 procSkein.StartInfo.RedirectStandardOutput = true;
                 procSkein.OutputDataReceived += new DataReceivedEventHandler(OutputDataHandler);
@@ -90,6 +92,9 @@ namespace RepetierHost.view
                 MessageBox.Show("Last slice job still running. Slicing of new job is canceled.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            string target = StlToGCode(file);
+            if (File.Exists(target))
+                File.Delete(target);
             procConvert = new Process();
             try
             {
@@ -98,9 +103,11 @@ namespace RepetierHost.view
                 slicefile = file;
                 procConvert.EnableRaisingEvents = true;
                 procConvert.Exited += new EventHandler(ConversionExited);
+                
                 procConvert.StartInfo.FileName = Main.IsMono ? textPython.Text : wrapQuotes(textPython.Text);
                 procConvert.StartInfo.Arguments = wrapQuotes(textSkeinforgeCraft.Text) + " " + wrapQuotes(file);
                 procConvert.StartInfo.UseShellExecute = false;
+                procConvert.StartInfo.WorkingDirectory = textWorkingDirectory.Text;
                 procConvert.StartInfo.RedirectStandardOutput = true;
                 procConvert.OutputDataReceived += new DataReceivedEventHandler(OutputDataHandler);
                 procConvert.StartInfo.RedirectStandardError = true;
@@ -155,6 +162,7 @@ namespace RepetierHost.view
             textPython.Text = (string)repetierKey.GetValue("SkeinforgePython", textPython.Text);
             textExtension.Text = (string)repetierKey.GetValue("SkeinforgeExtension", textExtension.Text);
             textPostfix.Text = (string)repetierKey.GetValue("SkeinforgePostfix", textPostfix.Text);
+            textWorkingDirectory.Text = (string)repetierKey.GetValue("SkeinforgeWorkdir", textWorkingDirectory.Text);
         }
         private void FormToReg()
         {
@@ -163,6 +171,7 @@ namespace RepetierHost.view
             repetierKey.SetValue("SkeinforgePython", textPython.Text);
             repetierKey.SetValue("SkeinforgeExtension", textExtension.Text);
             repetierKey.SetValue("SkeinforgePostfix", textPostfix.Text);
+            repetierKey.SetValue("SkeinforgeWorkdir", textWorkingDirectory.Text);
         }
         private void buttonAbort_Click(object sender, EventArgs e)
         {
@@ -202,6 +211,15 @@ namespace RepetierHost.view
         private void Skeinforge_FormClosing(object sender, FormClosingEventArgs e)
         {
             RegMemory.StoreWindowPos("skeinforgeWindow", this, false, false);
+        }
+
+        private void buttonBrowseWorkingDirectory_Click(object sender, EventArgs e)
+        {
+            folderBrowserDialog.SelectedPath = textWorkingDirectory.Text;
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                textWorkingDirectory.Text = folderBrowserDialog.SelectedPath;
+            }
         }
     }
 }

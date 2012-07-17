@@ -83,6 +83,7 @@ namespace RepetierHost.view
             p.SetValue("goDisposeAfterJob", checkGoDisposeAfterJob.Checked ? 1 : 0);
             p.SetValue("disableHeatedBetAfterJob", checkDisbaleHeatedBedAfterJob.Checked ? 1 : 0);
             p.SetValue("disableExtruderAfterJob", checkDisableExtruderAfterJob.Checked ? 1 : 0);
+            p.SetValue("disableMotorsAfterJob", checkDisableMotors.Checked ? 1 : 0);
             p.SetValue("receiveCacheSize", textReceiveCacheSize.Text);
             p.SetValue("printAreaWidth", textPrintAreaWidth.Text);
             p.SetValue("printAreaDepth", textPrintAreaDepth.Text);
@@ -97,6 +98,7 @@ namespace RepetierHost.view
             p.SetValue("filterPath", textFilterPath.Text);
             p.SetValue("runFilterEverySlice", checkRunFilterEverySlice.Checked ? 1 : 0);
             p.SetValue("logM105", logM105Checkbox.Checked ? 1 : 0);
+            p.SetValue("addPrintingTime", textAddPrintingTime.Text);
         }
         public void load(string printername)
         {
@@ -120,6 +122,7 @@ namespace RepetierHost.view
             checkGoDisposeAfterJob.Checked = 1 == (int)p.GetValue("goDisposeAfterJob", checkGoDisposeAfterJob.Checked ? 1 : 0);
             checkDisbaleHeatedBedAfterJob.Checked = 1 == (int)p.GetValue("disableHeatedBetAfterJob", checkDisbaleHeatedBedAfterJob.Checked ? 1 : 0);
             checkDisableExtruderAfterJob.Checked = 1 == (int)p.GetValue("disableExtruderAfterJob", checkDisableExtruderAfterJob.Checked ? 1 : 0);
+            checkDisableMotors.Checked = 1 == (int) p.GetValue("disableMotorsAfterJob", checkDisableMotors.Checked ? 1 : 0);
             labelCheckInterval.Text = trackTempPeriod.Value.ToString();
             textReceiveCacheSize.Text = (string)p.GetValue("receiveCacheSize", textReceiveCacheSize.Text);
             textPrintAreaWidth.Text = (string)p.GetValue("printAreaWidth", textPrintAreaWidth.Text);
@@ -135,6 +138,7 @@ namespace RepetierHost.view
             textFilterPath.Text = (string)p.GetValue("filterPath", textFilterPath.Text);
             checkRunFilterEverySlice.Checked = 1 == (int)p.GetValue("runFilterEverySlice", checkRunFilterEverySlice.Checked ? 1 : 0);
             logM105Checkbox.Checked = 1 == (int)p.GetValue("logM105", logM105Checkbox.Checked ? 1 : 0);
+            textAddPrintingTime.Text = (string)p.GetValue("addPrintingTime", textAddPrintingTime.Text);
         }
         public void UpdateDimensions()
         {
@@ -179,9 +183,11 @@ namespace RepetierHost.view
             con.afterJobGoDispose = checkGoDisposeAfterJob.Checked;
             con.afterJobDisableExtruder = checkDisableExtruderAfterJob.Checked;
             con.afterJobDisablePrintbed = checkDisbaleHeatedBedAfterJob.Checked;
+            con.afterJobDisableMotors = checkDisableMotors.Checked;
             con.logM105 = logM105Checkbox.Checked;
             con.runFilterEverySlice = checkRunFilterEverySlice.Checked;
             con.filterCommand = textFilterPath.Text;
+            float.TryParse(textAddPrintingTime.Text, out con.addPrintingTime);
             int.TryParse(textReceiveCacheSize.Text, out con.receiveCacheSize);
             if (Main.main.printPanel != null)
             {
@@ -222,11 +228,13 @@ namespace RepetierHost.view
             checkGoDisposeAfterJob.Checked = con.afterJobGoDispose;
             checkDisableExtruderAfterJob.Checked = con.afterJobDisableExtruder;
             checkDisbaleHeatedBedAfterJob.Checked = con.afterJobDisablePrintbed;
+            checkDisableMotors.Checked = con.afterJobDisableMotors;
             labelCheckInterval.Text = trackTempPeriod.Value.ToString();
             textReceiveCacheSize.Text = con.receiveCacheSize.ToString();
             textFilterPath.Text = con.filterCommand;
             checkRunFilterEverySlice.Checked = con.runFilterEverySlice;
             logM105Checkbox.Checked = con.logM105;
+            textAddPrintingTime.Text = con.addPrintingTime.ToString(GCode.format);
             if (Main.main.printPanel != null)
             {
                 textDefaultExtruderTemp.Text = Main.main.printPanel.textExtruderSetTemp.Text;

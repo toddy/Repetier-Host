@@ -34,10 +34,12 @@ namespace RepetierHost.model
         public bool exclusive = false;
         public int maxLayer = -1;
         public int mode = 0; // 0 = no job defines, 1 = printing, 2 = finished, 3 = aborted
+        public double computedPrintingTime = 0;
         public DateTime jobStarted, jobFinished;
         LinkedList<GCode> jobList = new LinkedList<GCode>();
-        LinkedList<PrintTime> times = new LinkedList<PrintTime>();
+        //LinkedList<PrintTime> times = new LinkedList<PrintTime>();
         PrinterConnection con;
+        GCodeAnalyzer ana = null;
 
         public Printjob(PrinterConnection c)
         {
@@ -49,11 +51,15 @@ namespace RepetierHost.model
             con.firePrinterAction("Building print job...");
             dataComplete = false;
             jobList.Clear();
-            times.Clear();
+            //times.Clear();
             totalLines = 0;
             linesSend = 0;
+            computedPrintingTime = 0;
+            con.lastlogprogress = -1000;
             maxLayer = -1;
             mode = 1;
+            ana = new GCodeAnalyzer(true);
+            con.analyzer.StartJob();
             Main.main.Invoke(Main.main.UpdateJobButtons);
         }
         public void EndJob()
@@ -99,6 +105,8 @@ namespace RepetierHost.model
             con.ReturnInjectLock();
             if (con.afterJobGoDispose)
                 con.doDispose();
+            if(con.afterJobDisableMotors)
+                con.injectManualCommand("M84");
         }
         public void PushData(string code)
         {
@@ -121,6 +129,7 @@ namespace RepetierHost.model
             foreach (GCodeShort line in codes)
             {
                 if (line.Length == 0) continue;
+                ana.analyzeShort(line);
                 GCode gcode = new GCode();
                 gcode.Parse(line.text);
                 if (!gcode.comment)
@@ -131,6 +140,7 @@ namespace RepetierHost.model
                 if (line.hasLayer)
                     maxLayer = line.layer;
             }
+            computedPrintingTime = ana.printingTime;
         }
         /// <summary>
         /// Check, if more data is stored
@@ -154,7 +164,7 @@ namespace RepetierHost.model
                 gc = jobList.First.Value;
                 jobList.RemoveFirst();
                 linesSend++;
-                PrintTime pt = new PrintTime();
+                /*PrintTime pt = new PrintTime();
                 pt.line = linesSend;
                 pt.time = DateTime.Now.Ticks;
                 lock (times)
@@ -162,7 +172,7 @@ namespace RepetierHost.model
                     times.AddLast(pt);
                     if (times.Count > 1500)
                         times.RemoveFirst();
-                }
+                }*/
             }
             catch { };
             if (jobList.Count == 0)
@@ -207,11 +217,11 @@ namespace RepetierHost.model
         }
         public String ETA {
             get {
-                if (linesSend < 3) return "---";
+                //if (linesSend < 3) return "---";
                 try
                 {
                     long ticks = 0;
-                    lock (times)
+                    /*lock (times)
                     {
                         if (times.Count > 100)
                         {
@@ -221,8 +231,8 @@ namespace RepetierHost.model
                         }
                         else
                             ticks = (DateTime.Now.Ticks - jobStarted.Ticks) / 10000 * (totalLines - linesSend) / linesSend; // Milliseconds
-                    }
-
+                    }*/
+                    ticks = (long)(1000.0 * (computedPrintingTime - Main.conn.analyzer.printingTime) * (1.0 + 0.01 * Main.conn.addPrintingTime)*100.0/(float)Main.conn.speedMultiply);
                     long hours = ticks / 3600000;
                     ticks -= 3600000 * hours;
                     long min = ticks / 60000;

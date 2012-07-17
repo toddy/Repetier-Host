@@ -8,7 +8,7 @@ namespace RepetierHost.model
 {
     public class GCodeShort
     {
-        public float x, y, z, e;
+        public float x, y, z, e,f;
         // Bit 0-19 : Layer 
         // Bit 20-23 : Tool
         // Bit 24-29 : Compressed command
@@ -18,7 +18,7 @@ namespace RepetierHost.model
         {
             text = cmd;
             flags = 1048575 + (0 << 24);
-            x = y = z = e = -99999;
+            x = y = z = e = f = -99999;
             parse();
         }
         public int layer
@@ -70,6 +70,7 @@ namespace RepetierHost.model
         public bool hasY { get { return y != -99999; } }
         public bool hasZ { get { return z != -99999; } }
         public bool hasE { get { return e != -99999; } }
+        public bool hasF { get { return f != -99999; } }
 
         /**
         Command values:
@@ -127,6 +128,9 @@ namespace RepetierHost.model
                     break;
                 case 'E':
                     e = (float)d;
+                    break;
+                case 'F':
+                    f = (float)d;
                     break;
             }
             return false;

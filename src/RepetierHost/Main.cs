@@ -246,6 +246,7 @@ namespace RepetierHost
             if (IsMono)
                 showWorkdirectoryToolStripMenuItem.Visible = false;
             new SoundConfig();
+            stlComposer1.buttonSlice.Text = "Slice with " + slicer.SlicerName;
         }
 
         public void UpdateConnections()
@@ -504,7 +505,7 @@ namespace RepetierHost
             else
             {
                 tab.SelectedTab = tabPrint;
-                conn.analyzer.StartJob();
+                //conn.analyzer.StartJob();
                 toolRunJob.Image = imageList.Images[3];
                 job.BeginJob();
                 job.PushGCodeShortArray(editor.getContentArray(1));
@@ -816,11 +817,13 @@ namespace RepetierHost
         private void slic3rToolStripMenuItem_Click(object sender, EventArgs e)
         {
             slicer.ActiveSlicer = Slicer.SlicerID.Slic3r;
+            stlComposer1.buttonSlice.Text = "Slice with " + slicer.SlicerName;
         }
 
         private void skeinforgeToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             slicer.ActiveSlicer = Slicer.SlicerID.Skeinforge;
+            stlComposer1.buttonSlice.Text = "Slice with " + slicer.SlicerName;
         }
 
         private void slic3rConfigurationToolStripMenuItem_Click(object sender, EventArgs e)
@@ -955,6 +958,7 @@ namespace RepetierHost
         private void externalSlic3rToolStripMenuItem_Click(object sender, EventArgs e)
         {
             slicer.ActiveSlicer = Slicer.SlicerID.Slic3rExternal;
+            stlComposer1.buttonSlice.Text = "Slice with " + slicer.SlicerName;
         }
 
         private void externalSlic3rConfigurationToolStripMenuItem_Click(object sender, EventArgs e)
