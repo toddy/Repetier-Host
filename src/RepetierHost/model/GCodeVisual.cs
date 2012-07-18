@@ -272,7 +272,8 @@ namespace RepetierHost.model
                         GCodeVisual.normalize(ref dir);
                         double vacos = dir[0] * lastdir[0] + dir[1] * lastdir[1] + dir[2] * lastdir[2];
                         if (vacos > 1) vacos = 1;
-                        if (vacos < -0.97) vacos = -0.97;
+                        if (vacos < -0.97) 
+                            vacos = -0.97;
                         float zoomw = (float)Math.Cos(0.5 * Math.Acos(vacos));
                         lastdir[0] = actdir[0];
                         lastdir[1] = actdir[1];
@@ -659,6 +660,7 @@ namespace RepetierHost.model
             lasty = y;
             lastz = z;
             laste = ana.emax;
+            lastLayer = ana.layer;
         }
         public void ParseText(string text, bool clear)
         {
