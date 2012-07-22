@@ -52,6 +52,9 @@
             this.comboPort = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.tabPagePrinter = new System.Windows.Forms.TabPage();
+            this.label42 = new System.Windows.Forms.Label();
+            this.textAddPrintingTime = new System.Windows.Forms.TextBox();
+            this.label41 = new System.Windows.Forms.Label();
             this.logM105Checkbox = new System.Windows.Forms.CheckBox();
             this.label37 = new System.Windows.Forms.Label();
             this.label36 = new System.Windows.Forms.Label();
@@ -116,9 +119,6 @@
             this.buttonAbort = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this.label41 = new System.Windows.Forms.Label();
-            this.textAddPrintingTime = new System.Windows.Forms.TextBox();
-            this.label42 = new System.Windows.Forms.Label();
             this.panelPrinterSelect.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPageConnection.SuspendLayout();
@@ -171,7 +171,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 30);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(489, 374);
+            this.tabControl1.Size = new System.Drawing.Size(489, 405);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPageConnection
@@ -196,7 +196,7 @@
             this.tabPageConnection.Location = new System.Drawing.Point(4, 22);
             this.tabPageConnection.Name = "tabPageConnection";
             this.tabPageConnection.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageConnection.Size = new System.Drawing.Size(481, 348);
+            this.tabPageConnection.Size = new System.Drawing.Size(481, 379);
             this.tabPageConnection.TabIndex = 0;
             this.tabPageConnection.Text = "Connection";
             this.tabPageConnection.UseVisualStyleBackColor = true;
@@ -418,6 +418,33 @@
             this.tabPagePrinter.TabIndex = 1;
             this.tabPagePrinter.Text = "Printer";
             this.tabPagePrinter.UseVisualStyleBackColor = true;
+            // 
+            // label42
+            // 
+            this.label42.AutoSize = true;
+            this.label42.Location = new System.Drawing.Point(233, 304);
+            this.label42.Name = "label42";
+            this.label42.Size = new System.Drawing.Size(21, 13);
+            this.label42.TabIndex = 28;
+            this.label42.Text = "[%]";
+            // 
+            // textAddPrintingTime
+            // 
+            this.textAddPrintingTime.Location = new System.Drawing.Point(152, 305);
+            this.textAddPrintingTime.Name = "textAddPrintingTime";
+            this.textAddPrintingTime.Size = new System.Drawing.Size(54, 20);
+            this.textAddPrintingTime.TabIndex = 27;
+            this.textAddPrintingTime.Text = "8";
+            this.textAddPrintingTime.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
+            // 
+            // label41
+            // 
+            this.label41.AutoSize = true;
+            this.label41.Location = new System.Drawing.Point(13, 305);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(132, 13);
+            this.label41.TabIndex = 26;
+            this.label41.Text = "Add to comp. printing time:";
             // 
             // logM105Checkbox
             // 
@@ -1009,7 +1036,7 @@
             this.panel1.Controls.Add(this.buttonApply);
             this.panel1.Controls.Add(this.buttonAbort);
             this.panel1.Controls.Add(this.buttonOK);
-            this.panel1.Location = new System.Drawing.Point(0, 408);
+            this.panel1.Location = new System.Drawing.Point(0, 439);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(489, 52);
             this.panel1.TabIndex = 2;
@@ -1048,38 +1075,11 @@
             // 
             this.errorProvider.ContainerControl = this;
             // 
-            // label41
-            // 
-            this.label41.AutoSize = true;
-            this.label41.Location = new System.Drawing.Point(13, 305);
-            this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(132, 13);
-            this.label41.TabIndex = 26;
-            this.label41.Text = "Add to comp. printing time:";
-            // 
-            // textAddPrintingTime
-            // 
-            this.textAddPrintingTime.Location = new System.Drawing.Point(152, 305);
-            this.textAddPrintingTime.Name = "textAddPrintingTime";
-            this.textAddPrintingTime.Size = new System.Drawing.Size(54, 20);
-            this.textAddPrintingTime.TabIndex = 27;
-            this.textAddPrintingTime.Text = "8";
-            this.textAddPrintingTime.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
-            // 
-            // label42
-            // 
-            this.label42.AutoSize = true;
-            this.label42.Location = new System.Drawing.Point(233, 304);
-            this.label42.Name = "label42";
-            this.label42.Size = new System.Drawing.Size(21, 13);
-            this.label42.TabIndex = 28;
-            this.label42.Text = "[%]";
-            // 
             // FormPrinterSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(489, 477);
+            this.ClientSize = new System.Drawing.Size(489, 508);
             this.ControlBox = false;
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.tabControl1);

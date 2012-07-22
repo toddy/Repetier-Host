@@ -36,6 +36,7 @@ namespace RepetierHost
 
     public partial class Main : Form
     {
+        private const int InfoPanel2MinSize = 440;
         public static PrinterConnection conn;
         public static Main main;
         public static FormPrinterSettings printerSettings;
@@ -129,7 +130,17 @@ namespace RepetierHost
             }
             return false;
         }
-
+        private void Main_Load(object sender, EventArgs e)
+        {
+            RegMemory.RestoreWindowPos("mainWindow", this);
+            if (WindowState == FormWindowState.Maximized)
+                Application.DoEvents();
+            splitLog.SplitterDistance = RegMemory.GetInt("logSplitterDistance", splitLog.SplitterDistance);
+            splitInfoEdit.SplitterDistance = RegMemory.GetInt("infoEditSplitterDistance", Width - 470);
+            //A bug causes the splitter to throw an exception if the PanelMinSize is set too soon.
+            splitInfoEdit.Panel2MinSize = Main.InfoPanel2MinSize;
+            //splitInfoEdit.SplitterDistance = (splitInfoEdit.Width - splitInfoEdit.Panel2MinSize);
+        }
         [System.Runtime.InteropServices.DllImport("libc")]
         static extern int uname(IntPtr buf);
         public Main()
@@ -196,7 +207,7 @@ namespace RepetierHost
                     splitLog.SplitterDistance = splitLog.Height - 100;
                 }
             }
-            toolShowLog.Checked = RegMemory.GetBool("logShow", true);
+            splitLog.Panel2Collapsed = !RegMemory.GetBool("logShow", true);
             conn.eventConnectionChange += OnPrinterConnectionChange;
             conn.eventPrinterAction += OnPrinterAction;
             conn.eventJobProgress += OnJobProgress;
@@ -236,7 +247,7 @@ namespace RepetierHost
             UpdateConnections();
             Main.slic3r = new Slic3r();
             slicer = new Slicer();
-            toolShowLog_CheckedChanged(null, null);
+            //toolShowLog_CheckedChanged(null, null);
             updateShowFilament();
             assign3DView();
             history = new TemperatureHistory();
@@ -560,7 +571,7 @@ namespace RepetierHost
             RegMemory.SetInt("logSplitterDistance", splitLog.SplitterDistance);
             RegMemory.SetInt("infoEditSplitterDistance", splitInfoEdit.SplitterDistance);
 
-            RegMemory.SetBool("logShow", toolShowLog.Checked);
+            RegMemory.SetBool("logShow", !splitLog.Panel2Collapsed);
 
             if (previewThread != null)
                 previewThread.Join();
@@ -613,6 +624,7 @@ namespace RepetierHost
         }
         public MethodInvoker FirmwareDetected = delegate
         {
+            Main.main.printPanel.UpdateConStatus(true);
             if (conn.isRepetier)
             {
                 Main.main.continuousMonitoringMenuItem.Enabled = true;
@@ -761,12 +773,24 @@ namespace RepetierHost
 
         private void toolShowLog_Click(object sender, EventArgs e)
         {
-            toolShowLog.Checked = !toolShowLog.Checked;
+            if (splitLog.Panel2Collapsed == true)
+            {
+                toolShowLog.ToolTipText = "Hide log";
+                toolShowLog.Text = "Hide Log";
+                splitLog.Panel2Collapsed = false;
+            }
+            else
+            {
+                toolShowLog.ToolTipText = "Show logs";
+                toolShowLog.Text = "Show Log";
+                splitLog.Panel2Collapsed = true;
+            }            
+            //toolShowLog.Checked = !toolShowLog.Checked;
         }
 
         private void toolShowLog_CheckedChanged(object sender, EventArgs e)
         {
-            if (toolShowLog.Checked)
+            if (splitLog.Panel2Collapsed == true)
             {
                 toolShowLog.ToolTipText = "Hide log";
                 toolShowLog.Text = "Hide Log";
@@ -915,13 +939,13 @@ namespace RepetierHost
             {
                 toolShowFilament.Image = imageList.Images[5];
                 toolShowFilament.ToolTipText = "Filament visualization disabled";
-                toolShowFilament.Text = "Show Filament";
+                toolShowFilament.Text = "Show filament";
             }
             else
             {
                 toolShowFilament.Image = imageList.Images[4];
                 toolShowFilament.ToolTipText = "Filament visualization enabled";
-                toolShowFilament.Text = "Hide Filament";
+                toolShowFilament.Text = "Hide filament";
             }
         }
         private void toolShowFilament_Click(object sender, EventArgs e)

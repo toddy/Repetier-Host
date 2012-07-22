@@ -52,13 +52,13 @@
             this.toolStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolRotate,
-            this.toolMove,
             this.toolMoveViewpoint,
+            this.toolMove,
+            this.toolMoveObject,
             this.toolZoom,
             this.toolResetView,
             this.toolStripButton1,
             this.toolStripSeparator1,
-            this.toolMoveObject,
             this.toolStripClear});
             this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.VerticalStackWithOverflow;
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);

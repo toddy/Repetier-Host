@@ -985,7 +985,7 @@ namespace RepetierHost.model
                 {
                     isRepetier = true;
                 }
-                if (h.IndexOf("Marlin") >= 0) isMarlin = true;
+                if (h.IndexOf("Marlin") >= 0) isMarlin = true;                
                 if (isMarlin || isRepetier) // Activate special menus and function
                 {
                     Main.main.Invoke(Main.main.UpdateEEPROM);
@@ -1189,7 +1189,7 @@ namespace RepetierHost.model
             else if (res.StartsWith("ok"))
             {
                 garbageCleared = true;
-                if (Main.main.logView.toolACK.Checked)
+                if (Main.main.logView.switchACK.On)
                     log(res, true, level);
                 if (!ignoreNextOk)  // ok in response of resend?
                 {
@@ -1210,7 +1210,7 @@ namespace RepetierHost.model
             }
             else if (res.Equals("wait") && DateTime.Now.Ticks - lastCommandSend > 5000)
             {
-                if (Main.main.logView.toolACK.Checked)
+                if (Main.main.logView.switchACK.On)
                     log(res, true, level);
                 if (pingpong) readyForNextSend = true;
                 else

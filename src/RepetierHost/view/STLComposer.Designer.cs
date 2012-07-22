@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(STLComposer));
             this.panelControls = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.buttonSave = new System.Windows.Forms.Button();
@@ -104,7 +105,7 @@
             this.panelControls.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelControls.Location = new System.Drawing.Point(0, 0);
             this.panelControls.Name = "panelControls";
-            this.panelControls.Size = new System.Drawing.Size(236, 624);
+            this.panelControls.Size = new System.Drawing.Size(301, 624);
             this.panelControls.TabIndex = 0;
             // 
             // tableLayoutPanel2
@@ -122,17 +123,19 @@
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(236, 30);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(301, 30);
             this.tableLayoutPanel2.TabIndex = 18;
             // 
             // buttonSave
             // 
             this.buttonSave.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonSave.Image = ((System.Drawing.Image)(resources.GetObject("buttonSave.Image")));
+            this.buttonSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonSave.Location = new System.Drawing.Point(0, 0);
             this.buttonSave.Margin = new System.Windows.Forms.Padding(0);
             this.buttonSave.Name = "buttonSave";
-            this.buttonSave.Size = new System.Drawing.Size(118, 30);
+            this.buttonSave.Size = new System.Drawing.Size(150, 30);
             this.buttonSave.TabIndex = 0;
             this.buttonSave.Text = "Save as STL";
             this.buttonSave.UseVisualStyleBackColor = true;
@@ -142,10 +145,12 @@
             // 
             this.buttonSlice.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonSlice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonSlice.Location = new System.Drawing.Point(118, 0);
+            this.buttonSlice.Image = ((System.Drawing.Image)(resources.GetObject("buttonSlice.Image")));
+            this.buttonSlice.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonSlice.Location = new System.Drawing.Point(150, 0);
             this.buttonSlice.Margin = new System.Windows.Forms.Padding(0);
             this.buttonSlice.Name = "buttonSlice";
-            this.buttonSlice.Size = new System.Drawing.Size(118, 30);
+            this.buttonSlice.Size = new System.Drawing.Size(151, 30);
             this.buttonSlice.TabIndex = 1;
             this.buttonSlice.Text = "Generate G-Code";
             this.buttonSlice.UseVisualStyleBackColor = true;
@@ -171,7 +176,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(236, 90);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(301, 90);
             this.tableLayoutPanel1.TabIndex = 17;
             // 
             // buttonCopyObjects
@@ -179,10 +184,12 @@
             this.buttonCopyObjects.AutoSize = true;
             this.buttonCopyObjects.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonCopyObjects.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonCopyObjects.Image = ((System.Drawing.Image)(resources.GetObject("buttonCopyObjects.Image")));
+            this.buttonCopyObjects.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonCopyObjects.Location = new System.Drawing.Point(0, 0);
             this.buttonCopyObjects.Margin = new System.Windows.Forms.Padding(0);
             this.buttonCopyObjects.Name = "buttonCopyObjects";
-            this.buttonCopyObjects.Size = new System.Drawing.Size(118, 30);
+            this.buttonCopyObjects.Size = new System.Drawing.Size(150, 30);
             this.buttonCopyObjects.TabIndex = 13;
             this.buttonCopyObjects.Text = "Copy object(s)";
             this.buttonCopyObjects.UseVisualStyleBackColor = true;
@@ -192,10 +199,12 @@
             // 
             this.buttonAddSTL.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonAddSTL.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonAddSTL.Image = ((System.Drawing.Image)(resources.GetObject("buttonAddSTL.Image")));
+            this.buttonAddSTL.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonAddSTL.Location = new System.Drawing.Point(0, 60);
             this.buttonAddSTL.Margin = new System.Windows.Forms.Padding(0);
             this.buttonAddSTL.Name = "buttonAddSTL";
-            this.buttonAddSTL.Size = new System.Drawing.Size(118, 30);
+            this.buttonAddSTL.Size = new System.Drawing.Size(150, 30);
             this.buttonAddSTL.TabIndex = 15;
             this.buttonAddSTL.Text = "Add STL file";
             this.buttonAddSTL.UseVisualStyleBackColor = true;
@@ -205,10 +214,12 @@
             // 
             this.buttonRemoveSTL.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonRemoveSTL.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonRemoveSTL.Location = new System.Drawing.Point(118, 60);
+            this.buttonRemoveSTL.Image = ((System.Drawing.Image)(resources.GetObject("buttonRemoveSTL.Image")));
+            this.buttonRemoveSTL.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonRemoveSTL.Location = new System.Drawing.Point(150, 60);
             this.buttonRemoveSTL.Margin = new System.Windows.Forms.Padding(0);
             this.buttonRemoveSTL.Name = "buttonRemoveSTL";
-            this.buttonRemoveSTL.Size = new System.Drawing.Size(118, 30);
+            this.buttonRemoveSTL.Size = new System.Drawing.Size(151, 30);
             this.buttonRemoveSTL.TabIndex = 16;
             this.buttonRemoveSTL.Text = "Remove STL file";
             this.buttonRemoveSTL.UseVisualStyleBackColor = true;
@@ -218,10 +229,12 @@
             // 
             this.buttonLand.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonLand.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonLand.Location = new System.Drawing.Point(118, 30);
+            this.buttonLand.Image = ((System.Drawing.Image)(resources.GetObject("buttonLand.Image")));
+            this.buttonLand.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonLand.Location = new System.Drawing.Point(150, 30);
             this.buttonLand.Margin = new System.Windows.Forms.Padding(0);
             this.buttonLand.Name = "buttonLand";
-            this.buttonLand.Size = new System.Drawing.Size(118, 30);
+            this.buttonLand.Size = new System.Drawing.Size(151, 30);
             this.buttonLand.TabIndex = 14;
             this.buttonLand.Text = "Drop object";
             this.buttonLand.UseVisualStyleBackColor = true;
@@ -232,10 +245,12 @@
             this.buttonAutoplace.AutoSize = true;
             this.buttonAutoplace.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonAutoplace.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonAutoplace.Location = new System.Drawing.Point(118, 0);
+            this.buttonAutoplace.Image = ((System.Drawing.Image)(resources.GetObject("buttonAutoplace.Image")));
+            this.buttonAutoplace.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonAutoplace.Location = new System.Drawing.Point(150, 0);
             this.buttonAutoplace.Margin = new System.Windows.Forms.Padding(0);
             this.buttonAutoplace.Name = "buttonAutoplace";
-            this.buttonAutoplace.Size = new System.Drawing.Size(118, 30);
+            this.buttonAutoplace.Size = new System.Drawing.Size(151, 30);
             this.buttonAutoplace.TabIndex = 14;
             this.buttonAutoplace.Text = "Auto position";
             this.buttonAutoplace.UseVisualStyleBackColor = true;
@@ -245,10 +260,12 @@
             // 
             this.buttonCenter.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonCenter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonCenter.Image = ((System.Drawing.Image)(resources.GetObject("buttonCenter.Image")));
+            this.buttonCenter.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonCenter.Location = new System.Drawing.Point(0, 30);
             this.buttonCenter.Margin = new System.Windows.Forms.Padding(0);
             this.buttonCenter.Name = "buttonCenter";
-            this.buttonCenter.Size = new System.Drawing.Size(118, 30);
+            this.buttonCenter.Size = new System.Drawing.Size(150, 30);
             this.buttonCenter.TabIndex = 13;
             this.buttonCenter.Text = "Center object";
             this.buttonCenter.UseVisualStyleBackColor = true;
@@ -273,7 +290,7 @@
             this.listSTLObjects.Location = new System.Drawing.Point(0, 211);
             this.listSTLObjects.Name = "listSTLObjects";
             this.listSTLObjects.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.listSTLObjects.Size = new System.Drawing.Size(236, 316);
+            this.listSTLObjects.Size = new System.Drawing.Size(301, 316);
             this.listSTLObjects.TabIndex = 12;
             this.listSTLObjects.SelectedIndexChanged += new System.EventHandler(this.listSTLObjects_SelectedIndexChanged);
             this.listSTLObjects.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listSTLObjects_KeyDown);
@@ -503,7 +520,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.panelControls);
             this.Name = "STLComposer";
-            this.Size = new System.Drawing.Size(236, 624);
+            this.Size = new System.Drawing.Size(301, 624);
             this.panelControls.ResumeLayout(false);
             this.panelControls.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);

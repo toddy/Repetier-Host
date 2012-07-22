@@ -142,9 +142,9 @@
             // 
             this.panel1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel1.BackgroundImage")));
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.panel1.Location = new System.Drawing.Point(432, 13);
+            this.panel1.Location = new System.Drawing.Point(403, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(34, 31);
+            this.panel1.Size = new System.Drawing.Size(64, 64);
             this.panel1.TabIndex = 9;
             // 
             // checkAppendPrepend
@@ -179,7 +179,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(479, 200);
+            this.ClientSize = new System.Drawing.Size(479, 236);
             this.ControlBox = false;
             this.Controls.Add(this.checkJobFinished);
             this.Controls.Add(this.checkAppendPrepend);

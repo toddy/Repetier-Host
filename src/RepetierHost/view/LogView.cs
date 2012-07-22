@@ -39,22 +39,28 @@ namespace RepetierHost.view
             key = Registry.CurrentUser.CreateSubKey("SOFTWARE\\Repetier");
             RegToForm();
         }
+        static bool readingReg = false;
         public void FormToReg()
         {
-            key.SetValue("logSend", toolSend.Checked ? 1 : 0);
-            key.SetValue("logErrors", toolErrors.Checked ? 1 : 0);
-            key.SetValue("logWarning", toolWarning.Checked ? 1 : 0);
-            key.SetValue("logACK", toolACK.Checked ? 1 : 0);
-            key.SetValue("logAutoscroll", toolAutoscroll.Checked ? 1 : 0);
+            if (readingReg) return;
+            key.SetValue("logSend", switchCommandsSend.On ? 1 : 0);
+            key.SetValue("logErrors", switchErrors.On ? 1 : 0);
+            key.SetValue("logWarning", switchWarnings.On ? 1 : 0);
+            key.SetValue("logACK", switchACK.On ? 1 : 0);
+            key.SetValue("logInfo", switchInfo.On ? 1 : 0);
+            key.SetValue("logAutoscroll", switchAutoscroll.On ? 1 : 0);
 
         }
         public void RegToForm()
         {
-            toolSend.Checked = 1==(int) key.GetValue("logSend", toolSend.Checked ? 1 : 0);
-            toolErrors.Checked = 1 == (int)key.GetValue("logErrors", toolErrors.Checked ? 1 : 0);
-            toolWarning.Checked = 1 == (int)key.GetValue("logWarning", toolWarning.Checked ? 1 : 0);
-            toolACK.Checked = 1 == (int)key.GetValue("logACK", toolACK.Checked ? 1 : 0);
-            toolAutoscroll.Checked = 1 == (int)key.GetValue("logAutoscroll", toolAutoscroll.Checked ? 1 : 0);
+            readingReg = true;
+            switchCommandsSend.On = 1 == (int)key.GetValue("logSend", switchCommandsSend.On ? 1 : 0);
+            switchErrors.On = 1 == (int)key.GetValue("logErrors", switchErrors.On ? 1 : 0);
+            switchWarnings.On = 1 == (int)key.GetValue("logWarning", switchWarnings.On ? 1 : 0);
+            switchACK.On = 1 == (int)key.GetValue("logACK", switchACK.On ? 1 : 0);
+            switchInfo.On = 1 == (int)key.GetValue("logInfo", switchInfo.On ? 1 : 0);
+            switchAutoscroll.On = 1 == (int)key.GetValue("logAutoscroll", switchAutoscroll.On ? 1 : 0);
+            readingReg = false;
         }
         private void filter()
         {
@@ -66,7 +72,7 @@ namespace RepetierHost.view
                     logAppend(l);
                 }
             }
-            if (toolAutoscroll.Checked)
+            if (switchAutoscroll.On)
             {
                 listLog.ScrollBottom();
             }
@@ -102,11 +108,11 @@ namespace RepetierHost.view
             while (nl.Count > 0)
             {
                 LogLine line = nl.First.Value;
-                if (toolACK.Checked == false && isAck(line.text)) nl.RemoveFirst();
-                else if (line.level == 0 && line.response==false && toolSend.Checked == false) nl.RemoveFirst();
-                else if (line.level == 1 && toolWarning.Checked == false) nl.RemoveFirst();
-                else if (line.level == 2 && toolErrors.Checked == false) nl.RemoveFirst();
-                else if (line.level == 3 && toolInfo.Checked == false) nl.RemoveFirst();
+                if (switchACK.On == false && isAck(line.text)) nl.RemoveFirst();
+                else if (line.level == 0 && line.response==false && switchCommandsSend.On == false) nl.RemoveFirst();
+                else if (line.level == 1 && switchWarnings.On == false) nl.RemoveFirst();
+                else if (line.level == 2 && switchErrors.On == false) nl.RemoveFirst();
+                else if (line.level == 3 && switchInfo.On == false) nl.RemoveFirst();
                 else break;
             }
             if (nl.Count == 0) return;
@@ -116,11 +122,11 @@ namespace RepetierHost.view
         }
         private void logAppend(LogLine line)
         {
-            if (toolACK.Checked == false && isAck(line.text)) return;
-            if (line.level == 0 && line.response==false && toolSend.Checked == false) return;
-            if (line.level == 1 && toolWarning.Checked == false) return;
-            if (line.level == 2 && toolErrors.Checked == false) return;
-            if (line.level == 3 && toolInfo.Checked == false) return;
+            if (switchACK.On == false && isAck(line.text)) return;
+            if (line.level == 0 && line.response==false && switchCommandsSend.On == false) return;
+            if (line.level == 1 && switchWarnings.On == false) return;
+            if (line.level == 2 && switchErrors.On == false) return;
+            if (line.level == 3 && switchInfo.On == false) return;
             listLog.Add(line);
         }
 
@@ -128,40 +134,11 @@ namespace RepetierHost.view
         {
         }
 
-        private void toolSend_CheckStateChanged(object sender, EventArgs e)
-        {
-            filter();
-            FormToReg();
-        }
-
-        private void toolInfo_CheckStateChanged(object sender, EventArgs e)
-        {
-            filter();
-            FormToReg();
-        }
-
-        private void toolWarning_CheckStateChanged(object sender, EventArgs e)
-        {
-            filter();
-            FormToReg();
-        }
-
-        private void toolErrors_CheckStateChanged(object sender, EventArgs e)
-        {
-            filter();
-            FormToReg();
-        }
-
         private void toolClear_Click(object sender, EventArgs e)
         {
             Main.conn.clearLog();
         }
 
-        private void toolACK_Click(object sender, EventArgs e)
-        {
-            filter();
-            FormToReg();
-        }
 
         private void toolCopy_Click(object sender, EventArgs e)
         {
@@ -178,9 +155,41 @@ namespace RepetierHost.view
             Application.Idle += new EventHandler(UpdateNewEntries);
         }
 
-        private void toolAutoscroll_CheckedChanged(object sender, EventArgs e)
+
+        private void switchCommandsSend_OnChange(SwitchButton button)
         {
-            listLog.Autoscroll = toolAutoscroll.Checked;
+            filter();
+            FormToReg();
+        }
+
+        private void switchInfo_OnChange(SwitchButton button)
+        {
+            filter();
+            FormToReg();
+        }
+
+        private void switchWarnings_OnChange(SwitchButton button)
+        {
+            filter();
+            FormToReg();
+        }
+
+        private void switchErrors_OnChange(SwitchButton button)
+        {
+            filter();
+            FormToReg();
+        }
+
+        private void switchACK_OnChange(SwitchButton button)
+        {
+            filter();
+            FormToReg();
+        }
+
+        private void switchAutoscroll_OnChange(SwitchButton button)
+        {
+            listLog.Autoscroll = switchAutoscroll.On;
+            FormToReg();
         }
     }
 }

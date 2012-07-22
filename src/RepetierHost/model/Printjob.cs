@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using RepetierHost.view;
 
 namespace RepetierHost.model
 {
@@ -69,6 +70,7 @@ namespace RepetierHost.model
                 mode = 0;
                 con.firePrinterAction("Idle");
                 Main.main.Invoke(Main.main.UpdateJobButtons);
+                Main.main.printPanel.Invoke(Main.main.printPanel.SetStatusJobFinished);
                 return;
             }
             dataComplete = true;
@@ -87,6 +89,7 @@ namespace RepetierHost.model
             Main.main.Invoke(Main.main.UpdateJobButtons);
             con.firePrinterAction("Job killed");
             DoEndKillActions();
+            Main.main.printPanel.Status = PrinterStatus.jobKilled;
         }
         public void DoEndKillActions()
         {
@@ -205,6 +208,7 @@ namespace RepetierHost.model
                 Main.conn.firePrinterAction("Finished in "+s.ToString());
                 DoEndKillActions();
                 Main.main.Invoke(Main.main.UpdateJobButtons);
+                Main.main.printPanel.Invoke(Main.main.printPanel.SetStatusJobFinished);
                 RepetierHost.view.SoundConfig.PlayPrintFinished(false);
             }
             return gc;

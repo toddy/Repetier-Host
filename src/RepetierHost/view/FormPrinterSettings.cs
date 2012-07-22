@@ -191,8 +191,8 @@ namespace RepetierHost.view
             int.TryParse(textReceiveCacheSize.Text, out con.receiveCacheSize);
             if (Main.main.printPanel != null)
             {
-                Main.main.printPanel.textExtruderSetTemp.Text = textDefaultExtruderTemp.Text;
-                Main.main.printPanel.textPrintbedTemp.Text = textDefaultHeatedBedTemp.Text;
+                Main.main.printPanel.numericUpDownExtruder.Value = int.Parse(textDefaultExtruderTemp.Text);
+                Main.main.printPanel.numericPrintBed.Value = int.Parse(textDefaultHeatedBedTemp.Text);
             }
             if (eventPrinterChanged != null)
                 eventPrinterChanged(currentPrinterKey,pnchanged);
@@ -237,8 +237,8 @@ namespace RepetierHost.view
             textAddPrintingTime.Text = con.addPrintingTime.ToString(GCode.format);
             if (Main.main.printPanel != null)
             {
-                textDefaultExtruderTemp.Text = Main.main.printPanel.textExtruderSetTemp.Text;
-                textDefaultHeatedBedTemp.Text = Main.main.printPanel.textPrintbedTemp.Text;
+                textDefaultExtruderTemp.Text = Main.main.printPanel.numericUpDownExtruder.Value.ToString("0");
+                textDefaultHeatedBedTemp.Text = Main.main.printPanel.numericPrintBed.Value.ToString("0");
             }
         }
         private void buttonOK_Click(object sender, EventArgs e)

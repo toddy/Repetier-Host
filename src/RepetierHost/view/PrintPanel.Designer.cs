@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PrintPanel));
             this.buttonJobStatus = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.textGCode = new System.Windows.Forms.TextBox();
@@ -65,6 +66,7 @@
             this.labelZ = new System.Windows.Forms.Label();
             this.buttonHomeAll = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.numericUpDownExtruder = new System.Windows.Forms.NumericUpDown();
             this.textRetractAmount = new System.Windows.Forms.TextBox();
             this.textExtrudeAmount = new System.Windows.Forms.TextBox();
             this.textExtrudeSpeed = new System.Windows.Forms.TextBox();
@@ -73,18 +75,18 @@
             this.buttonRetract = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.buttonExtrude = new System.Windows.Forms.Button();
-            this.buttonExtruderSetTemp = new System.Windows.Forms.Button();
-            this.textExtruderSetTemp = new System.Windows.Forms.TextBox();
             this.labelExtruderTemp = new System.Windows.Forms.Label();
+            this.switchExtruderHeatOn = new RepetierHost.view.SwitchButton();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.buttonPrintbedSendTemp = new System.Windows.Forms.Button();
-            this.textPrintbedTemp = new System.Windows.Forms.TextBox();
+            this.numericPrintBed = new System.Windows.Forms.NumericUpDown();
             this.labelPrintbedTemp = new System.Windows.Forms.Label();
+            this.switchBedHeat = new RepetierHost.view.SwitchButton();
             this.label6 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.labelVoltage = new System.Windows.Forms.Label();
             this.trackFanVoltage = new System.Windows.Forms.TrackBar();
+            this.switchFanOn = new RepetierHost.view.SwitchButton();
             this.buttonGoDisposeArea = new System.Windows.Forms.Button();
             this.buttonSimulateOK = new System.Windows.Forms.Button();
             this.buttonStopMotor = new System.Windows.Forms.Button();
@@ -92,25 +94,30 @@
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.label3 = new System.Windows.Forms.Label();
             this.labelSpeed = new System.Windows.Forms.Label();
+            this.numericUpDownSpeed = new System.Windows.Forms.NumericUpDown();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.labelStatus = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.sliderSpeed = new MB.Controls.ColorSlider();
-            this.switchFanOn = new RepetierHost.view.SwitchButton();
-            this.switchBedHeat = new RepetierHost.view.SwitchButton();
-            this.switchExtruderHeatOn = new RepetierHost.view.SwitchButton();
             this.switchDryRun = new RepetierHost.view.SwitchButton();
             this.switchErrors = new RepetierHost.view.SwitchButton();
             this.switchInfo = new RepetierHost.view.SwitchButton();
             this.switchEcho = new RepetierHost.view.SwitchButton();
             this.switchPower = new RepetierHost.view.SwitchButton();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownExtruder)).BeginInit();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericPrintBed)).BeginInit();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackFanVoltage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSpeed)).BeginInit();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonJobStatus
             // 
-            this.buttonJobStatus.Location = new System.Drawing.Point(324, 3);
+            this.buttonJobStatus.Location = new System.Drawing.Point(324, 58);
             this.buttonJobStatus.Name = "buttonJobStatus";
             this.buttonJobStatus.Size = new System.Drawing.Size(100, 23);
             this.buttonJobStatus.TabIndex = 3;
@@ -121,7 +128,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(4, 63);
+            this.label1.Location = new System.Drawing.Point(4, 118);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(43, 13);
             this.label1.TabIndex = 7;
@@ -129,7 +136,7 @@
             // 
             // textGCode
             // 
-            this.textGCode.Location = new System.Drawing.Point(54, 63);
+            this.textGCode.Location = new System.Drawing.Point(54, 118);
             this.textGCode.Name = "textGCode";
             this.textGCode.Size = new System.Drawing.Size(305, 20);
             this.textGCode.TabIndex = 8;
@@ -138,7 +145,7 @@
             // 
             // buttonSend
             // 
-            this.buttonSend.Location = new System.Drawing.Point(365, 63);
+            this.buttonSend.Location = new System.Drawing.Point(365, 118);
             this.buttonSend.Name = "buttonSend";
             this.buttonSend.Size = new System.Drawing.Size(59, 23);
             this.buttonSend.TabIndex = 9;
@@ -150,7 +157,7 @@
             // 
             this.labelX.AutoSize = true;
             this.labelX.ForeColor = System.Drawing.Color.Red;
-            this.labelX.Location = new System.Drawing.Point(4, 97);
+            this.labelX.Location = new System.Drawing.Point(4, 152);
             this.labelX.Name = "labelX";
             this.labelX.Size = new System.Drawing.Size(35, 13);
             this.labelX.TabIndex = 10;
@@ -158,7 +165,9 @@
             // 
             // buttonHomeX
             // 
-            this.buttonHomeX.Location = new System.Drawing.Point(63, 92);
+            this.buttonHomeX.FlatAppearance.BorderSize = 0;
+            this.buttonHomeX.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonHomeX.Location = new System.Drawing.Point(63, 147);
             this.buttonHomeX.Name = "buttonHomeX";
             this.buttonHomeX.Size = new System.Drawing.Size(45, 23);
             this.buttonHomeX.TabIndex = 10;
@@ -168,7 +177,7 @@
             // 
             // buttonXM100
             // 
-            this.buttonXM100.Location = new System.Drawing.Point(114, 92);
+            this.buttonXM100.Location = new System.Drawing.Point(114, 147);
             this.buttonXM100.Name = "buttonXM100";
             this.buttonXM100.Size = new System.Drawing.Size(36, 23);
             this.buttonXM100.TabIndex = 11;
@@ -178,7 +187,7 @@
             // 
             // buttonXM10
             // 
-            this.buttonXM10.Location = new System.Drawing.Point(156, 92);
+            this.buttonXM10.Location = new System.Drawing.Point(156, 147);
             this.buttonXM10.Name = "buttonXM10";
             this.buttonXM10.Size = new System.Drawing.Size(30, 23);
             this.buttonXM10.TabIndex = 12;
@@ -188,7 +197,7 @@
             // 
             // buttonXM1
             // 
-            this.buttonXM1.Location = new System.Drawing.Point(192, 92);
+            this.buttonXM1.Location = new System.Drawing.Point(192, 147);
             this.buttonXM1.Name = "buttonXM1";
             this.buttonXM1.Size = new System.Drawing.Size(24, 23);
             this.buttonXM1.TabIndex = 13;
@@ -198,7 +207,7 @@
             // 
             // buttonXM01
             // 
-            this.buttonXM01.Location = new System.Drawing.Point(222, 92);
+            this.buttonXM01.Location = new System.Drawing.Point(222, 147);
             this.buttonXM01.Name = "buttonXM01";
             this.buttonXM01.Size = new System.Drawing.Size(36, 23);
             this.buttonXM01.TabIndex = 14;
@@ -208,7 +217,7 @@
             // 
             // buttonXP01
             // 
-            this.buttonXP01.Location = new System.Drawing.Point(264, 92);
+            this.buttonXP01.Location = new System.Drawing.Point(264, 147);
             this.buttonXP01.Name = "buttonXP01";
             this.buttonXP01.Size = new System.Drawing.Size(36, 23);
             this.buttonXP01.TabIndex = 15;
@@ -218,7 +227,7 @@
             // 
             // buttonXP1
             // 
-            this.buttonXP1.Location = new System.Drawing.Point(306, 92);
+            this.buttonXP1.Location = new System.Drawing.Point(306, 147);
             this.buttonXP1.Name = "buttonXP1";
             this.buttonXP1.Size = new System.Drawing.Size(28, 23);
             this.buttonXP1.TabIndex = 16;
@@ -228,7 +237,7 @@
             // 
             // buttonXP10
             // 
-            this.buttonXP10.Location = new System.Drawing.Point(340, 92);
+            this.buttonXP10.Location = new System.Drawing.Point(340, 147);
             this.buttonXP10.Name = "buttonXP10";
             this.buttonXP10.Size = new System.Drawing.Size(36, 23);
             this.buttonXP10.TabIndex = 17;
@@ -238,7 +247,7 @@
             // 
             // buttonXP100
             // 
-            this.buttonXP100.Location = new System.Drawing.Point(382, 92);
+            this.buttonXP100.Location = new System.Drawing.Point(382, 147);
             this.buttonXP100.Name = "buttonXP100";
             this.buttonXP100.Size = new System.Drawing.Size(43, 23);
             this.buttonXP100.TabIndex = 18;
@@ -248,7 +257,7 @@
             // 
             // buttonYP100
             // 
-            this.buttonYP100.Location = new System.Drawing.Point(382, 121);
+            this.buttonYP100.Location = new System.Drawing.Point(382, 176);
             this.buttonYP100.Name = "buttonYP100";
             this.buttonYP100.Size = new System.Drawing.Size(43, 23);
             this.buttonYP100.TabIndex = 27;
@@ -258,7 +267,7 @@
             // 
             // buttonYP10
             // 
-            this.buttonYP10.Location = new System.Drawing.Point(340, 121);
+            this.buttonYP10.Location = new System.Drawing.Point(340, 176);
             this.buttonYP10.Name = "buttonYP10";
             this.buttonYP10.Size = new System.Drawing.Size(36, 23);
             this.buttonYP10.TabIndex = 26;
@@ -268,7 +277,7 @@
             // 
             // buttonYP1
             // 
-            this.buttonYP1.Location = new System.Drawing.Point(306, 121);
+            this.buttonYP1.Location = new System.Drawing.Point(306, 176);
             this.buttonYP1.Name = "buttonYP1";
             this.buttonYP1.Size = new System.Drawing.Size(28, 23);
             this.buttonYP1.TabIndex = 25;
@@ -278,7 +287,7 @@
             // 
             // buttonYP01
             // 
-            this.buttonYP01.Location = new System.Drawing.Point(264, 121);
+            this.buttonYP01.Location = new System.Drawing.Point(264, 176);
             this.buttonYP01.Name = "buttonYP01";
             this.buttonYP01.Size = new System.Drawing.Size(36, 23);
             this.buttonYP01.TabIndex = 24;
@@ -288,7 +297,7 @@
             // 
             // buttonYM01
             // 
-            this.buttonYM01.Location = new System.Drawing.Point(222, 121);
+            this.buttonYM01.Location = new System.Drawing.Point(222, 176);
             this.buttonYM01.Name = "buttonYM01";
             this.buttonYM01.Size = new System.Drawing.Size(36, 23);
             this.buttonYM01.TabIndex = 23;
@@ -298,7 +307,7 @@
             // 
             // buttonYM1
             // 
-            this.buttonYM1.Location = new System.Drawing.Point(192, 121);
+            this.buttonYM1.Location = new System.Drawing.Point(192, 176);
             this.buttonYM1.Name = "buttonYM1";
             this.buttonYM1.Size = new System.Drawing.Size(24, 23);
             this.buttonYM1.TabIndex = 22;
@@ -308,7 +317,7 @@
             // 
             // buttonYM10
             // 
-            this.buttonYM10.Location = new System.Drawing.Point(156, 121);
+            this.buttonYM10.Location = new System.Drawing.Point(156, 176);
             this.buttonYM10.Name = "buttonYM10";
             this.buttonYM10.Size = new System.Drawing.Size(30, 23);
             this.buttonYM10.TabIndex = 21;
@@ -318,7 +327,7 @@
             // 
             // buttonYM100
             // 
-            this.buttonYM100.Location = new System.Drawing.Point(114, 121);
+            this.buttonYM100.Location = new System.Drawing.Point(114, 176);
             this.buttonYM100.Name = "buttonYM100";
             this.buttonYM100.Size = new System.Drawing.Size(36, 23);
             this.buttonYM100.TabIndex = 20;
@@ -328,7 +337,7 @@
             // 
             // buttonHomeY
             // 
-            this.buttonHomeY.Location = new System.Drawing.Point(63, 121);
+            this.buttonHomeY.Location = new System.Drawing.Point(63, 176);
             this.buttonHomeY.Name = "buttonHomeY";
             this.buttonHomeY.Size = new System.Drawing.Size(45, 23);
             this.buttonHomeY.TabIndex = 19;
@@ -340,7 +349,7 @@
             // 
             this.labelY.AutoSize = true;
             this.labelY.ForeColor = System.Drawing.Color.Red;
-            this.labelY.Location = new System.Drawing.Point(4, 126);
+            this.labelY.Location = new System.Drawing.Point(4, 181);
             this.labelY.Name = "labelY";
             this.labelY.Size = new System.Drawing.Size(35, 13);
             this.labelY.TabIndex = 20;
@@ -348,7 +357,7 @@
             // 
             // buttonZP100
             // 
-            this.buttonZP100.Location = new System.Drawing.Point(382, 150);
+            this.buttonZP100.Location = new System.Drawing.Point(382, 205);
             this.buttonZP100.Name = "buttonZP100";
             this.buttonZP100.Size = new System.Drawing.Size(43, 23);
             this.buttonZP100.TabIndex = 36;
@@ -358,7 +367,7 @@
             // 
             // buttonZP10
             // 
-            this.buttonZP10.Location = new System.Drawing.Point(340, 150);
+            this.buttonZP10.Location = new System.Drawing.Point(340, 205);
             this.buttonZP10.Name = "buttonZP10";
             this.buttonZP10.Size = new System.Drawing.Size(36, 23);
             this.buttonZP10.TabIndex = 35;
@@ -368,7 +377,7 @@
             // 
             // buttonZP1
             // 
-            this.buttonZP1.Location = new System.Drawing.Point(306, 150);
+            this.buttonZP1.Location = new System.Drawing.Point(306, 205);
             this.buttonZP1.Name = "buttonZP1";
             this.buttonZP1.Size = new System.Drawing.Size(28, 23);
             this.buttonZP1.TabIndex = 34;
@@ -378,7 +387,7 @@
             // 
             // buttonZP01
             // 
-            this.buttonZP01.Location = new System.Drawing.Point(264, 150);
+            this.buttonZP01.Location = new System.Drawing.Point(264, 205);
             this.buttonZP01.Name = "buttonZP01";
             this.buttonZP01.Size = new System.Drawing.Size(36, 23);
             this.buttonZP01.TabIndex = 33;
@@ -388,7 +397,7 @@
             // 
             // buttonZM01
             // 
-            this.buttonZM01.Location = new System.Drawing.Point(222, 150);
+            this.buttonZM01.Location = new System.Drawing.Point(222, 205);
             this.buttonZM01.Name = "buttonZM01";
             this.buttonZM01.Size = new System.Drawing.Size(36, 23);
             this.buttonZM01.TabIndex = 32;
@@ -398,7 +407,7 @@
             // 
             // buttonZM1
             // 
-            this.buttonZM1.Location = new System.Drawing.Point(192, 150);
+            this.buttonZM1.Location = new System.Drawing.Point(192, 205);
             this.buttonZM1.Name = "buttonZM1";
             this.buttonZM1.Size = new System.Drawing.Size(24, 23);
             this.buttonZM1.TabIndex = 31;
@@ -408,7 +417,7 @@
             // 
             // buttonZM10
             // 
-            this.buttonZM10.Location = new System.Drawing.Point(156, 150);
+            this.buttonZM10.Location = new System.Drawing.Point(156, 205);
             this.buttonZM10.Name = "buttonZM10";
             this.buttonZM10.Size = new System.Drawing.Size(30, 23);
             this.buttonZM10.TabIndex = 30;
@@ -418,7 +427,7 @@
             // 
             // buttonZM100
             // 
-            this.buttonZM100.Location = new System.Drawing.Point(114, 150);
+            this.buttonZM100.Location = new System.Drawing.Point(114, 205);
             this.buttonZM100.Name = "buttonZM100";
             this.buttonZM100.Size = new System.Drawing.Size(36, 23);
             this.buttonZM100.TabIndex = 29;
@@ -428,7 +437,7 @@
             // 
             // buttonHomeZ
             // 
-            this.buttonHomeZ.Location = new System.Drawing.Point(63, 150);
+            this.buttonHomeZ.Location = new System.Drawing.Point(63, 205);
             this.buttonHomeZ.Name = "buttonHomeZ";
             this.buttonHomeZ.Size = new System.Drawing.Size(45, 23);
             this.buttonHomeZ.TabIndex = 28;
@@ -440,7 +449,7 @@
             // 
             this.labelZ.AutoSize = true;
             this.labelZ.ForeColor = System.Drawing.Color.Red;
-            this.labelZ.Location = new System.Drawing.Point(4, 155);
+            this.labelZ.Location = new System.Drawing.Point(4, 210);
             this.labelZ.Name = "labelZ";
             this.labelZ.Size = new System.Drawing.Size(35, 13);
             this.labelZ.TabIndex = 30;
@@ -448,7 +457,7 @@
             // 
             // buttonHomeAll
             // 
-            this.buttonHomeAll.Location = new System.Drawing.Point(7, 179);
+            this.buttonHomeAll.Location = new System.Drawing.Point(7, 234);
             this.buttonHomeAll.Name = "buttonHomeAll";
             this.buttonHomeAll.Size = new System.Drawing.Size(75, 23);
             this.buttonHomeAll.TabIndex = 37;
@@ -458,6 +467,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.numericUpDownExtruder);
             this.groupBox1.Controls.Add(this.textRetractAmount);
             this.groupBox1.Controls.Add(this.textExtrudeAmount);
             this.groupBox1.Controls.Add(this.textExtrudeSpeed);
@@ -466,17 +476,33 @@
             this.groupBox1.Controls.Add(this.buttonRetract);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.buttonExtrude);
-            this.groupBox1.Controls.Add(this.buttonExtruderSetTemp);
-            this.groupBox1.Controls.Add(this.textExtruderSetTemp);
             this.groupBox1.Controls.Add(this.labelExtruderTemp);
             this.groupBox1.Controls.Add(this.switchExtruderHeatOn);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Location = new System.Drawing.Point(7, 235);
+            this.groupBox1.Location = new System.Drawing.Point(7, 290);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(417, 99);
             this.groupBox1.TabIndex = 41;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Extruder";
+            // 
+            // numericUpDownExtruder
+            // 
+            this.numericUpDownExtruder.Location = new System.Drawing.Point(227, 23);
+            this.numericUpDownExtruder.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.numericUpDownExtruder.Name = "numericUpDownExtruder";
+            this.numericUpDownExtruder.Size = new System.Drawing.Size(54, 20);
+            this.numericUpDownExtruder.TabIndex = 14;
+            this.numericUpDownExtruder.Value = new decimal(new int[] {
+            200,
+            0,
+            0,
+            0});
+            this.numericUpDownExtruder.ValueChanged += new System.EventHandler(this.numericUpDownExtruder_ValueChanged);
             // 
             // textRetractAmount
             // 
@@ -555,25 +581,6 @@
             this.buttonExtrude.UseVisualStyleBackColor = true;
             this.buttonExtrude.Click += new System.EventHandler(this.buttonExtrude_Click);
             // 
-            // buttonExtruderSetTemp
-            // 
-            this.buttonExtruderSetTemp.Location = new System.Drawing.Point(336, 20);
-            this.buttonExtruderSetTemp.Name = "buttonExtruderSetTemp";
-            this.buttonExtruderSetTemp.Size = new System.Drawing.Size(75, 23);
-            this.buttonExtruderSetTemp.TabIndex = 2;
-            this.buttonExtruderSetTemp.Text = "Set temp";
-            this.buttonExtruderSetTemp.UseVisualStyleBackColor = true;
-            this.buttonExtruderSetTemp.Click += new System.EventHandler(this.buttonExtruderSetTemp_Click);
-            // 
-            // textExtruderSetTemp
-            // 
-            this.textExtruderSetTemp.Location = new System.Drawing.Point(245, 23);
-            this.textExtruderSetTemp.Name = "textExtruderSetTemp";
-            this.textExtruderSetTemp.Size = new System.Drawing.Size(82, 20);
-            this.textExtruderSetTemp.TabIndex = 1;
-            this.textExtruderSetTemp.Text = "200";
-            this.textExtruderSetTemp.Validating += new System.ComponentModel.CancelEventHandler(this.int_Validating);
-            // 
             // labelExtruderTemp
             // 
             this.labelExtruderTemp.AutoSize = true;
@@ -582,6 +589,17 @@
             this.labelExtruderTemp.Size = new System.Drawing.Size(36, 13);
             this.labelExtruderTemp.TabIndex = 2;
             this.labelExtruderTemp.Text = "200°C";
+            // 
+            // switchExtruderHeatOn
+            // 
+            this.switchExtruderHeatOn.Location = new System.Drawing.Point(7, 20);
+            this.switchExtruderHeatOn.Name = "switchExtruderHeatOn";
+            this.switchExtruderHeatOn.On = false;
+            this.switchExtruderHeatOn.Size = new System.Drawing.Size(100, 23);
+            this.switchExtruderHeatOn.TabIndex = 0;
+            this.switchExtruderHeatOn.TextOff = "Heat on";
+            this.switchExtruderHeatOn.TextOn = "Heat on";
+            this.switchExtruderHeatOn.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchExtruderHeatOn_Change);
             // 
             // label2
             // 
@@ -594,36 +612,34 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.buttonPrintbedSendTemp);
-            this.groupBox2.Controls.Add(this.textPrintbedTemp);
+            this.groupBox2.Controls.Add(this.numericPrintBed);
             this.groupBox2.Controls.Add(this.labelPrintbedTemp);
             this.groupBox2.Controls.Add(this.switchBedHeat);
             this.groupBox2.Controls.Add(this.label6);
-            this.groupBox2.Location = new System.Drawing.Point(8, 339);
+            this.groupBox2.Location = new System.Drawing.Point(8, 394);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(417, 55);
             this.groupBox2.TabIndex = 42;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Printbed";
             // 
-            // buttonPrintbedSendTemp
+            // numericPrintBed
             // 
-            this.buttonPrintbedSendTemp.Location = new System.Drawing.Point(335, 19);
-            this.buttonPrintbedSendTemp.Name = "buttonPrintbedSendTemp";
-            this.buttonPrintbedSendTemp.Size = new System.Drawing.Size(75, 23);
-            this.buttonPrintbedSendTemp.TabIndex = 2;
-            this.buttonPrintbedSendTemp.Text = "Set temp";
-            this.buttonPrintbedSendTemp.UseVisualStyleBackColor = true;
-            this.buttonPrintbedSendTemp.Click += new System.EventHandler(this.buttonPrintbedSendTemp_Click);
-            // 
-            // textPrintbedTemp
-            // 
-            this.textPrintbedTemp.Location = new System.Drawing.Point(244, 22);
-            this.textPrintbedTemp.Name = "textPrintbedTemp";
-            this.textPrintbedTemp.Size = new System.Drawing.Size(82, 20);
-            this.textPrintbedTemp.TabIndex = 1;
-            this.textPrintbedTemp.Text = "55";
-            this.textPrintbedTemp.Validating += new System.ComponentModel.CancelEventHandler(this.int_Validating);
+            this.numericPrintBed.Location = new System.Drawing.Point(226, 22);
+            this.numericPrintBed.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.numericPrintBed.Name = "numericPrintBed";
+            this.numericPrintBed.Size = new System.Drawing.Size(54, 20);
+            this.numericPrintBed.TabIndex = 8;
+            this.numericPrintBed.Value = new decimal(new int[] {
+            55,
+            0,
+            0,
+            0});
+            this.numericPrintBed.ValueChanged += new System.EventHandler(this.numericPrintBed_ValueChanged);
             // 
             // labelPrintbedTemp
             // 
@@ -633,6 +649,17 @@
             this.labelPrintbedTemp.Size = new System.Drawing.Size(36, 13);
             this.labelPrintbedTemp.TabIndex = 7;
             this.labelPrintbedTemp.Text = "200°C";
+            // 
+            // switchBedHeat
+            // 
+            this.switchBedHeat.Location = new System.Drawing.Point(6, 19);
+            this.switchBedHeat.Name = "switchBedHeat";
+            this.switchBedHeat.On = false;
+            this.switchBedHeat.Size = new System.Drawing.Size(100, 23);
+            this.switchBedHeat.TabIndex = 0;
+            this.switchBedHeat.TextOff = "Heat on";
+            this.switchBedHeat.TextOn = "Heat on";
+            this.switchBedHeat.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchBedHeat_Change);
             // 
             // label6
             // 
@@ -648,7 +675,7 @@
             this.groupBox3.Controls.Add(this.labelVoltage);
             this.groupBox3.Controls.Add(this.trackFanVoltage);
             this.groupBox3.Controls.Add(this.switchFanOn);
-            this.groupBox3.Location = new System.Drawing.Point(10, 400);
+            this.groupBox3.Location = new System.Drawing.Point(10, 455);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(417, 62);
             this.groupBox3.TabIndex = 43;
@@ -678,9 +705,20 @@
             this.trackFanVoltage.Value = 106;
             this.trackFanVoltage.ValueChanged += new System.EventHandler(this.trackFanVoltage_ValueChanged);
             // 
+            // switchFanOn
+            // 
+            this.switchFanOn.Location = new System.Drawing.Point(6, 19);
+            this.switchFanOn.Name = "switchFanOn";
+            this.switchFanOn.On = false;
+            this.switchFanOn.Size = new System.Drawing.Size(97, 23);
+            this.switchFanOn.TabIndex = 0;
+            this.switchFanOn.TextOff = "Fan on";
+            this.switchFanOn.TextOn = "Fan on";
+            this.switchFanOn.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchFanOn_Change);
+            // 
             // buttonGoDisposeArea
             // 
-            this.buttonGoDisposeArea.Location = new System.Drawing.Point(88, 179);
+            this.buttonGoDisposeArea.Location = new System.Drawing.Point(88, 234);
             this.buttonGoDisposeArea.Name = "buttonGoDisposeArea";
             this.buttonGoDisposeArea.Size = new System.Drawing.Size(84, 23);
             this.buttonGoDisposeArea.TabIndex = 38;
@@ -690,7 +728,7 @@
             // 
             // buttonSimulateOK
             // 
-            this.buttonSimulateOK.Location = new System.Drawing.Point(217, 4);
+            this.buttonSimulateOK.Location = new System.Drawing.Point(217, 58);
             this.buttonSimulateOK.Name = "buttonSimulateOK";
             this.buttonSimulateOK.Size = new System.Drawing.Size(100, 23);
             this.buttonSimulateOK.TabIndex = 2;
@@ -700,7 +738,7 @@
             // 
             // buttonStopMotor
             // 
-            this.buttonStopMotor.Location = new System.Drawing.Point(179, 180);
+            this.buttonStopMotor.Location = new System.Drawing.Point(179, 235);
             this.buttonStopMotor.Name = "buttonStopMotor";
             this.buttonStopMotor.Size = new System.Drawing.Size(75, 23);
             this.buttonStopMotor.TabIndex = 44;
@@ -719,7 +757,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(5, 216);
+            this.label3.Location = new System.Drawing.Point(5, 271);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(79, 13);
             this.label3.TabIndex = 46;
@@ -728,18 +766,72 @@
             // labelSpeed
             // 
             this.labelSpeed.AutoSize = true;
-            this.labelSpeed.Location = new System.Drawing.Point(100, 216);
+            this.labelSpeed.Location = new System.Drawing.Point(135, 271);
             this.labelSpeed.Name = "labelSpeed";
-            this.labelSpeed.Size = new System.Drawing.Size(33, 13);
+            this.labelSpeed.Size = new System.Drawing.Size(15, 13);
             this.labelSpeed.TabIndex = 47;
-            this.labelSpeed.Text = "100%";
+            this.labelSpeed.Text = "%";
+            // 
+            // numericUpDownSpeed
+            // 
+            this.numericUpDownSpeed.Location = new System.Drawing.Point(88, 269);
+            this.numericUpDownSpeed.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.numericUpDownSpeed.Minimum = new decimal(new int[] {
+            25,
+            0,
+            0,
+            0});
+            this.numericUpDownSpeed.Name = "numericUpDownSpeed";
+            this.numericUpDownSpeed.Size = new System.Drawing.Size(46, 20);
+            this.numericUpDownSpeed.TabIndex = 48;
+            this.numericUpDownSpeed.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.numericUpDownSpeed.ValueChanged += new System.EventHandler(this.sliderSpeed_ValueChanged);
+            // 
+            // panel1
+            // 
+            this.panel1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel1.BackgroundImage")));
+            this.panel1.ForeColor = System.Drawing.Color.White;
+            this.panel1.Location = new System.Drawing.Point(8, 7);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(32, 32);
+            this.panel1.TabIndex = 49;
+            // 
+            // labelStatus
+            // 
+            this.labelStatus.AutoSize = true;
+            this.labelStatus.Font = new System.Drawing.Font("Courier New", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelStatus.ForeColor = System.Drawing.Color.White;
+            this.labelStatus.Location = new System.Drawing.Point(46, 10);
+            this.labelStatus.Name = "labelStatus";
+            this.labelStatus.Size = new System.Drawing.Size(166, 23);
+            this.labelStatus.TabIndex = 50;
+            this.labelStatus.Text = "Disconnected";
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.RoyalBlue;
+            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel2.Controls.Add(this.labelStatus);
+            this.panel2.Controls.Add(this.panel1);
+            this.panel2.Location = new System.Drawing.Point(7, 3);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(417, 49);
+            this.panel2.TabIndex = 51;
             // 
             // sliderSpeed
             // 
             this.sliderSpeed.BackColor = System.Drawing.Color.Transparent;
             this.sliderSpeed.BorderRoundRectSize = new System.Drawing.Size(8, 8);
             this.sliderSpeed.LargeChange = ((uint)(5u));
-            this.sliderSpeed.Location = new System.Drawing.Point(140, 209);
+            this.sliderSpeed.Location = new System.Drawing.Point(140, 264);
             this.sliderSpeed.Maximum = 300;
             this.sliderSpeed.Minimum = 25;
             this.sliderSpeed.Name = "sliderSpeed";
@@ -751,42 +843,9 @@
             this.sliderSpeed.Value = 100;
             this.sliderSpeed.ValueChanged += new System.EventHandler(this.sliderSpeed_ValueChanged);
             // 
-            // switchFanOn
-            // 
-            this.switchFanOn.Location = new System.Drawing.Point(6, 19);
-            this.switchFanOn.Name = "switchFanOn";
-            this.switchFanOn.On = false;
-            this.switchFanOn.Size = new System.Drawing.Size(97, 23);
-            this.switchFanOn.TabIndex = 0;
-            this.switchFanOn.TextOff = "Fan on";
-            this.switchFanOn.TextOn = "Fan on";
-            this.switchFanOn.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchFanOn_Change);
-            // 
-            // switchBedHeat
-            // 
-            this.switchBedHeat.Location = new System.Drawing.Point(6, 19);
-            this.switchBedHeat.Name = "switchBedHeat";
-            this.switchBedHeat.On = false;
-            this.switchBedHeat.Size = new System.Drawing.Size(100, 23);
-            this.switchBedHeat.TabIndex = 0;
-            this.switchBedHeat.TextOff = "Heat on";
-            this.switchBedHeat.TextOn = "Heat on";
-            this.switchBedHeat.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchBedHeat_Change);
-            // 
-            // switchExtruderHeatOn
-            // 
-            this.switchExtruderHeatOn.Location = new System.Drawing.Point(7, 20);
-            this.switchExtruderHeatOn.Name = "switchExtruderHeatOn";
-            this.switchExtruderHeatOn.On = false;
-            this.switchExtruderHeatOn.Size = new System.Drawing.Size(100, 23);
-            this.switchExtruderHeatOn.TabIndex = 0;
-            this.switchExtruderHeatOn.TextOff = "Heat on";
-            this.switchExtruderHeatOn.TextOn = "Heat on";
-            this.switchExtruderHeatOn.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchExtruderHeatOn_Change);
-            // 
             // switchDryRun
             // 
-            this.switchDryRun.Location = new System.Drawing.Point(324, 34);
+            this.switchDryRun.Location = new System.Drawing.Point(324, 89);
             this.switchDryRun.Name = "switchDryRun";
             this.switchDryRun.On = false;
             this.switchDryRun.Size = new System.Drawing.Size(100, 23);
@@ -797,7 +856,7 @@
             // 
             // switchErrors
             // 
-            this.switchErrors.Location = new System.Drawing.Point(217, 34);
+            this.switchErrors.Location = new System.Drawing.Point(217, 89);
             this.switchErrors.Name = "switchErrors";
             this.switchErrors.On = true;
             this.switchErrors.Size = new System.Drawing.Size(100, 23);
@@ -808,7 +867,7 @@
             // 
             // switchInfo
             // 
-            this.switchInfo.Location = new System.Drawing.Point(110, 33);
+            this.switchInfo.Location = new System.Drawing.Point(110, 88);
             this.switchInfo.Name = "switchInfo";
             this.switchInfo.On = true;
             this.switchInfo.Size = new System.Drawing.Size(100, 23);
@@ -819,7 +878,7 @@
             // 
             // switchEcho
             // 
-            this.switchEcho.Location = new System.Drawing.Point(4, 33);
+            this.switchEcho.Location = new System.Drawing.Point(4, 88);
             this.switchEcho.Name = "switchEcho";
             this.switchEcho.On = false;
             this.switchEcho.Size = new System.Drawing.Size(100, 23);
@@ -830,7 +889,7 @@
             // 
             // switchPower
             // 
-            this.switchPower.Location = new System.Drawing.Point(110, 3);
+            this.switchPower.Location = new System.Drawing.Point(110, 58);
             this.switchPower.Name = "switchPower";
             this.switchPower.On = false;
             this.switchPower.Size = new System.Drawing.Size(100, 23);
@@ -845,6 +904,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.SystemColors.Control;
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.numericUpDownSpeed);
             this.Controls.Add(this.labelSpeed);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.sliderSpeed);
@@ -895,15 +956,20 @@
             this.Controls.Add(this.buttonJobStatus);
             this.Controls.Add(this.switchPower);
             this.Name = "PrintPanel";
-            this.Size = new System.Drawing.Size(430, 472);
+            this.Size = new System.Drawing.Size(430, 549);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownExtruder)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericPrintBed)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackFanVoltage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSpeed)).EndInit();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -957,9 +1023,7 @@
         private System.Windows.Forms.Label labelExtruderTemp;
         private SwitchButton switchExtruderHeatOn;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button buttonExtruderSetTemp;
         private System.Windows.Forms.Button buttonExtrude;
-        private System.Windows.Forms.Button buttonPrintbedSendTemp;
         private System.Windows.Forms.Label labelPrintbedTemp;
         private SwitchButton switchBedHeat;
         private System.Windows.Forms.Label label6;
@@ -969,8 +1033,6 @@
         private System.Windows.Forms.Button buttonGoDisposeArea;
         private System.Windows.Forms.Button buttonSimulateOK;
         private System.Windows.Forms.Button buttonStopMotor;
-        public System.Windows.Forms.TextBox textExtruderSetTemp;
-        public System.Windows.Forms.TextBox textPrintbedTemp;
         private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
@@ -983,5 +1045,11 @@
         private System.Windows.Forms.Label labelSpeed;
         private System.Windows.Forms.Label label3;
         private MB.Controls.ColorSlider sliderSpeed;
+        private System.Windows.Forms.NumericUpDown numericUpDownSpeed;
+        public System.Windows.Forms.NumericUpDown numericUpDownExtruder;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label labelStatus;
+        private System.Windows.Forms.Panel panel1;
+        public System.Windows.Forms.NumericUpDown numericPrintBed;
     }
 }

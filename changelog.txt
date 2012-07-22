@@ -1,3 +1,11 @@
+Version 0.53
+  New icons
+  Log window status bar redesigned
+  Printer status in manual control
+  Maximize windows now restores panel positions
+  Numeric up/down for speed added
+  Numeric up/down for temperatures
+
 Version 0.52 17.7.2012
   Upgraded to Slic3r 0.8.4
   Better check if slicing was successful.

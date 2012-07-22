@@ -37,6 +37,21 @@ namespace RepetierHost.view
         {
             InitializeComponent();
         }
+        public FlatStyle ButtonFlatStyle
+        {
+            get { return button.FlatStyle; }
+            set {button.FlatStyle = value;}
+        }
+        public int ButtonFlatBorderSize
+        {
+            get { return button.FlatAppearance.BorderSize; }
+            set { button.FlatAppearance.BorderSize = value; }
+        }
+        public ContentAlignment ButtonTextAlign
+        {
+            get { return button.TextAlign; }
+            set { button.TextAlign = value; }
+        }
         [Description("Text if button is off")]
         public string TextOff
         {

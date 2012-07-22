@@ -40,7 +40,6 @@
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.printerSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.eeprom = new System.Windows.Forms.ToolStripMenuItem();
-            this.skeinforgeSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.threeDSettingsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.repetierSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.internalSlicingParameterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -131,10 +130,10 @@
             this.tabPageTemp = new System.Windows.Forms.TabPage();
             this.tab = new System.Windows.Forms.TabControl();
             this.tabModel = new System.Windows.Forms.TabPage();
-            this.stlComposer1 = new RepetierHost.view.STLComposer();
             this.tabGCode = new System.Windows.Forms.TabPage();
-            this.editor = new RepetierHost.view.RepetierEditor();
             this.tabPrint = new System.Windows.Forms.TabPage();
+            this.stlComposer1 = new RepetierHost.view.STLComposer();
+            this.editor = new RepetierHost.view.RepetierEditor();
             this.menu.SuspendLayout();
             this.status.SuspendLayout();
             this.toolStrip.SuspendLayout();
@@ -214,7 +213,6 @@
             this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.printerSettingsToolStripMenuItem,
             this.eeprom,
-            this.skeinforgeSettingsToolStripMenuItem,
             this.threeDSettingsMenu,
             this.repetierSettingsToolStripMenuItem,
             this.internalSlicingParameterToolStripMenuItem,
@@ -227,7 +225,7 @@
             // 
             this.printerSettingsToolStripMenuItem.Name = "printerSettingsToolStripMenuItem";
             this.printerSettingsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.printerSettingsToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
+            this.printerSettingsToolStripMenuItem.Size = new System.Drawing.Size(283, 22);
             this.printerSettingsToolStripMenuItem.Text = "&Printer settings";
             this.printerSettingsToolStripMenuItem.Click += new System.EventHandler(this.printerSettingsToolStripMenuItem_Click);
             // 
@@ -236,43 +234,36 @@
             this.eeprom.Enabled = false;
             this.eeprom.Name = "eeprom";
             this.eeprom.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.E)));
-            this.eeprom.Size = new System.Drawing.Size(252, 22);
-            this.eeprom.Text = "Firmware EEPROM settings";
+            this.eeprom.Size = new System.Drawing.Size(283, 22);
+            this.eeprom.Text = "Firmware EEPROM configuration";
             this.eeprom.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
-            // 
-            // skeinforgeSettingsToolStripMenuItem
-            // 
-            this.skeinforgeSettingsToolStripMenuItem.Name = "skeinforgeSettingsToolStripMenuItem";
-            this.skeinforgeSettingsToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
-            this.skeinforgeSettingsToolStripMenuItem.Text = "Skeinforge settings";
-            this.skeinforgeSettingsToolStripMenuItem.Click += new System.EventHandler(this.skeinforgeSettingsToolStripMenuItem_Click);
             // 
             // threeDSettingsMenu
             // 
             this.threeDSettingsMenu.Name = "threeDSettingsMenu";
             this.threeDSettingsMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D3)));
-            this.threeDSettingsMenu.Size = new System.Drawing.Size(252, 22);
-            this.threeDSettingsMenu.Text = "3D settings";
+            this.threeDSettingsMenu.Size = new System.Drawing.Size(283, 22);
+            this.threeDSettingsMenu.Text = "3D viewer configuration";
             this.threeDSettingsMenu.Click += new System.EventHandler(this.threeDSettingsMenu_Click);
             // 
             // repetierSettingsToolStripMenuItem
             // 
             this.repetierSettingsToolStripMenuItem.Name = "repetierSettingsToolStripMenuItem";
-            this.repetierSettingsToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
-            this.repetierSettingsToolStripMenuItem.Text = "Repetier settings";
+            this.repetierSettingsToolStripMenuItem.Size = new System.Drawing.Size(283, 22);
+            this.repetierSettingsToolStripMenuItem.Text = "Repetier general configuration";
             this.repetierSettingsToolStripMenuItem.Click += new System.EventHandler(this.repetierSettingsToolStripMenuItem_Click);
             // 
             // internalSlicingParameterToolStripMenuItem
             // 
             this.internalSlicingParameterToolStripMenuItem.Name = "internalSlicingParameterToolStripMenuItem";
-            this.internalSlicingParameterToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
-            this.internalSlicingParameterToolStripMenuItem.Text = "Internal slicing parameter";
+            this.internalSlicingParameterToolStripMenuItem.Size = new System.Drawing.Size(283, 22);
+            this.internalSlicingParameterToolStripMenuItem.Text = "Test case slicing parameter";
             this.internalSlicingParameterToolStripMenuItem.Click += new System.EventHandler(this.internalSlicingParameterToolStripMenuItem_Click);
             // 
             // soundConfigurationToolStripMenuItem
             // 
             this.soundConfigurationToolStripMenuItem.Name = "soundConfigurationToolStripMenuItem";
-            this.soundConfigurationToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
+            this.soundConfigurationToolStripMenuItem.Size = new System.Drawing.Size(283, 22);
             this.soundConfigurationToolStripMenuItem.Text = "Sound configuration";
             this.soundConfigurationToolStripMenuItem.Click += new System.EventHandler(this.soundConfigurationToolStripMenuItem_Click);
             // 
@@ -861,8 +852,8 @@
             this.toolKillJob.Image = ((System.Drawing.Image)(resources.GetObject("toolKillJob.Image")));
             this.toolKillJob.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolKillJob.Name = "toolKillJob";
-            this.toolKillJob.Size = new System.Drawing.Size(48, 51);
-            this.toolKillJob.Text = "Kill Job";
+            this.toolKillJob.Size = new System.Drawing.Size(47, 51);
+            this.toolKillJob.Text = "Kill job";
             this.toolKillJob.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolKillJob.Click += new System.EventHandler(this.toolKillJob_Click);
             // 
@@ -871,24 +862,21 @@
             this.toolStripSDCard.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSDCard.Image")));
             this.toolStripSDCard.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripSDCard.Name = "toolStripSDCard";
-            this.toolStripSDCard.Size = new System.Drawing.Size(50, 51);
-            this.toolStripSDCard.Text = "SDCard";
+            this.toolStripSDCard.Size = new System.Drawing.Size(51, 51);
+            this.toolStripSDCard.Text = "SD card";
             this.toolStripSDCard.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolStripSDCard.ToolTipText = "SDCard management";
             this.toolStripSDCard.Click += new System.EventHandler(this.toolStripSDCard_Click);
             // 
             // toolShowLog
             // 
-            this.toolShowLog.Checked = true;
-            this.toolShowLog.CheckState = System.Windows.Forms.CheckState.Checked;
             this.toolShowLog.Image = ((System.Drawing.Image)(resources.GetObject("toolShowLog.Image")));
             this.toolShowLog.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolShowLog.Name = "toolShowLog";
-            this.toolShowLog.Size = new System.Drawing.Size(71, 51);
-            this.toolShowLog.Text = "Toggle Log";
+            this.toolShowLog.Size = new System.Drawing.Size(68, 51);
+            this.toolShowLog.Text = "Toggle log";
             this.toolShowLog.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolShowLog.ToolTipText = "Hide log";
-            this.toolShowLog.CheckedChanged += new System.EventHandler(this.toolShowLog_CheckedChanged);
             this.toolShowLog.Click += new System.EventHandler(this.toolShowLog_Click);
             // 
             // toolShowFilament
@@ -932,12 +920,14 @@
             // 
             this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
             this.imageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList.Images.SetKeyName(0, "connect.png");
-            this.imageList.Images.SetKeyName(1, "disconnect.png");
+            this.imageList.Images.SetKeyName(0, "connect32.png");
+            this.imageList.Images.SetKeyName(1, "disconnect32.png");
             this.imageList.Images.SetKeyName(2, "runjob32.png");
-            this.imageList.Images.SetKeyName(3, "pauseicon.png");
-            this.imageList.Images.SetKeyName(4, "preview.png");
-            this.imageList.Images.SetKeyName(5, "previewoff.png");
+            this.imageList.Images.SetKeyName(3, "pauseicon32.png");
+            this.imageList.Images.SetKeyName(4, "preview32.png");
+            this.imageList.Images.SetKeyName(5, "previewoff32.png");
+            this.imageList.Images.SetKeyName(6, "switch_on.png");
+            this.imageList.Images.SetKeyName(7, "switch_off.png");
             // 
             // openGCode
             // 
@@ -1044,15 +1034,6 @@
             this.tabModel.TabIndex = 2;
             this.tabModel.Text = "Object placements";
             // 
-            // stlComposer1
-            // 
-            this.stlComposer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.stlComposer1.Location = new System.Drawing.Point(0, 0);
-            this.stlComposer1.Margin = new System.Windows.Forms.Padding(4);
-            this.stlComposer1.Name = "stlComposer1";
-            this.stlComposer1.Size = new System.Drawing.Size(467, 304);
-            this.stlComposer1.TabIndex = 0;
-            // 
             // tabGCode
             // 
             this.tabGCode.AutoScroll = true;
@@ -1064,6 +1045,25 @@
             this.tabGCode.Size = new System.Drawing.Size(467, 304);
             this.tabGCode.TabIndex = 1;
             this.tabGCode.Text = "G-Code visual editor";
+            // 
+            // tabPrint
+            // 
+            this.tabPrint.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPrint.Location = new System.Drawing.Point(4, 22);
+            this.tabPrint.Name = "tabPrint";
+            this.tabPrint.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPrint.Size = new System.Drawing.Size(467, 304);
+            this.tabPrint.TabIndex = 0;
+            this.tabPrint.Text = "Manual control";
+            // 
+            // stlComposer1
+            // 
+            this.stlComposer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stlComposer1.Location = new System.Drawing.Point(0, 0);
+            this.stlComposer1.Margin = new System.Windows.Forms.Padding(4);
+            this.stlComposer1.Name = "stlComposer1";
+            this.stlComposer1.Size = new System.Drawing.Size(467, 304);
+            this.stlComposer1.TabIndex = 0;
             // 
             // editor
             // 
@@ -1081,16 +1081,6 @@
             this.editor.Size = new System.Drawing.Size(461, 298);
             this.editor.TabIndex = 0;
             // 
-            // tabPrint
-            // 
-            this.tabPrint.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPrint.Location = new System.Drawing.Point(4, 22);
-            this.tabPrint.Name = "tabPrint";
-            this.tabPrint.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPrint.Size = new System.Drawing.Size(467, 304);
-            this.tabPrint.TabIndex = 0;
-            this.tabPrint.Text = "Manual control";
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1103,9 +1093,9 @@
             this.Controls.Add(this.menu);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menu;
-            this.MaximizeBox = false;
             this.Name = "Main";
             this.Text = "Repetier-Host V0.52";
+            this.Load += new System.EventHandler(this.Main_Load);
             this.Shown += new System.EventHandler(this.Main_Shown);
             this.Activated += new System.EventHandler(this.Main_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
@@ -1147,10 +1137,8 @@
         private System.Windows.Forms.ToolStripProgressBar toolProgress;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem printerSettingsToolStripMenuItem;
-        private System.Windows.Forms.ImageList imageList;
         private System.Windows.Forms.OpenFileDialog openGCode;
         private System.Windows.Forms.ToolStripMenuItem windowsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem skeinforgeSettingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem threeDSettingsMenu;
         private System.Windows.Forms.ToolStripMenuItem printerInformationsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem repetierSettingsToolStripMenuItem;
@@ -1238,6 +1226,7 @@
         private System.Windows.Forms.ToolStripMenuItem showWorkdirectoryToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem soundConfigurationToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton toolStripSaveJob;
+        public System.Windows.Forms.ImageList imageList;
     }
 }
 

@@ -487,6 +487,7 @@
     <Content Include="images\switch_off.bmp" />
     <Content Include="repetier-logo-trans32.ico" />
     <Content Include="repetier-logo32.ico" />
+    <None Include="Resources\home.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">

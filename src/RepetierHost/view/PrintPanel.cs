@@ -27,6 +27,7 @@ using RepetierHost.view.utils;
 
 namespace RepetierHost.view
 {
+    public enum PrinterStatus {disconnected,idle,heatingExtruder,heatingBed,motorStopped,jobPaused,jobKilled,jobFinsihed }
     public partial class PrintPanel : UserControl
     {
         PrinterConnection con;
@@ -35,7 +36,8 @@ namespace RepetierHost.view
         int commandPos = 0;
         bool createCommands = true;
         float lastx = -1000, lasty = -1000, lastz = -1000;
-
+        private PrinterStatus status = PrinterStatus.disconnected;
+        private long statusSet=0;
         public PrintPanel()
         {
             InitializeComponent();
@@ -54,6 +56,77 @@ namespace RepetierHost.view
             float volt = 100f * trackFanVoltage.Value / 255;
             labelVoltage.Text = "Output " + volt.ToString("0.0") + "%";
             timer.Start();
+        }
+        public void updateStatus()
+        {
+            TimeSpan t = (DateTime.UtcNow - new DateTime(1970, 1, 1));
+            long timestamp = (long)t.TotalSeconds;
+            long diff = timestamp - statusSet;
+            if (Main.conn.connected == false)
+            {
+                if (status != PrinterStatus.disconnected)
+                    Status = PrinterStatus.disconnected;
+            }
+            else if (ann.extruderTemp > 15 && ann.extruderTemp - con.extruderTemp > 5)
+                Status = PrinterStatus.heatingExtruder;
+            else if (ann.bedTemp > 15 && ann.bedTemp - con.bedTemp > 5 && con.bedTemp>15) // only if has bed
+                Status = PrinterStatus.heatingBed;
+            else if (Main.conn.paused && status != PrinterStatus.jobPaused)
+                Status = PrinterStatus.jobPaused;
+            else if (status == PrinterStatus.jobPaused && !Main.conn.paused)
+                Status = PrinterStatus.idle;
+            else if (status == PrinterStatus.idle && diff > 0)
+                Status = PrinterStatus.idle;
+            else if(status == PrinterStatus.motorStopped || status == PrinterStatus.jobKilled || status==PrinterStatus.jobFinsihed) {
+                if(diff > 30) // remove message after 30 seconds
+                    Status = PrinterStatus.idle;
+            } else if(status == PrinterStatus.disconnected && Main.conn.connected)
+                Status = PrinterStatus.idle;
+        }
+        public MethodInvoker SetStatusJobFinished = delegate {Main.main.printPanel.Status = PrinterStatus.jobFinsihed;};
+        public PrinterStatus Status {
+            set
+            {
+                TimeSpan t = (DateTime.UtcNow - new DateTime(1970, 1, 1));
+                long timestamp = (long)t.TotalSeconds;
+                statusSet = timestamp;
+                status = value;
+                switch (value)
+                {
+                    case PrinterStatus.disconnected:
+                        labelStatus.Text = "Disconnected";
+                        break;
+                    case PrinterStatus.heatingBed:
+                        labelStatus.Text = "Heating bed";
+                        break;
+                    case PrinterStatus.heatingExtruder:
+                        labelStatus.Text = "Heating extruder";
+                        break;
+                    case PrinterStatus.jobKilled:
+                        labelStatus.Text = "Print job killed";
+                        break;
+                    case PrinterStatus.jobPaused:
+                        labelStatus.Text = "Print job paused";
+                        break;
+                    case PrinterStatus.jobFinsihed:
+                        labelStatus.Text = "Print job finished";
+                        break;
+                    default:
+                    case PrinterStatus.idle:
+                        if (Main.conn.job.mode==1)
+                        {
+                            if (Main.conn.analyzer.uploading)
+                                labelStatus.Text = "Uploading ...";
+                            else
+                                labelStatus.Text = "Printing job ETA " + Main.conn.job.ETA;
+                        }
+                        else
+                        {
+                            labelStatus.Text = "Idle";
+                        }
+                        break;
+                }
+            }
         }
         public void ConnectionChanged(string msg) {
             UpdateConStatus(Main.conn.serial != null || Main.conn.isVirtualActive);
@@ -76,16 +149,19 @@ namespace RepetierHost.view
         public void analyzerChange() {
             createCommands = false;
             if (ann.extruderTemp > 0)
-                textExtruderSetTemp.Text = ann.extruderTemp.ToString();
+                numericUpDownExtruder.Value = ann.extruderTemp;
+            //    textExtruderSetTemp.Text = ann.extruderTemp.ToString();
             if (ann.bedTemp > 0)
-                textPrintbedTemp.Text = ann.bedTemp.ToString();
+                numericPrintBed.Value = ann.bedTemp;
+            //    textPrintbedTemp.Text = ann.bedTemp.ToString();
             switchExtruderHeatOn.On = ann.extruderTemp > 0;
             switchFanOn.On = ann.fanOn;
             trackFanVoltage.Value = ann.fanVoltage;
             switchBedHeat.On = ann.bedTemp > 0;
             switchPower.On = ann.powerOn;
             sliderSpeed.Value = con.speedMultiply;
-            labelSpeed.Text = sliderSpeed.Value.ToString() + "%";
+            numericUpDownSpeed.Value = con.speedMultiply;
+            //labelSpeed.Text = sliderSpeed.Value.ToString() + "%";
             tempUpdate(con.extruderTemp, con.bedTemp);
             createCommands = true;
         }
@@ -118,7 +194,7 @@ namespace RepetierHost.view
                 lastz = z;
             }
         }
-        private void UpdateConStatus(bool c)
+        public void UpdateConStatus(bool c)
         {
             Main.main.toolRunJob.Enabled = c;
             Main.main.toolStripSDCard.Enabled = c;
@@ -128,9 +204,9 @@ namespace RepetierHost.view
             switchBedHeat.Enabled = c;
             switchFanOn.Enabled = c;
             switchExtruderHeatOn.Enabled = c;
-            buttonExtruderSetTemp.Enabled = c;
+            numericUpDownExtruder.Enabled = c;
             buttonExtrude.Enabled = c;
-            buttonPrintbedSendTemp.Enabled = c;
+            numericPrintBed.Enabled = c;
             buttonSend.Enabled = c;
             buttonHomeAll.Enabled = c;
             buttonHomeX.Enabled = c;
@@ -173,7 +249,8 @@ namespace RepetierHost.view
             buttonGoDisposeArea.Enabled = c;
             buttonSimulateOK.Enabled = c;
             buttonJobStatus.Enabled = c;
-            sliderSpeed.Enabled = c;
+            sliderSpeed.Enabled = c && (con.isMarlin || con.isRepetier);
+            numericUpDownSpeed.Enabled = c && (con.isMarlin || con.isRepetier);
             if (c) sendDebug();
         }
 
@@ -402,12 +479,12 @@ namespace RepetierHost.view
         {
             if (Main.conn.connected == false) return;
             if (!createCommands) return;
-            int temp = 0;
-            int.TryParse(textExtruderSetTemp.Text,out temp);
+            //int temp = 0;
+            //int.TryParse(textExtruderSetTemp.Text,out temp);
             con.GetInjectLock();
             if (switchExtruderHeatOn.On)
             {
-                con.injectManualCommand("M104 S" + temp);
+                con.injectManualCommand("M104 S" + numericUpDownExtruder.Value);
             }
             else
             {
@@ -416,46 +493,22 @@ namespace RepetierHost.view
             con.ReturnInjectLock();
         }
 
-        private void buttonExtruderSetTemp_Click(object sender, EventArgs e)
-        {
-            int temp = 0;
-            int.TryParse(textExtruderSetTemp.Text, out temp);
-            if (switchExtruderHeatOn.On)
-            {
-                con.GetInjectLock();
-                con.injectManualCommand("M104 S" + temp);
-                con.ReturnInjectLock();
-            }
-        }
-
         private void switchBedHeat_Change(SwitchButton b)
         {
             if (Main.conn.connected == false) return;
             if (!createCommands) return;
-            int temp = 0;
-            int.TryParse(textPrintbedTemp.Text, out temp);
+            //int temp = 0;
+            //int.TryParse(textPrintbedTemp.Text, out temp);
             con.GetInjectLock();
             if (switchBedHeat.On)
             {
-                con.injectManualCommand("M140 S" + temp);
+                con.injectManualCommand("M140 S" + numericPrintBed.Value);
             }
             else
             {
                 con.injectManualCommand("M140 S0");
             }
             con.ReturnInjectLock();
-        }
-
-        private void buttonPrintbedSendTemp_Click(object sender, EventArgs e)
-        {
-            int temp = 0;
-            int.TryParse(textPrintbedTemp.Text, out temp);
-            if (switchBedHeat.On)
-            {
-                con.GetInjectLock();
-                con.injectManualCommand("M140 S" + temp);
-                con.ReturnInjectLock();
-            }
         }
 
         private void switchEcho_Change(SwitchButton b)
@@ -596,6 +649,7 @@ namespace RepetierHost.view
         private void timer_Tick(object sender, EventArgs e)
         {
             coordUpdate(null, ann.x, ann.y, ann.z);
+            updateStatus();
         }
 
         private void buttonRetract_Click(object sender, EventArgs e)
@@ -626,10 +680,49 @@ namespace RepetierHost.view
         private void sliderSpeed_ValueChanged(object sender, EventArgs e)
         {
             if (!createCommands) return;
-            labelSpeed.Text = sliderSpeed.Value.ToString() + "%";
-            con.speedMultiply = sliderSpeed.Value;
-            if(con.connected && (con.isMarlin || con.isRepetier))
+            //labelSpeed.Text = sliderSpeed.Value.ToString() + "%";
+            int oldcon = con.speedMultiply;
+            if (sender == sliderSpeed)
+            {
+                if (con.speedMultiply != sliderSpeed.Value)
+                {
+                    con.speedMultiply = sliderSpeed.Value;
+                    numericUpDownSpeed.Value = con.speedMultiply;
+                }
+            }
+            else
+            {
+                if (con.speedMultiply != numericUpDownSpeed.Value)
+                {
+                    con.speedMultiply = (int)numericUpDownSpeed.Value;
+                    sliderSpeed.Value = con.speedMultiply;
+                }
+            }
+            if(oldcon != con.speedMultiply && con.connected && (con.isMarlin || con.isRepetier))
                 con.injectManualCommand("M220 S"+sliderSpeed.Value.ToString());
+        }
+
+        private void numericUpDownExtruder_ValueChanged(object sender, EventArgs e)
+        {
+            if (!createCommands) return;
+            if (switchExtruderHeatOn.On)
+            {
+                con.GetInjectLock();
+                con.injectManualCommand("M104 S" + numericUpDownExtruder.Value.ToString("0"));
+                con.ReturnInjectLock();
+            }
+        }
+
+        private void numericPrintBed_ValueChanged(object sender, EventArgs e)
+        {
+            if (!createCommands) return;
+            if (switchBedHeat.On)
+            {
+                con.GetInjectLock();
+                con.injectManualCommand("M140 S" + numericPrintBed.Value.ToString("0"));
+                con.ReturnInjectLock();
+            }
+
         }
 
      }
