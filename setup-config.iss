@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Repetier-Host"
-#define MyAppVersion "0.52"
+#define MyAppVersion "0.53"
 #define MyAppPublisher "repetier"
 #define MyAppURL "https://github.com/repetier/Repetier-Host"
 #define MyAppExeName "RepetierHost.exe"
@@ -24,7 +24,7 @@ DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 LicenseFile=Repetier-Host-licence.txt
 OutputDir=.
-OutputBaseFilename=setupRepetierHost_0_52
+OutputBaseFilename=setupRepetierHost_0_53
 Compression=lzma
 SolidCompression=yes
 
@@ -78,4 +78,32 @@ Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Fil
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, "&", "&&")}}"; Flags: nowait postinstall skipifsilent
+
+[CustomMessages]
+dotnetmissing=Repetier-Host needs Microsoft .Net 3.5 which is not yet installed. Do you like to download it now?
+ 
+[Code]
+function InitializeSetup(): Boolean;
+var
+  ErrorCode: Integer;
+  isInstalled: Cardinal;
+  netFrameWorkInstalled : Boolean;
+begin
+  result := true;
+  
+  // Check for the .Net 3.5 framework
+  isInstalled := 0;
+  netFrameworkInstalled := RegQueryDWordValue(HKLM, 'SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.5', 'Install', isInstalled);
+  if ((netFrameworkInstalled)  and (isInstalled <> 1)) then 
+  begin
+    if (MsgBox(ExpandConstant('{cm:dotnetmissing}'), mbConfirmation, MB_YESNO) = idYes) then
+    begin
+      ShellExec('open',
+      'http://www.microsoft.com/en-us/download/details.aspx?id=22',
+      //'http://www.microsoft.com/downloads/details.aspx?FamilyID=333325fd-ae52-4e35-b531-508d977d32a6&DisplayLang=en',
+      '','',SW_SHOWNORMAL,ewNoWait,ErrorCode);
+    end;
+    result := false;
+  end;  
+end;
 

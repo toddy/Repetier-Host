@@ -25,6 +25,7 @@ using System.Windows.Forms;
 using System.IO;
 using Microsoft.Win32;
 using RepetierHost.view.utils;
+using RepetierHost.model;
 
 namespace RepetierHost.view
 {
@@ -36,7 +37,7 @@ namespace RepetierHost.view
         {
             InitializeComponent();
             RegMemory.RestoreWindowPos("globalSettingsWindow", this);
-            repetierKey = Registry.CurrentUser.CreateSubKey("SOFTWARE\\Repetier");
+            repetierKey = Custom.BaseKey; // Registry.CurrentUser.CreateSubKey("SOFTWARE\\Repetier");
             RegToForm();
         }
         public bool WorkdirOK()

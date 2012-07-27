@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using RepetierHost.model;
 
 namespace RepetierHost
 {
@@ -30,6 +31,7 @@ namespace RepetierHost
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            Custom.Initialize();
             Application.Run(new Main());
         }
     }

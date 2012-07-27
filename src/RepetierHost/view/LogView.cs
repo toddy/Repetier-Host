@@ -36,7 +36,7 @@ namespace RepetierHost.view
         public LogView()
         {
             InitializeComponent();
-            key = Registry.CurrentUser.CreateSubKey("SOFTWARE\\Repetier");
+            key = Custom.BaseKey; // Registry.CurrentUser.CreateSubKey("SOFTWARE\\Repetier");
             RegToForm();
         }
         static bool readingReg = false;

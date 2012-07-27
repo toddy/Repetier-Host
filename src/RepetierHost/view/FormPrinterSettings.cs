@@ -50,7 +50,7 @@ namespace RepetierHost.view
         {
             InitializeComponent();
             RegMemory.RestoreWindowPos("printerSettingsWindow", this);
-            repetierKey = Registry.CurrentUser.CreateSubKey("SOFTWARE\\Repetier");
+            repetierKey = Custom.BaseKey; // Registry.CurrentUser.CreateSubKey("SOFTWARE\\Repetier");
             printerKey = repetierKey.CreateSubKey("printer");
             con = Main.conn;
             conToForm();
@@ -61,6 +61,29 @@ namespace RepetierHost.view
             load(con.printerName);
             formToCon();
             UpdateDimensions();
+            if (Custom.GetBool("simpleConnectionsConfig", false))
+            {
+                comboParity.Visible = false;
+                comboStopbits.Visible = false;
+                labelStopbits.Visible = false;
+                labelParity.Visible = false;
+            }
+            if (Custom.GetBool("noDisposeArea", false))
+            {
+                labelDumpAreaDepth.Visible = false;
+                labelDumpAreaFront.Visible = false;
+                labelDumpAreaLeft.Visible = false;
+                labelDumpAreaWidth.Visible = false;
+                labelDumpUnit1.Visible = false;
+                labelDumpUnit2.Visible = false;
+                labelDumpUnit3.Visible = false;
+                labelDumpUnit4.Visible = false;
+                checkHasDumpArea.Visible = false;
+                textDumpAreaDepth.Visible = false;
+                textDumpAreaFront.Visible = false;
+                textDumpAreaLeft.Visible = false;
+                textDumpAreaWidth.Visible = false;
+            }
         }
         public void save(string printername)
         {
@@ -99,6 +122,8 @@ namespace RepetierHost.view
             p.SetValue("runFilterEverySlice", checkRunFilterEverySlice.Checked ? 1 : 0);
             p.SetValue("logM105", logM105Checkbox.Checked ? 1 : 0);
             p.SetValue("addPrintingTime", textAddPrintingTime.Text);
+            p.SetValue("xhomeMax", checkHomeXMax.Checked ? 1 : 0);
+            p.SetValue("yhomeMax", checkHomeYMax.Checked ? 1 : 0);
         }
         public void load(string printername)
         {
@@ -139,6 +164,8 @@ namespace RepetierHost.view
             checkRunFilterEverySlice.Checked = 1 == (int)p.GetValue("runFilterEverySlice", checkRunFilterEverySlice.Checked ? 1 : 0);
             logM105Checkbox.Checked = 1 == (int)p.GetValue("logM105", logM105Checkbox.Checked ? 1 : 0);
             textAddPrintingTime.Text = (string)p.GetValue("addPrintingTime", textAddPrintingTime.Text);
+            checkHomeXMax.Checked = 1 == (int)p.GetValue("xhomeMax", checkHomeXMax.Checked ? 1 : 0);
+            checkHomeYMax.Checked = 1 == (int)p.GetValue("yhomeMax", checkHomeYMax.Checked ? 1 : 0);
         }
         public void UpdateDimensions()
         {

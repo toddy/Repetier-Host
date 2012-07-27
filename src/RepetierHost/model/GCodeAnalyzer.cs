@@ -203,8 +203,8 @@ namespace RepetierHost.model
                     case 161:
                         {
                             bool homeAll = !(code.hasX || code.hasY || code.hasZ);
-                            if (code.hasX || homeAll) { xOffset = 0; x = 0; hasXHome = true; }
-                            if (code.hasY || homeAll) { yOffset = 0; y = 0; hasYHome = true; }
+                            if (code.hasX || homeAll) { xOffset = 0; x = (Main.printerSettings.checkHomeXMax.Checked ? Main.printerSettings.PrintAreaWidth : 0); hasXHome = true; }
+                            if (code.hasY || homeAll) { yOffset = 0; y = (Main.printerSettings.checkHomeYMax.Checked ? Main.printerSettings.PrintAreaDepth : 0); hasYHome = true; }
                             if (code.hasZ || homeAll) { zOffset = 0; z = 0; hasZHome = true; }
                             if (code.hasE) { eOffset = 0; e = 0; emax = 0; }
                             if (eventPosChanged != null)
@@ -411,8 +411,8 @@ namespace RepetierHost.model
                 case 4:
                     {
                         bool homeAll = !(code.hasX || code.hasY || code.hasZ);
-                        if (code.hasX || homeAll) { xOffset = 0; x = 0; hasXHome = true; }
-                        if (code.hasY || homeAll) { yOffset = 0; y = 0; hasYHome = true; }
+                        if (code.hasX || homeAll) { xOffset = 0; x = (Main.printerSettings.checkHomeXMax.Checked ? Main.printerSettings.PrintAreaWidth : 0); hasXHome = true; }
+                        if (code.hasY || homeAll) { yOffset = 0; y = (Main.printerSettings.checkHomeYMax.Checked ? Main.printerSettings.PrintAreaDepth : 0); hasYHome = true; }
                         if (code.hasZ || homeAll) { zOffset = 0; z = 0; hasZHome = true; }
                         if (code.hasE) { eOffset = 0; e = 0; emax = 0; }
                         // [delegate positionChangedFastX:x y:y z:z e:e];

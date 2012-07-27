@@ -45,8 +45,8 @@
             this.comboTransferProtocol = new System.Windows.Forms.ComboBox();
             this.comboParity = new System.Windows.Forms.ComboBox();
             this.comboStopbits = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.labelParity = new System.Windows.Forms.Label();
+            this.labelStopbits = new System.Windows.Forms.Label();
             this.comboBaud = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.comboPort = new System.Windows.Forms.ComboBox();
@@ -86,17 +86,17 @@
             this.textTravelFeedrate = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.tabPageShape = new System.Windows.Forms.TabPage();
-            this.label31 = new System.Windows.Forms.Label();
-            this.label30 = new System.Windows.Forms.Label();
-            this.label29 = new System.Windows.Forms.Label();
-            this.label28 = new System.Windows.Forms.Label();
+            this.labelDumpUnit4 = new System.Windows.Forms.Label();
+            this.labelDumpUnit3 = new System.Windows.Forms.Label();
+            this.labelDumpUnit2 = new System.Windows.Forms.Label();
+            this.labelDumpUnit1 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
-            this.label23 = new System.Windows.Forms.Label();
-            this.label22 = new System.Windows.Forms.Label();
-            this.label21 = new System.Windows.Forms.Label();
+            this.labelDumpAreaDepth = new System.Windows.Forms.Label();
+            this.labelDumpAreaWidth = new System.Windows.Forms.Label();
+            this.labelDumpAreaFront = new System.Windows.Forms.Label();
+            this.labelDumpAreaLeft = new System.Windows.Forms.Label();
             this.checkHasDumpArea = new System.Windows.Forms.CheckBox();
             this.textPrintAreaHeight = new System.Windows.Forms.TextBox();
             this.textDumpAreaDepth = new System.Windows.Forms.TextBox();
@@ -119,6 +119,8 @@
             this.buttonAbort = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.checkHomeXMax = new System.Windows.Forms.CheckBox();
+            this.checkHomeYMax = new System.Windows.Forms.CheckBox();
             this.panelPrinterSelect.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPageConnection.SuspendLayout();
@@ -187,8 +189,8 @@
             this.tabPageConnection.Controls.Add(this.comboTransferProtocol);
             this.tabPageConnection.Controls.Add(this.comboParity);
             this.tabPageConnection.Controls.Add(this.comboStopbits);
-            this.tabPageConnection.Controls.Add(this.label5);
-            this.tabPageConnection.Controls.Add(this.label4);
+            this.tabPageConnection.Controls.Add(this.labelParity);
+            this.tabPageConnection.Controls.Add(this.labelStopbits);
             this.tabPageConnection.Controls.Add(this.comboBaud);
             this.tabPageConnection.Controls.Add(this.label3);
             this.tabPageConnection.Controls.Add(this.comboPort);
@@ -307,23 +309,23 @@
             this.comboStopbits.Size = new System.Drawing.Size(129, 21);
             this.comboStopbits.TabIndex = 2;
             // 
-            // label5
+            // labelParity
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(13, 89);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(33, 13);
-            this.label5.TabIndex = 5;
-            this.label5.Text = "Parity";
+            this.labelParity.AutoSize = true;
+            this.labelParity.Location = new System.Drawing.Point(13, 89);
+            this.labelParity.Name = "labelParity";
+            this.labelParity.Size = new System.Drawing.Size(33, 13);
+            this.labelParity.TabIndex = 5;
+            this.labelParity.Text = "Parity";
             // 
-            // label4
+            // labelStopbits
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(13, 62);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(48, 13);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "Stopbits:";
+            this.labelStopbits.AutoSize = true;
+            this.labelStopbits.Location = new System.Drawing.Point(13, 62);
+            this.labelStopbits.Name = "labelStopbits";
+            this.labelStopbits.Size = new System.Drawing.Size(48, 13);
+            this.labelStopbits.TabIndex = 4;
+            this.labelStopbits.Text = "Stopbits:";
             // 
             // comboBaud
             // 
@@ -414,7 +416,7 @@
             this.tabPagePrinter.Location = new System.Drawing.Point(4, 22);
             this.tabPagePrinter.Name = "tabPagePrinter";
             this.tabPagePrinter.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPagePrinter.Size = new System.Drawing.Size(481, 348);
+            this.tabPagePrinter.Size = new System.Drawing.Size(481, 379);
             this.tabPagePrinter.TabIndex = 1;
             this.tabPagePrinter.Text = "Printer";
             this.tabPagePrinter.UseVisualStyleBackColor = true;
@@ -580,7 +582,7 @@
             this.checkGoDisposeAfterJob.Name = "checkGoDisposeAfterJob";
             this.checkGoDisposeAfterJob.Size = new System.Drawing.Size(190, 17);
             this.checkGoDisposeAfterJob.TabIndex = 8;
-            this.checkGoDisposeAfterJob.Text = "Go to dispose area after job/job kill";
+            this.checkGoDisposeAfterJob.Text = "Go to park position after job/job kill";
             this.checkGoDisposeAfterJob.UseVisualStyleBackColor = true;
             // 
             // label15
@@ -624,9 +626,9 @@
             this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(13, 185);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(101, 13);
+            this.label13.Size = new System.Drawing.Size(71, 13);
             this.label13.TabIndex = 11;
-            this.label13.Text = "Dump area position:";
+            this.label13.Text = "Park position:";
             // 
             // label12
             // 
@@ -737,17 +739,19 @@
             // tabPageShape
             // 
             this.tabPageShape.BackColor = System.Drawing.Color.Transparent;
-            this.tabPageShape.Controls.Add(this.label31);
-            this.tabPageShape.Controls.Add(this.label30);
-            this.tabPageShape.Controls.Add(this.label29);
-            this.tabPageShape.Controls.Add(this.label28);
+            this.tabPageShape.Controls.Add(this.checkHomeYMax);
+            this.tabPageShape.Controls.Add(this.checkHomeXMax);
+            this.tabPageShape.Controls.Add(this.labelDumpUnit4);
+            this.tabPageShape.Controls.Add(this.labelDumpUnit3);
+            this.tabPageShape.Controls.Add(this.labelDumpUnit2);
+            this.tabPageShape.Controls.Add(this.labelDumpUnit1);
             this.tabPageShape.Controls.Add(this.label27);
             this.tabPageShape.Controls.Add(this.label26);
             this.tabPageShape.Controls.Add(this.label25);
-            this.tabPageShape.Controls.Add(this.label24);
-            this.tabPageShape.Controls.Add(this.label23);
-            this.tabPageShape.Controls.Add(this.label22);
-            this.tabPageShape.Controls.Add(this.label21);
+            this.tabPageShape.Controls.Add(this.labelDumpAreaDepth);
+            this.tabPageShape.Controls.Add(this.labelDumpAreaWidth);
+            this.tabPageShape.Controls.Add(this.labelDumpAreaFront);
+            this.tabPageShape.Controls.Add(this.labelDumpAreaLeft);
             this.tabPageShape.Controls.Add(this.checkHasDumpArea);
             this.tabPageShape.Controls.Add(this.textPrintAreaHeight);
             this.tabPageShape.Controls.Add(this.textDumpAreaDepth);
@@ -761,46 +765,46 @@
             this.tabPageShape.Controls.Add(this.label18);
             this.tabPageShape.Location = new System.Drawing.Point(4, 22);
             this.tabPageShape.Name = "tabPageShape";
-            this.tabPageShape.Size = new System.Drawing.Size(481, 348);
+            this.tabPageShape.Size = new System.Drawing.Size(481, 379);
             this.tabPageShape.TabIndex = 2;
             this.tabPageShape.Text = "Printer shape";
             this.tabPageShape.UseVisualStyleBackColor = true;
             // 
-            // label31
+            // labelDumpUnit4
             // 
-            this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(256, 195);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(23, 13);
-            this.label31.TabIndex = 6;
-            this.label31.Text = "mm";
+            this.labelDumpUnit4.AutoSize = true;
+            this.labelDumpUnit4.Location = new System.Drawing.Point(256, 195);
+            this.labelDumpUnit4.Name = "labelDumpUnit4";
+            this.labelDumpUnit4.Size = new System.Drawing.Size(23, 13);
+            this.labelDumpUnit4.TabIndex = 6;
+            this.labelDumpUnit4.Text = "mm";
             // 
-            // label30
+            // labelDumpUnit3
             // 
-            this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(256, 170);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(23, 13);
-            this.label30.TabIndex = 6;
-            this.label30.Text = "mm";
+            this.labelDumpUnit3.AutoSize = true;
+            this.labelDumpUnit3.Location = new System.Drawing.Point(256, 170);
+            this.labelDumpUnit3.Name = "labelDumpUnit3";
+            this.labelDumpUnit3.Size = new System.Drawing.Size(23, 13);
+            this.labelDumpUnit3.TabIndex = 6;
+            this.labelDumpUnit3.Text = "mm";
             // 
-            // label29
+            // labelDumpUnit2
             // 
-            this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(256, 144);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(23, 13);
-            this.label29.TabIndex = 6;
-            this.label29.Text = "mm";
+            this.labelDumpUnit2.AutoSize = true;
+            this.labelDumpUnit2.Location = new System.Drawing.Point(256, 144);
+            this.labelDumpUnit2.Name = "labelDumpUnit2";
+            this.labelDumpUnit2.Size = new System.Drawing.Size(23, 13);
+            this.labelDumpUnit2.TabIndex = 6;
+            this.labelDumpUnit2.Text = "mm";
             // 
-            // label28
+            // labelDumpUnit1
             // 
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(256, 118);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(23, 13);
-            this.label28.TabIndex = 6;
-            this.label28.Text = "mm";
+            this.labelDumpUnit1.AutoSize = true;
+            this.labelDumpUnit1.Location = new System.Drawing.Point(256, 118);
+            this.labelDumpUnit1.Name = "labelDumpUnit1";
+            this.labelDumpUnit1.Size = new System.Drawing.Size(23, 13);
+            this.labelDumpUnit1.TabIndex = 6;
+            this.labelDumpUnit1.Text = "mm";
             // 
             // label27
             // 
@@ -829,47 +833,45 @@
             this.label25.TabIndex = 6;
             this.label25.Text = "mm";
             // 
-            // label24
+            // labelDumpAreaDepth
             // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(9, 195);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(92, 13);
-            this.label24.TabIndex = 5;
-            this.label24.Text = "Dump area depth:";
+            this.labelDumpAreaDepth.AutoSize = true;
+            this.labelDumpAreaDepth.Location = new System.Drawing.Point(9, 195);
+            this.labelDumpAreaDepth.Name = "labelDumpAreaDepth";
+            this.labelDumpAreaDepth.Size = new System.Drawing.Size(92, 13);
+            this.labelDumpAreaDepth.TabIndex = 5;
+            this.labelDumpAreaDepth.Text = "Dump area depth:";
             // 
-            // label23
+            // labelDumpAreaWidth
             // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(9, 170);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(90, 13);
-            this.label23.TabIndex = 5;
-            this.label23.Text = "Dump area width:";
+            this.labelDumpAreaWidth.AutoSize = true;
+            this.labelDumpAreaWidth.Location = new System.Drawing.Point(9, 170);
+            this.labelDumpAreaWidth.Name = "labelDumpAreaWidth";
+            this.labelDumpAreaWidth.Size = new System.Drawing.Size(90, 13);
+            this.labelDumpAreaWidth.TabIndex = 5;
+            this.labelDumpAreaWidth.Text = "Dump area width:";
             // 
-            // label22
+            // labelDumpAreaFront
             // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(9, 144);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(86, 13);
-            this.label22.TabIndex = 5;
-            this.label22.Text = "Dump area front:";
+            this.labelDumpAreaFront.AutoSize = true;
+            this.labelDumpAreaFront.Location = new System.Drawing.Point(9, 144);
+            this.labelDumpAreaFront.Name = "labelDumpAreaFront";
+            this.labelDumpAreaFront.Size = new System.Drawing.Size(86, 13);
+            this.labelDumpAreaFront.TabIndex = 5;
+            this.labelDumpAreaFront.Text = "Dump area front:";
             // 
-            // label21
+            // labelDumpAreaLeft
             // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(9, 118);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(79, 13);
-            this.label21.TabIndex = 5;
-            this.label21.Text = "Dump area left:";
+            this.labelDumpAreaLeft.AutoSize = true;
+            this.labelDumpAreaLeft.Location = new System.Drawing.Point(9, 118);
+            this.labelDumpAreaLeft.Name = "labelDumpAreaLeft";
+            this.labelDumpAreaLeft.Size = new System.Drawing.Size(79, 13);
+            this.labelDumpAreaLeft.TabIndex = 5;
+            this.labelDumpAreaLeft.Text = "Dump area left:";
             // 
             // checkHasDumpArea
             // 
             this.checkHasDumpArea.AutoSize = true;
-            this.checkHasDumpArea.Checked = true;
-            this.checkHasDumpArea.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkHasDumpArea.Location = new System.Drawing.Point(12, 93);
             this.checkHasDumpArea.Name = "checkHasDumpArea";
             this.checkHasDumpArea.Size = new System.Drawing.Size(129, 17);
@@ -1075,6 +1077,26 @@
             // 
             this.errorProvider.ContainerControl = this;
             // 
+            // checkHomeXMax
+            // 
+            this.checkHomeXMax.AutoSize = true;
+            this.checkHomeXMax.Location = new System.Drawing.Point(286, 14);
+            this.checkHomeXMax.Name = "checkHomeXMax";
+            this.checkHomeXMax.Size = new System.Drawing.Size(106, 17);
+            this.checkHomeXMax.TabIndex = 8;
+            this.checkHomeXMax.Text = "Home is at x max";
+            this.checkHomeXMax.UseVisualStyleBackColor = true;
+            // 
+            // checkHomeYMax
+            // 
+            this.checkHomeYMax.AutoSize = true;
+            this.checkHomeYMax.Location = new System.Drawing.Point(285, 40);
+            this.checkHomeYMax.Name = "checkHomeYMax";
+            this.checkHomeYMax.Size = new System.Drawing.Size(106, 17);
+            this.checkHomeYMax.TabIndex = 8;
+            this.checkHomeYMax.Text = "Home is at y max";
+            this.checkHomeYMax.UseVisualStyleBackColor = true;
+            // 
             // FormPrinterSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1127,8 +1149,8 @@
         private System.Windows.Forms.Button buttonOK;
         private System.Windows.Forms.ComboBox comboParity;
         private System.Windows.Forms.ComboBox comboStopbits;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label labelParity;
+        private System.Windows.Forms.Label labelStopbits;
         private System.Windows.Forms.ComboBox comboBaud;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox comboPort;
@@ -1168,17 +1190,17 @@
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.Label label31;
-        private System.Windows.Forms.Label label30;
-        private System.Windows.Forms.Label label29;
-        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Label labelDumpUnit4;
+        private System.Windows.Forms.Label labelDumpUnit3;
+        private System.Windows.Forms.Label labelDumpUnit2;
+        private System.Windows.Forms.Label labelDumpUnit1;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.Label label25;
-        private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label labelDumpAreaDepth;
+        private System.Windows.Forms.Label labelDumpAreaWidth;
+        private System.Windows.Forms.Label labelDumpAreaFront;
+        private System.Windows.Forms.Label labelDumpAreaLeft;
         private System.Windows.Forms.CheckBox checkHasDumpArea;
         private System.Windows.Forms.TextBox textDumpAreaDepth;
         private System.Windows.Forms.TextBox textDumpAreaWidth;
@@ -1206,5 +1228,7 @@
         private System.Windows.Forms.Label label42;
         private System.Windows.Forms.TextBox textAddPrintingTime;
         private System.Windows.Forms.Label label41;
+        public System.Windows.Forms.CheckBox checkHomeYMax;
+        public System.Windows.Forms.CheckBox checkHomeXMax;
     }
 }

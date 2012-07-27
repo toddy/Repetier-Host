@@ -120,7 +120,7 @@ namespace RepetierHost.model
         string nextPrinterAction = null;
         private long lastCommandSend = DateTime.Now.Ticks;
         private string lastPrinterAction = "";
-        public int receiveCacheSize = 120;
+        public int receiveCacheSize = 63;
         public LinkedList<int> nackLines = new LinkedList<int>(); // Lines, whoses receivement were not acknowledged
         Thread readThread = null;
         VirtualPrinter virtualPrinter;

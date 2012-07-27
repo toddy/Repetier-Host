@@ -26,7 +26,7 @@ namespace RepetierHost.view
 
         private void buttonClose_Click(object sender, EventArgs e)
         {
-            Hide();
+            Close();
         }
     }
 }

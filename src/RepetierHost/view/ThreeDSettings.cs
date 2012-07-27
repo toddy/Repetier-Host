@@ -43,7 +43,7 @@ namespace RepetierHost.view
             if (Main.IsMono)
                 buttonOK.Location = new Point(buttonOK.Location.X,buttonOK.Location.Y-10);
             comboDrawMethod.SelectedIndex = 0;
-            repetierKey = Registry.CurrentUser.CreateSubKey("SOFTWARE\\Repetier");
+            repetierKey = Custom.BaseKey; //  Registry.CurrentUser.CreateSubKey("SOFTWARE\\Repetier");
             threedKey = repetierKey.CreateSubKey("3D");
             if (comboFilamentVisualization.SelectedIndex < 0) comboFilamentVisualization.SelectedIndex = 1;
             RegistryToForm();

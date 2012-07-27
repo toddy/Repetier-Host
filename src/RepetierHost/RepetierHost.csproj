@@ -105,6 +105,7 @@
     </Compile>
     <Compile Include="model\BasicConfiguration.cs" />
     <Compile Include="model\Commands.cs" />
+    <Compile Include="model\Custom.cs" />
     <Compile Include="model\EEPROMMarlinParameter.cs" />
     <Compile Include="model\EEPROMParameter.cs" />
     <Compile Include="model\GCode.cs" />
@@ -451,6 +452,12 @@
     </Compile>
     <Compile Include="view\ThreeDSettings.Designer.cs">
       <DependentUpon>ThreeDSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="view\utils\ArrowButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="view\utils\ArrowButton.Designer.cs">
+      <DependentUpon>ArrowButton.cs</DependentUpon>
     </Compile>
     <Compile Include="view\utils\ColorSlider.cs">
       <SubType>Component</SubType>

@@ -97,3 +97,6 @@ Slider
     Author: Michal Brylka
     Licence: The GNU Lesser General Public License (LGPLv3)
     http://www.codeproject.com/Articles/17395/Owner-drawn-trackbar-slider
+
+Icons are based on
+Font Awesome - http://fortawesome.github.com/Font-Awesome

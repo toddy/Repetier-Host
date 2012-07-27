@@ -30,20 +30,20 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Slic3rSetup));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.checkBoxUseBundledVersion = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.checkBoxUseBundledVersion = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.textPath = new System.Windows.Forms.TextBox();
-            this.textIni = new System.Windows.Forms.TextBox();
-            this.buttonBrowseSlic3r = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.buttonBrowseIni = new System.Windows.Forms.Button();
+            this.buttonBrowseSlic3r = new System.Windows.Forms.Button();
+            this.textIni = new System.Windows.Forms.TextBox();
+            this.textPath = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.buttonOK = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.label5 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -59,6 +59,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Internal Slic3r configuration";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(7, 44);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(389, 52);
+            this.label1.TabIndex = 1;
+            this.label1.Text = resources.GetString("label1.Text");
+            // 
             // checkBoxUseBundledVersion
             // 
             this.checkBoxUseBundledVersion.AutoSize = true;
@@ -68,15 +77,6 @@
             this.checkBoxUseBundledVersion.TabIndex = 0;
             this.checkBoxUseBundledVersion.Text = "Use bundeled Slic3r version.";
             this.checkBoxUseBundledVersion.UseVisualStyleBackColor = true;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 44);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(389, 52);
-            this.label1.TabIndex = 1;
-            this.label1.Text = resources.GetString("label1.Text");
             // 
             // groupBox2
             // 
@@ -95,39 +95,33 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "External Slic3r";
             // 
-            // label2
+            // label5
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(7, 16);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(105, 13);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "Slic3r executable";
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(7, 56);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(218, 13);
+            this.label5.TabIndex = 7;
+            this.label5.Text = "Leave blank to use internal Slic3r with ini file.";
             // 
-            // label3
+            // label4
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(7, 79);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(116, 13);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "Slic3r ini file to use";
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(7, 123);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(409, 52);
+            this.label4.TabIndex = 6;
+            this.label4.Text = resources.GetString("label4.Text");
             // 
-            // textPath
+            // buttonBrowseIni
             // 
-            this.textPath.Location = new System.Drawing.Point(10, 33);
-            this.textPath.Name = "textPath";
-            this.textPath.Size = new System.Drawing.Size(315, 20);
-            this.textPath.TabIndex = 2;
-            // 
-            // textIni
-            // 
-            this.textIni.Location = new System.Drawing.Point(10, 96);
-            this.textIni.Name = "textIni";
-            this.textIni.Size = new System.Drawing.Size(315, 20);
-            this.textIni.TabIndex = 3;
+            this.buttonBrowseIni.Location = new System.Drawing.Point(331, 93);
+            this.buttonBrowseIni.Name = "buttonBrowseIni";
+            this.buttonBrowseIni.Size = new System.Drawing.Size(75, 23);
+            this.buttonBrowseIni.TabIndex = 5;
+            this.buttonBrowseIni.Text = "Browse";
+            this.buttonBrowseIni.UseVisualStyleBackColor = true;
+            this.buttonBrowseIni.Click += new System.EventHandler(this.buttonBrowseIni_Click);
             // 
             // buttonBrowseSlic3r
             // 
@@ -139,15 +133,39 @@
             this.buttonBrowseSlic3r.UseVisualStyleBackColor = true;
             this.buttonBrowseSlic3r.Click += new System.EventHandler(this.buttonBrowseSlic3r_Click);
             // 
-            // buttonBrowseIni
+            // textIni
             // 
-            this.buttonBrowseIni.Location = new System.Drawing.Point(331, 93);
-            this.buttonBrowseIni.Name = "buttonBrowseIni";
-            this.buttonBrowseIni.Size = new System.Drawing.Size(75, 23);
-            this.buttonBrowseIni.TabIndex = 5;
-            this.buttonBrowseIni.Text = "Browse";
-            this.buttonBrowseIni.UseVisualStyleBackColor = true;
-            this.buttonBrowseIni.Click += new System.EventHandler(this.buttonBrowseIni_Click);
+            this.textIni.Location = new System.Drawing.Point(10, 96);
+            this.textIni.Name = "textIni";
+            this.textIni.Size = new System.Drawing.Size(315, 20);
+            this.textIni.TabIndex = 3;
+            // 
+            // textPath
+            // 
+            this.textPath.Location = new System.Drawing.Point(10, 33);
+            this.textPath.Name = "textPath";
+            this.textPath.Size = new System.Drawing.Size(315, 20);
+            this.textPath.TabIndex = 2;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(7, 79);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(116, 13);
+            this.label3.TabIndex = 1;
+            this.label3.Text = "Slic3r ini file to use";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(7, 16);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(105, 13);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "Slic3r executable";
             // 
             // buttonOK
             // 
@@ -169,27 +187,9 @@
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(7, 123);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(409, 52);
-            this.label4.TabIndex = 6;
-            this.label4.Text = resources.GetString("label4.Text");
-            // 
             // openFileDialog
             // 
             this.openFileDialog.Title = "Slic3r setup";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(7, 56);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(218, 13);
-            this.label5.TabIndex = 7;
-            this.label5.Text = "Leave blank to use internal Slic3r with ini file.";
             // 
             // Slic3rSetup
             // 

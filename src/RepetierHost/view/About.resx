@@ -506,7 +506,11 @@ HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABI
  Slider
     Author: Michal Brylka
     Licence: The GNU Lesser General Public License (LGPLv3)
-    http://www.codeproject.com/Articles/17395/Owner-drawn-trackbar-slider</value>
+    http://www.codeproject.com/Articles/17395/Owner-drawn-trackbar-slider
+
+Icons are based on
+Font Awesome - http://fortawesome.github.com/Font-Awesome
+</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
     <value>This software was developed for controlling RepRap like 3D-printer.

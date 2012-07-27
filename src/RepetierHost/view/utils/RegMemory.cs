@@ -19,7 +19,7 @@ namespace RepetierHost.view.utils
         static void initKeys()
         {
             if (mainKey != null) return;
-            mainKey = Registry.CurrentUser.CreateSubKey("SOFTWARE\\Repetier");
+            mainKey = Custom.BaseKey; // Registry.CurrentUser.CreateSubKey("SOFTWARE\\Repetier");
             windowKey = mainKey.CreateSubKey("window");
 
         }

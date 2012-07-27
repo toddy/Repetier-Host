@@ -47,6 +47,16 @@ namespace RepetierHost.view
             get { return button.FlatAppearance.BorderSize; }
             set { button.FlatAppearance.BorderSize = value; }
         }
+        public Color ButtonFlatBorderColor
+        {
+            get { return button.FlatAppearance.BorderColor; }
+            set { button.FlatAppearance.BorderColor = value; }
+        }
+        public TextImageRelation TextImageRelation
+        {
+            get { return button.TextImageRelation; }
+            set { button.TextImageRelation = value; }
+        }
         public ContentAlignment ButtonTextAlign
         {
             get { return button.TextAlign; }

@@ -146,7 +146,7 @@ namespace RepetierHost
         public Main()
         {
             executeHostCall = new executeHostCommandDelegate(this.executeHostCommand);
-            repetierKey = Registry.CurrentUser.CreateSubKey("SOFTWARE\\Repetier");
+            repetierKey = Custom.BaseKey; // Registry.CurrentUser.CreateSubKey("SOFTWARE\\Repetier");
             repetierKey.SetValue("installPath", Application.StartupPath);
             if (Path.DirectorySeparatorChar != '\\' && IsRunningOnMac())
                 IsMac = true;
@@ -258,6 +258,20 @@ namespace RepetierHost
                 showWorkdirectoryToolStripMenuItem.Visible = false;
             new SoundConfig();
             stlComposer1.buttonSlice.Text = "Slice with " + slicer.SlicerName;
+
+            // Customizations
+
+            if(Custom.GetBool("removeTestgenerator",false)) {
+                internalSlicingParameterToolStripMenuItem.Visible = false;
+                testCaseGeneratorToolStripMenuItem.Visible = false;
+            }
+            string titleAdd = Custom.GetString("titleAddition", "");
+            if (titleAdd.Length > 0)
+            {
+                int p = basicTitle.IndexOf(' ');
+                basicTitle = basicTitle.Substring(0, p) + titleAdd + basicTitle.Substring(p);
+                Text = basicTitle;
+            }
         }
 
         public void UpdateConnections()
@@ -460,6 +474,7 @@ namespace RepetierHost
                 }
                 else
                 {
+                    tab.SelectTab(tabModel);
                     stlComposer1.openAndAddObject(file);
                 }
             }
@@ -892,6 +907,10 @@ namespace RepetierHost
                         tabModel.Controls.Add(stlComposer1);
                 }
                 refreshCounter = 6;
+            }
+            if (tab.SelectedTab == tabModel)
+            {
+                tabControlView.SelectedIndex = 0;
             }
             assign3DView();
         }

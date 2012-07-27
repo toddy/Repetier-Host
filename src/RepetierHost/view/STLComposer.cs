@@ -414,7 +414,7 @@ namespace RepetierHost.view
             //if (stl == null) return;
             foreach (STL stl in listSTLObjects.SelectedItems)
             {
-                stl.Center(100f, 100f);
+                stl.Center(Main.printerSettings.PrintAreaWidth/2, Main.printerSettings.PrintAreaDepth/2);
                 listSTLObjects_SelectedIndexChanged(null, null);
 
             }

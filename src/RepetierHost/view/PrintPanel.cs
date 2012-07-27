@@ -133,8 +133,8 @@ namespace RepetierHost.view
         }
         private void tempUpdate(int extruder, int printbed)
         {
-            labelExtruderTemp.Text = extruder.ToString() + "°C";
-            labelPrintbedTemp.Text = printbed.ToString() + "°C";
+            labelExtruderTemp.Text = extruder.ToString() + "°C /";
+            labelPrintbedTemp.Text = printbed.ToString() + "°C /";
             string tr = "Extruder: " + con.extruderTemp.ToString();
             if (switchExtruderHeatOn.On) tr += "/" + ann.extruderTemp.ToString() + "°C";
             else tr += "°C/Off";
@@ -204,6 +204,7 @@ namespace RepetierHost.view
             switchBedHeat.Enabled = c;
             switchFanOn.Enabled = c;
             switchExtruderHeatOn.Enabled = c;
+            trackFanVoltage.Enabled = c;
             numericUpDownExtruder.Enabled = c;
             buttonExtrude.Enabled = c;
             numericPrintBed.Enabled = c;
@@ -212,30 +213,6 @@ namespace RepetierHost.view
             buttonHomeX.Enabled = c;
             buttonHomeY.Enabled = c;
             buttonHomeZ.Enabled = c;
-            buttonXM01.Enabled = c;
-            buttonXM1.Enabled = c;
-            buttonXM10.Enabled = c;
-            buttonXM100.Enabled = c;
-            buttonXP01.Enabled = c;
-            buttonXP1.Enabled = c;
-            buttonXP10.Enabled = c;
-            buttonXP100.Enabled = c;
-            buttonYM01.Enabled = c;
-            buttonYM1.Enabled = c;
-            buttonYM10.Enabled = c;
-            buttonYM100.Enabled = c;
-            buttonYP01.Enabled = c;
-            buttonYP1.Enabled = c;
-            buttonYP10.Enabled = c;
-            buttonYP100.Enabled = c;
-            buttonZM01.Enabled = c;
-            buttonZM1.Enabled = c;
-            buttonZM10.Enabled = c;
-            buttonZM100.Enabled = c;
-            buttonZP01.Enabled = c;
-            buttonZP1.Enabled = c;
-            buttonZP10.Enabled = c;
-            buttonZP100.Enabled = c;
             buttonStopMotor.Enabled = c;
             switchPower.Enabled = c;
             textRetractAmount.Enabled = c;
@@ -248,7 +225,13 @@ namespace RepetierHost.view
             switchErrors.Enabled = c;
             buttonGoDisposeArea.Enabled = c;
             buttonSimulateOK.Enabled = c;
-            buttonJobStatus.Enabled = c;
+            //buttonJobStatus.Enabled = c;
+            arrowButtonXMinus.Enabled = c;
+            arrowButtonXPlus.Enabled = c;
+            arrowButtonYMinus.Enabled = c;
+            arrowButtonYPlus.Enabled = c;
+            arrowButtonZMinus.Enabled = c;
+            arrowButtonZPlus.Enabled = c;
             sliderSpeed.Enabled = c && (con.isMarlin || con.isRepetier);
             numericUpDownSpeed.Enabled = c && (con.isMarlin || con.isRepetier);
             if (c) sendDebug();
@@ -446,7 +429,8 @@ namespace RepetierHost.view
             con.GetInjectLock();
             if (switchFanOn.On)
             {
-                con.injectManualCommand("M106 S" + trackFanVoltage.Value);
+                if(ann.fanVoltage!=trackFanVoltage.Value)
+                    con.injectManualCommand("M106 S" + trackFanVoltage.Value);
             }
             else
             {
@@ -722,6 +706,55 @@ namespace RepetierHost.view
                 con.injectManualCommand("M140 S" + numericPrintBed.Value.ToString("0"));
                 con.ReturnInjectLock();
             }
+
+        }
+
+        private void XY_arrowValueChanged(ArrowButton sender, string value)
+        {
+            if (value.Length == 0)
+                labelMoveDist.Text = "";
+            else
+                labelMoveDist.Text = value + " mm";
+        }
+        private void Z_arrowValueChanged(ArrowButton sender, string value)
+        {
+            if (value.Length == 0)
+                labelZDiff.Text = "";
+            else
+                labelZDiff.Text = value + " mm";
+        }
+
+        private void arrowButtonXPlus_Click(object sender, EventArgs e)
+        {
+            moveHead("X", ((ArrowButton)sender).CurrentValueF);
+        }
+
+        private void arrowButtonXMinus_Click(object sender, EventArgs e)
+        {
+            moveHead("X", -((ArrowButton)sender).CurrentValueF);
+        }
+
+        private void arrowButtonYPlus_Click(object sender, EventArgs e)
+        {
+            moveHead("Y", ((ArrowButton)sender).CurrentValueF);
+
+        }
+
+        private void arrowButtonYMinus_Click(object sender, EventArgs e)
+        {
+            moveHead("Y", -((ArrowButton)sender).CurrentValueF);
+
+        }
+
+        private void arrowButtonZPlus_Click(object sender, EventArgs e)
+        {
+            moveHead("Z", ((ArrowButton)sender).CurrentValueF);
+
+        }
+
+        private void arrowButtonZMinus_Click(object sender, EventArgs e)
+        {
+            moveHead("Z", -((ArrowButton)sender).CurrentValueF);
 
         }
 

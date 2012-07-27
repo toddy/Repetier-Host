@@ -120,7 +120,7 @@
   <data name="label1.Text" xml:space="preserve">
     <value>If you want to use a newer Slic3r version as the one bundled with the Host,
 you can disable this. In this case the Slic3r version defined as external Slic3r
-version is used fro slicing. If the external version uses new/renamed configuration
+version is used for slicing. If the external version uses new/renamed configuration
 parameter, the result may not be as expected. </value>
   </data>
   <data name="label4.Text" xml:space="preserve">

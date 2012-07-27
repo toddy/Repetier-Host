@@ -26,6 +26,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using Microsoft.Win32;
 using RepetierHost.view.utils;
+using RepetierHost.model;
 
 namespace RepetierHost.view
 {
@@ -39,7 +40,7 @@ namespace RepetierHost.view
         {
             InitializeComponent();
             RegMemory.RestoreWindowPos("skeinforgeWindow", this);
-            repetierKey = Registry.CurrentUser.CreateSubKey("SOFTWARE\\Repetier");
+            repetierKey = Custom.BaseKey; // Registry.CurrentUser.CreateSubKey("SOFTWARE\\Repetier");
             regToForm();
         }
         public string wrapQuotes(string text)
@@ -145,7 +146,9 @@ namespace RepetierHost.view
             // Collect the net view command output.
             if (!String.IsNullOrEmpty(outLine.Data))
             {
-                Main.conn.log("<Skeinforge> "+outLine.Data, false, 4);
+                string[] lines = outLine.Data.Split((char)0x0d);
+                foreach(string l in lines)
+                    Main.conn.log("<Skeinforge> "+l, false, 4);
             }
         }
 

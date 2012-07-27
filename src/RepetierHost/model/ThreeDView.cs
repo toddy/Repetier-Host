@@ -36,7 +36,8 @@ namespace RepetierHost.view
         {
             viewCenter = new Vector3(0, 0, 0);
             rotX = 20;
-            userPosition = new Vector3(0, -1.7f * (float)Math.Sqrt(ps.PrintAreaDepth * ps.PrintAreaDepth + ps.PrintAreaWidth * ps.PrintAreaWidth), 0.0f * ps.PrintAreaHeight);
+            userPosition = new Vector3(0f * ps.PrintAreaWidth, -1.6f * (float)Math.Sqrt(ps.PrintAreaDepth * ps.PrintAreaDepth + ps.PrintAreaWidth * ps.PrintAreaWidth + ps.PrintAreaHeight * ps.PrintAreaHeight), 0.0f * ps.PrintAreaHeight);
+            //userPosition = new Vector3(0, -1.7f * (float)Math.Sqrt(ps.PrintAreaDepth * ps.PrintAreaDepth + ps.PrintAreaWidth * ps.PrintAreaWidth), 0.0f * ps.PrintAreaHeight);
             models = new LinkedList<ThreeDModel>();
         }
         public void SetEditor(bool ed)
