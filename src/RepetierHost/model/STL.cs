@@ -71,6 +71,7 @@ namespace RepetierHost.model
         public string name = "Unknown";
         public string filename = "";
         long lastModified = 0;
+        public bool outside = false;
         public float xMin = 0, yMin = 0, zMin = 0, xMax = 0, yMax = 0, zMax = 0;
         public Matrix4 trans;
         public STL copySTL()
@@ -308,7 +309,9 @@ namespace RepetierHost.model
                 }
             }
             Color col;
-            if (Selected)
+            if (outside)
+                col = Main.threeDSettings.outsidePrintbed.BackColor;
+            else if (Selected)
                 col = Main.threeDSettings.selectedFaces.BackColor;
             else
                 col = Main.threeDSettings.faces.BackColor;
@@ -318,59 +321,61 @@ namespace RepetierHost.model
             GL.Material(MaterialFace.Front, MaterialParameter.Specular, new float[] { 1.0f, 1.0f, 1.0f, 1.0f });
             GL.Material(MaterialFace.Front, MaterialParameter.Shininess, 50f);
             if (Main.threeDSettings.drawMethod > 0)
-            {
-                GL.EnableClientState(ArrayCap.VertexArray);
-                GL.EnableClientState(ArrayCap.NormalArray);
-                if (Main.threeDSettings.drawMethod == 2)
                 {
-                    GL.BindBuffer(BufferTarget.ArrayBuffer, bufs[0]);
-                    GL.VertexPointer(3, VertexPointerType.Float, 0, 0);
-                    GL.BindBuffer(BufferTarget.ArrayBuffer, bufs[1]);
-                    GL.NormalPointer(NormalPointerType.Float, 0, 0);
-                    GL.BindBuffer(BufferTarget.ElementArrayBuffer, bufs[2]);
-
-                    GL.DrawElements(BeginMode.Triangles, triangles.Length, DrawElementsType.UnsignedInt, 0);
-                    if (Main.threeDSettings.showEdges.Checked)
+                    GL.EnableClientState(ArrayCap.VertexArray);
+                    GL.EnableClientState(ArrayCap.NormalArray);
+                    if (Main.threeDSettings.drawMethod == 2)
                     {
-                        col = Main.threeDSettings.edges.BackColor;
-                        GL.Material(
-                            MaterialFace.Front,
-                            MaterialParameter.Emission,
-                            new OpenTK.Graphics.Color4(col.R, col.G, col.B, col.A));
-                        GL.BindBuffer(BufferTarget.ElementArrayBuffer, bufs[3]);
-                        GL.DrawElements(BeginMode.Lines, edges.Length, DrawElementsType.UnsignedInt, 0);
+                        GL.BindBuffer(BufferTarget.ArrayBuffer, bufs[0]);
+                        GL.VertexPointer(3, VertexPointerType.Float, 0, 0);
+                        GL.BindBuffer(BufferTarget.ArrayBuffer, bufs[1]);
+                        GL.NormalPointer(NormalPointerType.Float, 0, 0);
+                        GL.BindBuffer(BufferTarget.ElementArrayBuffer, bufs[2]);
+                       if (Main.threeDSettings.showFaces.Checked)
+                          GL.DrawElements(BeginMode.Triangles, triangles.Length, DrawElementsType.UnsignedInt, 0);
+                        if (Main.threeDSettings.showEdges.Checked)
+                        {
+                            col = Main.threeDSettings.edges.BackColor;
+                            GL.Material(
+                                MaterialFace.Front,
+                                MaterialParameter.Emission,
+                                new OpenTK.Graphics.Color4(col.R, col.G, col.B, col.A));
+                            GL.BindBuffer(BufferTarget.ElementArrayBuffer, bufs[3]);
+                            GL.DrawElements(BeginMode.Lines, edges.Length, DrawElementsType.UnsignedInt, 0);
+                        }
                     }
+                    else
+                    {
+                        GL.VertexPointer(3, VertexPointerType.Float, 0, points);
+                        GL.NormalPointer(NormalPointerType.Float, 0, normals);
+                        if (Main.threeDSettings.showFaces.Checked) 
+                            GL.DrawElements(BeginMode.Triangles, triangles.Length, DrawElementsType.UnsignedInt, triangles);
+                        if (Main.threeDSettings.showEdges.Checked)
+                        {
+                            col = Main.threeDSettings.edges.BackColor;
+                            GL.Material(
+                                MaterialFace.Front,
+                                MaterialParameter.Emission,
+                                new OpenTK.Graphics.Color4(col.R, col.G, col.B, col.A));
+                            GL.DrawElements(BeginMode.Lines, edges.Length, DrawElementsType.UnsignedInt, edges);
+                        }
+                    }
+                    GL.DisableClientState(ArrayCap.VertexArray);
+                    GL.DisableClientState(ArrayCap.NormalArray);
                 }
                 else
                 {
-                    GL.VertexPointer(3, VertexPointerType.Float, 0, points);
-                    GL.NormalPointer(NormalPointerType.Float, 0, normals);
-                    GL.DrawElements(BeginMode.Triangles, triangles.Length, DrawElementsType.UnsignedInt, triangles);
-                    if (Main.threeDSettings.showEdges.Checked)
+                    GL.Begin(BeginMode.Triangles);
+                    foreach (STLTriangle tri in list)
                     {
-                        col = Main.threeDSettings.edges.BackColor;
-                        GL.Material(
-                            MaterialFace.Front,
-                            MaterialParameter.Emission,
-                            new OpenTK.Graphics.Color4(col.R, col.G, col.B, col.A));
-                        GL.DrawElements(BeginMode.Lines, edges.Length, DrawElementsType.UnsignedInt, edges);
+                        GL.Normal3(tri.normal);
+                        GL.Vertex3(tri.p1);
+                        GL.Vertex3(tri.p2);
+                        GL.Vertex3(tri.p3);
                     }
+                    GL.End();
                 }
-                GL.DisableClientState(ArrayCap.VertexArray);
-                GL.DisableClientState(ArrayCap.NormalArray);
-            }
-            else
-            {
-                GL.Begin(BeginMode.Triangles);
-                foreach (STLTriangle tri in list)
-                {
-                    GL.Normal3(tri.normal);
-                    GL.Vertex3(tri.p1);
-                    GL.Vertex3(tri.p2);
-                    GL.Vertex3(tri.p3);
-                }
-                GL.End();
-            }
+            
             // Draw edges
             if (Main.threeDSettings.showEdges.Checked && !useVBOs)
             {

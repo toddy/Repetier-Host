@@ -26,6 +26,7 @@ using Microsoft.Win32;
 using System.Globalization;
 using RepetierHost.model;
 using RepetierHost.view.utils;
+using OpenTK;
 
 namespace RepetierHost.view
 {
@@ -82,8 +83,14 @@ namespace RepetierHost.view
                 threedKey.SetValue("selectedFacesColor", selectedFaces.BackColor.ToArgb());
                 threedKey.SetValue("printerBaseColor", printerBase.BackColor.ToArgb());
                 threedKey.SetValue("filamenColor", filament.BackColor.ToArgb());
+                threedKey.SetValue("filament2Color", filament2.BackColor.ToArgb());
+                threedKey.SetValue("filament3Color", filament3.BackColor.ToArgb());
                 threedKey.SetValue("hotFilamentColor", hotFilament.BackColor.ToArgb());
+                threedKey.SetValue("selectedFilamentColor", selectedFilament.BackColor.ToArgb());
+                threedKey.SetValue("outsidePrintbedColor", outsidePrintbed.BackColor.ToArgb());
                 threedKey.SetValue("showEdges", showEdges.Checked ? 1 : 0);
+                threedKey.SetValue("showFaces", showFaces.Checked ? 1 : 0);
+                threedKey.SetValue("pulseOutside", pulseOutside.Checked ? 1 : 0);
                 threedKey.SetValue("showPrintbed", showPrintbed.Checked ? 1 : 0);
                 threedKey.SetValue("disableFilamentVisualization", checkDisableFilamentVisualization.Checked ? 1 : 0);
                 // threedKey.SetValue("useVBOs", useVBOs ? 1 : 0);
@@ -94,6 +101,33 @@ namespace RepetierHost.view
                 threedKey.SetValue("widthOverHeight", textWidthOverThickness.Text);
                 threedKey.SetValue("hotFilamentLength", textHotFilamentLength.Text);
                 threedKey.SetValue("filamentVisualization", comboFilamentVisualization.SelectedIndex);
+
+                // Light settings
+                threedKey.SetValue("ambient1Color", ambient1.BackColor.ToArgb());
+                threedKey.SetValue("diffuse1Color", diffuse1.BackColor.ToArgb());
+                threedKey.SetValue("specular1Color", specular1.BackColor.ToArgb());
+                threedKey.SetValue("ambient2Color", ambient2.BackColor.ToArgb());
+                threedKey.SetValue("diffuse2Color", diffuse2.BackColor.ToArgb());
+                threedKey.SetValue("specular2Color", specular2.BackColor.ToArgb());
+                threedKey.SetValue("ambient3Color", ambient3.BackColor.ToArgb());
+                threedKey.SetValue("diffuse3Color", diffuse3.BackColor.ToArgb());
+                threedKey.SetValue("specular3Color", specular3.BackColor.ToArgb());
+                threedKey.SetValue("ambient4Color", ambient4.BackColor.ToArgb());
+                threedKey.SetValue("diffuse4Color", diffuse4.BackColor.ToArgb());
+                threedKey.SetValue("specular4Color", specular4.BackColor.ToArgb());
+                threedKey.SetValue("light1X", xdir1.Text);
+                threedKey.SetValue("light1Y", ydir1.Text);
+                threedKey.SetValue("light1Z", zdir1.Text);
+                threedKey.SetValue("light2X", xdir2.Text);
+                threedKey.SetValue("light2Y", ydir2.Text);
+                threedKey.SetValue("light2Z", zdir2.Text);
+                threedKey.SetValue("light3X", xdir3.Text);
+                threedKey.SetValue("light3Y", ydir3.Text);
+                threedKey.SetValue("light3Z", zdir3.Text);
+                threedKey.SetValue("light4X", xdir4.Text);
+                threedKey.SetValue("light4Y", ydir4.Text);
+                threedKey.SetValue("light4Z", zdir4.Text);
+
             }
             catch { }
         }
@@ -107,8 +141,14 @@ namespace RepetierHost.view
                 selectedFaces.BackColor = Color.FromArgb((int)threedKey.GetValue("selectedFacesColor", selectedFaces.BackColor.ToArgb()));
                 printerBase.BackColor = Color.FromArgb((int)threedKey.GetValue("printerBaseColor", printerBase.BackColor.ToArgb()));
                 filament.BackColor = Color.FromArgb((int)threedKey.GetValue("filamenColor", filament.BackColor.ToArgb()));
+                filament2.BackColor = Color.FromArgb((int)threedKey.GetValue("filament2Color", filament2.BackColor.ToArgb()));
+                filament3.BackColor = Color.FromArgb((int)threedKey.GetValue("filament3Color", filament3.BackColor.ToArgb()));
                 hotFilament.BackColor = Color.FromArgb((int)threedKey.GetValue("hotFilamentColor", hotFilament.BackColor.ToArgb()));
+                selectedFilament.BackColor = Color.FromArgb((int)threedKey.GetValue("selectedFilamentColor", selectedFilament.BackColor.ToArgb()));
+                outsidePrintbed.BackColor = Color.FromArgb((int)threedKey.GetValue("outsidePrintbedColor", outsidePrintbed.BackColor.ToArgb()));
                 showEdges.Checked = 0 != (int)threedKey.GetValue("showEdges", showEdges.Checked ? 1 : 0);
+                showFaces.Checked = 0 != (int)threedKey.GetValue("showFaces", showFaces.Checked ? 1 : 0);
+                pulseOutside.Checked = 0 != (int)threedKey.GetValue("pulseOutside", pulseOutside.Checked ? 1 : 0);
                 showPrintbed.Checked = 0 != (int)threedKey.GetValue("showPrintbed", showPrintbed.Checked ? 1 : 0);
                 checkDisableFilamentVisualization.Checked = 0 != (int)threedKey.GetValue("disableFilamentVisualization", checkDisableFilamentVisualization.Checked ? 1 : 0);
                 // useVBOs = 0 != (int)threedKey.GetValue("useVBOs", useVBOs.Checked ? 1 : 0);
@@ -120,6 +160,30 @@ namespace RepetierHost.view
                 textWidthOverThickness.Text = (string)threedKey.GetValue("widthOverHeight", textWidthOverThickness.Text);
                 textHotFilamentLength.Text = (string)threedKey.GetValue("hotFilamentLength", textHotFilamentLength.Text);
                 comboFilamentVisualization.SelectedIndex = (int)threedKey.GetValue("filamentVisualization", comboFilamentVisualization.SelectedIndex);
+                ambient1.BackColor = Color.FromArgb((int)threedKey.GetValue("ambient1Color", ambient1.BackColor.ToArgb()));
+                diffuse1.BackColor = Color.FromArgb((int)threedKey.GetValue("diffuse1Color", diffuse1.BackColor.ToArgb()));
+                specular1.BackColor = Color.FromArgb((int)threedKey.GetValue("specular1Color", specular1.BackColor.ToArgb()));
+                ambient2.BackColor = Color.FromArgb((int)threedKey.GetValue("ambient2Color", ambient2.BackColor.ToArgb()));
+                diffuse2.BackColor = Color.FromArgb((int)threedKey.GetValue("diffuse2Color", diffuse2.BackColor.ToArgb()));
+                specular2.BackColor = Color.FromArgb((int)threedKey.GetValue("specular2Color", specular2.BackColor.ToArgb()));
+                ambient3.BackColor = Color.FromArgb((int)threedKey.GetValue("ambient3Color", ambient3.BackColor.ToArgb()));
+                diffuse3.BackColor = Color.FromArgb((int)threedKey.GetValue("diffuse3Color", diffuse3.BackColor.ToArgb()));
+                specular3.BackColor = Color.FromArgb((int)threedKey.GetValue("specular3Color", specular3.BackColor.ToArgb()));
+                ambient4.BackColor = Color.FromArgb((int)threedKey.GetValue("ambient4Color", ambient4.BackColor.ToArgb()));
+                diffuse4.BackColor = Color.FromArgb((int)threedKey.GetValue("diffuse4Color", diffuse4.BackColor.ToArgb()));
+                specular4.BackColor = Color.FromArgb((int)threedKey.GetValue("specular4Color", specular4.BackColor.ToArgb()));
+                xdir1.Text = (string)threedKey.GetValue("light1X", xdir1.Text);
+                ydir1.Text = (string)threedKey.GetValue("light1Y", ydir1.Text);
+                zdir1.Text = (string)threedKey.GetValue("light1Z", zdir1.Text);
+                xdir2.Text = (string)threedKey.GetValue("light2X", xdir2.Text);
+                ydir2.Text = (string)threedKey.GetValue("light2Y", ydir2.Text);
+                zdir2.Text = (string)threedKey.GetValue("light2Z", zdir2.Text);
+                xdir3.Text = (string)threedKey.GetValue("light3X", xdir3.Text);
+                ydir3.Text = (string)threedKey.GetValue("light3Y", ydir3.Text);
+                zdir3.Text = (string)threedKey.GetValue("light3Z", zdir3.Text);
+                xdir4.Text = (string)threedKey.GetValue("light4X", xdir4.Text);
+                ydir4.Text = (string)threedKey.GetValue("light4Y", ydir4.Text);
+                zdir4.Text = (string)threedKey.GetValue("light4Z", zdir4.Text);
             }
             catch { }
         }
@@ -197,6 +261,10 @@ namespace RepetierHost.view
         {
             Main.main.Update3D();
         }
+        private void light_TextChanged(object sender, EventArgs e)
+        {
+            Main.main.Update3D();
+        }
 
         private void showEdges_CheckedChanged(object sender, EventArgs e)
         {
@@ -241,5 +309,57 @@ namespace RepetierHost.view
         {
             //Main.main.Update3D();
         }
+
+        private void outsidePrintbed_Click(object sender, EventArgs e)
+        {
+            colorDialog.Color = printerBase.BackColor;
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                printerBase.BackColor = colorDialog.Color;
+                Main.main.Update3D();
+            }
+        }
+        private void lightcolor_Click(object sender, EventArgs e)
+        {
+            Panel p = (Panel)sender;
+            colorDialog.Color = p.BackColor;
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                p.BackColor = colorDialog.Color;
+                Main.main.Update3D();
+            }
+        }
+        private float[] toGLColor(Color c)
+        {
+            float[] a = new float[4];
+            a[3] = 1;
+            a[0] = (float)c.R / 255.0f;
+            a[1] = (float)c.G / 255.0f;
+            a[2] = (float)c.B / 255.0f;
+            return a;
+        }
+        private Vector4 toDir(TextBox x,TextBox y,TextBox z) {
+            float xf, yf, zf;
+            float.TryParse(x.Text, NumberStyles.Float, GCode.format, out xf);
+            float.TryParse(y.Text, NumberStyles.Float, GCode.format, out yf);
+            float.TryParse(z.Text, NumberStyles.Float, GCode.format, out zf);
+            return new Vector4(xf, yf, zf, 0);
+        }
+        public Vector4 Dir1() { return toDir(xdir1, ydir1, zdir1); }
+        public Vector4 Dir2() { return toDir(xdir2, ydir2, zdir2); }
+        public Vector4 Dir3() { return toDir(xdir3, ydir3, zdir3); }
+        public Vector4 Dir4() { return toDir(xdir4, ydir4, zdir4); }
+        public float[] Diffuse1() { return toGLColor(diffuse1.BackColor); }
+        public float[] Ambient1() { return toGLColor(ambient1.BackColor); }
+        public float[] Specular1() { return toGLColor(specular1.BackColor); }
+        public float[] Diffuse2() { return toGLColor(diffuse2.BackColor); }
+        public float[] Ambient2() { return toGLColor(ambient2.BackColor); }
+        public float[] Specular2() { return toGLColor(specular2.BackColor); }
+        public float[] Diffuse3() { return toGLColor(diffuse3.BackColor); }
+        public float[] Ambient3() { return toGLColor(ambient3.BackColor); }
+        public float[] Specular3() { return toGLColor(specular3.BackColor); }
+        public float[] Diffuse4() { return toGLColor(diffuse4.BackColor); }
+        public float[] Ambient4() { return toGLColor(ambient4.BackColor); }
+        public float[] Specular4() { return toGLColor(specular4.BackColor); }
     }
 }

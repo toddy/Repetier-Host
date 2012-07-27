@@ -203,36 +203,49 @@ namespace RepetierHost.view
                 GL.Enable(EnableCap.Light0);
                 if (Main.threeDSettings.enableLight1.Checked)
                 {
-                    GL.Light(LightName.Light1, LightParameter.Diffuse, new float[] { 0.8f, 0.8f, 0.8f, 1f });
-                    GL.Light(LightName.Light1, LightParameter.Specular, new float[] { 1.0f, 1.0f, 1.0f, 1.0f });
-                    GL.Light(LightName.Light1, LightParameter.Position, (new Vector4(-1f, -1f, 2f, 0)));
+                    GL.Light(LightName.Light1, LightParameter.Ambient, Main.threeDSettings.Ambient1());
+                    GL.Light(LightName.Light1, LightParameter.Diffuse,Main.threeDSettings.Diffuse1());
+                    GL.Light(LightName.Light1, LightParameter.Specular,Main.threeDSettings.Specular1());
+                    GL.Light(LightName.Light1, LightParameter.Position,Main.threeDSettings.Dir1());
                     //  GL.Light(LightName.Light1, LightParameter.SpotExponent, new float[] { 1.0f, 1.0f, 1.0f, 1.0f });
                     GL.Enable(EnableCap.Light1);
                 }
                 else GL.Disable(EnableCap.Light1);
                 if (Main.threeDSettings.enableLight2.Checked)
                 {
-                    GL.Light(LightName.Light2, LightParameter.Diffuse, new float[] { 0.7f, 0.7f, 0.7f, 1f });
+                    GL.Light(LightName.Light2, LightParameter.Ambient, Main.threeDSettings.Ambient2());
+                    GL.Light(LightName.Light2, LightParameter.Diffuse, Main.threeDSettings.Diffuse2());
+                    GL.Light(LightName.Light2, LightParameter.Specular, Main.threeDSettings.Specular2());
+                    GL.Light(LightName.Light2, LightParameter.Position, Main.threeDSettings.Dir2());
+                  /*  GL.Light(LightName.Light2, LightParameter.Diffuse, new float[] { 0.7f, 0.7f, 0.7f, 1f });
                     GL.Light(LightName.Light2, LightParameter.Specular, new float[] { 1.0f, 1.0f, 1.0f, 1.0f });
-                    GL.Light(LightName.Light2, LightParameter.Position, (new Vector4(100f, 200f, 300f, 0)));
+                    GL.Light(LightName.Light2, LightParameter.Position, (new Vector4(100f, 200f, 300f, 0)));*/
                     GL.Light(LightName.Light2, LightParameter.SpotExponent, new float[] { 1.0f, 1.0f, 1.0f, 1.0f });
                     GL.Enable(EnableCap.Light2);
                 }
                 else GL.Disable(EnableCap.Light2);
                 if (Main.threeDSettings.enableLight3.Checked)
                 {
-                    GL.Light(LightName.Light3, LightParameter.Diffuse, new float[] { 0.8f, 0.8f, 0.8f, 1f });
+                    GL.Light(LightName.Light3, LightParameter.Ambient, Main.threeDSettings.Ambient3());
+                    GL.Light(LightName.Light3, LightParameter.Diffuse, Main.threeDSettings.Diffuse3());
+                    GL.Light(LightName.Light3, LightParameter.Specular, Main.threeDSettings.Specular3());
+                    GL.Light(LightName.Light3, LightParameter.Position, Main.threeDSettings.Dir3());
+                  /*  GL.Light(LightName.Light3, LightParameter.Diffuse, new float[] { 0.8f, 0.8f, 0.8f, 1f });
                     GL.Light(LightName.Light3, LightParameter.Specular, new float[] { 1.0f, 1.0f, 1.0f, 1.0f });
-                    GL.Light(LightName.Light3, LightParameter.Position, (new Vector4(100f, -200f, 200f, 0)));
+                    GL.Light(LightName.Light3, LightParameter.Position, (new Vector4(100f, -200f, 200f, 0)));*/
                     GL.Light(LightName.Light3, LightParameter.SpotExponent, new float[] { 1.0f, 1.0f, 1.0f, 1.0f });
                     GL.Enable(EnableCap.Light3);
                 }
                 else GL.Disable(EnableCap.Light3);
                 if (Main.threeDSettings.enableLight4.Checked)
                 {
-                    GL.Light(LightName.Light4, LightParameter.Diffuse, new float[] { 0.7f, 0.7f, 0.7f, 1f });
+                    GL.Light(LightName.Light4, LightParameter.Ambient, Main.threeDSettings.Ambient4());
+                    GL.Light(LightName.Light4, LightParameter.Diffuse, Main.threeDSettings.Diffuse4());
+                    GL.Light(LightName.Light4, LightParameter.Specular, Main.threeDSettings.Specular4());
+                    GL.Light(LightName.Light4, LightParameter.Position, Main.threeDSettings.Dir4());
+                   /* GL.Light(LightName.Light4, LightParameter.Diffuse, new float[] { 0.7f, 0.7f, 0.7f, 1f });
                     GL.Light(LightName.Light4, LightParameter.Specular, new float[] { 1.0f, 1.0f, 1.0f, 1.0f });
-                    GL.Light(LightName.Light4, LightParameter.Position, (new Vector4(170f, -100f, -250f, 0)));
+                    GL.Light(LightName.Light4, LightParameter.Position, (new Vector4(170f, -100f, -250f, 0)));*/
                     GL.Light(LightName.Light4, LightParameter.SpotExponent, new float[] { 1.0f, 1.0f, 1.0f, 1.0f });
                     GL.Enable(EnableCap.Light4);
                 }

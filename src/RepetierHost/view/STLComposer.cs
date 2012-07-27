@@ -148,11 +148,13 @@ namespace RepetierHost.view
             if (stl.xMin < 0 || stl.yMin < 0 || stl.zMin < -0.001 || stl.xMax > Main.printerSettings.PrintAreaWidth ||
                 stl.yMax > Main.printerSettings.PrintAreaDepth || stl.zMax > Main.printerSettings.PrintAreaHeight)
             {
-                if (!stl.hasAnimationWithName("pulse"))
+                stl.outside = true;
+                if (Main.threeDSettings.pulseOutside.Checked && !stl.hasAnimationWithName("pulse"))
                     stl.addAnimation(new PulseAnimation("pulse", 0.05, 0.05, 0.05, 0.5));
             }
             else
             {
+                stl.outside = false;
                 stl.removeAnimationWithName("pulse");
             }
         }
