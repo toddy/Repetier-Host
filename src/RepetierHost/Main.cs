@@ -66,7 +66,7 @@ namespace RepetierHost
         public int refreshCounter = 0;
         public executeHostCommandDelegate executeHostCall;
         bool recalcJobPreview = false;
-        List<GCodeShort> previewArray;
+        List<GCodeShort> previewArray0, previewArray1, previewArray2;
         public TemperatureHistory history = null;
         public TemperatureView tempView = null;
         public class JobUpdater
@@ -80,6 +80,7 @@ namespace RepetierHost
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
                 visual = new GCodeVisual();
+                visual.showSelection = true;
                 switch (ed.ShowMode)
                 {
                     case 0:
@@ -94,8 +95,10 @@ namespace RepetierHost
                         visual.maxLayer = ed.ShowMaxLayer;
                         break;
                 }
-                visual.parseGCodeShortArray(Main.main.previewArray, true);
-                Main.main.previewArray = null;
+                visual.parseGCodeShortArray(Main.main.previewArray0, true,0);
+                visual.parseGCodeShortArray(Main.main.previewArray1, false,1);
+                visual.parseGCodeShortArray(Main.main.previewArray2, false,2);
+                Main.main.previewArray0 = Main.main.previewArray1 = Main.main.previewArray2 = null;
                 visual.Reduce();
                 //visual.stats();
                 Main.main.newVisual = visual;
@@ -753,10 +756,12 @@ namespace RepetierHost
             }
             if (recalcJobPreview && jobPreviewThreadFinished)
             {
-                previewArray = new List<GCodeShort>();
-                previewArray.AddRange(((RepetierEditor.Content)editor.toolFile.Items[1]).textArray);
-                previewArray.AddRange(((RepetierEditor.Content)editor.toolFile.Items[0]).textArray);
-                previewArray.AddRange(((RepetierEditor.Content)editor.toolFile.Items[2]).textArray);
+                previewArray0 = new List<GCodeShort>();
+                previewArray1 = new List<GCodeShort>();
+                previewArray2 = new List<GCodeShort>();
+                previewArray0.AddRange(((RepetierEditor.Content)editor.toolFile.Items[1]).textArray);
+                previewArray1.AddRange(((RepetierEditor.Content)editor.toolFile.Items[0]).textArray);
+                previewArray2.AddRange(((RepetierEditor.Content)editor.toolFile.Items[2]).textArray);
                 recalcJobPreview = false;
                 jobPreviewThreadFinished = false;
                 JobUpdater workerObject = new JobUpdater();
@@ -1098,6 +1103,11 @@ namespace RepetierHost
             {
                 threedview.ThreeDControl_KeyDown(sender, e);
             }
+        }
+
+        private void repetierHostDownloadPageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openLink("https://github.com/repetier/Repetier-Host/downloads");
         }
     }
 }

@@ -306,8 +306,8 @@ namespace RepetierHost.view
         public Commands commands = null;
         public event ContentChangedEvent contentChangedEvent=null;
         int changedCounter = 0;
-        int _row = 0, _col = 0;
-        int selCol = 0, selRow = 0;
+        public int _row = 0, _col = 0;
+        public int selCol = 0, selRow = 0;
         bool hasSel = false,forceSel=false;
         int _topRow = 0; // First visible row
         int _topCol = 0;
@@ -382,6 +382,16 @@ namespace RepetierHost.view
                            this, "ShowMaxLayer");
             sliderShowFirstLayer.DataBindings.Add("value", this, "ShowMinLayer");
             sliderShowMaxLayer.DataBindings.Add("value", this, "ShowMaxLayer");
+        }
+        public int FileIndex
+        {
+            get
+            {
+                int i = toolFile.SelectedIndex;
+                if (i == 0) return 1;
+                if (i == 1) return 0;
+                return i;
+            }
         }
         protected void OnShowModeChanged(EventArgs e)
         {
@@ -524,7 +534,7 @@ namespace RepetierHost.view
         private int row
         {
             get { return _row; }
-            set { _row = value; toolRow.Text = "R" + (row + 1).ToString(); UpdateLayerInfo(); }
+            set { _row = value; toolRow.Text = "R" + (row + 1).ToString(); UpdateLayerInfo(); Main.main.threedview.UpdateChanges(); }
         }
         private int topRow
         {

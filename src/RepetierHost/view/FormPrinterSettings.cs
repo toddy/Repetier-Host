@@ -84,6 +84,11 @@ namespace RepetierHost.view
                 textDumpAreaLeft.Visible = false;
                 textDumpAreaWidth.Visible = false;
             }
+            if (Custom.GetBool("noMaxHoming", false))
+            {
+                checkHomeXMax.Visible = false;
+                checkHomeYMax.Visible = false;
+            }
         }
         public void save(string printername)
         {

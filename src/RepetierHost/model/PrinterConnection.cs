@@ -562,11 +562,12 @@ namespace RepetierHost.model
                                     gc.N = ++lastline;
                                     if (isVirtualActive)
                                     {
-                                        if (!pingpong && receivedCount() + gc.orig.Length > receiveCacheSize) { --lastline; return false; } // printer cache full
+                                        string cmd = gc.getAscii(true,true);
+                                        if (!pingpong && receivedCount() + cmd.Length /*gc.orig.Length*/ > receiveCacheSize) { --lastline; return false; } // printer cache full
                                         if (pingpong) readyForNextSend = false;
-                                        else { lock (nackLines) { nackLines.AddLast(gc.orig.Length); } }
+                                        else { lock (nackLines) { nackLines.AddLast(cmd.Length /*gc.orig.Length*/); } }
                                         virtualPrinter.receiveLine(gc);
-                                        bytesSend += gc.orig.Length;
+                                        bytesSend += cmd.Length; // gc.orig.Length;
                                     }
                                     else
                                         if (binaryVersion == 0 || gc.forceAscii)

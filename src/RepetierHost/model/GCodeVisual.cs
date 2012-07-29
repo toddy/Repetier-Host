@@ -24,6 +24,8 @@ using OpenTK.Platform;
 using OpenTK.Graphics.OpenGL;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
+using RepetierHost.view;
 
 namespace RepetierHost.model
 {
@@ -32,6 +34,9 @@ namespace RepetierHost.model
         public float e;
         public float dist;
         public Vector3 p;
+        public int fline; // fileid+4*line
+        public int element; // posistion of the opengl element where visualization starts
+        public static int toFileLine(int file, int line) { if (file < 0) return 0; return (file << 29) + line; }
     }
     public class GCodePath
     {
@@ -44,7 +49,7 @@ namespace RepetierHost.model
         public bool hasBuf = false;
         public int elementsLength;
         public LinkedList<LinkedList<GCodePoint>> pointsLists = new LinkedList<LinkedList<GCodePoint>>();
-        public void Add(Vector3 v, float e, float d)
+        public void Add(Vector3 v, float e, float d, int fline)
         {
             if (pointsLists.Count == 0)
                 pointsLists.AddLast(new LinkedList<GCodePoint>());
@@ -52,6 +57,7 @@ namespace RepetierHost.model
             pt.p = v;
             pt.e = e;
             pt.dist = d;
+            pt.fline = fline;
             pointsCount++;
             pointsLists.Last.Value.AddLast(pt);
             drawMethod = -1; // invalidate old 
@@ -67,9 +73,9 @@ namespace RepetierHost.model
                 pointsLists.AddLast(frag);
             }
             pointsCount += path.pointsCount;
-            if (elements != null)
+            if (elements != null && path.elements != null)
             {
-                if (true && path.elements != null && drawMethod == path.drawMethod) // both parts are already up to date, so just join them
+                if (/*normals!=null && */path.elements != null && drawMethod == path.drawMethod) // both parts are already up to date, so just join them
                 {
                     int[] newelements = new int[elementsLength + path.elementsLength];
                     int p, l = elementsLength, i;
@@ -105,7 +111,7 @@ namespace RepetierHost.model
                     else
                     {
                         l = positions.Length;
-                        for (p = 0; i < l; p++)
+                        for (p = 0; p < l; p++)
                         {
                             newpoints[p] = positions[p];
                         }
@@ -130,6 +136,10 @@ namespace RepetierHost.model
                     GL.DeleteBuffers(3, buf);
                     hasBuf = false;
                 }
+            }
+            else
+            {
+                drawMethod = -1;
             }
         }
         public void Dispose(bool disposing)
@@ -219,6 +229,7 @@ namespace RepetierHost.model
                     while (ptNode != null)
                     {
                         GCodePoint pt = ptNode.Value;
+                        pt.element = pos;
                         GCodePoint ptn = null;
                         if (ptNode.Next != null)
                             ptn = ptNode.Next.Value;
@@ -272,7 +283,7 @@ namespace RepetierHost.model
                         GCodeVisual.normalize(ref dir);
                         double vacos = dir[0] * lastdir[0] + dir[1] * lastdir[1] + dir[2] * lastdir[2];
                         if (vacos > 1) vacos = 1;
-                        if (vacos < -0.97) 
+                        if (vacos < -0.97)
                             vacos = -0.97;
                         float zoomw = (float)Math.Cos(0.5 * Math.Acos(vacos));
                         lastdir[0] = actdir[0];
@@ -361,6 +372,7 @@ namespace RepetierHost.model
                     first = true;
                     foreach (GCodePoint pt in points)
                     {
+                        pt.element = pos;
                         Vector3 v = pt.p;
                         positions[vpos++] = v.X;
                         positions[vpos++] = v.Y;
@@ -368,10 +380,10 @@ namespace RepetierHost.model
 
                         if (!first)
                         {
-                           // elements[pos] = pos / 2;
-                           // elements[pos + 1] = pos / 2 + 1;
-                            elements[pos] = vpos / 3-1;
-                            elements[pos + 1] = vpos / 3-2;
+                            // elements[pos] = pos / 2;
+                            // elements[pos + 1] = pos / 2 + 1;
+                            elements[pos] = vpos / 3 - 1;
+                            elements[pos + 1] = vpos / 3 - 2;
                             pos += 2;
                         }
                         first = false;
@@ -393,7 +405,8 @@ namespace RepetierHost.model
     }
     public class GCodeVisual : ThreeDModel
     {
-        LinkedList<GCodePath> segments = new LinkedList<GCodePath>();
+        static int MaxExtruder = 3;
+        LinkedList<GCodePath>[] segments;
         GCodeAnalyzer ana = new GCodeAnalyzer(true);
         public GCode act = null;
         public float lastFilHeight = 999;
@@ -421,9 +434,17 @@ namespace RepetierHost.model
         bool changed = false;
         public bool startOnClear = false;
         public int minLayer, maxLayer;
+        int fileid = 0;
+        int actLine = 0;
+        public bool showSelection = false;
+        public int selectionStart = 0;
+        public int selectionEnd = 0;
 
         public GCodeVisual()
         {
+            segments = new LinkedList<GCodePath>[3];
+            for (int i = 0; i < MaxExtruder; i++)
+                segments[i] = new LinkedList<GCodePath>();
             ana = new GCodeAnalyzer(true);
             startOnClear = true;
             ana.eventPosChanged += OnPosChange;
@@ -431,6 +452,9 @@ namespace RepetierHost.model
         }
         public GCodeVisual(GCodeAnalyzer a)
         {
+            segments = new LinkedList<GCodePath>[3];
+            for (int i = 0; i < MaxExtruder; i++)
+                segments[i] = new LinkedList<GCodePath>();
             ana = a;
             startOnClear = false;
             ana.eventPosChanged += OnPosChange;
@@ -438,9 +462,12 @@ namespace RepetierHost.model
         }
         public void Dispose(bool disposing)
         {
-            foreach (GCodePath p in segments)
-                p.Free();
-            segments.Clear();
+            for (int i = 0; i < MaxExtruder; i++)
+            {
+                foreach (GCodePath p in segments[i])
+                    p.Free();
+                segments[i].Clear();
+            }
             if (colbufSize > 0)
                 GL.DeleteBuffers(1, colbuf);
             colbufSize = 0;
@@ -473,67 +500,78 @@ namespace RepetierHost.model
         }
         public void Reduce()
         {
-            if (segments.Count < 2) return;
-            if (!liveView)
+            for (int i = 0; i < MaxExtruder; i++)
             {
-                GCodePath first = segments.First.Value;
-                while (segments.Count > 1)
+                LinkedList<GCodePath> seg = segments[i];
+                if (seg.Count < 2) continue;
+                if (!liveView)
                 {
-                    first.Join(segments.First.Next.Value);
-                    segments.First.Next.Value.Free();
-                    segments.Remove(segments.First.Next.Value);
+                    GCodePath first = seg.First.Value;
+                    while (seg.Count > 1)
+                    {
+                        first.Join(seg.First.Next.Value);
+                        seg.First.Next.Value.Free();
+                        seg.Remove(seg.First.Next.Value);
+                    }
                 }
-            }
-            else
-            {
-                LinkedListNode<GCodePath> act = segments.First, next;
-                while (act.Next != null)
+                else
                 {
-                    next = act.Next;
-                    if (next.Next == null) return; // Don't touch last segment we are writing to
-                    GCodePath nextval = next.Value;
-                    if (nextval.pointsCount < 2)
+                    LinkedListNode<GCodePath> act = seg.First, next;
+                    while (act.Next != null)
                     {
-                        act = next;
-                        if (act.Next != null)
-                            act = act.Next;
-                    }
-                    else if (nextval.lastDist > minHotDist)
-                    {
-                        if (act.Value.pointsCount < 500)
+                        next = act.Next;
+                        if (next.Next == null)
                         {
-                            act.Value.Join(nextval);
-                            segments.Remove(nextval);
-                            nextval.Free();
+                            return; // Don't touch last segment we are writing to
                         }
-                        else
+                        GCodePath nextval = next.Value;
+                        if (nextval.pointsCount < 2)
                         {
                             act = next;
+                            if (act.Next != null)
+                                act = act.Next;
                         }
-                    }
-                    else
-                        if (act.Value.pointsCount < 5000 || (nextval.pointsCount >= 5000 && act.Value.pointsCount < 27000))
+                        else if (nextval.lastDist > minHotDist)
                         {
-                            act.Value.Join(nextval);
-                            segments.Remove(nextval);
-                            nextval.Free();
+                            if (act.Value.pointsCount < 500)
+                            {
+                                act.Value.Join(nextval);
+                                seg.Remove(nextval);
+                                nextval.Free();
+                            }
+                            else
+                            {
+                                act = next;
+                            }
                         }
                         else
-                        {
-                            act = next;
-                        }
+                            if (act.Value.pointsCount < 5000 || (nextval.pointsCount >= 5000 && act.Value.pointsCount < 27000))
+                            {
+                                act.Value.Join(nextval);
+                                seg.Remove(nextval);
+                                nextval.Free();
+                            }
+                            else
+                            {
+                                act = next;
+                            }
+                    }
                 }
             }
         }
         public void stats()
         {
-            PrinterConnection.logInfo("Path segments:" + segments.Count.ToString());
+            int cnt = 0;
+            for (int i = 0; i < MaxExtruder; i++)
+                cnt += segments[i].Count;
+            PrinterConnection.logInfo("Path segments:" + cnt.ToString());
             int pts = 0;
-            foreach (GCodePath p in segments)
-            {
-                pts += p.pointsCount;
+            for (int i = 0; i < MaxExtruder; i++)
+                foreach (GCodePath p in segments[i])
+                {
+                    pts += p.pointsCount;
 
-            }
+                }
             PrinterConnection.logInfo("Points total:" + pts.ToString());
         }
         /// <summary>
@@ -551,9 +589,12 @@ namespace RepetierHost.model
         /// </summary>
         public override void Clear()
         {
-            foreach (GCodePath p in segments)
-                p.Free();
-            segments.Clear();
+            for (int i = 0; i < MaxExtruder; i++)
+            {
+                foreach (GCodePath p in segments[i])
+                    p.Free();
+                segments[i].Clear();
+            }
             lastx = 1e20f; // Don't ignore first point if it was the last! 
             totalDist = 0;
             if (colbufSize > 0)
@@ -579,17 +620,20 @@ namespace RepetierHost.model
             float locDist = (float)Math.Sqrt((x - lastx) * (x - lastx) + (y - lasty) * (y - lasty) + (z - lastz) * (z - lastz));
             bool isLastPos = locDist < 0.00001;
             if (!act.hasG || (act.G > 1 && act.G != 28)) return;
-            if (segments.Count == 0 || laste >= ana.e) // start new segment
+            int segpos = ana.activeExtruder;
+            if (segpos < 0 || segpos >= MaxExtruder) segpos = 0;
+            LinkedList<GCodePath> seg = segments[segpos];
+            if (seg.Count == 0 || laste >= ana.e) // start new segment
             {
                 if (!isLastPos) // no move, no action
                 {
                     GCodePath p = new GCodePath();
-                    p.Add(new Vector3(x, y, z), ana.emax, totalDist);
-                    if (segments.Count > 0 && segments.Last.Value.pointsLists.Last.Value.Count == 1)
+                    p.Add(new Vector3(x, y, z), ana.emax, totalDist, GCodePoint.toFileLine(fileid, actLine));
+                    if (seg.Count > 0 && seg.Last.Value.pointsLists.Last.Value.Count == 1)
                     {
-                        segments.RemoveLast();
+                        seg.RemoveLast();
                     }
-                    segments.AddLast(p);
+                    seg.AddLast(p);
                     changed = true;
                 }
             }
@@ -598,7 +642,7 @@ namespace RepetierHost.model
                 if (!isLastPos)
                 {
                     totalDist += locDist;
-                    segments.Last.Value.Add(new Vector3(x, y, z), ana.emax, totalDist);
+                    seg.Last.Value.Add(new Vector3(x, y, z), ana.emax, totalDist, GCodePoint.toFileLine(fileid, actLine));
                     changed = true;
                 }
             }
@@ -620,30 +664,33 @@ namespace RepetierHost.model
             }
             float locDist = (float)Math.Sqrt((x - lastx) * (x - lastx) + (y - lasty) * (y - lasty) + (z - lastz) * (z - lastz));
             bool isLastPos = locDist < 0.00001;
+            int segpos = ana.activeExtruder;
+            if (segpos < 0 || segpos >= MaxExtruder) segpos = 0;
+            LinkedList<GCodePath> seg = segments[segpos];
             //if (!act.hasG || (act.G > 1 && act.G != 28)) return;
             if (lastLayer == minLayer - 1 && laste < e)
             {
                 GCodePath p = new GCodePath();
-                p.Add(new Vector3(lastx, lasty, lastz), laste, totalDist);
+                p.Add(new Vector3(lastx, lasty, lastz), laste, totalDist, GCodePoint.toFileLine(fileid, actLine));
 
-                if (segments.Count > 0 && segments.Last.Value.pointsLists.Last.Value.Count == 1)
+                if (seg.Count > 0 && seg.Last.Value.pointsLists.Last.Value.Count == 1)
                 {
-                    segments.RemoveLast();
+                    seg.RemoveLast();
                 }
-                segments.AddLast(p);
+                seg.AddLast(p);
             }
 
-            if (segments.Count == 0 || laste >= ana.e) // start new segment
+            if (seg.Count == 0 || laste >= ana.e) // start new segment
             {
                 if (!isLastPos) // no move, no action
                 {
                     GCodePath p = new GCodePath();
-                    p.Add(new Vector3(x, y, z), ana.emax, totalDist);
-                    if (segments.Count > 0 && segments.Last.Value.pointsLists.Last.Value.Count == 1)
+                    p.Add(new Vector3(x, y, z), ana.emax, totalDist, GCodePoint.toFileLine(fileid, actLine));
+                    if (seg.Count > 0 && seg.Last.Value.pointsLists.Last.Value.Count == 1)
                     {
-                        segments.RemoveLast();
+                        seg.RemoveLast();
                     }
-                    segments.AddLast(p);
+                    seg.AddLast(p);
                     //changed = true;
                 }
             }
@@ -652,7 +699,7 @@ namespace RepetierHost.model
                 if (!isLastPos)
                 {
                     totalDist += locDist;
-                    segments.Last.Value.Add(new Vector3(x, y, z), ana.emax, totalDist);
+                    seg.Last.Value.Add(new Vector3(x, y, z), ana.emax, totalDist, GCodePoint.toFileLine(fileid, actLine));
                     //changed = true;
                 }
             }
@@ -673,14 +720,17 @@ namespace RepetierHost.model
                 AddGCode(gc);
             }
         }
-        public void parseGCodeShortArray(List<GCodeShort> codes, bool clear)
+        public void parseGCodeShortArray(List<GCodeShort> codes, bool clear, int fileid)
         {
             if (clear)
                 Clear();
+            this.fileid = fileid;
+            actLine = 0;
             foreach (GCodeShort code in codes)
             {
                 ana.analyzeShort(code);
                 laste = ana.emax;
+                actLine++;
             }
         }
         public static void normalize(ref float[] n)
@@ -747,6 +797,7 @@ namespace RepetierHost.model
                     int p = 0;
                     foreach (LinkedList<GCodePoint> points in path.pointsLists)
                     {
+                        if (points.Count < 2) continue;
                         foreach (GCodePoint pt in points)
                         {
                             computeColor(pt.dist);
@@ -992,6 +1043,132 @@ namespace RepetierHost.model
                 }
             }
         }
+        /// <summary>
+        /// Used to mark a section of the path. Is called after drawSegment so VBOs are already
+        /// computed. Not used inside live preview.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="mstart"></param>
+        /// <param name="mend"></param>
+        public void drawSegmentMarked(GCodePath path, int mstart, int mend)
+        {
+            // Check if inside mark area
+            int estart = 0;
+            int eend = path.elementsLength;
+            GCodePoint lastP = null, startP = null, endP = null;
+            foreach (LinkedList<GCodePoint> plist in path.pointsLists)
+            {
+                foreach (GCodePoint point in plist)
+                {
+                    if (startP == null)
+                    {
+                        if (point.fline >= mstart)
+                            startP = point;
+                    }
+                    else
+                    {
+                        if (point.fline > mend)
+                        {
+                            endP = point;
+                            break;
+                        }
+                    }
+                    lastP = point;
+                }
+                if (endP != null) break;
+            }
+            if (startP == null) return;
+            estart = startP.element;
+            if (endP != null) eend = endP.element;
+            if (estart == eend) return;
+            if (Main.threeDSettings.drawMethod == 2)
+            {
+                GL.Material(MaterialFace.FrontAndBack, MaterialParameter.AmbientAndDiffuse, defaultColor);
+                GL.EnableClientState(ArrayCap.VertexArray);
+                if (path.elements == null) return;
+                GL.BindBuffer(BufferTarget.ArrayBuffer, path.buf[0]);
+                GL.VertexPointer(3, VertexPointerType.Float, 0, 0);
+                if (method == 0)
+                {
+                    GL.BindBuffer(BufferTarget.ElementArrayBuffer, path.buf[2]);
+                    GL.DrawElements(BeginMode.Lines, eend - estart, DrawElementsType.UnsignedInt, sizeof(int) * estart);
+                }
+                else
+                {
+                    GL.EnableClientState(ArrayCap.NormalArray);
+                    GL.BindBuffer(BufferTarget.ArrayBuffer, path.buf[1]);
+                    GL.NormalPointer(NormalPointerType.Float, 0, 0);
+                    GL.BindBuffer(BufferTarget.ElementArrayBuffer, path.buf[2]);
+                    //GL.DrawElements(BeginMode.Quads, path.elementsLength, DrawElementsType.UnsignedInt, 0);
+                    //GL.DrawRangeElements(BeginMode.Quads, estart, eend, path.elementsLength, DrawElementsType.UnsignedInt, 0);
+                    GL.DrawElements(BeginMode.Quads, eend - estart, DrawElementsType.UnsignedInt, sizeof(int) * estart);
+                    GL.DisableClientState(ArrayCap.NormalArray);
+                }
+
+                GL.DisableClientState(ArrayCap.VertexArray);
+                GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            }
+            else
+            {
+                if (path.drawMethod != method || recompute || path.hasBuf)
+                    path.UpdateVBO(false);
+                if (Main.threeDSettings.drawMethod > 0) // Is also fallback for vbos with dynamic colors
+                {
+                    GL.EnableClientState(ArrayCap.VertexArray);
+                    if (path.elements == null) return;
+                    GL.VertexPointer(3, VertexPointerType.Float, 0, path.positions);
+                    GCHandle handle = GCHandle.Alloc(path.elements, GCHandleType.Pinned);
+                    try
+                    {
+                        IntPtr pointer = new IntPtr(handle.AddrOfPinnedObject().ToInt32() + sizeof(int) * estart);
+                        if (method == 0)
+
+                            GL.DrawElements(BeginMode.Lines, eend - estart, DrawElementsType.UnsignedInt, pointer);
+                        else
+                        {
+                            GL.EnableClientState(ArrayCap.NormalArray);
+                            GL.NormalPointer(NormalPointerType.Float, 0, path.normals);
+                            GL.DrawElements(BeginMode.Quads, eend - estart, DrawElementsType.UnsignedInt, pointer);
+                            GL.DisableClientState(ArrayCap.NormalArray);
+                        }
+                    }
+                    finally
+                    {
+                        if (handle.IsAllocated)
+                        {
+                            handle.Free();
+                        }
+                    }
+                    GL.DisableClientState(ArrayCap.VertexArray);
+                }
+                else
+                {
+                    int i, l = path.elementsLength;
+                    if (method == 0)
+                    {
+                        GL.Begin(BeginMode.Lines);
+                        for (i = estart; i < eend; i++)
+                        {
+                            int p = path.elements[i] * 3;
+                            GL.Vertex3(ref path.positions[p]);
+                        }
+                        GL.End();
+                    }
+                    else
+                    {
+                        GL.Begin(BeginMode.Quads);
+                        for (i = estart; i < eend; i++)
+                        {
+                            int p = path.elements[i] * 3;
+                            GL.Normal3(ref path.normals[p]);
+                            GL.Vertex3(ref path.positions[p]);
+                        }
+                        GL.End();
+                    }
+                }
+            }
+        }
+
         public override void Paint()
         {
             changed = false;
@@ -1006,18 +1183,12 @@ namespace RepetierHost.model
             Reduce(); // Minimize number of VBO
             //long timeStart = DateTime.Now.Ticks;
             Color col;
-            col = Main.threeDSettings.filament.BackColor;
-            defaultColor[0] = (float)col.R / 255.0f;
-            defaultColor[1] = (float)col.G / 255.0f;
-            defaultColor[2] = (float)col.B / 255.0f;
-            defaultColor[3] = 1;
             col = Main.threeDSettings.hotFilament.BackColor;
             hotColor[0] = (float)col.R / 255.0f;
             hotColor[1] = (float)col.G / 255.0f;
             hotColor[2] = (float)col.B / 255.0f;
             hotColor[3] = curColor[3] = 1;
             //           GL.Material(MaterialFace.FrontAndBack, MaterialParameter.AmbientAndDiffuse, new OpenTK.Graphics.Color4(col.R, col.G, col.B, 255));
-            GL.Material(MaterialFace.FrontAndBack, MaterialParameter.AmbientAndDiffuse, defaultColor);
             GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Emission, new OpenTK.Graphics.Color4(0, 0, 0, 0));
             GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Specular, new float[] { 1.0f, 1.0f, 1.0f, 1.0f });
             GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Shininess, 50f);
@@ -1033,9 +1204,54 @@ namespace RepetierHost.model
             lastFilWidth = w;
             lastFilDiameter = dfac;
             lastFilUseHeight = fixedH;
-            foreach (GCodePath path in segments)
+            for (int i = 0; i < MaxExtruder; i++)
             {
-                drawSegment(path);
+                if (i == 1) col = Main.threeDSettings.filament2.BackColor;
+                else if (i == 2) col = Main.threeDSettings.filament3.BackColor;
+                else col = Main.threeDSettings.filament.BackColor;
+                defaultColor[0] = (float)col.R / 255.0f;
+                defaultColor[1] = (float)col.G / 255.0f;
+                defaultColor[2] = (float)col.B / 255.0f;
+                defaultColor[3] = 1;
+                GL.Material(MaterialFace.FrontAndBack, MaterialParameter.AmbientAndDiffuse, defaultColor);
+                foreach (GCodePath path in segments[i])
+                {
+                    drawSegment(path);
+                }
+            }
+            if (showSelection)
+            {
+                RepetierEditor ed = Main.main.editor;
+                selectionStart = selectionEnd = 0;
+                if (!ed.hasSelection)
+                {
+                    selectionStart = selectionEnd = GCodePoint.toFileLine(ed.FileIndex, ed._row);
+                }
+                else
+                {
+                    if (ed._row < ed.selRow)
+                    {
+                        selectionStart = GCodePoint.toFileLine(ed.FileIndex, ed._row);
+                        selectionEnd = GCodePoint.toFileLine(ed.FileIndex, ed.selRow);
+                    }
+                    else
+                    {
+                        selectionEnd = GCodePoint.toFileLine(ed.FileIndex, ed._row);
+                        selectionStart = GCodePoint.toFileLine(ed.FileIndex, ed.selRow);
+                    }
+                }
+                col = Main.threeDSettings.selectedFilament.BackColor;
+                defaultColor[0] = (float)col.R / 255.0f;
+                defaultColor[1] = (float)col.G / 255.0f;
+                defaultColor[2] = (float)col.B / 255.0f;
+                GL.DepthFunc(DepthFunction.Lequal);
+                GL.Material(MaterialFace.FrontAndBack, MaterialParameter.AmbientAndDiffuse, defaultColor);
+                for (int i = 0; i < MaxExtruder; i++)
+                    foreach (GCodePath path in segments[i])
+                    {
+                        drawSegmentMarked(path, selectionStart, selectionEnd);
+                    }
+
             }
             // timeStart = DateTime.Now.Ticks - timeStart;
             //  double time = (double)timeStart * 0.1;

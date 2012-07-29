@@ -134,6 +134,7 @@
             this.tabPrint = new System.Windows.Forms.TabPage();
             this.stlComposer1 = new RepetierHost.view.STLComposer();
             this.editor = new RepetierHost.view.RepetierEditor();
+            this.repetierHostDownloadPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menu.SuspendLayout();
             this.status.SuspendLayout();
             this.toolStrip.SuspendLayout();
@@ -644,6 +645,7 @@
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.repetierHostHomepageToolStripMenuItem,
+            this.repetierHostDownloadPageToolStripMenuItem,
             this.manualToolStripMenuItem,
             this.toolStripMenuItem2,
             this.slic3rHomepageToolStripMenuItem,
@@ -662,78 +664,78 @@
             // repetierHostHomepageToolStripMenuItem
             // 
             this.repetierHostHomepageToolStripMenuItem.Name = "repetierHostHomepageToolStripMenuItem";
-            this.repetierHostHomepageToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.repetierHostHomepageToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.repetierHostHomepageToolStripMenuItem.Text = "Repetier-Host homepage";
             this.repetierHostHomepageToolStripMenuItem.Click += new System.EventHandler(this.repetierHostHomepageToolStripMenuItem_Click);
             // 
             // manualToolStripMenuItem
             // 
             this.manualToolStripMenuItem.Name = "manualToolStripMenuItem";
-            this.manualToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.manualToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.manualToolStripMenuItem.Text = "Manual";
             this.manualToolStripMenuItem.Click += new System.EventHandler(this.manualToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(204, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(229, 6);
             // 
             // slic3rHomepageToolStripMenuItem
             // 
             this.slic3rHomepageToolStripMenuItem.Name = "slic3rHomepageToolStripMenuItem";
-            this.slic3rHomepageToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.slic3rHomepageToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.slic3rHomepageToolStripMenuItem.Text = "Slic3r homepage";
             this.slic3rHomepageToolStripMenuItem.Click += new System.EventHandler(this.slic3rHomepageToolStripMenuItem_Click);
             // 
             // skeinforgeHomepageToolStripMenuItem
             // 
             this.skeinforgeHomepageToolStripMenuItem.Name = "skeinforgeHomepageToolStripMenuItem";
-            this.skeinforgeHomepageToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.skeinforgeHomepageToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.skeinforgeHomepageToolStripMenuItem.Text = "Skeinforge homepage";
             this.skeinforgeHomepageToolStripMenuItem.Click += new System.EventHandler(this.skeinforgeHomepageToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(204, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(229, 6);
             // 
             // repRapWebsiteToolStripMenuItem
             // 
             this.repRapWebsiteToolStripMenuItem.Name = "repRapWebsiteToolStripMenuItem";
-            this.repRapWebsiteToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.repRapWebsiteToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.repRapWebsiteToolStripMenuItem.Text = "RepRap website";
             this.repRapWebsiteToolStripMenuItem.Click += new System.EventHandler(this.repRapWebsiteToolStripMenuItem_Click);
             // 
             // repRapForumToolStripMenuItem
             // 
             this.repRapForumToolStripMenuItem.Name = "repRapForumToolStripMenuItem";
-            this.repRapForumToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.repRapForumToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.repRapForumToolStripMenuItem.Text = "RepRap forum";
             this.repRapForumToolStripMenuItem.Click += new System.EventHandler(this.repRapForumToolStripMenuItem_Click);
             // 
             // thingiverseNewestToolStripMenuItem
             // 
             this.thingiverseNewestToolStripMenuItem.Name = "thingiverseNewestToolStripMenuItem";
-            this.thingiverseNewestToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.thingiverseNewestToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.thingiverseNewestToolStripMenuItem.Text = "Thingiverse newest";
             this.thingiverseNewestToolStripMenuItem.Click += new System.EventHandler(this.thingiverseNewestToolStripMenuItem_Click);
             // 
             // thingiversePopularToolStripMenuItem
             // 
             this.thingiversePopularToolStripMenuItem.Name = "thingiversePopularToolStripMenuItem";
-            this.thingiversePopularToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.thingiversePopularToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.thingiversePopularToolStripMenuItem.Text = "Thingiverse popular";
             this.thingiversePopularToolStripMenuItem.Click += new System.EventHandler(this.thingiversePopularToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(204, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(229, 6);
             // 
             // aboutRepetierHostToolStripMenuItem
             // 
             this.aboutRepetierHostToolStripMenuItem.Name = "aboutRepetierHostToolStripMenuItem";
-            this.aboutRepetierHostToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.aboutRepetierHostToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.aboutRepetierHostToolStripMenuItem.Text = "&About Repetier-Host";
             this.aboutRepetierHostToolStripMenuItem.Click += new System.EventHandler(this.aboutRepetierHostToolStripMenuItem_Click);
             // 
@@ -1081,6 +1083,13 @@
             this.editor.Size = new System.Drawing.Size(461, 298);
             this.editor.TabIndex = 0;
             // 
+            // repetierHostDownloadPageToolStripMenuItem
+            // 
+            this.repetierHostDownloadPageToolStripMenuItem.Name = "repetierHostDownloadPageToolStripMenuItem";
+            this.repetierHostDownloadPageToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.repetierHostDownloadPageToolStripMenuItem.Text = "Repetier-Host download page";
+            this.repetierHostDownloadPageToolStripMenuItem.Click += new System.EventHandler(this.repetierHostDownloadPageToolStripMenuItem_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1227,6 +1236,7 @@
         private System.Windows.Forms.ToolStripMenuItem soundConfigurationToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton toolStripSaveJob;
         public System.Windows.Forms.ImageList imageList;
+        private System.Windows.Forms.ToolStripMenuItem repetierHostDownloadPageToolStripMenuItem;
     }
 }
 
