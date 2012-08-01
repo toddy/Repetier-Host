@@ -15,6 +15,7 @@ Version 0.53
   Fixed some issues with linux version.
   Color change if object is outside printbed.
   Lightning now definable in 3d visual settings.
+  After homing the movements over the panel are limited to the entered printer dimensions.
 
 Version 0.52 17.7.2012
   Upgraded to Slic3r 0.8.4

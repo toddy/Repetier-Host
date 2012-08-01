@@ -483,9 +483,9 @@ namespace RepetierHost
             }
             else
             {
-                editor.setContent(0, System.IO.File.ReadAllText(file));
                 tab.SelectTab(tabGCode);
                 editor.selectContent(0);
+                editor.setContent(0, System.IO.File.ReadAllText(file));
             }
         }
         public void LoadGCode(string file)

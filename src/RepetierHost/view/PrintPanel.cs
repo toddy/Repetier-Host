@@ -55,6 +55,12 @@ namespace RepetierHost.view
 
             float volt = 100f * trackFanVoltage.Value / 255;
             labelVoltage.Text = "Output " + volt.ToString("0.0") + "%";
+            arrowButtonXMinus.PossibleValues = Custom.GetString("xyMoveDistances", arrowButtonXMinus.PossibleValues);
+            arrowButtonXPlus.PossibleValues = Custom.GetString("xyMoveDistances", arrowButtonXPlus.PossibleValues);
+            arrowButtonYMinus.PossibleValues = Custom.GetString("xyMoveDistances", arrowButtonYMinus.PossibleValues);
+            arrowButtonYPlus.PossibleValues = Custom.GetString("xyMoveDistances", arrowButtonYPlus.PossibleValues);
+            if (Custom.GetBool("noPowerControlButton", false))
+                switchPower.Visible = false;
             timer.Start();
         }
         public void updateStatus()
@@ -69,18 +75,22 @@ namespace RepetierHost.view
             }
             else if (ann.extruderTemp > 15 && ann.extruderTemp - con.extruderTemp > 5)
                 Status = PrinterStatus.heatingExtruder;
-            else if (ann.bedTemp > 15 && ann.bedTemp - con.bedTemp > 5 && con.bedTemp>15) // only if has bed
+            else if (ann.bedTemp > 15 && ann.bedTemp - con.bedTemp > 5 && con.bedTemp > 15) // only if has bed
                 Status = PrinterStatus.heatingBed;
+            else if (status == PrinterStatus.heatingBed || status == PrinterStatus.heatingExtruder)
+                Status = PrinterStatus.idle;
             else if (Main.conn.paused && status != PrinterStatus.jobPaused)
                 Status = PrinterStatus.jobPaused;
             else if (status == PrinterStatus.jobPaused && !Main.conn.paused)
                 Status = PrinterStatus.idle;
             else if (status == PrinterStatus.idle && diff > 0)
                 Status = PrinterStatus.idle;
-            else if(status == PrinterStatus.motorStopped || status == PrinterStatus.jobKilled || status==PrinterStatus.jobFinsihed) {
-                if(diff > 30) // remove message after 30 seconds
+            else if (status == PrinterStatus.motorStopped || status == PrinterStatus.jobKilled || status == PrinterStatus.jobFinsihed)
+            {
+                if (diff > 30) // remove message after 30 seconds
                     Status = PrinterStatus.idle;
-            } else if(status == PrinterStatus.disconnected && Main.conn.connected)
+            }
+            else if (status == PrinterStatus.disconnected && Main.conn.connected)
                 Status = PrinterStatus.idle;
         }
         public MethodInvoker SetStatusJobFinished = delegate {Main.main.printPanel.Status = PrinterStatus.jobFinsihed;};
@@ -726,35 +736,46 @@ namespace RepetierHost.view
 
         private void arrowButtonXPlus_Click(object sender, EventArgs e)
         {
-            moveHead("X", ((ArrowButton)sender).CurrentValueF);
+            float d = ((ArrowButton)sender).CurrentValueF;
+            if (ann.hasXHome && d + ann.x > Main.printerSettings.PrintAreaWidth) d = Main.printerSettings.PrintAreaWidth - ann.x;
+            moveHead("X", d);
         }
 
         private void arrowButtonXMinus_Click(object sender, EventArgs e)
         {
-            moveHead("X", -((ArrowButton)sender).CurrentValueF);
+            float d = -((ArrowButton)sender).CurrentValueF;
+            if (ann.hasXHome && d + ann.x <0) d = -ann.x;
+            moveHead("X", d);
         }
 
         private void arrowButtonYPlus_Click(object sender, EventArgs e)
         {
-            moveHead("Y", ((ArrowButton)sender).CurrentValueF);
+            float d = ((ArrowButton)sender).CurrentValueF;
+            if (ann.hasYHome && d + ann.y > Main.printerSettings.PrintAreaDepth) d = Main.printerSettings.PrintAreaDepth - ann.y;
+            moveHead("Y",d);
 
         }
 
         private void arrowButtonYMinus_Click(object sender, EventArgs e)
         {
-            moveHead("Y", -((ArrowButton)sender).CurrentValueF);
-
+            float d = -((ArrowButton)sender).CurrentValueF;
+            if (ann.hasYHome && d + ann.y < 0) d = -ann.y;
+            moveHead("Y", d);
         }
 
         private void arrowButtonZPlus_Click(object sender, EventArgs e)
         {
-            moveHead("Z", ((ArrowButton)sender).CurrentValueF);
+            float d = ((ArrowButton)sender).CurrentValueF;
+            if (ann.hasZHome && d + ann.z > Main.printerSettings.PrintAreaHeight) d = Main.printerSettings.PrintAreaHeight - ann.z;
+            moveHead("Z", d);
 
         }
 
         private void arrowButtonZMinus_Click(object sender, EventArgs e)
         {
-            moveHead("Z", -((ArrowButton)sender).CurrentValueF);
+            float d = -((ArrowButton)sender).CurrentValueF;
+            if (ann.hasZHome && d + ann.z < 0) d = -ann.z;
+            moveHead("Z", d);
 
         }
 
