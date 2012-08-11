@@ -31,17 +31,9 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RepetierEditor));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolNew = new System.Windows.Forms.ToolStripButton();
-            this.toolSave = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolCut = new System.Windows.Forms.ToolStripButton();
-            this.toolCopy = new System.Windows.Forms.ToolStripButton();
-            this.toolPaste = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolUndo = new System.Windows.Forms.ToolStripButton();
-            this.toolRedo = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolPreview = new System.Windows.Forms.ToolStripButton();
             this.toolFile = new System.Windows.Forms.ToolStripComboBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolRow = new System.Windows.Forms.ToolStripStatusLabel();
@@ -67,6 +59,14 @@
             this.radioShowSingleLayer = new System.Windows.Forms.RadioButton();
             this.radioShowAll = new System.Windows.Forms.RadioButton();
             this.timer = new System.Windows.Forms.Timer(this.components);
+            this.toolNew = new System.Windows.Forms.ToolStripButton();
+            this.toolSave = new System.Windows.Forms.ToolStripButton();
+            this.toolCut = new System.Windows.Forms.ToolStripButton();
+            this.toolCopy = new System.Windows.Forms.ToolStripButton();
+            this.toolPaste = new System.Windows.Forms.ToolStripButton();
+            this.toolUndo = new System.Windows.Forms.ToolStripButton();
+            this.toolRedo = new System.Windows.Forms.ToolStripButton();
+            this.toolPreview = new System.Windows.Forms.ToolStripButton();
             this.editor = new RepetierHost.view.DoubleBufferPanel();
             this.sliderShowMaxLayer = new MB.Controls.ColorSlider();
             this.sliderShowFirstLayer = new MB.Controls.ColorSlider();
@@ -104,112 +104,20 @@
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip";
             // 
-            // toolNew
-            // 
-            this.toolNew.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolNew.Image = ((System.Drawing.Image)(resources.GetObject("toolNew.Image")));
-            this.toolNew.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolNew.Name = "toolNew";
-            this.toolNew.Size = new System.Drawing.Size(23, 22);
-            this.toolNew.Text = "toolStripButton1";
-            this.toolNew.ToolTipText = "New text";
-            this.toolNew.Click += new System.EventHandler(this.toolNew_Click);
-            // 
-            // toolSave
-            // 
-            this.toolSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolSave.Image = ((System.Drawing.Image)(resources.GetObject("toolSave.Image")));
-            this.toolSave.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolSave.Name = "toolSave";
-            this.toolSave.Size = new System.Drawing.Size(23, 22);
-            this.toolSave.Text = "toolStripButton2";
-            this.toolSave.ToolTipText = "Save";
-            this.toolSave.Click += new System.EventHandler(this.toolSave_Click);
-            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // toolCut
-            // 
-            this.toolCut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolCut.Image = ((System.Drawing.Image)(resources.GetObject("toolCut.Image")));
-            this.toolCut.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolCut.Name = "toolCut";
-            this.toolCut.Size = new System.Drawing.Size(23, 22);
-            this.toolCut.Text = "toolStripButton1";
-            this.toolCut.ToolTipText = "Cut";
-            this.toolCut.Click += new System.EventHandler(this.toolCut_Click);
-            // 
-            // toolCopy
-            // 
-            this.toolCopy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolCopy.Image = ((System.Drawing.Image)(resources.GetObject("toolCopy.Image")));
-            this.toolCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolCopy.Name = "toolCopy";
-            this.toolCopy.Size = new System.Drawing.Size(23, 22);
-            this.toolCopy.Text = "toolStripButton1";
-            this.toolCopy.ToolTipText = "Copy";
-            this.toolCopy.Click += new System.EventHandler(this.toolCopy_Click);
-            // 
-            // toolPaste
-            // 
-            this.toolPaste.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolPaste.Image = ((System.Drawing.Image)(resources.GetObject("toolPaste.Image")));
-            this.toolPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolPaste.Name = "toolPaste";
-            this.toolPaste.Size = new System.Drawing.Size(23, 22);
-            this.toolPaste.Text = "toolStripButton1";
-            this.toolPaste.ToolTipText = "Paste";
-            this.toolPaste.Click += new System.EventHandler(this.toolPaste_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
-            // toolUndo
-            // 
-            this.toolUndo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolUndo.Image = ((System.Drawing.Image)(resources.GetObject("toolUndo.Image")));
-            this.toolUndo.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolUndo.Name = "toolUndo";
-            this.toolUndo.Size = new System.Drawing.Size(23, 22);
-            this.toolUndo.Text = "toolStripButton1";
-            this.toolUndo.ToolTipText = "Undo";
-            this.toolUndo.Click += new System.EventHandler(this.toolUndo_Click);
-            // 
-            // toolRedo
-            // 
-            this.toolRedo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolRedo.Image = ((System.Drawing.Image)(resources.GetObject("toolRedo.Image")));
-            this.toolRedo.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolRedo.Name = "toolRedo";
-            this.toolRedo.Size = new System.Drawing.Size(23, 22);
-            this.toolRedo.Text = "toolStripButton1";
-            this.toolRedo.ToolTipText = "Redo";
-            this.toolRedo.Click += new System.EventHandler(this.toolRedo_Click);
-            // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
-            // 
-            // toolPreview
-            // 
-            this.toolPreview.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.toolPreview.Checked = true;
-            this.toolPreview.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.toolPreview.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolPreview.Image = ((System.Drawing.Image)(resources.GetObject("toolPreview.Image")));
-            this.toolPreview.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolPreview.Name = "toolPreview";
-            this.toolPreview.Size = new System.Drawing.Size(23, 22);
-            this.toolPreview.Text = "toolStripButton3";
-            this.toolPreview.ToolTipText = "Autoupdate preview code";
-            this.toolPreview.CheckedChanged += new System.EventHandler(this.toolPreview_CheckedChanged);
-            this.toolPreview.Click += new System.EventHandler(this.toolPreview_Click);
             // 
             // toolFile
             // 
@@ -217,9 +125,11 @@
             this.toolFile.Items.AddRange(new object[] {
             "G-Code",
             "Start code",
-            "End code"});
+            "End code",
+            "Run on kill",
+            "Run on pause"});
             this.toolFile.Name = "toolFile";
-            this.toolFile.Size = new System.Drawing.Size(85, 25);
+            this.toolFile.Size = new System.Drawing.Size(110, 25);
             this.toolFile.SelectedIndexChanged += new System.EventHandler(this.toolFile_SelectedIndexChanged);
             // 
             // statusStrip1
@@ -469,6 +379,98 @@
             this.timer.Enabled = true;
             this.timer.Interval = 500;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            // 
+            // toolNew
+            // 
+            this.toolNew.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolNew.Image = ((System.Drawing.Image)(resources.GetObject("toolNew.Image")));
+            this.toolNew.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolNew.Name = "toolNew";
+            this.toolNew.Size = new System.Drawing.Size(23, 22);
+            this.toolNew.Text = "toolStripButton1";
+            this.toolNew.ToolTipText = "New text";
+            this.toolNew.Click += new System.EventHandler(this.toolNew_Click);
+            // 
+            // toolSave
+            // 
+            this.toolSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolSave.Image = ((System.Drawing.Image)(resources.GetObject("toolSave.Image")));
+            this.toolSave.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolSave.Name = "toolSave";
+            this.toolSave.Size = new System.Drawing.Size(23, 22);
+            this.toolSave.Text = "toolStripButton2";
+            this.toolSave.ToolTipText = "Save";
+            this.toolSave.Click += new System.EventHandler(this.toolSave_Click);
+            // 
+            // toolCut
+            // 
+            this.toolCut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolCut.Image = ((System.Drawing.Image)(resources.GetObject("toolCut.Image")));
+            this.toolCut.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolCut.Name = "toolCut";
+            this.toolCut.Size = new System.Drawing.Size(23, 22);
+            this.toolCut.Text = "toolStripButton1";
+            this.toolCut.ToolTipText = "Cut";
+            this.toolCut.Click += new System.EventHandler(this.toolCut_Click);
+            // 
+            // toolCopy
+            // 
+            this.toolCopy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolCopy.Image = ((System.Drawing.Image)(resources.GetObject("toolCopy.Image")));
+            this.toolCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolCopy.Name = "toolCopy";
+            this.toolCopy.Size = new System.Drawing.Size(23, 22);
+            this.toolCopy.Text = "toolStripButton1";
+            this.toolCopy.ToolTipText = "Copy";
+            this.toolCopy.Click += new System.EventHandler(this.toolCopy_Click);
+            // 
+            // toolPaste
+            // 
+            this.toolPaste.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolPaste.Image = ((System.Drawing.Image)(resources.GetObject("toolPaste.Image")));
+            this.toolPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolPaste.Name = "toolPaste";
+            this.toolPaste.Size = new System.Drawing.Size(23, 22);
+            this.toolPaste.Text = "toolStripButton1";
+            this.toolPaste.ToolTipText = "Paste";
+            this.toolPaste.Click += new System.EventHandler(this.toolPaste_Click);
+            // 
+            // toolUndo
+            // 
+            this.toolUndo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolUndo.Image = ((System.Drawing.Image)(resources.GetObject("toolUndo.Image")));
+            this.toolUndo.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolUndo.Name = "toolUndo";
+            this.toolUndo.Size = new System.Drawing.Size(23, 22);
+            this.toolUndo.Text = "toolStripButton1";
+            this.toolUndo.ToolTipText = "Undo";
+            this.toolUndo.Click += new System.EventHandler(this.toolUndo_Click);
+            // 
+            // toolRedo
+            // 
+            this.toolRedo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolRedo.Image = ((System.Drawing.Image)(resources.GetObject("toolRedo.Image")));
+            this.toolRedo.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolRedo.Name = "toolRedo";
+            this.toolRedo.Size = new System.Drawing.Size(23, 22);
+            this.toolRedo.Text = "toolStripButton1";
+            this.toolRedo.ToolTipText = "Redo";
+            this.toolRedo.Click += new System.EventHandler(this.toolRedo_Click);
+            // 
+            // toolPreview
+            // 
+            this.toolPreview.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolPreview.Checked = true;
+            this.toolPreview.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.toolPreview.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolPreview.Image = ((System.Drawing.Image)(resources.GetObject("toolPreview.Image")));
+            this.toolPreview.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolPreview.Name = "toolPreview";
+            this.toolPreview.Size = new System.Drawing.Size(23, 22);
+            this.toolPreview.Text = "toolStripButton3";
+            this.toolPreview.ToolTipText = "Autoupdate preview code";
+            this.toolPreview.CheckedChanged += new System.EventHandler(this.toolPreview_CheckedChanged);
+            this.toolPreview.Click += new System.EventHandler(this.toolPreview_Click);
             // 
             // editor
             // 

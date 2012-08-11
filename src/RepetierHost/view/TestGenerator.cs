@@ -44,6 +44,9 @@ namespace RepetierHost.view
                 case 1:
                     Advance2();
                     break;
+                case 2:
+                    RetractionTest();
+                    break;
             }
             Main.main.LoadGCodeText(gen.Code);
             Hide();
@@ -54,14 +57,52 @@ namespace RepetierHost.view
             switch (comboTestCase.SelectedIndex)
             {
                 case 0: // Advance
+                    textP2.Enabled = true;
+                    textP3.Enabled = true;
                     textP4.Enabled = false;
                     textP5.Enabled = false;
                     break;
                 case 1:
+                    textP2.Enabled = true;
+                    textP3.Enabled = true;
                     textP4.Enabled = true;
                     textP5.Enabled = true;
                     break;
+                case 2:
+                    textP2.Enabled = false;
+                    textP3.Enabled = false;
+                    textP4.Enabled = false;
+                    textP5.Enabled = false;
+                    break;
             }
+        }
+        protected void RetractionTest()
+        {
+            double f;
+            double m = gen.MaximumFeedRate;
+            double.TryParse(textP1.Text, NumberStyles.Float, GCode.format, out f);
+            gen.Reset();
+            gen.NextLayer();
+            gen.Move(10, 10, m);
+            gen.Print(90, 10, f);
+            gen.Print(90, 90, f);
+            gen.Print(10, 90, f);
+            gen.Print(10, 10, f);
+            gen.SetRetract(true);
+            gen.Move(20, 80, m);
+            gen.SetRetract(false);
+            gen.Print(20, 20, f);
+            gen.Print(30, 20, f);
+            gen.Print(30, 80, f);
+            gen.Print(40, 80, f);
+            gen.SetRetract(true);
+            gen.Move(50, 80, m);
+            gen.SetRetract(false);
+            gen.Print(50, 20, f);
+            gen.Print(60, 20, f);
+            gen.Print(60, 80, f);
+            gen.Print(70, 80, f);
+            gen.SetRetract(true);
         }
         protected void Advance1()
         {

@@ -285,7 +285,7 @@ namespace RepetierHost.model
                         if (vacos > 1) vacos = 1;
                         if (vacos < -0.97)
                             vacos = -0.97;
-                        float zoomw = (float)Math.Cos(0.5 * Math.Acos(vacos));
+                        float zoomw = (float)vacos; // Math.Cos(Math.Acos(vacos));
                         lastdir[0] = actdir[0];
                         lastdir[1] = actdir[1];
                         lastdir[2] = actdir[2];
@@ -1058,23 +1058,24 @@ namespace RepetierHost.model
             GCodePoint lastP = null, startP = null, endP = null;
             foreach (LinkedList<GCodePoint> plist in path.pointsLists)
             {
-                foreach (GCodePoint point in plist)
-                {
-                    if (startP == null)
+                if (plist.Count > 1)
+                    foreach (GCodePoint point in plist)
                     {
-                        if (point.fline >= mstart)
-                            startP = point;
-                    }
-                    else
-                    {
-                        if (point.fline > mend)
+                        if (startP == null)
                         {
-                            endP = point;
-                            break;
+                            if (point.fline >= mstart && point.fline <= mend)
+                                startP = point;
                         }
+                        else
+                        {
+                            if (point.fline > mend)
+                            {
+                                endP = point;
+                                break;
+                            }
+                        }
+                        lastP = point;
                     }
-                    lastP = point;
-                }
                 if (endP != null) break;
             }
             if (startP == null) return;

@@ -86,6 +86,10 @@ namespace RepetierHost.model
             mode = 3;
             exclusive = false;
             con.injectManualCommandFirst("M29");
+            foreach (GCodeShort code in Main.main.editor.getContentArray(3))
+            {
+                con.injectManualCommand(code.text);
+            }
             Main.main.Invoke(Main.main.UpdateJobButtons);
             con.firePrinterAction("Job killed");
             DoEndKillActions();

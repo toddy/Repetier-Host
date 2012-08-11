@@ -117,17 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="label1.Text" xml:space="preserve">
-    <value>If you want to use a newer Slic3r version as the one bundled with the Host,
-you can disable this. In this case the Slic3r version defined as external Slic3r
-version is used for slicing. If the external version uses new/renamed configuration
-parameter, the result may not be as expected. </value>
-  </data>
-  <data name="label4.Text" xml:space="preserve">
-    <value>As an alternative to the internal Slic3r slicer, you can use any version. Install it and set
-the executable path accordingly. Slicing is always done using the configuration file
-entered here. You need to save this inside Slic3r. 
-To do so call "Slic3r external configuration" from the menu.</value>
+  <data name="label3.Text" xml:space="preserve">
+    <value>With these settings, you are able to use different versions of Slic3r.
+You can get new versions from http://www.slic3r.org
+The minimum version required is 0.9.0. Leave all fields blank to simply
+use the bundled version.</value>
   </data>
   <metadata name="openFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>

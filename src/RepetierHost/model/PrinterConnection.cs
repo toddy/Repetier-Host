@@ -389,6 +389,10 @@ namespace RepetierHost.model
         {
             if (paused) return;
             paused = true;
+            foreach (GCodeShort code in Main.main.editor.getContentArray(4))
+            {
+                injectManualCommand(code.text);
+            }
             PauseInfo.ShowPause(text);
             //MessageBox.Show(Main.main, text, "Printer paused", MessageBoxButtons.OK, MessageBoxIcon.Stop);
             //paused = false;

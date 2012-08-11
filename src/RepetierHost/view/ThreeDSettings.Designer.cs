@@ -183,7 +183,7 @@
             this.selectedFilament.Location = new System.Drawing.Point(342, 54);
             this.selectedFilament.Name = "selectedFilament";
             this.selectedFilament.Size = new System.Drawing.Size(111, 22);
-            this.selectedFilament.TabIndex = 4;
+            this.selectedFilament.TabIndex = 3;
             this.selectedFilament.Click += new System.EventHandler(this.hotFilament_Click);
             // 
             // hotFilament
@@ -193,7 +193,7 @@
             this.hotFilament.Location = new System.Drawing.Point(342, 26);
             this.hotFilament.Name = "hotFilament";
             this.hotFilament.Size = new System.Drawing.Size(111, 22);
-            this.hotFilament.TabIndex = 4;
+            this.hotFilament.TabIndex = 1;
             this.hotFilament.Click += new System.EventHandler(this.hotFilament_Click);
             // 
             // filament3
@@ -222,7 +222,7 @@
             this.filament2.Location = new System.Drawing.Point(117, 54);
             this.filament2.Name = "filament2";
             this.filament2.Size = new System.Drawing.Size(111, 22);
-            this.filament2.TabIndex = 4;
+            this.filament2.TabIndex = 2;
             this.filament2.Click += new System.EventHandler(this.filament_Click);
             // 
             // label17
@@ -241,7 +241,7 @@
             this.filament.Location = new System.Drawing.Point(117, 26);
             this.filament.Name = "filament";
             this.filament.Size = new System.Drawing.Size(111, 22);
-            this.filament.TabIndex = 4;
+            this.filament.TabIndex = 0;
             this.filament.Click += new System.EventHandler(this.filament_Click);
             // 
             // label4
@@ -267,7 +267,7 @@
             this.textHotFilamentLength.Location = new System.Drawing.Point(114, 196);
             this.textHotFilamentLength.Name = "textHotFilamentLength";
             this.textHotFilamentLength.Size = new System.Drawing.Size(81, 20);
-            this.textHotFilamentLength.TabIndex = 7;
+            this.textHotFilamentLength.TabIndex = 6;
             this.textHotFilamentLength.Text = "1000";
             this.textHotFilamentLength.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
             // 
@@ -296,7 +296,7 @@
             this.printerBase.Location = new System.Drawing.Point(117, 71);
             this.printerBase.Name = "printerBase";
             this.printerBase.Size = new System.Drawing.Size(111, 22);
-            this.printerBase.TabIndex = 4;
+            this.printerBase.TabIndex = 1;
             this.printerBase.Click += new System.EventHandler(this.printerBase_Click);
             // 
             // selectedFaces
@@ -306,7 +306,7 @@
             this.selectedFaces.Location = new System.Drawing.Point(159, 45);
             this.selectedFaces.Name = "selectedFaces";
             this.selectedFaces.Size = new System.Drawing.Size(111, 22);
-            this.selectedFaces.TabIndex = 4;
+            this.selectedFaces.TabIndex = 1;
             this.selectedFaces.Click += new System.EventHandler(this.selectedFaces_Click);
             // 
             // edges
@@ -316,7 +316,7 @@
             this.edges.Location = new System.Drawing.Point(159, 75);
             this.edges.Name = "edges";
             this.edges.Size = new System.Drawing.Size(111, 22);
-            this.edges.TabIndex = 4;
+            this.edges.TabIndex = 2;
             this.edges.Click += new System.EventHandler(this.edges_Click);
             // 
             // faces
@@ -326,7 +326,7 @@
             this.faces.Location = new System.Drawing.Point(159, 17);
             this.faces.Name = "faces";
             this.faces.Size = new System.Drawing.Size(111, 22);
-            this.faces.TabIndex = 4;
+            this.faces.TabIndex = 0;
             this.faces.Click += new System.EventHandler(this.faces_Click);
             // 
             // background
@@ -336,7 +336,7 @@
             this.background.Location = new System.Drawing.Point(117, 43);
             this.background.Name = "background";
             this.background.Size = new System.Drawing.Size(111, 22);
-            this.background.TabIndex = 4;
+            this.background.TabIndex = 0;
             this.background.Click += new System.EventHandler(this.background_Click);
             // 
             // label6
@@ -377,10 +377,11 @@
             // 
             // buttonOK
             // 
-            this.buttonOK.Location = new System.Drawing.Point(406, 422);
+            this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonOK.Location = new System.Drawing.Point(422, 450);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(80, 22);
-            this.buttonOK.TabIndex = 1;
+            this.buttonOK.TabIndex = 0;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
@@ -408,7 +409,7 @@
             this.comboDrawMethod.Location = new System.Drawing.Point(99, 129);
             this.comboDrawMethod.Name = "comboDrawMethod";
             this.comboDrawMethod.Size = new System.Drawing.Size(144, 21);
-            this.comboDrawMethod.TabIndex = 16;
+            this.comboDrawMethod.TabIndex = 0;
             this.comboDrawMethod.SelectedIndexChanged += new System.EventHandler(this.comboDrawMethod_SelectedIndexChanged);
             // 
             // label15
@@ -463,7 +464,7 @@
             this.textDiameter.Location = new System.Drawing.Point(125, 120);
             this.textDiameter.Name = "textDiameter";
             this.textDiameter.Size = new System.Drawing.Size(106, 20);
-            this.textDiameter.TabIndex = 11;
+            this.textDiameter.TabIndex = 5;
             this.textDiameter.Text = "2.87";
             this.textDiameter.TextChanged += new System.EventHandler(this.textLayerHeight_TextChanged);
             this.textDiameter.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
@@ -474,7 +475,7 @@
             this.radioDiameter.Location = new System.Drawing.Point(6, 118);
             this.radioDiameter.Name = "radioDiameter";
             this.radioDiameter.Size = new System.Drawing.Size(110, 17);
-            this.radioDiameter.TabIndex = 10;
+            this.radioDiameter.TabIndex = 4;
             this.radioDiameter.Text = "Filament diameter:";
             this.radioDiameter.UseVisualStyleBackColor = true;
             // 
@@ -485,7 +486,7 @@
             this.radioHeight.Location = new System.Drawing.Point(6, 96);
             this.radioHeight.Name = "radioHeight";
             this.radioHeight.Size = new System.Drawing.Size(86, 17);
-            this.radioHeight.TabIndex = 9;
+            this.radioHeight.TabIndex = 2;
             this.radioHeight.TabStop = true;
             this.radioHeight.Text = "Layer height:";
             this.radioHeight.UseVisualStyleBackColor = true;
@@ -496,7 +497,7 @@
             this.textWidthOverThickness.Location = new System.Drawing.Point(125, 67);
             this.textWidthOverThickness.Name = "textWidthOverThickness";
             this.textWidthOverThickness.Size = new System.Drawing.Size(106, 20);
-            this.textWidthOverThickness.TabIndex = 7;
+            this.textWidthOverThickness.TabIndex = 1;
             this.textWidthOverThickness.Text = "1.8";
             this.textWidthOverThickness.TextChanged += new System.EventHandler(this.textLayerHeight_TextChanged);
             this.textWidthOverThickness.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
@@ -506,7 +507,7 @@
             this.textLayerHeight.Location = new System.Drawing.Point(125, 93);
             this.textLayerHeight.Name = "textLayerHeight";
             this.textLayerHeight.Size = new System.Drawing.Size(106, 20);
-            this.textLayerHeight.TabIndex = 6;
+            this.textLayerHeight.TabIndex = 3;
             this.textLayerHeight.Text = "0.38";
             this.textLayerHeight.TextChanged += new System.EventHandler(this.textLayerHeight_TextChanged);
             this.textLayerHeight.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
@@ -541,7 +542,7 @@
             this.comboFilamentVisualization.Location = new System.Drawing.Point(125, 39);
             this.comboFilamentVisualization.Name = "comboFilamentVisualization";
             this.comboFilamentVisualization.Size = new System.Drawing.Size(129, 21);
-            this.comboFilamentVisualization.TabIndex = 2;
+            this.comboFilamentVisualization.TabIndex = 0;
             this.comboFilamentVisualization.SelectedIndexChanged += new System.EventHandler(this.comboFilamentVisualization_SelectedIndexChanged);
             // 
             // showPrintbed
@@ -563,7 +564,7 @@
             this.enableLight4.Location = new System.Drawing.Point(379, 33);
             this.enableLight4.Name = "enableLight4";
             this.enableLight4.Size = new System.Drawing.Size(81, 17);
-            this.enableLight4.TabIndex = 3;
+            this.enableLight4.TabIndex = 7;
             this.enableLight4.Text = "Enable light";
             this.enableLight4.UseVisualStyleBackColor = true;
             this.enableLight4.CheckedChanged += new System.EventHandler(this.showEdges_CheckedChanged);
@@ -574,7 +575,7 @@
             this.enableLight3.Location = new System.Drawing.Point(285, 33);
             this.enableLight3.Name = "enableLight3";
             this.enableLight3.Size = new System.Drawing.Size(81, 17);
-            this.enableLight3.TabIndex = 2;
+            this.enableLight3.TabIndex = 6;
             this.enableLight3.Text = "Enable light";
             this.enableLight3.UseVisualStyleBackColor = true;
             this.enableLight3.CheckedChanged += new System.EventHandler(this.showEdges_CheckedChanged);
@@ -587,7 +588,7 @@
             this.enableLight2.Location = new System.Drawing.Point(191, 33);
             this.enableLight2.Name = "enableLight2";
             this.enableLight2.Size = new System.Drawing.Size(81, 17);
-            this.enableLight2.TabIndex = 1;
+            this.enableLight2.TabIndex = 5;
             this.enableLight2.Text = "Enable light";
             this.enableLight2.UseVisualStyleBackColor = true;
             this.enableLight2.CheckedChanged += new System.EventHandler(this.showEdges_CheckedChanged);
@@ -600,7 +601,7 @@
             this.enableLight1.Location = new System.Drawing.Point(97, 33);
             this.enableLight1.Name = "enableLight1";
             this.enableLight1.Size = new System.Drawing.Size(81, 17);
-            this.enableLight1.TabIndex = 0;
+            this.enableLight1.TabIndex = 4;
             this.enableLight1.Text = "Enable light";
             this.enableLight1.UseVisualStyleBackColor = true;
             this.enableLight1.CheckedChanged += new System.EventHandler(this.showEdges_CheckedChanged);
@@ -619,7 +620,7 @@
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(494, 390);
-            this.tabControl1.TabIndex = 4;
+            this.tabControl1.TabIndex = 0;
             // 
             // tabGeneral
             // 
@@ -729,7 +730,7 @@
             this.outsidePrintbed.Location = new System.Drawing.Point(159, 105);
             this.outsidePrintbed.Name = "outsidePrintbed";
             this.outsidePrintbed.Size = new System.Drawing.Size(111, 22);
-            this.outsidePrintbed.TabIndex = 4;
+            this.outsidePrintbed.TabIndex = 3;
             this.outsidePrintbed.Click += new System.EventHandler(this.outsidePrintbed_Click);
             // 
             // tabFilament
@@ -772,7 +773,7 @@
             this.tabLights.Controls.Add(this.tableLayoutPanel1);
             this.tabLights.Location = new System.Drawing.Point(4, 22);
             this.tabLights.Name = "tabLights";
-            this.tabLights.Size = new System.Drawing.Size(511, 378);
+            this.tabLights.Size = new System.Drawing.Size(486, 364);
             this.tabLights.TabIndex = 3;
             this.tabLights.Text = "Lights";
             this.tabLights.UseVisualStyleBackColor = true;
@@ -846,7 +847,7 @@
             this.label19.Name = "label19";
             this.label19.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.label19.Size = new System.Drawing.Size(88, 30);
-            this.label19.TabIndex = 4;
+            this.label19.TabIndex = 0;
             this.label19.Text = "Light 1";
             // 
             // label22
@@ -858,7 +859,7 @@
             this.label22.Name = "label22";
             this.label22.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.label22.Size = new System.Drawing.Size(88, 30);
-            this.label22.TabIndex = 7;
+            this.label22.TabIndex = 3;
             this.label22.Text = "Light 4";
             // 
             // label20
@@ -870,7 +871,7 @@
             this.label20.Name = "label20";
             this.label20.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.label20.Size = new System.Drawing.Size(88, 30);
-            this.label20.TabIndex = 5;
+            this.label20.TabIndex = 1;
             this.label20.Text = "Light 2";
             // 
             // label21
@@ -882,7 +883,7 @@
             this.label21.Name = "label21";
             this.label21.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.label21.Size = new System.Drawing.Size(88, 30);
-            this.label21.TabIndex = 6;
+            this.label21.TabIndex = 2;
             this.label21.Text = "Light 3";
             // 
             // label23
@@ -950,7 +951,7 @@
             this.xdir1.Location = new System.Drawing.Point(97, 63);
             this.xdir1.Name = "xdir1";
             this.xdir1.Size = new System.Drawing.Size(88, 20);
-            this.xdir1.TabIndex = 14;
+            this.xdir1.TabIndex = 8;
             this.xdir1.Text = "-1";
             this.xdir1.TextChanged += new System.EventHandler(this.light_TextChanged);
             this.xdir1.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
@@ -960,7 +961,7 @@
             this.xdir2.Location = new System.Drawing.Point(191, 63);
             this.xdir2.Name = "xdir2";
             this.xdir2.Size = new System.Drawing.Size(88, 20);
-            this.xdir2.TabIndex = 14;
+            this.xdir2.TabIndex = 9;
             this.xdir2.Text = "1";
             this.xdir2.TextChanged += new System.EventHandler(this.light_TextChanged);
             this.xdir2.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
@@ -970,7 +971,7 @@
             this.xdir3.Location = new System.Drawing.Point(285, 63);
             this.xdir3.Name = "xdir3";
             this.xdir3.Size = new System.Drawing.Size(88, 20);
-            this.xdir3.TabIndex = 14;
+            this.xdir3.TabIndex = 10;
             this.xdir3.Text = "1";
             this.xdir3.TextChanged += new System.EventHandler(this.light_TextChanged);
             this.xdir3.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
@@ -980,7 +981,7 @@
             this.xdir4.Location = new System.Drawing.Point(379, 63);
             this.xdir4.Name = "xdir4";
             this.xdir4.Size = new System.Drawing.Size(88, 20);
-            this.xdir4.TabIndex = 14;
+            this.xdir4.TabIndex = 11;
             this.xdir4.Text = "1.7";
             this.xdir4.TextChanged += new System.EventHandler(this.light_TextChanged);
             this.xdir4.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
@@ -990,7 +991,7 @@
             this.ydir2.Location = new System.Drawing.Point(191, 93);
             this.ydir2.Name = "ydir2";
             this.ydir2.Size = new System.Drawing.Size(88, 20);
-            this.ydir2.TabIndex = 14;
+            this.ydir2.TabIndex = 13;
             this.ydir2.Text = "2";
             this.ydir2.TextChanged += new System.EventHandler(this.light_TextChanged);
             this.ydir2.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
@@ -1000,7 +1001,7 @@
             this.ydir1.Location = new System.Drawing.Point(97, 93);
             this.ydir1.Name = "ydir1";
             this.ydir1.Size = new System.Drawing.Size(88, 20);
-            this.ydir1.TabIndex = 14;
+            this.ydir1.TabIndex = 12;
             this.ydir1.Text = "-1";
             this.ydir1.TextChanged += new System.EventHandler(this.light_TextChanged);
             this.ydir1.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
@@ -1010,7 +1011,7 @@
             this.zdir1.Location = new System.Drawing.Point(97, 123);
             this.zdir1.Name = "zdir1";
             this.zdir1.Size = new System.Drawing.Size(88, 20);
-            this.zdir1.TabIndex = 14;
+            this.zdir1.TabIndex = 16;
             this.zdir1.Text = "2";
             this.zdir1.TextChanged += new System.EventHandler(this.light_TextChanged);
             this.zdir1.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
@@ -1020,7 +1021,7 @@
             this.zdir2.Location = new System.Drawing.Point(191, 123);
             this.zdir2.Name = "zdir2";
             this.zdir2.Size = new System.Drawing.Size(88, 20);
-            this.zdir2.TabIndex = 14;
+            this.zdir2.TabIndex = 17;
             this.zdir2.Text = "3";
             this.zdir2.TextChanged += new System.EventHandler(this.light_TextChanged);
             this.zdir2.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
@@ -1030,7 +1031,7 @@
             this.zdir3.Location = new System.Drawing.Point(285, 123);
             this.zdir3.Name = "zdir3";
             this.zdir3.Size = new System.Drawing.Size(88, 20);
-            this.zdir3.TabIndex = 14;
+            this.zdir3.TabIndex = 18;
             this.zdir3.Text = "2";
             this.zdir3.TextChanged += new System.EventHandler(this.light_TextChanged);
             this.zdir3.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
@@ -1050,7 +1051,7 @@
             this.ydir4.Location = new System.Drawing.Point(379, 93);
             this.ydir4.Name = "ydir4";
             this.ydir4.Size = new System.Drawing.Size(88, 20);
-            this.ydir4.TabIndex = 14;
+            this.ydir4.TabIndex = 15;
             this.ydir4.Text = "-1";
             this.ydir4.TextChanged += new System.EventHandler(this.light_TextChanged);
             this.ydir4.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
@@ -1060,7 +1061,7 @@
             this.zdir4.Location = new System.Drawing.Point(379, 123);
             this.zdir4.Name = "zdir4";
             this.zdir4.Size = new System.Drawing.Size(88, 20);
-            this.zdir4.TabIndex = 14;
+            this.zdir4.TabIndex = 19;
             this.zdir4.Text = "-2.5";
             this.zdir4.TextChanged += new System.EventHandler(this.light_TextChanged);
             this.zdir4.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
@@ -1072,7 +1073,7 @@
             this.ambient1.Location = new System.Drawing.Point(97, 153);
             this.ambient1.Name = "ambient1";
             this.ambient1.Size = new System.Drawing.Size(88, 22);
-            this.ambient1.TabIndex = 15;
+            this.ambient1.TabIndex = 20;
             this.ambient1.Click += new System.EventHandler(this.lightcolor_Click);
             // 
             // ambient2
@@ -1082,7 +1083,7 @@
             this.ambient2.Location = new System.Drawing.Point(191, 153);
             this.ambient2.Name = "ambient2";
             this.ambient2.Size = new System.Drawing.Size(88, 22);
-            this.ambient2.TabIndex = 15;
+            this.ambient2.TabIndex = 21;
             this.ambient2.Click += new System.EventHandler(this.lightcolor_Click);
             // 
             // ambient3
@@ -1092,7 +1093,7 @@
             this.ambient3.Location = new System.Drawing.Point(285, 153);
             this.ambient3.Name = "ambient3";
             this.ambient3.Size = new System.Drawing.Size(88, 22);
-            this.ambient3.TabIndex = 15;
+            this.ambient3.TabIndex = 22;
             this.ambient3.Click += new System.EventHandler(this.lightcolor_Click);
             // 
             // ambient4
@@ -1102,7 +1103,7 @@
             this.ambient4.Location = new System.Drawing.Point(379, 153);
             this.ambient4.Name = "ambient4";
             this.ambient4.Size = new System.Drawing.Size(88, 22);
-            this.ambient4.TabIndex = 15;
+            this.ambient4.TabIndex = 23;
             this.ambient4.Click += new System.EventHandler(this.lightcolor_Click);
             // 
             // diffuse1
@@ -1112,7 +1113,7 @@
             this.diffuse1.Location = new System.Drawing.Point(97, 183);
             this.diffuse1.Name = "diffuse1";
             this.diffuse1.Size = new System.Drawing.Size(88, 22);
-            this.diffuse1.TabIndex = 15;
+            this.diffuse1.TabIndex = 24;
             this.diffuse1.Click += new System.EventHandler(this.lightcolor_Click);
             // 
             // specular1
@@ -1122,7 +1123,7 @@
             this.specular1.Location = new System.Drawing.Point(97, 213);
             this.specular1.Name = "specular1";
             this.specular1.Size = new System.Drawing.Size(88, 22);
-            this.specular1.TabIndex = 15;
+            this.specular1.TabIndex = 28;
             this.specular1.Click += new System.EventHandler(this.lightcolor_Click);
             // 
             // diffuse2
@@ -1132,7 +1133,7 @@
             this.diffuse2.Location = new System.Drawing.Point(191, 183);
             this.diffuse2.Name = "diffuse2";
             this.diffuse2.Size = new System.Drawing.Size(88, 22);
-            this.diffuse2.TabIndex = 15;
+            this.diffuse2.TabIndex = 25;
             this.diffuse2.Click += new System.EventHandler(this.lightcolor_Click);
             // 
             // specular2
@@ -1142,7 +1143,7 @@
             this.specular2.Location = new System.Drawing.Point(191, 213);
             this.specular2.Name = "specular2";
             this.specular2.Size = new System.Drawing.Size(88, 22);
-            this.specular2.TabIndex = 15;
+            this.specular2.TabIndex = 29;
             this.specular2.Click += new System.EventHandler(this.lightcolor_Click);
             // 
             // diffuse3
@@ -1152,7 +1153,7 @@
             this.diffuse3.Location = new System.Drawing.Point(285, 183);
             this.diffuse3.Name = "diffuse3";
             this.diffuse3.Size = new System.Drawing.Size(88, 22);
-            this.diffuse3.TabIndex = 15;
+            this.diffuse3.TabIndex = 26;
             this.diffuse3.Click += new System.EventHandler(this.lightcolor_Click);
             // 
             // specular3
@@ -1162,7 +1163,7 @@
             this.specular3.Location = new System.Drawing.Point(285, 213);
             this.specular3.Name = "specular3";
             this.specular3.Size = new System.Drawing.Size(88, 22);
-            this.specular3.TabIndex = 15;
+            this.specular3.TabIndex = 30;
             this.specular3.Click += new System.EventHandler(this.lightcolor_Click);
             // 
             // specular4
@@ -1172,7 +1173,7 @@
             this.specular4.Location = new System.Drawing.Point(379, 213);
             this.specular4.Name = "specular4";
             this.specular4.Size = new System.Drawing.Size(88, 22);
-            this.specular4.TabIndex = 15;
+            this.specular4.TabIndex = 31;
             this.specular4.Click += new System.EventHandler(this.lightcolor_Click);
             // 
             // diffuse4
@@ -1182,14 +1183,14 @@
             this.diffuse4.Location = new System.Drawing.Point(379, 183);
             this.diffuse4.Name = "diffuse4";
             this.diffuse4.Size = new System.Drawing.Size(88, 22);
-            this.diffuse4.TabIndex = 15;
+            this.diffuse4.TabIndex = 27;
             this.diffuse4.Click += new System.EventHandler(this.lightcolor_Click);
             // 
             // ThreeDSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(517, 465);
+            this.ClientSize = new System.Drawing.Size(517, 503);
             this.ControlBox = false;
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.buttonOK);

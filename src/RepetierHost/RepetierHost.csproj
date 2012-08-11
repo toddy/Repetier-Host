@@ -113,6 +113,7 @@
     <Compile Include="model\GCodeGenerator.cs" />
     <Compile Include="model\GCodeShort.cs" />
     <Compile Include="model\GCodeVisual.cs" />
+    <Compile Include="model\IniManager.cs" />
     <Compile Include="model\LogLine.cs" />
     <Compile Include="model\ModelAnimation.cs" />
     <Compile Include="model\PrinterConnection.cs" />
@@ -122,6 +123,7 @@
     </Compile>
     <Compile Include="model\PulseAnimation.cs" />
     <Compile Include="model\RectPacker.cs" />
+    <Compile Include="model\SkeinConfig.cs" />
     <Compile Include="model\STL.cs" />
     <Compile Include="model\TemperatureHistory.cs" />
     <Compile Include="model\ThreeDModel.cs" />
@@ -212,6 +214,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="view\Slic3rSetup.resx">
       <DependentUpon>Slic3rSetup.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="view\SlicerPanel.resx">
+      <DependentUpon>SlicerPanel.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="view\SlicingParameter.resx">
@@ -398,6 +404,12 @@
     </Compile>
     <Compile Include="view\Slic3rSetup.Designer.cs">
       <DependentUpon>Slic3rSetup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="view\SlicerPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="view\SlicerPanel.Designer.cs">
+      <DependentUpon>SlicerPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="view\SlicingParameter.cs">
       <SubType>Form</SubType>

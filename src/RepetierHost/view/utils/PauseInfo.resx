@@ -131,6 +131,12 @@
         vpHB80WaDptrm81GfjE5xCX1+O6Gf53CJxYa0KmgozN8AAAAAElFTkSuQmCC
 </value>
   </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Hint: You are allowed to move the extruder around and to extrude filament
+in order to change the filament or refill the nozzle if oozing occured. The
+host will restore the position at the start of the pause for you.
+</value>
+  </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAEAICAAAAEAIACoEAAAFgAAACgAAAAgAAAAQAAAAAEAIAAAAAAAgBAAAAAAAAAAAAAAAAAAAAAA

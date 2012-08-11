@@ -32,11 +32,13 @@ namespace RepetierHost.view
         private void LoadData()
         {
             BasicConfiguration b = BasicConfiguration.basicConf;
-            textIni.Text = b.ExternalSlic3rIniFile;
-            textPath.Text = b.ExternalSlic3rPath;
-            checkBoxUseBundledVersion.Checked = b.InternalSlic3rUseBundledVersion;
+            //textIni.Text = b.ExternalSlic3rIniFile;
+            //textPath.Text = b.ExternalSlic3rPath;
+            textSlic3rConfigDir.Text = b.Slic3rConfigDir;
+            textExecutable.Text = b.Slic3rExecutable;
+            //checkBoxUseBundledVersion.Checked = b.InternalSlic3rUseBundledVersion;
         }
-        private void buttonBrowseSlic3r_Click(object sender, EventArgs e)
+       /* private void buttonBrowseSlic3r_Click(object sender, EventArgs e)
         {
             if (openFileDialog.ShowDialog() == DialogResult.OK)
                 textPath.Text = openFileDialog.FileName;
@@ -48,21 +50,36 @@ namespace RepetierHost.view
                 textIni.Text = openFileDialog.FileName;
 
         }
-
+        */
         private void buttonOK_Click(object sender, EventArgs e)
         {
             BasicConfiguration b = BasicConfiguration.basicConf;
-            b.InternalSlic3rUseBundledVersion = checkBoxUseBundledVersion.Checked;
-            b.ExternalSlic3rPath = textPath.Text;
-            b.ExternalSlic3rIniFile = textIni.Text;
+            //b.InternalSlic3rUseBundledVersion = checkBoxUseBundledVersion.Checked;
+            //b.ExternalSlic3rPath = textPath.Text;
+            //b.ExternalSlic3rIniFile = textIni.Text;
+            b.Slic3rConfigDir = textSlic3rConfigDir.Text;
+            b.Slic3rExecutable = textExecutable.Text;
             Hide();
             Main.slicer.Update();
+            Main.main.slicerPanel.UpdateSelection();
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
             LoadData();
             Hide();
+        }
+
+        private void buttonBrowseConfigDir_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+                textSlic3rConfigDir.Text = openFileDialog.FileName;
+        }
+
+        private void buttonBrowseExecutable_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+                textExecutable.Text = openFileDialog.FileName;
         }
     }
 }

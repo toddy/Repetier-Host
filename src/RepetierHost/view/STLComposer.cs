@@ -423,7 +423,7 @@ namespace RepetierHost.view
             Main.main.threedview.UpdateChanges();
         }
 
-        private void buttonSlice_Click(object sender, EventArgs e)
+        public void buttonSlice_Click(object sender, EventArgs e)
         {
             string dir = Main.globalSettings.Workdir;
             if (!Directory.Exists(dir))

@@ -56,10 +56,9 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(17, 16);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(14, 13);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(74, 17);
+            this.label1.Size = new System.Drawing.Size(57, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Test case:";
             // 
@@ -69,20 +68,19 @@
             this.comboTestCase.FormattingEnabled = true;
             this.comboTestCase.Items.AddRange(new object[] {
             "Advance calibration Test 1",
-            "Advance calibration Test 2"});
-            this.comboTestCase.Location = new System.Drawing.Point(124, 16);
-            this.comboTestCase.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            "Advance calibration Test 2",
+            "Retraction test"});
+            this.comboTestCase.Location = new System.Drawing.Point(99, 13);
             this.comboTestCase.Name = "comboTestCase";
-            this.comboTestCase.Size = new System.Drawing.Size(259, 24);
+            this.comboTestCase.Size = new System.Drawing.Size(208, 21);
             this.comboTestCase.TabIndex = 1;
             this.comboTestCase.SelectedIndexChanged += new System.EventHandler(this.comboTestCase_SelectedIndexChanged);
             // 
             // buttonCreateTestCase
             // 
-            this.buttonCreateTestCase.Location = new System.Drawing.Point(76, 215);
-            this.buttonCreateTestCase.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonCreateTestCase.Location = new System.Drawing.Point(61, 172);
             this.buttonCreateTestCase.Name = "buttonCreateTestCase";
-            this.buttonCreateTestCase.Size = new System.Drawing.Size(165, 28);
+            this.buttonCreateTestCase.Size = new System.Drawing.Size(132, 22);
             this.buttonCreateTestCase.TabIndex = 2;
             this.buttonCreateTestCase.Text = "Create test case";
             this.buttonCreateTestCase.UseVisualStyleBackColor = true;
@@ -90,10 +88,9 @@
             // 
             // buttonAbort
             // 
-            this.buttonAbort.Location = new System.Drawing.Point(284, 215);
-            this.buttonAbort.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonAbort.Location = new System.Drawing.Point(227, 172);
             this.buttonAbort.Name = "buttonAbort";
-            this.buttonAbort.Size = new System.Drawing.Size(100, 28);
+            this.buttonAbort.Size = new System.Drawing.Size(80, 22);
             this.buttonAbort.TabIndex = 3;
             this.buttonAbort.Text = "Cancel";
             this.buttonAbort.UseVisualStyleBackColor = true;
@@ -102,59 +99,53 @@
             // labelP1
             // 
             this.labelP1.AutoSize = true;
-            this.labelP1.Location = new System.Drawing.Point(17, 55);
-            this.labelP1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelP1.Location = new System.Drawing.Point(14, 44);
             this.labelP1.Name = "labelP1";
-            this.labelP1.Size = new System.Drawing.Size(80, 17);
+            this.labelP1.Size = new System.Drawing.Size(62, 13);
             this.labelP1.TabIndex = 4;
             this.labelP1.Text = "Low speed:";
             // 
             // labelP2
             // 
             this.labelP2.AutoSize = true;
-            this.labelP2.Location = new System.Drawing.Point(17, 87);
-            this.labelP2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelP2.Location = new System.Drawing.Point(14, 70);
             this.labelP2.Name = "labelP2";
-            this.labelP2.Size = new System.Drawing.Size(84, 17);
+            this.labelP2.Size = new System.Drawing.Size(64, 13);
             this.labelP2.TabIndex = 5;
             this.labelP2.Text = "High speed:";
             // 
             // labelP3
             // 
             this.labelP3.AutoSize = true;
-            this.labelP3.Location = new System.Drawing.Point(17, 119);
-            this.labelP3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelP3.Location = new System.Drawing.Point(14, 95);
             this.labelP3.Name = "labelP3";
-            this.labelP3.Size = new System.Drawing.Size(90, 17);
+            this.labelP3.Size = new System.Drawing.Size(69, 13);
             this.labelP3.TabIndex = 6;
             this.labelP3.Text = "Acceleration:";
             // 
             // textP1
             // 
-            this.textP1.Location = new System.Drawing.Point(124, 52);
-            this.textP1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textP1.Location = new System.Drawing.Point(99, 42);
             this.textP1.Name = "textP1";
-            this.textP1.Size = new System.Drawing.Size(132, 22);
+            this.textP1.Size = new System.Drawing.Size(106, 20);
             this.textP1.TabIndex = 7;
             this.textP1.Text = "10";
             this.textP1.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
             // 
             // textP2
             // 
-            this.textP2.Location = new System.Drawing.Point(124, 84);
-            this.textP2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textP2.Location = new System.Drawing.Point(99, 67);
             this.textP2.Name = "textP2";
-            this.textP2.Size = new System.Drawing.Size(132, 22);
+            this.textP2.Size = new System.Drawing.Size(106, 20);
             this.textP2.TabIndex = 8;
             this.textP2.Text = "80";
             this.textP2.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
             // 
             // textP3
             // 
-            this.textP3.Location = new System.Drawing.Point(124, 116);
-            this.textP3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textP3.Location = new System.Drawing.Point(99, 93);
             this.textP3.Name = "textP3";
-            this.textP3.Size = new System.Drawing.Size(132, 22);
+            this.textP3.Size = new System.Drawing.Size(106, 20);
             this.textP3.TabIndex = 9;
             this.textP3.Text = "1000";
             this.textP3.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
@@ -162,30 +153,27 @@
             // labelU1
             // 
             this.labelU1.AutoSize = true;
-            this.labelU1.Location = new System.Drawing.Point(299, 60);
-            this.labelU1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelU1.Location = new System.Drawing.Point(239, 48);
             this.labelU1.Name = "labelU1";
-            this.labelU1.Size = new System.Drawing.Size(49, 17);
+            this.labelU1.Size = new System.Drawing.Size(39, 13);
             this.labelU1.TabIndex = 10;
             this.labelU1.Text = "[mm/s]";
             // 
             // labelU2
             // 
             this.labelU2.AutoSize = true;
-            this.labelU2.Location = new System.Drawing.Point(299, 87);
-            this.labelU2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelU2.Location = new System.Drawing.Point(239, 70);
             this.labelU2.Name = "labelU2";
-            this.labelU2.Size = new System.Drawing.Size(49, 17);
+            this.labelU2.Size = new System.Drawing.Size(39, 13);
             this.labelU2.TabIndex = 11;
             this.labelU2.Text = "[mm/s]";
             // 
             // labelU3
             // 
             this.labelU3.AutoSize = true;
-            this.labelU3.Location = new System.Drawing.Point(299, 118);
-            this.labelU3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelU3.Location = new System.Drawing.Point(239, 94);
             this.labelU3.Name = "labelU3";
-            this.labelU3.Size = new System.Drawing.Size(54, 17);
+            this.labelU3.Size = new System.Drawing.Size(42, 13);
             this.labelU3.TabIndex = 12;
             this.labelU3.Text = "[mm/s²]";
             // 
@@ -196,66 +184,60 @@
             // labelP4
             // 
             this.labelP4.AutoSize = true;
-            this.labelP4.Location = new System.Drawing.Point(17, 146);
-            this.labelP4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelP4.Location = new System.Drawing.Point(14, 117);
             this.labelP4.Name = "labelP4";
-            this.labelP4.Size = new System.Drawing.Size(68, 17);
+            this.labelP4.Size = new System.Drawing.Size(52, 13);
             this.labelP4.TabIndex = 13;
             this.labelP4.Text = "Length 1:";
             // 
             // textP4
             // 
-            this.textP4.Location = new System.Drawing.Point(124, 143);
-            this.textP4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textP4.Location = new System.Drawing.Point(99, 114);
             this.textP4.Name = "textP4";
-            this.textP4.Size = new System.Drawing.Size(132, 22);
+            this.textP4.Size = new System.Drawing.Size(106, 20);
             this.textP4.TabIndex = 14;
             this.textP4.Text = "20";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(17, 180);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(14, 144);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(68, 17);
+            this.label2.Size = new System.Drawing.Size(52, 13);
             this.label2.TabIndex = 15;
             this.label2.Text = "Length 2:";
             // 
             // labelU4
             // 
             this.labelU4.AutoSize = true;
-            this.labelU4.Location = new System.Drawing.Point(299, 146);
-            this.labelU4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelU4.Location = new System.Drawing.Point(239, 117);
             this.labelU4.Name = "labelU4";
-            this.labelU4.Size = new System.Drawing.Size(38, 17);
+            this.labelU4.Size = new System.Drawing.Size(29, 13);
             this.labelU4.TabIndex = 16;
             this.labelU4.Text = "[mm]";
             // 
             // labelU5
             // 
             this.labelU5.AutoSize = true;
-            this.labelU5.Location = new System.Drawing.Point(299, 180);
-            this.labelU5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelU5.Location = new System.Drawing.Point(239, 144);
             this.labelU5.Name = "labelU5";
-            this.labelU5.Size = new System.Drawing.Size(38, 17);
+            this.labelU5.Size = new System.Drawing.Size(29, 13);
             this.labelU5.TabIndex = 17;
             this.labelU5.Text = "[mm]";
             // 
             // textP5
             // 
-            this.textP5.Location = new System.Drawing.Point(124, 176);
-            this.textP5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textP5.Location = new System.Drawing.Point(99, 141);
             this.textP5.Name = "textP5";
-            this.textP5.Size = new System.Drawing.Size(132, 22);
+            this.textP5.Size = new System.Drawing.Size(106, 20);
             this.textP5.TabIndex = 18;
             this.textP5.Text = "80";
             // 
             // TestGenerator
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(413, 260);
+            this.ClientSize = new System.Drawing.Size(330, 208);
             this.ControlBox = false;
             this.Controls.Add(this.textP5);
             this.Controls.Add(this.labelU5);
@@ -277,7 +259,6 @@
             this.Controls.Add(this.comboTestCase);
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "TestGenerator";

@@ -36,6 +36,10 @@ namespace RepetierHost.view
         Process procSkein = null;
         Process procConvert = null;
         string slicefile = null;
+        SkeinConfig profileConfig = null;
+        SkeinConfig exportConfig = null;
+        SkeinConfig extrusionConfig = null;
+
         public Skeinforge()
         {
             InitializeComponent();
@@ -86,13 +90,44 @@ namespace RepetierHost.view
                 Main.conn.log("Skeinforge slicing process killed on user request.", false, 2);
             }
         }
-        public void RunSlice(string file)
+        public string PyPy
+        {
+            get
+            {
+                if (textPypy.Text.Length > 1) return textPypy.Text;
+                return textPython.Text;
+            }
+        }
+        public void RunSlice(string file,string profile)
         {
             if (procConvert != null)
             {
                 MessageBox.Show("Last slice job still running. Slicing of new job is canceled.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            profileConfig = new SkeinConfig(BasicConfiguration.basicConf.SkeinforgeProfileDir + Path.DirectorySeparatorChar + "skeinforge_profile.csv");
+            extrusionConfig = new SkeinConfig(BasicConfiguration.basicConf.SkeinforgeProfileDir+Path.DirectorySeparatorChar+"extrusion.csv");
+            exportConfig = new SkeinConfig(BasicConfiguration.basicConf.SkeinforgeProfileDir + Path.DirectorySeparatorChar + "extrusion" +
+                Path.DirectorySeparatorChar + profile + Path.DirectorySeparatorChar + "export.csv");
+            // Set profile to extrusion
+            /* cutting	False
+extrusion	True
+milling	False
+winding	False
+*/
+            profileConfig.setValue("cutting", "False");
+            profileConfig.setValue("milling", "False");
+            profileConfig.setValue("extrusion", "True");
+            profileConfig.setValue("winding", "False");
+            profileConfig.writeModified();
+            // Set used profile
+            extrusionConfig.setValue("Profile Selection:", profile);
+            extrusionConfig.writeModified();
+            // Set export to correct values
+            exportConfig.setValue("Activate Export", "True");
+            exportConfig.setValue("Add Profile Extension", "False");
+            exportConfig.setValue("Add Timestamp Extension", "False");
+            exportConfig.writeModified();
             string target = StlToGCode(file);
             if (File.Exists(target))
                 File.Delete(target);
@@ -105,7 +140,7 @@ namespace RepetierHost.view
                 procConvert.EnableRaisingEvents = true;
                 procConvert.Exited += new EventHandler(ConversionExited);
                 
-                procConvert.StartInfo.FileName = Main.IsMono ? textPython.Text : wrapQuotes(textPython.Text);
+                procConvert.StartInfo.FileName = Main.IsMono ? PyPy : wrapQuotes(PyPy);
                 procConvert.StartInfo.Arguments = wrapQuotes(textSkeinforgeCraft.Text) + " " + wrapQuotes(file);
                 procConvert.StartInfo.UseShellExecute = false;
                 procConvert.StartInfo.WorkingDirectory = textWorkingDirectory.Text;
@@ -139,6 +174,7 @@ namespace RepetierHost.view
         {
             procSkein.Close();
             procSkein = null;
+            Main.main.Invoke(Main.main.slicerPanel.UpdateSelectionInvoker);
         }
         private static void OutputDataHandler(object sendingProcess,
             DataReceivedEventArgs outLine)
@@ -156,24 +192,32 @@ namespace RepetierHost.view
         {
             int p = stl.LastIndexOf('.');
             if (p > 0) stl = stl.Substring(0, p);
-            return stl + textPostfix.Text + textExtension.Text;
+            string extension = exportConfig.getValue("File Extension:");
+            string export = exportConfig.getValue("Add Export Suffix");
+            if (export == null || export != "True") export = ""; else export = "_export";
+            return stl + export + "."+extension;
         }
         private void regToForm()
         {
+
             textSkeinforge.Text = (string)repetierKey.GetValue("SkeinforgePath", textSkeinforge.Text);
             textSkeinforgeCraft.Text = (string)repetierKey.GetValue("SkeinforgeCraftPath", textSkeinforgeCraft.Text);
             textPython.Text = (string)repetierKey.GetValue("SkeinforgePython", textPython.Text);
-            textExtension.Text = (string)repetierKey.GetValue("SkeinforgeExtension", textExtension.Text);
-            textPostfix.Text = (string)repetierKey.GetValue("SkeinforgePostfix", textPostfix.Text);
+            textPypy.Text = (string)repetierKey.GetValue("SkeinforgePypy", textPypy.Text);
+            //textExtension.Text = (string)repetierKey.GetValue("SkeinforgeExtension", textExtension.Text);
+            //textPostfix.Text = (string)repetierKey.GetValue("SkeinforgePostfix", textPostfix.Text);
             textWorkingDirectory.Text = (string)repetierKey.GetValue("SkeinforgeWorkdir", textWorkingDirectory.Text);
+            textProfilesDir.Text = BasicConfiguration.basicConf.SkeinforgeProfileDir;
         }
         private void FormToReg()
         {
+            BasicConfiguration.basicConf.SkeinforgeProfileDir = textProfilesDir.Text;
             repetierKey.SetValue("SkeinforgePath", textSkeinforge.Text);
             repetierKey.SetValue("SkeinforgeCraftPath", textSkeinforgeCraft.Text);
             repetierKey.SetValue("SkeinforgePython", textPython.Text);
-            repetierKey.SetValue("SkeinforgeExtension", textExtension.Text);
-            repetierKey.SetValue("SkeinforgePostfix", textPostfix.Text);
+            repetierKey.SetValue("SkeinforgePypy", textPypy.Text);
+            //repetierKey.SetValue("SkeinforgeExtension", textExtension.Text);
+            //repetierKey.SetValue("SkeinforgePostfix", textPostfix.Text);
             repetierKey.SetValue("SkeinforgeWorkdir", textWorkingDirectory.Text);
         }
         private void buttonAbort_Click(object sender, EventArgs e)
@@ -187,6 +231,7 @@ namespace RepetierHost.view
             FormToReg();
             Hide();
             Main.slicer.Update();
+            Main.main.slicerPanel.UpdateSelection();
         }
 
         private void buttonSerach_Click(object sender, EventArgs e)
@@ -223,6 +268,21 @@ namespace RepetierHost.view
             {
                 textWorkingDirectory.Text = folderBrowserDialog.SelectedPath;
             }
+        }
+
+        private void buttonBrowseProfilesDir_Click(object sender, EventArgs e)
+        {
+            folderBrowserDialog.SelectedPath = textProfilesDir.Text;
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                textProfilesDir.Text = folderBrowserDialog.SelectedPath;
+            }
+        }
+
+        private void buttonBrosePyPy_Click(object sender, EventArgs e)
+        {
+            if (openPython.ShowDialog() == DialogResult.OK)
+                textPypy.Text = openPython.FileName;
         }
     }
 }

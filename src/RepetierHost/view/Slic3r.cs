@@ -336,12 +336,52 @@ namespace RepetierHost.view
                 Main.conn.log(e.ToString(), false, 2);
             }
         }
+        public void RunConfig()
+        {
+            if (procSlic3r != null)
+            {
+                return;
+            }
+            procSlic3r = new Process();
+            try
+            {
+                string basedir = (string)Main.main.repetierKey.GetValue("installPath", "");
+                string exname = "slic3r.exe";
+                if (Environment.OSVersion.Platform == PlatformID.Unix)
+                    exname = "slic3r.pl";
+                if (Main.IsMac)
+                    exname = "MacOS" + Path.DirectorySeparatorChar + "slic3r";
+                string exe = basedir + Path.DirectorySeparatorChar + "Slic3r" + Path.DirectorySeparatorChar + exname;
+                if (File.Exists(BasicConfiguration.basicConf.ExternalSlic3rPath))
+                    exe = BasicConfiguration.basicConf.ExternalSlic3rPath;
+
+                StringBuilder sb = new StringBuilder();
+                procSlic3r.EnableRaisingEvents = true;
+                procSlic3r.Exited += new EventHandler(Slic3rExited);
+                procSlic3r.StartInfo.FileName = Main.IsMono ? exe : wrapQuotes(exe);
+                procSlic3r.StartInfo.UseShellExecute = false;
+                procSlic3r.StartInfo.RedirectStandardOutput = true;
+                procSlic3r.OutputDataReceived += new DataReceivedEventHandler(OutputDataHandler);
+                procSlic3r.StartInfo.RedirectStandardError = true;
+                procSlic3r.ErrorDataReceived += new DataReceivedEventHandler(OutputDataHandler);
+                procSlic3r.StartInfo.Arguments = sb.ToString();
+                procSlic3r.Start();
+                // Start the asynchronous read of the standard output stream.
+                procSlic3r.BeginOutputReadLine();
+                procSlic3r.BeginErrorReadLine();
+            }
+            catch (Exception e)
+            {
+                Main.conn.log(e.ToString(), false, 2);
+            }
+        }
         private void Slic3rExited(object sender, System.EventArgs e)
         {
             procSlic3r.Close();
             procSlic3r = null;
+            Main.main.Invoke(Main.main.slicerPanel.UpdateSelectionInvoker);
         }
-        public void RunSlice(string file,float centerx,float centery)
+      /*  public void RunSlice(string file,float centerx,float centery)
         {
             if (procConvert != null)
             {
@@ -552,8 +592,8 @@ namespace RepetierHost.view
             {
                 Main.conn.log(e.ToString(), false, 2);
             }
-        }
-        public void RunSliceExternal(string file, float centerx, float centery)
+        }*/
+      /*  public void RunSliceExternal(string file, float centerx, float centery)
         {
             if (procConvert != null)
             {
@@ -629,7 +669,101 @@ namespace RepetierHost.view
             {
                 Main.conn.log(e.ToString(), false, 2);
             }
+        }*/
+
+        public void RunSliceNew(string file, float centerx, float centery)
+        {
+            if (procConvert != null)
+            {
+                MessageBox.Show("Last slice job still running. Slicing of new job is canceled.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            SlicingInfo.Start("Slic3r");
+            SlicingInfo.SetAction("Analyzing STL file ...");
+            try
+            {
+                STL stl = new STL();
+                stl.Load(file);
+                stl.UpdateBoundingBox();
+                if (stl.xMin > 0 && stl.yMin > 0 && stl.xMax < Main.printerSettings.PrintAreaWidth && stl.yMax < Main.printerSettings.PrintAreaDepth)
+                {
+                    // User assigned valid position, so we use this
+                    centerx = stl.xMin + (stl.xMax - stl.xMin) / 2;
+                    centery = stl.yMin + (stl.yMax - stl.yMin) / 2;
+                }
+                stl.Clear();
+            }
+            catch (Exception e)
+            {
+                Main.conn.log(e.ToString(), false, 2);
+                SlicingInfo.Stop();
+                return;
+            }
+            SlicingInfo.SetAction("Slicing STL file ...");
+            string dir = Main.globalSettings.Workdir;
+            string config = dir + Path.DirectorySeparatorChar + "slic3r.ini";
+            string cdir = Main.main.slicerPanel.slic3rDirectory;
+            IniFile ini = new IniFile();
+            BasicConfiguration b = BasicConfiguration.basicConf;
+            string fPrinter = cdir + Path.DirectorySeparatorChar + "print"+Path.DirectorySeparatorChar + b.Slic3rPrintSettings + ".ini";
+            ini.read(fPrinter);
+            IniFile ini2 = new IniFile();
+            ini2.read(cdir + Path.DirectorySeparatorChar + "printer" +Path.DirectorySeparatorChar+ b.Slic3rPrinterSettings + ".ini");
+            IniFile ini3 = new IniFile();
+            ini3.read(cdir + Path.DirectorySeparatorChar + "filament"+Path.DirectorySeparatorChar + b.Slic3rFilamentSettings + ".ini");
+            ini.add(ini2);
+            ini.add(ini3);
+            ini.flatten();
+            ini.write(config);
+            procConvert = new Process();
+            try
+            {
+                string basedir = (string)Main.main.repetierKey.GetValue("installPath", "");
+                string exname = "slic3r.exe";
+                if (Environment.OSVersion.Platform == PlatformID.Unix)
+                    exname = "slic3r.pl";
+                if (Main.IsMac)
+                    exname = "MacOS" + Path.DirectorySeparatorChar + "slic3r";
+                string exe = basedir + Path.DirectorySeparatorChar + "Slic3r" + Path.DirectorySeparatorChar + exname;
+                if (File.Exists(BasicConfiguration.basicConf.Slic3rExecutable))
+                    exe = BasicConfiguration.basicConf.Slic3rExecutable;
+
+                slicefile = file;
+                string target = StlToGCode(file);
+                if (File.Exists(target))
+                    File.Delete(target);
+                procConvert.EnableRaisingEvents = true;
+                procConvert.Exited += new EventHandler(ConversionExited);
+                procConvert.StartInfo.FileName = Main.IsMono ? exe : wrapQuotes(exe);
+                StringBuilder sb = new StringBuilder();
+                sb.Append("--load ");
+                sb.Append(wrapQuotes(config));
+                sb.Append(" --print-center ");
+                sb.Append(centerx.ToString("0", GCode.format));
+                sb.Append(",");
+                sb.Append(centery.ToString("0", GCode.format));
+                sb.Append(" -o ");
+                sb.Append(wrapQuotes(StlToGCode(file)));
+                sb.Append(" ");
+                sb.Append(wrapQuotes(file));
+                procConvert.StartInfo.Arguments = sb.ToString();
+                procConvert.StartInfo.UseShellExecute = false;
+                procConvert.StartInfo.RedirectStandardOutput = true;
+                procConvert.OutputDataReceived += new DataReceivedEventHandler(OutputDataHandler);
+                procConvert.StartInfo.RedirectStandardError = true;
+                procConvert.ErrorDataReceived += new DataReceivedEventHandler(OutputDataHandler);
+                procConvert.Start();
+                // Start the asynchronous read of the standard output stream.
+                procConvert.BeginOutputReadLine();
+                procConvert.BeginErrorReadLine();
+                //Main.main.tab.SelectedTab = Main.main.tabPrint;
+            }
+            catch (Exception e)
+            {
+                Main.conn.log(e.ToString(), false, 2);
+            }
         }
+        
         public string StlToGCode(string stl)
         {
             int p = stl.LastIndexOf('.');

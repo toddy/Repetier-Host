@@ -51,17 +51,13 @@
             this.label5 = new System.Windows.Forms.Label();
             this.buttonExtrude = new System.Windows.Forms.Button();
             this.labelExtruderTemp = new System.Windows.Forms.Label();
-            this.switchExtruderHeatOn = new RepetierHost.view.SwitchButton();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.numericPrintBed = new System.Windows.Forms.NumericUpDown();
             this.labelPrintbedTemp = new System.Windows.Forms.Label();
-            this.switchBedHeat = new RepetierHost.view.SwitchButton();
             this.label6 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.trackFanVoltage = new MB.Controls.ColorSlider();
             this.labelVoltage = new System.Windows.Forms.Label();
-            this.switchFanOn = new RepetierHost.view.SwitchButton();
             this.buttonGoDisposeArea = new System.Windows.Forms.Button();
             this.buttonSimulateOK = new System.Windows.Forms.Button();
             this.buttonStopMotor = new System.Windows.Forms.Button();
@@ -75,18 +71,22 @@
             this.labelMoveDist = new System.Windows.Forms.Label();
             this.labelZDiff = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.sliderSpeed = new MB.Controls.ColorSlider();
             this.switchEcho = new RepetierHost.view.SwitchButton();
             this.switchInfo = new RepetierHost.view.SwitchButton();
             this.switchErrors = new RepetierHost.view.SwitchButton();
             this.switchDryRun = new RepetierHost.view.SwitchButton();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.sliderSpeed = new MB.Controls.ColorSlider();
             this.arrowButtonXPlus = new RepetierHost.view.utils.ArrowButton();
             this.arrowButtonXMinus = new RepetierHost.view.utils.ArrowButton();
             this.arrowButtonZPlus = new RepetierHost.view.utils.ArrowButton();
             this.arrowButtonZMinus = new RepetierHost.view.utils.ArrowButton();
             this.arrowButtonYPlus = new RepetierHost.view.utils.ArrowButton();
             this.arrowButtonYMinus = new RepetierHost.view.utils.ArrowButton();
+            this.trackFanVoltage = new MB.Controls.ColorSlider();
+            this.switchFanOn = new RepetierHost.view.SwitchButton();
+            this.switchBedHeat = new RepetierHost.view.SwitchButton();
+            this.switchExtruderHeatOn = new RepetierHost.view.SwitchButton();
             this.switchPower = new RepetierHost.view.SwitchButton();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.textRetractAmount)).BeginInit();
@@ -117,7 +117,7 @@
             this.textGCode.Location = new System.Drawing.Point(54, 56);
             this.textGCode.Name = "textGCode";
             this.textGCode.Size = new System.Drawing.Size(276, 20);
-            this.textGCode.TabIndex = 8;
+            this.textGCode.TabIndex = 0;
             this.textGCode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textGCode_KeyDown);
             this.textGCode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textGCode_KeyPress);
             // 
@@ -126,7 +126,7 @@
             this.buttonSend.Location = new System.Drawing.Point(336, 56);
             this.buttonSend.Name = "buttonSend";
             this.buttonSend.Size = new System.Drawing.Size(83, 23);
-            this.buttonSend.TabIndex = 9;
+            this.buttonSend.TabIndex = 1;
             this.buttonSend.Text = "Send";
             this.buttonSend.UseVisualStyleBackColor = true;
             this.buttonSend.Click += new System.EventHandler(this.buttonSend_Click);
@@ -152,7 +152,7 @@
             this.buttonHomeX.Location = new System.Drawing.Point(31, 103);
             this.buttonHomeX.Name = "buttonHomeX";
             this.buttonHomeX.Size = new System.Drawing.Size(60, 41);
-            this.buttonHomeX.TabIndex = 10;
+            this.buttonHomeX.TabIndex = 2;
             this.buttonHomeX.Text = "X";
             this.buttonHomeX.TextAlign = System.Drawing.ContentAlignment.TopRight;
             this.buttonHomeX.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -169,7 +169,7 @@
             this.buttonHomeY.Location = new System.Drawing.Point(227, 103);
             this.buttonHomeY.Name = "buttonHomeY";
             this.buttonHomeY.Size = new System.Drawing.Size(60, 41);
-            this.buttonHomeY.TabIndex = 19;
+            this.buttonHomeY.TabIndex = 3;
             this.buttonHomeY.Text = "Y";
             this.buttonHomeY.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.buttonHomeY.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
@@ -198,7 +198,7 @@
             this.buttonHomeZ.Location = new System.Drawing.Point(225, 276);
             this.buttonHomeZ.Name = "buttonHomeZ";
             this.buttonHomeZ.Size = new System.Drawing.Size(60, 41);
-            this.buttonHomeZ.TabIndex = 28;
+            this.buttonHomeZ.TabIndex = 5;
             this.buttonHomeZ.Text = "Z";
             this.buttonHomeZ.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.buttonHomeZ.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
@@ -226,7 +226,7 @@
             this.buttonHomeAll.Location = new System.Drawing.Point(31, 275);
             this.buttonHomeAll.Name = "buttonHomeAll";
             this.buttonHomeAll.Size = new System.Drawing.Size(60, 41);
-            this.buttonHomeAll.TabIndex = 37;
+            this.buttonHomeAll.TabIndex = 4;
             this.buttonHomeAll.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.buttonHomeAll.UseVisualStyleBackColor = true;
             this.buttonHomeAll.Click += new System.EventHandler(this.buttonHomeAll_Click);
@@ -267,7 +267,7 @@
             0});
             this.textRetractAmount.Name = "textRetractAmount";
             this.textRetractAmount.Size = new System.Drawing.Size(53, 20);
-            this.textRetractAmount.TabIndex = 15;
+            this.textRetractAmount.TabIndex = 5;
             this.textRetractAmount.Value = new decimal(new int[] {
             10,
             0,
@@ -290,7 +290,7 @@
             0});
             this.textExtrudeAmount.Name = "textExtrudeAmount";
             this.textExtrudeAmount.Size = new System.Drawing.Size(53, 20);
-            this.textExtrudeAmount.TabIndex = 15;
+            this.textExtrudeAmount.TabIndex = 3;
             this.textExtrudeAmount.Value = new decimal(new int[] {
             10,
             0,
@@ -313,7 +313,7 @@
             0});
             this.textExtrudeSpeed.Name = "textExtrudeSpeed";
             this.textExtrudeSpeed.Size = new System.Drawing.Size(53, 20);
-            this.textExtrudeSpeed.TabIndex = 15;
+            this.textExtrudeSpeed.TabIndex = 2;
             this.textExtrudeSpeed.Value = new decimal(new int[] {
             100,
             0,
@@ -331,7 +331,7 @@
             0});
             this.numericUpDownExtruder.Name = "numericUpDownExtruder";
             this.numericUpDownExtruder.Size = new System.Drawing.Size(54, 20);
-            this.numericUpDownExtruder.TabIndex = 14;
+            this.numericUpDownExtruder.TabIndex = 1;
             this.numericUpDownExtruder.Value = new decimal(new int[] {
             200,
             0,
@@ -382,7 +382,7 @@
             this.buttonExtrude.Location = new System.Drawing.Point(161, 108);
             this.buttonExtrude.Name = "buttonExtrude";
             this.buttonExtrude.Size = new System.Drawing.Size(48, 23);
-            this.buttonExtrude.TabIndex = 6;
+            this.buttonExtrude.TabIndex = 4;
             this.buttonExtrude.UseVisualStyleBackColor = true;
             this.buttonExtrude.Click += new System.EventHandler(this.buttonExtrude_Click);
             // 
@@ -394,22 +394,6 @@
             this.labelExtruderTemp.Size = new System.Drawing.Size(44, 13);
             this.labelExtruderTemp.TabIndex = 2;
             this.labelExtruderTemp.Text = "200°C /";
-            // 
-            // switchExtruderHeatOn
-            // 
-            this.switchExtruderHeatOn.ButtonFlatBorderColor = System.Drawing.Color.Empty;
-            this.switchExtruderHeatOn.ButtonFlatBorderSize = 1;
-            this.switchExtruderHeatOn.ButtonFlatStyle = System.Windows.Forms.FlatStyle.Standard;
-            this.switchExtruderHeatOn.ButtonTextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.switchExtruderHeatOn.Location = new System.Drawing.Point(7, 20);
-            this.switchExtruderHeatOn.Name = "switchExtruderHeatOn";
-            this.switchExtruderHeatOn.On = false;
-            this.switchExtruderHeatOn.Size = new System.Drawing.Size(100, 23);
-            this.switchExtruderHeatOn.TabIndex = 0;
-            this.switchExtruderHeatOn.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
-            this.switchExtruderHeatOn.TextOff = "  Heat extruder ";
-            this.switchExtruderHeatOn.TextOn = "  Heat extruder ";
-            this.switchExtruderHeatOn.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchExtruderHeatOn_Change);
             // 
             // label2
             // 
@@ -443,7 +427,7 @@
             0});
             this.numericPrintBed.Name = "numericPrintBed";
             this.numericPrintBed.Size = new System.Drawing.Size(54, 20);
-            this.numericPrintBed.TabIndex = 8;
+            this.numericPrintBed.TabIndex = 1;
             this.numericPrintBed.Value = new decimal(new int[] {
             55,
             0,
@@ -459,22 +443,6 @@
             this.labelPrintbedTemp.Size = new System.Drawing.Size(44, 13);
             this.labelPrintbedTemp.TabIndex = 7;
             this.labelPrintbedTemp.Text = "200°C /";
-            // 
-            // switchBedHeat
-            // 
-            this.switchBedHeat.ButtonFlatBorderColor = System.Drawing.Color.Empty;
-            this.switchBedHeat.ButtonFlatBorderSize = 1;
-            this.switchBedHeat.ButtonFlatStyle = System.Windows.Forms.FlatStyle.Standard;
-            this.switchBedHeat.ButtonTextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.switchBedHeat.Location = new System.Drawing.Point(6, 19);
-            this.switchBedHeat.Name = "switchBedHeat";
-            this.switchBedHeat.On = false;
-            this.switchBedHeat.Size = new System.Drawing.Size(100, 23);
-            this.switchBedHeat.TabIndex = 0;
-            this.switchBedHeat.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
-            this.switchBedHeat.TextOff = "Heat printbed ";
-            this.switchBedHeat.TextOn = "Heat printbed ";
-            this.switchBedHeat.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchBedHeat_Change);
             // 
             // label6
             // 
@@ -497,48 +465,14 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Fan";
             // 
-            // trackFanVoltage
-            // 
-            this.trackFanVoltage.BackColor = System.Drawing.Color.Transparent;
-            this.trackFanVoltage.BarInnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(115)))), ((int)(((byte)(115)))), ((int)(((byte)(115)))));
-            this.trackFanVoltage.BarOuterColor = System.Drawing.Color.FromArgb(((int)(((byte)(87)))), ((int)(((byte)(87)))), ((int)(((byte)(87)))));
-            this.trackFanVoltage.BorderRoundRectSize = new System.Drawing.Size(8, 8);
-            this.trackFanVoltage.LargeChange = ((uint)(5u));
-            this.trackFanVoltage.Location = new System.Drawing.Point(9, 48);
-            this.trackFanVoltage.Maximum = 255;
-            this.trackFanVoltage.Name = "trackFanVoltage";
-            this.trackFanVoltage.Size = new System.Drawing.Size(182, 30);
-            this.trackFanVoltage.SmallChange = ((uint)(1u));
-            this.trackFanVoltage.TabIndex = 3;
-            this.trackFanVoltage.Text = "trackFanVoltage";
-            this.trackFanVoltage.ThumbRoundRectSize = new System.Drawing.Size(8, 8);
-            this.trackFanVoltage.Value = 128;
-            this.trackFanVoltage.ValueChanged += new System.EventHandler(this.trackFanVoltage_ValueChanged);
-            // 
             // labelVoltage
             // 
             this.labelVoltage.AutoSize = true;
             this.labelVoltage.Location = new System.Drawing.Point(111, 24);
             this.labelVoltage.Name = "labelVoltage";
             this.labelVoltage.Size = new System.Drawing.Size(39, 13);
-            this.labelVoltage.TabIndex = 2;
+            this.labelVoltage.TabIndex = 1;
             this.labelVoltage.Text = "Output";
-            // 
-            // switchFanOn
-            // 
-            this.switchFanOn.ButtonFlatBorderColor = System.Drawing.Color.Empty;
-            this.switchFanOn.ButtonFlatBorderSize = 1;
-            this.switchFanOn.ButtonFlatStyle = System.Windows.Forms.FlatStyle.Standard;
-            this.switchFanOn.ButtonTextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.switchFanOn.Location = new System.Drawing.Point(6, 19);
-            this.switchFanOn.Name = "switchFanOn";
-            this.switchFanOn.On = false;
-            this.switchFanOn.Size = new System.Drawing.Size(97, 23);
-            this.switchFanOn.TabIndex = 0;
-            this.switchFanOn.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
-            this.switchFanOn.TextOff = "Fan";
-            this.switchFanOn.TextOn = "Fan";
-            this.switchFanOn.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchFanOn_Change);
             // 
             // buttonGoDisposeArea
             // 
@@ -547,7 +481,7 @@
             this.buttonGoDisposeArea.Location = new System.Drawing.Point(335, 330);
             this.buttonGoDisposeArea.Name = "buttonGoDisposeArea";
             this.buttonGoDisposeArea.Size = new System.Drawing.Size(84, 23);
-            this.buttonGoDisposeArea.TabIndex = 38;
+            this.buttonGoDisposeArea.TabIndex = 8;
             this.buttonGoDisposeArea.Text = "Park";
             this.buttonGoDisposeArea.UseVisualStyleBackColor = true;
             this.buttonGoDisposeArea.Click += new System.EventHandler(this.buttonGoDisposeArea_Click);
@@ -558,7 +492,7 @@
             this.buttonSimulateOK.Location = new System.Drawing.Point(372, 19);
             this.buttonSimulateOK.Name = "buttonSimulateOK";
             this.buttonSimulateOK.Size = new System.Drawing.Size(33, 23);
-            this.buttonSimulateOK.TabIndex = 2;
+            this.buttonSimulateOK.TabIndex = 4;
             this.buttonSimulateOK.Text = "OK";
             this.buttonSimulateOK.UseVisualStyleBackColor = true;
             this.buttonSimulateOK.Click += new System.EventHandler(this.buttonSimulateOK_Click);
@@ -570,7 +504,7 @@
             this.buttonStopMotor.Location = new System.Drawing.Point(246, 330);
             this.buttonStopMotor.Name = "buttonStopMotor";
             this.buttonStopMotor.Size = new System.Drawing.Size(84, 23);
-            this.buttonStopMotor.TabIndex = 44;
+            this.buttonStopMotor.TabIndex = 7;
             this.buttonStopMotor.Text = "Stop motor";
             this.buttonStopMotor.UseVisualStyleBackColor = true;
             this.buttonStopMotor.Click += new System.EventHandler(this.buttonStopMotor_Click);
@@ -607,7 +541,7 @@
             0});
             this.numericUpDownSpeed.Name = "numericUpDownSpeed";
             this.numericUpDownSpeed.Size = new System.Drawing.Size(46, 20);
-            this.numericUpDownSpeed.TabIndex = 48;
+            this.numericUpDownSpeed.TabIndex = 1;
             this.numericUpDownSpeed.Value = new decimal(new int[] {
             100,
             0,
@@ -678,70 +612,6 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Debug options";
             // 
-            // switchEcho
-            // 
-            this.switchEcho.ButtonFlatBorderColor = System.Drawing.Color.Empty;
-            this.switchEcho.ButtonFlatBorderSize = 1;
-            this.switchEcho.ButtonFlatStyle = System.Windows.Forms.FlatStyle.Standard;
-            this.switchEcho.ButtonTextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.switchEcho.Location = new System.Drawing.Point(9, 19);
-            this.switchEcho.Name = "switchEcho";
-            this.switchEcho.On = false;
-            this.switchEcho.Size = new System.Drawing.Size(84, 23);
-            this.switchEcho.TabIndex = 4;
-            this.switchEcho.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
-            this.switchEcho.TextOff = "Echo";
-            this.switchEcho.TextOn = "Echo";
-            this.switchEcho.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchEcho_Change);
-            // 
-            // switchInfo
-            // 
-            this.switchInfo.ButtonFlatBorderColor = System.Drawing.Color.Empty;
-            this.switchInfo.ButtonFlatBorderSize = 1;
-            this.switchInfo.ButtonFlatStyle = System.Windows.Forms.FlatStyle.Standard;
-            this.switchInfo.ButtonTextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.switchInfo.Location = new System.Drawing.Point(99, 19);
-            this.switchInfo.Name = "switchInfo";
-            this.switchInfo.On = true;
-            this.switchInfo.Size = new System.Drawing.Size(84, 23);
-            this.switchInfo.TabIndex = 5;
-            this.switchInfo.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
-            this.switchInfo.TextOff = "Info";
-            this.switchInfo.TextOn = "Info";
-            this.switchInfo.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchInfo_Change);
-            // 
-            // switchErrors
-            // 
-            this.switchErrors.ButtonFlatBorderColor = System.Drawing.Color.Empty;
-            this.switchErrors.ButtonFlatBorderSize = 1;
-            this.switchErrors.ButtonFlatStyle = System.Windows.Forms.FlatStyle.Standard;
-            this.switchErrors.ButtonTextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.switchErrors.Location = new System.Drawing.Point(190, 19);
-            this.switchErrors.Name = "switchErrors";
-            this.switchErrors.On = true;
-            this.switchErrors.Size = new System.Drawing.Size(84, 23);
-            this.switchErrors.TabIndex = 6;
-            this.switchErrors.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
-            this.switchErrors.TextOff = "Errors";
-            this.switchErrors.TextOn = "Errors";
-            this.switchErrors.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchErrors_Change);
-            // 
-            // switchDryRun
-            // 
-            this.switchDryRun.ButtonFlatBorderColor = System.Drawing.Color.Empty;
-            this.switchDryRun.ButtonFlatBorderSize = 1;
-            this.switchDryRun.ButtonFlatStyle = System.Windows.Forms.FlatStyle.Standard;
-            this.switchDryRun.ButtonTextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.switchDryRun.Location = new System.Drawing.Point(280, 19);
-            this.switchDryRun.Name = "switchDryRun";
-            this.switchDryRun.On = false;
-            this.switchDryRun.Size = new System.Drawing.Size(84, 23);
-            this.switchDryRun.TabIndex = 7;
-            this.switchDryRun.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
-            this.switchDryRun.TextOff = "Dry run";
-            this.switchDryRun.TextOn = "Dry run";
-            this.switchDryRun.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchDryRun_Change);
-            // 
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.numericUpDownSpeed);
@@ -766,11 +636,75 @@
             this.sliderSpeed.Name = "sliderSpeed";
             this.sliderSpeed.Size = new System.Drawing.Size(346, 31);
             this.sliderSpeed.SmallChange = ((uint)(1u));
-            this.sliderSpeed.TabIndex = 45;
+            this.sliderSpeed.TabIndex = 0;
             this.sliderSpeed.Text = "sliderSpeed";
             this.sliderSpeed.ThumbRoundRectSize = new System.Drawing.Size(8, 8);
             this.sliderSpeed.Value = 100;
             this.sliderSpeed.ValueChanged += new System.EventHandler(this.sliderSpeed_ValueChanged);
+            // 
+            // switchEcho
+            // 
+            this.switchEcho.ButtonFlatBorderColor = System.Drawing.Color.Empty;
+            this.switchEcho.ButtonFlatBorderSize = 1;
+            this.switchEcho.ButtonFlatStyle = System.Windows.Forms.FlatStyle.Standard;
+            this.switchEcho.ButtonTextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.switchEcho.Location = new System.Drawing.Point(9, 19);
+            this.switchEcho.Name = "switchEcho";
+            this.switchEcho.On = false;
+            this.switchEcho.Size = new System.Drawing.Size(84, 23);
+            this.switchEcho.TabIndex = 0;
+            this.switchEcho.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.switchEcho.TextOff = "Echo";
+            this.switchEcho.TextOn = "Echo";
+            this.switchEcho.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchEcho_Change);
+            // 
+            // switchInfo
+            // 
+            this.switchInfo.ButtonFlatBorderColor = System.Drawing.Color.Empty;
+            this.switchInfo.ButtonFlatBorderSize = 1;
+            this.switchInfo.ButtonFlatStyle = System.Windows.Forms.FlatStyle.Standard;
+            this.switchInfo.ButtonTextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.switchInfo.Location = new System.Drawing.Point(99, 19);
+            this.switchInfo.Name = "switchInfo";
+            this.switchInfo.On = true;
+            this.switchInfo.Size = new System.Drawing.Size(84, 23);
+            this.switchInfo.TabIndex = 1;
+            this.switchInfo.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.switchInfo.TextOff = "Info";
+            this.switchInfo.TextOn = "Info";
+            this.switchInfo.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchInfo_Change);
+            // 
+            // switchErrors
+            // 
+            this.switchErrors.ButtonFlatBorderColor = System.Drawing.Color.Empty;
+            this.switchErrors.ButtonFlatBorderSize = 1;
+            this.switchErrors.ButtonFlatStyle = System.Windows.Forms.FlatStyle.Standard;
+            this.switchErrors.ButtonTextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.switchErrors.Location = new System.Drawing.Point(190, 19);
+            this.switchErrors.Name = "switchErrors";
+            this.switchErrors.On = true;
+            this.switchErrors.Size = new System.Drawing.Size(84, 23);
+            this.switchErrors.TabIndex = 2;
+            this.switchErrors.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.switchErrors.TextOff = "Errors";
+            this.switchErrors.TextOn = "Errors";
+            this.switchErrors.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchErrors_Change);
+            // 
+            // switchDryRun
+            // 
+            this.switchDryRun.ButtonFlatBorderColor = System.Drawing.Color.Empty;
+            this.switchDryRun.ButtonFlatBorderSize = 1;
+            this.switchDryRun.ButtonFlatStyle = System.Windows.Forms.FlatStyle.Standard;
+            this.switchDryRun.ButtonTextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.switchDryRun.Location = new System.Drawing.Point(280, 19);
+            this.switchDryRun.Name = "switchDryRun";
+            this.switchDryRun.On = false;
+            this.switchDryRun.Size = new System.Drawing.Size(84, 23);
+            this.switchDryRun.TabIndex = 3;
+            this.switchDryRun.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.switchDryRun.TextOff = "Dry run";
+            this.switchDryRun.TextOn = "Dry run";
+            this.switchDryRun.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchDryRun_Change);
             // 
             // arrowButtonXPlus
             // 
@@ -787,6 +721,7 @@
             this.arrowButtonXPlus.Rotation = 0;
             this.arrowButtonXPlus.Size = new System.Drawing.Size(80, 50);
             this.arrowButtonXPlus.TabIndex = 52;
+            this.arrowButtonXPlus.TabStop = false;
             this.arrowButtonXPlus.Text = "arrowButton1";
             this.arrowButtonXPlus.Title = "+X";
             this.arrowButtonXPlus.TitleFont = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
@@ -809,6 +744,7 @@
             this.arrowButtonXMinus.Rotation = 180;
             this.arrowButtonXMinus.Size = new System.Drawing.Size(80, 50);
             this.arrowButtonXMinus.TabIndex = 52;
+            this.arrowButtonXMinus.TabStop = false;
             this.arrowButtonXMinus.Text = "arrowButton1";
             this.arrowButtonXMinus.Title = "-X";
             this.arrowButtonXMinus.TitleFont = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
@@ -831,6 +767,7 @@
             this.arrowButtonZPlus.Rotation = 270;
             this.arrowButtonZPlus.Size = new System.Drawing.Size(50, 80);
             this.arrowButtonZPlus.TabIndex = 52;
+            this.arrowButtonZPlus.TabStop = false;
             this.arrowButtonZPlus.Text = "arrowButton1";
             this.arrowButtonZPlus.Title = "+Z";
             this.arrowButtonZPlus.TitleFont = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
@@ -853,6 +790,7 @@
             this.arrowButtonZMinus.Rotation = 90;
             this.arrowButtonZMinus.Size = new System.Drawing.Size(50, 80);
             this.arrowButtonZMinus.TabIndex = 52;
+            this.arrowButtonZMinus.TabStop = false;
             this.arrowButtonZMinus.Text = "arrowButton1";
             this.arrowButtonZMinus.Title = "-Z";
             this.arrowButtonZMinus.TitleFont = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
@@ -875,6 +813,7 @@
             this.arrowButtonYPlus.Rotation = 270;
             this.arrowButtonYPlus.Size = new System.Drawing.Size(50, 80);
             this.arrowButtonYPlus.TabIndex = 52;
+            this.arrowButtonYPlus.TabStop = false;
             this.arrowButtonYPlus.Text = "arrowButton1";
             this.arrowButtonYPlus.Title = "+Y";
             this.arrowButtonYPlus.TitleFont = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
@@ -897,12 +836,79 @@
             this.arrowButtonYMinus.Rotation = 90;
             this.arrowButtonYMinus.Size = new System.Drawing.Size(50, 80);
             this.arrowButtonYMinus.TabIndex = 52;
+            this.arrowButtonYMinus.TabStop = false;
             this.arrowButtonYMinus.Text = "arrowButton1";
             this.arrowButtonYMinus.Title = "-Y";
             this.arrowButtonYMinus.TitleFont = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
             this.arrowButtonYMinus.UseVisualStyleBackColor = true;
             this.arrowButtonYMinus.Click += new System.EventHandler(this.arrowButtonYMinus_Click);
             this.arrowButtonYMinus.arrowValueChanged += new RepetierHost.view.utils.ArrowValueChanged(this.XY_arrowValueChanged);
+            // 
+            // trackFanVoltage
+            // 
+            this.trackFanVoltage.BackColor = System.Drawing.Color.Transparent;
+            this.trackFanVoltage.BarInnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(115)))), ((int)(((byte)(115)))), ((int)(((byte)(115)))));
+            this.trackFanVoltage.BarOuterColor = System.Drawing.Color.FromArgb(((int)(((byte)(87)))), ((int)(((byte)(87)))), ((int)(((byte)(87)))));
+            this.trackFanVoltage.BorderRoundRectSize = new System.Drawing.Size(8, 8);
+            this.trackFanVoltage.LargeChange = ((uint)(5u));
+            this.trackFanVoltage.Location = new System.Drawing.Point(9, 48);
+            this.trackFanVoltage.Maximum = 255;
+            this.trackFanVoltage.Name = "trackFanVoltage";
+            this.trackFanVoltage.Size = new System.Drawing.Size(182, 30);
+            this.trackFanVoltage.SmallChange = ((uint)(1u));
+            this.trackFanVoltage.TabIndex = 2;
+            this.trackFanVoltage.Text = "trackFanVoltage";
+            this.trackFanVoltage.ThumbRoundRectSize = new System.Drawing.Size(8, 8);
+            this.trackFanVoltage.Value = 128;
+            this.trackFanVoltage.ValueChanged += new System.EventHandler(this.trackFanVoltage_ValueChanged);
+            // 
+            // switchFanOn
+            // 
+            this.switchFanOn.ButtonFlatBorderColor = System.Drawing.Color.Empty;
+            this.switchFanOn.ButtonFlatBorderSize = 1;
+            this.switchFanOn.ButtonFlatStyle = System.Windows.Forms.FlatStyle.Standard;
+            this.switchFanOn.ButtonTextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.switchFanOn.Location = new System.Drawing.Point(6, 19);
+            this.switchFanOn.Name = "switchFanOn";
+            this.switchFanOn.On = false;
+            this.switchFanOn.Size = new System.Drawing.Size(97, 23);
+            this.switchFanOn.TabIndex = 0;
+            this.switchFanOn.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.switchFanOn.TextOff = "Fan";
+            this.switchFanOn.TextOn = "Fan";
+            this.switchFanOn.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchFanOn_Change);
+            // 
+            // switchBedHeat
+            // 
+            this.switchBedHeat.ButtonFlatBorderColor = System.Drawing.Color.Empty;
+            this.switchBedHeat.ButtonFlatBorderSize = 1;
+            this.switchBedHeat.ButtonFlatStyle = System.Windows.Forms.FlatStyle.Standard;
+            this.switchBedHeat.ButtonTextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.switchBedHeat.Location = new System.Drawing.Point(6, 19);
+            this.switchBedHeat.Name = "switchBedHeat";
+            this.switchBedHeat.On = false;
+            this.switchBedHeat.Size = new System.Drawing.Size(100, 23);
+            this.switchBedHeat.TabIndex = 0;
+            this.switchBedHeat.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.switchBedHeat.TextOff = "Heat printbed ";
+            this.switchBedHeat.TextOn = "Heat printbed ";
+            this.switchBedHeat.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchBedHeat_Change);
+            // 
+            // switchExtruderHeatOn
+            // 
+            this.switchExtruderHeatOn.ButtonFlatBorderColor = System.Drawing.Color.Empty;
+            this.switchExtruderHeatOn.ButtonFlatBorderSize = 1;
+            this.switchExtruderHeatOn.ButtonFlatStyle = System.Windows.Forms.FlatStyle.Standard;
+            this.switchExtruderHeatOn.ButtonTextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.switchExtruderHeatOn.Location = new System.Drawing.Point(7, 20);
+            this.switchExtruderHeatOn.Name = "switchExtruderHeatOn";
+            this.switchExtruderHeatOn.On = false;
+            this.switchExtruderHeatOn.Size = new System.Drawing.Size(100, 23);
+            this.switchExtruderHeatOn.TabIndex = 0;
+            this.switchExtruderHeatOn.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.switchExtruderHeatOn.TextOff = "  Heat extruder ";
+            this.switchExtruderHeatOn.TextOn = "  Heat extruder ";
+            this.switchExtruderHeatOn.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchExtruderHeatOn_Change);
             // 
             // switchPower
             // 
@@ -914,7 +920,7 @@
             this.switchPower.Name = "switchPower";
             this.switchPower.On = false;
             this.switchPower.Size = new System.Drawing.Size(83, 23);
-            this.switchPower.TabIndex = 1;
+            this.switchPower.TabIndex = 6;
             this.switchPower.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
             this.switchPower.TextOff = "  Power";
             this.switchPower.TextOn = "  Power";

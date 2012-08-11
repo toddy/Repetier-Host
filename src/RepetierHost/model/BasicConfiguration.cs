@@ -26,15 +26,64 @@ namespace RepetierHost.model
     {
         private string externalSlic3rPath="";
         private string externalSlic3rIniFile = "";
+        private string slic3rConfigDir = "";
+        private string slic3rPrintSettings = "";
+        private string slic3rPrinterSettings = "";
+        private string slic3rFilamentSettings = "";
+        private string slic3rExecutable = "";
+        private string skeinforgeProfile = "";
+        private string skeinforgeProfileDir = "";
         private bool internalSlic3rUseBundledVersion = true;
         public static BasicConfiguration basicConf = new BasicConfiguration(); 
         public BasicConfiguration()
         {
+            slic3rConfigDir = RegMemory.GetString("slic3rConfigDir", slic3rConfigDir);
+            slic3rExecutable = RegMemory.GetString("slic3rExecutable", slic3rExecutable);
+            slic3rPrintSettings = RegMemory.GetString("slic3rPrintSettings", slic3rPrintSettings);
+            slic3rPrinterSettings = RegMemory.GetString("slic3rPrinterSettings", slic3rPrinterSettings);
+            slic3rFilamentSettings = RegMemory.GetString("slic3rFilamentSettings", slic3rFilamentSettings);
+            skeinforgeProfile = RegMemory.GetString("skeinforgeProfile", skeinforgeProfile);
+            skeinforgeProfileDir = RegMemory.GetString("skeinforgeProfileDir", skeinforgeProfileDir);
             externalSlic3rPath = RegMemory.GetString("externalSlic3rPath", externalSlic3rPath);
             externalSlic3rIniFile = RegMemory.GetString("externalSlic3rIniFile", externalSlic3rIniFile);
             internalSlic3rUseBundledVersion = RegMemory.GetBool("internalSlic3rUseBundledVersion", internalSlic3rUseBundledVersion);
         }
 
+        public string Slic3rExecutable
+        {
+            get { return slic3rExecutable; }
+            set { slic3rExecutable = value; RegMemory.SetString("slic3rExecutable", slic3rExecutable); }
+        }
+        public string Slic3rConfigDir
+        {
+            get { return slic3rConfigDir; }
+            set { slic3rConfigDir = value; RegMemory.SetString("slic3rConfigDir", slic3rConfigDir); }
+        }
+        public string Slic3rPrintSettings
+        {
+            get { return slic3rPrintSettings; }
+            set { slic3rPrintSettings = value; RegMemory.SetString("slic3rPrintSettings", slic3rPrintSettings); }
+        }
+        public string Slic3rPrinterSettings
+        {
+            get { return slic3rPrinterSettings; }
+            set { slic3rPrinterSettings = value; RegMemory.SetString("slic3rPrinterSettings", slic3rPrinterSettings); }
+        }
+        public string Slic3rFilamentSettings
+        {
+            get { return slic3rFilamentSettings; }
+            set { slic3rFilamentSettings = value; RegMemory.SetString("slic3rFilamentSettings", slic3rFilamentSettings); }
+        }
+        public string SkeinforgeProfile
+        {
+            get { return skeinforgeProfile; }
+            set { skeinforgeProfile = value; RegMemory.SetString("skeinforgeProfile", skeinforgeProfile); }
+        }
+        public string SkeinforgeProfileDir
+        {
+            get { return skeinforgeProfileDir; }
+            set { skeinforgeProfileDir = value; RegMemory.SetString("skeinforgeProfileDir", skeinforgeProfileDir); }
+        }
         public string ExternalSlic3rPath
         {
             get { return externalSlic3rPath; }

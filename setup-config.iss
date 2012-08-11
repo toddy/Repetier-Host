@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Repetier-Host"
-#define MyAppVersion "0.53"
+#define MyAppVersion "0.70"
 #define MyAppPublisher "repetier"
 #define MyAppURL "https://github.com/repetier/Repetier-Host"
 #define MyAppExeName "RepetierHost.exe"
@@ -24,9 +24,10 @@ DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 LicenseFile=Repetier-Host-licence.txt
 OutputDir=.
-OutputBaseFilename=setupRepetierHost_0_53
+OutputBaseFilename=setupRepetierHost_0_70
 Compression=lzma
 SolidCompression=yes
+ArchitecturesInstallIn64BitMode=x64
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -55,6 +56,9 @@ Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
+[Dirs]
+Name: "{localappdata}\RepetierHost"
+
 [Files]
 Source: "src\RepetierHost\bin\Release\RepetierHost.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "src\RepetierHost\bin\Release\OpenTK.Compatibility.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -64,12 +68,22 @@ Source: "src\RepetierHost\bin\Release\OpenTK.GLControl.dll"; DestDir: "{app}"; F
 Source: "src\RepetierHost\bin\Release\OpenTK.GLControl.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "src\RepetierHost\bin\Release\OpenTK.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "src\data\*"; DestDir: "{app}/data"; Flags: ignoreversion recursesubdirs
-Source: "src\Slic3r\*"; DestDir: "{app}/Slic3r"; Flags: ignoreversion recursesubdirs
+Source: "win\32bit\Slic3r\*"; DestDir: "{app}/Slic3r"; Flags: ignoreversion recursesubdirs; Check: not Is64BitInstallMode
+Source: "win\64bit\Slic3r\*"; DestDir: "{app}/Slic3r"; Flags: ignoreversion recursesubdirs; Check: Is64BitInstallMode
+Source: "win\pypy\*"; DestDir: "{app}/pypy"; Flags: ignoreversion recursesubdirs
+Source: "win\python\*"; DestDir: "{app}/python"; Flags: ignoreversion recursesubdirs
+Source: "win\Skeinforge\*"; DestDir: "{app}/Skeinforge"; Flags: ignoreversion recursesubdirs
 Source: "src\empty.txt"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]
-Root: HKCU; Subkey:"Software\\Repetier"; ValueType:string; ValueName:"installPath";ValueData: "{app}"
+Root: HKCU; Subkey:"Software\Repetier"; ValueType:string; ValueName:"installPath";ValueData: "{app}"
+Root: HKCU; Subkey:"Software\repetier"; ValueType:string; ValueName:"workdir";ValueData: "{localappdata}\RepetierHost";Flags:createvalueifdoesntexist;
+Root: HKCU; Subkey:"Software\repetier"; ValueType:string; ValueName:"SkeinforgePython";ValueData: "{app}\python\pythonw.exe"; Check:setPython
+Root: HKCU; Subkey:"Software\repetier"; ValueType:string; ValueName:"SkeinforgePypy";ValueData: "{app}\pypy\pypy.exe";Flags:createvalueifdoesntexist;
+Root: HKCU; Subkey:"Software\repetier"; ValueType:string; ValueName:"SkeinforgePath";ValueData: "{app}\Skeinforge\skeinforge_application\skeinforge.py";Check:setSkeinforge;
+Root: HKCU; Subkey:"Software\repetier"; ValueType:string; ValueName:"SkeinforgeCraftPath";ValueData: "{app}\Skeinforge\skeinforge_application\skeinforge_utilities\skeinforge_craft.py"; Check:setSkeinforgeCraft;
+Root: HKCU; Subkey:"Software\repetier\window"; ValueType:string; ValueName:"skeinforgeProfileDir";ValueData: "{%USERPROFILE}\.skeinforge\profiles";  Flags:createvalueifdoesntexist;
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
@@ -105,5 +119,38 @@ begin
     end;
     result := false;
   end;  
+end;
+function BoolToStr(Val : Boolean): String;
+begin
+if val = True then
+  result := 'True'// or 'Yes' or '1'
+else
+  result := 'False';// or 'No' or '0'
+end;
+function setPython(): Boolean;
+var
+  V: string;
+begin
+  Result := TRUE;
+  if RegQueryStringValue(HKCU, 'Software\repetier', 'SkeinforgePython', V) then
+    if(V<>'') then
+      Result := FALSE;
+ // MsgBox('python = '+BoolToStr(Result),mbConfirmation,MB_YESNO);
+end;
+function setSkeinforge(): Boolean;
+var
+  V: string;
+begin
+  Result := TRUE;
+  if RegQueryStringValue(HKCU, 'Software\repetier', 'SkeinforgePath', V) then
+    Result := V='';
+end;
+function setSkeinforgeCraft(): Boolean;
+var
+  V: string;
+begin
+  Result := TRUE;
+  if RegQueryStringValue(HKCU, 'Software\repetier', 'SkeinforgeCraftPath', V) then
+    Result := V='';
 end;
 

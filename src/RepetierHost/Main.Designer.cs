@@ -91,6 +91,7 @@
             this.testCaseGeneratorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.repetierHostHomepageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.repetierHostDownloadPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.manualToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.slic3rHomepageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -130,11 +131,18 @@
             this.tabPageTemp = new System.Windows.Forms.TabPage();
             this.tab = new System.Windows.Forms.TabControl();
             this.tabModel = new System.Windows.Forms.TabPage();
+            this.tabSlicer = new System.Windows.Forms.TabPage();
             this.tabGCode = new System.Windows.Forms.TabPage();
             this.tabPrint = new System.Windows.Forms.TabPage();
+            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
+            this.sendScript1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sendScript2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sendScript3ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sendScript4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sendScript5ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stlComposer1 = new RepetierHost.view.STLComposer();
+            this.slicerPanel = new RepetierHost.view.SlicerPanel();
             this.editor = new RepetierHost.view.RepetierEditor();
-            this.repetierHostDownloadPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menu.SuspendLayout();
             this.status.SuspendLayout();
             this.toolStrip.SuspendLayout();
@@ -146,6 +154,7 @@
             this.tabControlView.SuspendLayout();
             this.tab.SuspendLayout();
             this.tabModel.SuspendLayout();
+            this.tabSlicer.SuspendLayout();
             this.tabGCode.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -605,7 +614,13 @@
             this.printerInformationsToolStripMenuItem,
             this.jobStatusToolStripMenuItem,
             this.menuSDCardManager,
-            this.testCaseGeneratorToolStripMenuItem});
+            this.testCaseGeneratorToolStripMenuItem,
+            this.toolStripMenuItem6,
+            this.sendScript1ToolStripMenuItem,
+            this.sendScript2ToolStripMenuItem,
+            this.sendScript3ToolStripMenuItem,
+            this.sendScript4ToolStripMenuItem,
+            this.sendScript5ToolStripMenuItem});
             this.windowsToolStripMenuItem.Name = "windowsToolStripMenuItem";
             this.windowsToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
             this.windowsToolStripMenuItem.Text = "&Printer";
@@ -667,6 +682,13 @@
             this.repetierHostHomepageToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.repetierHostHomepageToolStripMenuItem.Text = "Repetier-Host homepage";
             this.repetierHostHomepageToolStripMenuItem.Click += new System.EventHandler(this.repetierHostHomepageToolStripMenuItem_Click);
+            // 
+            // repetierHostDownloadPageToolStripMenuItem
+            // 
+            this.repetierHostDownloadPageToolStripMenuItem.Name = "repetierHostDownloadPageToolStripMenuItem";
+            this.repetierHostDownloadPageToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.repetierHostDownloadPageToolStripMenuItem.Text = "Repetier-Host download page";
+            this.repetierHostDownloadPageToolStripMenuItem.Click += new System.EventHandler(this.repetierHostDownloadPageToolStripMenuItem_Click);
             // 
             // manualToolStripMenuItem
             // 
@@ -756,18 +778,21 @@
             // 
             // toolConnection
             // 
+            this.toolConnection.BackColor = System.Drawing.Color.Transparent;
             this.toolConnection.Name = "toolConnection";
             this.toolConnection.Size = new System.Drawing.Size(86, 17);
             this.toolConnection.Text = "Not connected";
             // 
             // toolTempReading
             // 
+            this.toolTempReading.BackColor = System.Drawing.Color.Transparent;
             this.toolTempReading.Name = "toolTempReading";
             this.toolTempReading.Size = new System.Drawing.Size(12, 17);
             this.toolTempReading.Text = "-";
             // 
             // toolAction
             // 
+            this.toolAction.BackColor = System.Drawing.Color.Transparent;
             this.toolAction.Name = "toolAction";
             this.toolAction.Size = new System.Drawing.Size(26, 17);
             this.toolAction.Text = "Idle";
@@ -779,6 +804,7 @@
             // 
             // fpsLabel
             // 
+            this.fpsLabel.BackColor = System.Drawing.Color.Transparent;
             this.fpsLabel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.fpsLabel.Name = "fpsLabel";
             this.fpsLabel.Size = new System.Drawing.Size(34, 17);
@@ -1016,6 +1042,7 @@
             // tab
             // 
             this.tab.Controls.Add(this.tabModel);
+            this.tab.Controls.Add(this.tabSlicer);
             this.tab.Controls.Add(this.tabGCode);
             this.tab.Controls.Add(this.tabPrint);
             this.tab.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -1028,35 +1055,88 @@
             // 
             // tabModel
             // 
-            this.tabModel.BackColor = System.Drawing.SystemColors.Control;
+            this.tabModel.BackColor = System.Drawing.Color.Transparent;
             this.tabModel.Controls.Add(this.stlComposer1);
             this.tabModel.Location = new System.Drawing.Point(4, 22);
             this.tabModel.Name = "tabModel";
             this.tabModel.Size = new System.Drawing.Size(467, 304);
             this.tabModel.TabIndex = 2;
             this.tabModel.Text = "Object placements";
+            this.tabModel.UseVisualStyleBackColor = true;
+            // 
+            // tabSlicer
+            // 
+            this.tabSlicer.Controls.Add(this.slicerPanel);
+            this.tabSlicer.Location = new System.Drawing.Point(4, 22);
+            this.tabSlicer.Name = "tabSlicer";
+            this.tabSlicer.Size = new System.Drawing.Size(467, 304);
+            this.tabSlicer.TabIndex = 3;
+            this.tabSlicer.Text = "Slicer";
+            this.tabSlicer.UseVisualStyleBackColor = true;
             // 
             // tabGCode
             // 
             this.tabGCode.AutoScroll = true;
-            this.tabGCode.BackColor = System.Drawing.SystemColors.Control;
+            this.tabGCode.BackColor = System.Drawing.Color.Transparent;
             this.tabGCode.Controls.Add(this.editor);
             this.tabGCode.Location = new System.Drawing.Point(4, 22);
             this.tabGCode.Name = "tabGCode";
             this.tabGCode.Padding = new System.Windows.Forms.Padding(3);
             this.tabGCode.Size = new System.Drawing.Size(467, 304);
             this.tabGCode.TabIndex = 1;
-            this.tabGCode.Text = "G-Code visual editor";
+            this.tabGCode.Text = "G-Code editor";
+            this.tabGCode.UseVisualStyleBackColor = true;
             // 
             // tabPrint
             // 
-            this.tabPrint.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPrint.BackColor = System.Drawing.Color.Transparent;
             this.tabPrint.Location = new System.Drawing.Point(4, 22);
             this.tabPrint.Name = "tabPrint";
             this.tabPrint.Padding = new System.Windows.Forms.Padding(3);
             this.tabPrint.Size = new System.Drawing.Size(467, 304);
             this.tabPrint.TabIndex = 0;
             this.tabPrint.Text = "Manual control";
+            this.tabPrint.UseVisualStyleBackColor = true;
+            // 
+            // toolStripMenuItem6
+            // 
+            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(209, 6);
+            // 
+            // sendScript1ToolStripMenuItem
+            // 
+            this.sendScript1ToolStripMenuItem.Name = "sendScript1ToolStripMenuItem";
+            this.sendScript1ToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
+            this.sendScript1ToolStripMenuItem.Text = "Send script 1";
+            this.sendScript1ToolStripMenuItem.Click += new System.EventHandler(this.sendScript1ToolStripMenuItem_Click);
+            // 
+            // sendScript2ToolStripMenuItem
+            // 
+            this.sendScript2ToolStripMenuItem.Name = "sendScript2ToolStripMenuItem";
+            this.sendScript2ToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
+            this.sendScript2ToolStripMenuItem.Text = "Send script 2";
+            this.sendScript2ToolStripMenuItem.Click += new System.EventHandler(this.sendScript2ToolStripMenuItem_Click);
+            // 
+            // sendScript3ToolStripMenuItem
+            // 
+            this.sendScript3ToolStripMenuItem.Name = "sendScript3ToolStripMenuItem";
+            this.sendScript3ToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
+            this.sendScript3ToolStripMenuItem.Text = "Send script 3";
+            this.sendScript3ToolStripMenuItem.Click += new System.EventHandler(this.sendScript3ToolStripMenuItem_Click);
+            // 
+            // sendScript4ToolStripMenuItem
+            // 
+            this.sendScript4ToolStripMenuItem.Name = "sendScript4ToolStripMenuItem";
+            this.sendScript4ToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
+            this.sendScript4ToolStripMenuItem.Text = "Send script 4";
+            this.sendScript4ToolStripMenuItem.Click += new System.EventHandler(this.sendScript4ToolStripMenuItem_Click);
+            // 
+            // sendScript5ToolStripMenuItem
+            // 
+            this.sendScript5ToolStripMenuItem.Name = "sendScript5ToolStripMenuItem";
+            this.sendScript5ToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
+            this.sendScript5ToolStripMenuItem.Text = "Send script 5";
+            this.sendScript5ToolStripMenuItem.Click += new System.EventHandler(this.sendScript5ToolStripMenuItem_Click);
             // 
             // stlComposer1
             // 
@@ -1066,6 +1146,14 @@
             this.stlComposer1.Name = "stlComposer1";
             this.stlComposer1.Size = new System.Drawing.Size(467, 304);
             this.stlComposer1.TabIndex = 0;
+            // 
+            // slicerPanel
+            // 
+            this.slicerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.slicerPanel.Location = new System.Drawing.Point(0, 0);
+            this.slicerPanel.Name = "slicerPanel";
+            this.slicerPanel.Size = new System.Drawing.Size(467, 304);
+            this.slicerPanel.TabIndex = 0;
             // 
             // editor
             // 
@@ -1083,13 +1171,6 @@
             this.editor.Size = new System.Drawing.Size(461, 298);
             this.editor.TabIndex = 0;
             // 
-            // repetierHostDownloadPageToolStripMenuItem
-            // 
-            this.repetierHostDownloadPageToolStripMenuItem.Name = "repetierHostDownloadPageToolStripMenuItem";
-            this.repetierHostDownloadPageToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
-            this.repetierHostDownloadPageToolStripMenuItem.Text = "Repetier-Host download page";
-            this.repetierHostDownloadPageToolStripMenuItem.Click += new System.EventHandler(this.repetierHostDownloadPageToolStripMenuItem_Click);
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1103,7 +1184,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menu;
             this.Name = "Main";
-            this.Text = "Repetier-Host V0.53";
+            this.Text = "Repetier-Host V0.70";
             this.Load += new System.EventHandler(this.Main_Load);
             this.Shown += new System.EventHandler(this.Main_Shown);
             this.Activated += new System.EventHandler(this.Main_Activated);
@@ -1124,6 +1205,7 @@
             this.tabControlView.ResumeLayout(false);
             this.tab.ResumeLayout(false);
             this.tabModel.ResumeLayout(false);
+            this.tabSlicer.ResumeLayout(false);
             this.tabGCode.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -1237,6 +1319,14 @@
         private System.Windows.Forms.ToolStripButton toolStripSaveJob;
         public System.Windows.Forms.ImageList imageList;
         private System.Windows.Forms.ToolStripMenuItem repetierHostDownloadPageToolStripMenuItem;
+        public System.Windows.Forms.TabPage tabSlicer;
+        public RepetierHost.view.SlicerPanel slicerPanel;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem6;
+        private System.Windows.Forms.ToolStripMenuItem sendScript1ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sendScript2ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sendScript3ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sendScript4ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sendScript5ToolStripMenuItem;
     }
 }
 

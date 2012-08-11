@@ -210,6 +210,7 @@ namespace RepetierHost
                     splitLog.SplitterDistance = splitLog.Height - 100;
                 }
             }
+            slicerToolStripMenuItem.Visible = false;
             splitLog.Panel2Collapsed = !RegMemory.GetBool("logShow", true);
             conn.eventConnectionChange += OnPrinterConnectionChange;
             conn.eventPrinterAction += OnPrinterAction;
@@ -275,6 +276,7 @@ namespace RepetierHost
                 basicTitle = basicTitle.Substring(0, p) + titleAdd + basicTitle.Substring(p);
                 Text = basicTitle;
             }
+            slicerPanel.UpdateSelection();
         }
 
         public void UpdateConnections()
@@ -367,6 +369,11 @@ namespace RepetierHost
         private void OnPrinterConnectionChange(string msg)
         {
             toolConnection.Text = msg;
+            sendScript1ToolStripMenuItem.Enabled = conn.connected;
+            sendScript2ToolStripMenuItem.Enabled = conn.connected;
+            sendScript3ToolStripMenuItem.Enabled = conn.connected;
+            sendScript4ToolStripMenuItem.Enabled = conn.connected;
+            sendScript5ToolStripMenuItem.Enabled = conn.connected;
             if (conn.connected)
             {
                 toolConnect.Image = imageList.Images[0];
@@ -471,15 +478,15 @@ namespace RepetierHost
             UpdateHistory();
             if (file.ToLower().EndsWith(".stl"))
             {
-                if (MessageBox.Show("Do you want to slice the STL-File? No adds it to the object grid.", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+              /*  if (MessageBox.Show("Do you want to slice the STL-File? No adds it to the object grid.", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     slicer.RunSlice(file); // Slice it and load
                 }
                 else
-                {
+                {*/
                     tab.SelectTab(tabModel);
                     stlComposer1.openAndAddObject(file);
-                }
+                //}
             }
             else
             {
@@ -881,12 +888,13 @@ namespace RepetierHost
             switch (tab.SelectedIndex)
             {
                 case 0:
+                case 1:
                     threedview.SetView(stlComposer1.cont);
                     break;
-                case 1:
+                case 2:
                     threedview.SetView(jobPreview);
                     break;
-                case 2:
+                case 3:
                     threedview.SetView(printPreview);
                     break;
             }
@@ -913,7 +921,7 @@ namespace RepetierHost
                 }
                 refreshCounter = 6;
             }
-            if (tab.SelectedTab == tabModel)
+            if (tab.SelectedTab == tabModel || tab.SelectedTab == tabSlicer)
             {
                 tabControlView.SelectedIndex = 0;
             }
@@ -1108,6 +1116,46 @@ namespace RepetierHost
         private void repetierHostDownloadPageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             openLink("https://github.com/repetier/Repetier-Host/downloads");
+        }
+
+        private void sendScript1ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (GCodeShort code in editor.getContentArray(5))
+            {
+                conn.injectManualCommand(code.text);
+            }
+        }
+
+        private void sendScript2ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (GCodeShort code in editor.getContentArray(6))
+            {
+                conn.injectManualCommand(code.text);
+            }
+        }
+
+        private void sendScript3ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (GCodeShort code in editor.getContentArray(7))
+            {
+                conn.injectManualCommand(code.text);
+            }
+        }
+
+        private void sendScript4ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (GCodeShort code in editor.getContentArray(8))
+            {
+                conn.injectManualCommand(code.text);
+            }
+        }
+
+        private void sendScript5ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (GCodeShort code in editor.getContentArray(9))
+            {
+                conn.injectManualCommand(code.text);
+            }
         }
     }
 }

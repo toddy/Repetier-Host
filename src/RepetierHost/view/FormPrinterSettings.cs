@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2011 repetier repetierdev@googlemail.com
+   Copyright 2011 repetier repetierdev@gmail.com
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ using Microsoft.Win32;
 using RepetierHost.model;
 using RepetierHost.view.utils;
 using System.Globalization;
+using System.IO;
 
 namespace RepetierHost.view
 {
@@ -296,9 +297,19 @@ namespace RepetierHost.view
         {
             comboPort.Items.Clear();
             comboPort.Items.Add("Virtual printer");
-            foreach (string p in SerialPort.GetPortNames())
+            if (Main.IsMono && Environment.OSVersion.Platform == PlatformID.Unix)
             {
-                comboPort.Items.Add(p);
+                DirectoryInfo di = new DirectoryInfo("/dev");
+                FileInfo[] list = di.GetFiles("tty*");
+                foreach (FileInfo info in list)
+                    comboPort.Items.Add(info.FullName);
+            }
+            else
+            {
+                foreach (string p in SerialPort.GetPortNames())
+                {
+                    comboPort.Items.Add(p);
+                }
             }
         }
 

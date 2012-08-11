@@ -8,6 +8,7 @@ src/slic3r*
 */.DS_Store
 macosx/RepetierHost.app
 linux/RepetierHost
+win/*
 RepetierHostMacOSX.sparseimage
 .DS_Store
 macosx/Repetier-Host.dmg

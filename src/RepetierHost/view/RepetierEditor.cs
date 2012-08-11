@@ -373,6 +373,13 @@ namespace RepetierHost.view
             toolFile.Items.Add(c);
             toolFile.Items.Add(new Content(this, 1, "Start code"));
             toolFile.Items.Add(new Content(this, 2, "End code"));
+            toolFile.Items.Add(new Content(this, 3, "Run on kill"));
+            toolFile.Items.Add(new Content(this, 4, "Run on pause"));
+            toolFile.Items.Add(new Content(this, 5, "Script 1"));
+            toolFile.Items.Add(new Content(this, 6, "Script 2"));
+            toolFile.Items.Add(new Content(this, 7, "Script 3"));
+            toolFile.Items.Add(new Content(this, 8, "Script 4"));
+            toolFile.Items.Add(new Content(this, 9, "Script 5"));
             toolFile.SelectedIndex = 0;
             labelMaxLayer.DataBindings.Add("Text",
                            this, "MaxLayer");
@@ -1361,6 +1368,34 @@ namespace RepetierHost.view
             {
                 Main.printerSettings.currentPrinterKey.SetValue("gcodeAppend", Text);
             }
+            else if (cur.etype == 3)
+            {
+                Main.printerSettings.currentPrinterKey.SetValue("gcodeKill", Text);
+            }
+            else if (cur.etype == 4)
+            {
+                Main.printerSettings.currentPrinterKey.SetValue("gcodePause", Text);
+            }
+            else if (cur.etype == 5)
+            {
+                Main.printerSettings.currentPrinterKey.SetValue("gcodeScript1", Text);
+            }
+            else if (cur.etype == 6)
+            {
+                Main.printerSettings.currentPrinterKey.SetValue("gcodeScript2", Text);
+            }
+            else if (cur.etype == 7)
+            {
+                Main.printerSettings.currentPrinterKey.SetValue("gcodeScript3", Text);
+            }
+            else if (cur.etype == 8)
+            {
+                Main.printerSettings.currentPrinterKey.SetValue("gcodeScript4", Text);
+            }
+            else if (cur.etype == 9)
+            {
+                Main.printerSettings.currentPrinterKey.SetValue("gcodeScript5", Text);
+            }
             else
             {
                 if (Main.main.saveJobDialog.ShowDialog() == DialogResult.OK)
@@ -1377,6 +1412,27 @@ namespace RepetierHost.view
             if (c == cur) c.ToActive();
             c = (Content)toolFile.Items[2];
             c.Text = (string)Main.printerSettings.currentPrinterKey.GetValue("gcodeAppend", getContent(2));
+            c.ResetPos();
+            c = (Content)toolFile.Items[3];
+            c.Text = (string)Main.printerSettings.currentPrinterKey.GetValue("gcodeKill", getContent(3));
+            c.ResetPos();
+            c = (Content)toolFile.Items[4];
+            c.Text = (string)Main.printerSettings.currentPrinterKey.GetValue("gcodePause", getContent(4));
+            c.ResetPos();
+            c = (Content)toolFile.Items[5];
+            c.Text = (string)Main.printerSettings.currentPrinterKey.GetValue("gcodeScript1", getContent(5));
+            c.ResetPos();
+            c = (Content)toolFile.Items[6];
+            c.Text = (string)Main.printerSettings.currentPrinterKey.GetValue("gcodeScript2", getContent(6));
+            c.ResetPos();
+            c = (Content)toolFile.Items[7];
+            c.Text = (string)Main.printerSettings.currentPrinterKey.GetValue("gcodeScript3", getContent(7));
+            c.ResetPos();
+            c = (Content)toolFile.Items[8];
+            c.Text = (string)Main.printerSettings.currentPrinterKey.GetValue("gcodeScript4", getContent(8));
+            c.ResetPos();
+            c = (Content)toolFile.Items[9];
+            c.Text = (string)Main.printerSettings.currentPrinterKey.GetValue("gcodeScript5", getContent(9));
             c.ResetPos();
             if (c == cur) c.ToActive();
         }

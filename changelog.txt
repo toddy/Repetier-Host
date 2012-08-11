@@ -1,8 +1,9 @@
-Version 0.53
+Version 0.70
   Show marken g-code lines in graphic preview.
   Draw different extruders in different colors.
   New icons.
   Redesigned manual control tab.
+  New slice tab, where slicing configuration is selected.
   Log window status bar redesigned.
   Printer status in manual control.
   Maximize windows now restores panel positions.
@@ -16,6 +17,8 @@ Version 0.53
   Color change if object is outside printbed.
   Lightning now definable in 3d visual settings.
   After homing the movements over the panel are limited to the entered printer dimensions.
+  Own user definable scripts for kill/pause pressed.
+  5 scripts per printer definable.
 
 Version 0.52 17.7.2012
   Upgraded to Slic3r 0.8.4

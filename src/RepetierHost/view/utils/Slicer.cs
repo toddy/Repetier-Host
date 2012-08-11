@@ -23,6 +23,7 @@ namespace RepetierHost.view.utils
         public Slicer()
         {
             skein = Main.main.skeinforge;
+            Main.slicer = this;
             ActiveSlicer = (Slicer.SlicerID)(int)Main.main.repetierKey.GetValue("ActiveSlicer", (int)ActiveSlicer);
 
             Update();
@@ -139,6 +140,8 @@ namespace RepetierHost.view.utils
                 Main.main.slic3rToolStripMenuItem.Checked = _ActiveSlicer == SlicerID.Slic3r;
                 Main.main.skeinforgeToolStripMenuItem1.Checked = _ActiveSlicer == SlicerID.Skeinforge;
                 Main.main.externalSlic3rToolStripMenuItem.Checked = _ActiveSlicer == SlicerID.Slic3rExternal;
+                Main.main.stlComposer1.buttonSlice.Text = "Slice with " + SlicerName;
+                Main.main.slicerPanel.UpdateSelection();
             }
         }
         public void Update()
@@ -190,13 +193,13 @@ namespace RepetierHost.view.utils
             switch (_ActiveSlicer)
             {
                 case SlicerID.Slic3r:
-                    Main.slic3r.RunSlice(file, Main.printerSettings.PrintAreaWidth / 2, Main.printerSettings.PrintAreaDepth / 2);
+                    Main.slic3r.RunSliceNew(file, Main.printerSettings.PrintAreaWidth / 2, Main.printerSettings.PrintAreaDepth / 2);
                     break;
-                case SlicerID.Slic3rExternal:
+                /*case SlicerID.Slic3rExternal:
                     Main.slic3r.RunSliceExternal(file, Main.printerSettings.PrintAreaWidth / 2, Main.printerSettings.PrintAreaDepth / 2);
-                    break;
+                    break;*/
                 case SlicerID.Skeinforge:
-                    skein.RunSlice(file);
+                    skein.RunSlice(file,BasicConfiguration.basicConf.SkeinforgeProfile);
                     break;
             }
         }
