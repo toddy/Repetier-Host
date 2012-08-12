@@ -209,7 +209,7 @@ namespace RepetierHost.view.utils
                 switch (_ActiveSlicer)
                 {
                     case SlicerID.Slic3r:
-                        return "internal Slic3r";
+                        return "Slic3r";
                     case SlicerID.Slic3rExternal:
                         return "external Slic3r";
                     case SlicerID.Skeinforge:

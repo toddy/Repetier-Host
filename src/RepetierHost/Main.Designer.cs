@@ -89,6 +89,12 @@
             this.jobStatusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSDCardManager = new System.Windows.Forms.ToolStripMenuItem();
             this.testCaseGeneratorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
+            this.sendScript1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sendScript2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sendScript3ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sendScript4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sendScript5ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.repetierHostHomepageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.repetierHostDownloadPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -134,12 +140,6 @@
             this.tabSlicer = new System.Windows.Forms.TabPage();
             this.tabGCode = new System.Windows.Forms.TabPage();
             this.tabPrint = new System.Windows.Forms.TabPage();
-            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
-            this.sendScript1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.sendScript2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.sendScript3ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.sendScript4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.sendScript5ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stlComposer1 = new RepetierHost.view.STLComposer();
             this.slicerPanel = new RepetierHost.view.SlicerPanel();
             this.editor = new RepetierHost.view.RepetierEditor();
@@ -656,6 +656,46 @@
             this.testCaseGeneratorToolStripMenuItem.Text = "Test case generator";
             this.testCaseGeneratorToolStripMenuItem.Click += new System.EventHandler(this.testCaseGeneratorToolStripMenuItem_Click);
             // 
+            // toolStripMenuItem6
+            // 
+            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(209, 6);
+            // 
+            // sendScript1ToolStripMenuItem
+            // 
+            this.sendScript1ToolStripMenuItem.Name = "sendScript1ToolStripMenuItem";
+            this.sendScript1ToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
+            this.sendScript1ToolStripMenuItem.Text = "Send script 1";
+            this.sendScript1ToolStripMenuItem.Click += new System.EventHandler(this.sendScript1ToolStripMenuItem_Click);
+            // 
+            // sendScript2ToolStripMenuItem
+            // 
+            this.sendScript2ToolStripMenuItem.Name = "sendScript2ToolStripMenuItem";
+            this.sendScript2ToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
+            this.sendScript2ToolStripMenuItem.Text = "Send script 2";
+            this.sendScript2ToolStripMenuItem.Click += new System.EventHandler(this.sendScript2ToolStripMenuItem_Click);
+            // 
+            // sendScript3ToolStripMenuItem
+            // 
+            this.sendScript3ToolStripMenuItem.Name = "sendScript3ToolStripMenuItem";
+            this.sendScript3ToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
+            this.sendScript3ToolStripMenuItem.Text = "Send script 3";
+            this.sendScript3ToolStripMenuItem.Click += new System.EventHandler(this.sendScript3ToolStripMenuItem_Click);
+            // 
+            // sendScript4ToolStripMenuItem
+            // 
+            this.sendScript4ToolStripMenuItem.Name = "sendScript4ToolStripMenuItem";
+            this.sendScript4ToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
+            this.sendScript4ToolStripMenuItem.Text = "Send script 4";
+            this.sendScript4ToolStripMenuItem.Click += new System.EventHandler(this.sendScript4ToolStripMenuItem_Click);
+            // 
+            // sendScript5ToolStripMenuItem
+            // 
+            this.sendScript5ToolStripMenuItem.Name = "sendScript5ToolStripMenuItem";
+            this.sendScript5ToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
+            this.sendScript5ToolStripMenuItem.Text = "Send script 5";
+            this.sendScript5ToolStripMenuItem.Click += new System.EventHandler(this.sendScript5ToolStripMenuItem_Click);
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1098,46 +1138,6 @@
             this.tabPrint.Text = "Manual control";
             this.tabPrint.UseVisualStyleBackColor = true;
             // 
-            // toolStripMenuItem6
-            // 
-            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(209, 6);
-            // 
-            // sendScript1ToolStripMenuItem
-            // 
-            this.sendScript1ToolStripMenuItem.Name = "sendScript1ToolStripMenuItem";
-            this.sendScript1ToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
-            this.sendScript1ToolStripMenuItem.Text = "Send script 1";
-            this.sendScript1ToolStripMenuItem.Click += new System.EventHandler(this.sendScript1ToolStripMenuItem_Click);
-            // 
-            // sendScript2ToolStripMenuItem
-            // 
-            this.sendScript2ToolStripMenuItem.Name = "sendScript2ToolStripMenuItem";
-            this.sendScript2ToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
-            this.sendScript2ToolStripMenuItem.Text = "Send script 2";
-            this.sendScript2ToolStripMenuItem.Click += new System.EventHandler(this.sendScript2ToolStripMenuItem_Click);
-            // 
-            // sendScript3ToolStripMenuItem
-            // 
-            this.sendScript3ToolStripMenuItem.Name = "sendScript3ToolStripMenuItem";
-            this.sendScript3ToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
-            this.sendScript3ToolStripMenuItem.Text = "Send script 3";
-            this.sendScript3ToolStripMenuItem.Click += new System.EventHandler(this.sendScript3ToolStripMenuItem_Click);
-            // 
-            // sendScript4ToolStripMenuItem
-            // 
-            this.sendScript4ToolStripMenuItem.Name = "sendScript4ToolStripMenuItem";
-            this.sendScript4ToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
-            this.sendScript4ToolStripMenuItem.Text = "Send script 4";
-            this.sendScript4ToolStripMenuItem.Click += new System.EventHandler(this.sendScript4ToolStripMenuItem_Click);
-            // 
-            // sendScript5ToolStripMenuItem
-            // 
-            this.sendScript5ToolStripMenuItem.Name = "sendScript5ToolStripMenuItem";
-            this.sendScript5ToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
-            this.sendScript5ToolStripMenuItem.Text = "Send script 5";
-            this.sendScript5ToolStripMenuItem.Click += new System.EventHandler(this.sendScript5ToolStripMenuItem_Click);
-            // 
             // stlComposer1
             // 
             this.stlComposer1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -1184,7 +1184,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menu;
             this.Name = "Main";
-            this.Text = "Repetier-Host V0.70";
+            this.Text = "Repetier-Host V0.70b";
             this.Load += new System.EventHandler(this.Main_Load);
             this.Shown += new System.EventHandler(this.Main_Shown);
             this.Activated += new System.EventHandler(this.Main_Activated);

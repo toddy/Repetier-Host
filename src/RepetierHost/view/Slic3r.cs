@@ -352,8 +352,8 @@ namespace RepetierHost.view
                 if (Main.IsMac)
                     exname = "MacOS" + Path.DirectorySeparatorChar + "slic3r";
                 string exe = basedir + Path.DirectorySeparatorChar + "Slic3r" + Path.DirectorySeparatorChar + exname;
-                if (File.Exists(BasicConfiguration.basicConf.ExternalSlic3rPath))
-                    exe = BasicConfiguration.basicConf.ExternalSlic3rPath;
+                if (File.Exists(BasicConfiguration.basicConf.Slic3rExecutable))
+                    exe = BasicConfiguration.basicConf.Slic3rExecutable;
 
                 StringBuilder sb = new StringBuilder();
                 procSlic3r.EnableRaisingEvents = true;

@@ -439,7 +439,7 @@ namespace RepetierHost.view
             con.GetInjectLock();
             if (switchFanOn.On)
             {
-                if(ann.fanVoltage!=trackFanVoltage.Value)
+                //if(ann.fanVoltage!=trackFanVoltage.Value)
                     con.injectManualCommand("M106 S" + trackFanVoltage.Value);
             }
             else
