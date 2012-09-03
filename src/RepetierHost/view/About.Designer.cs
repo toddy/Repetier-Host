@@ -32,10 +32,10 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.textLicence = new System.Windows.Forms.TextBox();
             this.buttonOK = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelLicenceAndLibraries = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.labelRepetierInfo = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -70,24 +70,24 @@
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
             // 
-            // label1
+            // labelLicenceAndLibraries
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(14, 145);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(108, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Licence and Libraries";
+            this.labelLicenceAndLibraries.AutoSize = true;
+            this.labelLicenceAndLibraries.Location = new System.Drawing.Point(14, 145);
+            this.labelLicenceAndLibraries.Name = "labelLicenceAndLibraries";
+            this.labelLicenceAndLibraries.Size = new System.Drawing.Size(108, 13);
+            this.labelLicenceAndLibraries.TabIndex = 3;
+            this.labelLicenceAndLibraries.Text = "Licence and Libraries";
             // 
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.Location = new System.Drawing.Point(157, 25);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(232, 13);
+            this.linkLabel1.Size = new System.Drawing.Size(128, 13);
             this.linkLabel1.TabIndex = 4;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "https://www.github.com/repetier/Repetier-Host";
+            this.linkLabel1.Text = "https://www.repetier.com";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // label2
@@ -99,14 +99,13 @@
             this.label2.TabIndex = 5;
             this.label2.Text = "Repetier-Host (C) 2011-2012 repetier";
             // 
-            // label3
+            // labelRepetierInfo
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(160, 52);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(325, 78);
-            this.label3.TabIndex = 6;
-            this.label3.Text = resources.GetString("label3.Text");
+            this.labelRepetierInfo.Location = new System.Drawing.Point(160, 52);
+            this.labelRepetierInfo.Name = "labelRepetierInfo";
+            this.labelRepetierInfo.Size = new System.Drawing.Size(445, 86);
+            this.labelRepetierInfo.TabIndex = 6;
+            this.labelRepetierInfo.Text = resources.GetString("labelRepetierInfo.Text");
             // 
             // About
             // 
@@ -114,10 +113,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(618, 448);
             this.ControlBox = false;
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.labelRepetierInfo);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.linkLabel1);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.labelLicenceAndLibraries);
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.textLicence);
             this.Controls.Add(this.pictureBox1);
@@ -137,9 +136,9 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.TextBox textLicence;
         private System.Windows.Forms.Button buttonOK;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelLicenceAndLibraries;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelRepetierInfo;
     }
 }

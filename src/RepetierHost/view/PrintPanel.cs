@@ -54,7 +54,7 @@ namespace RepetierHost.view
             textRetractAmount.Text = RegMemory.GetString("panelRetractAmount", textRetractAmount.Text);
 
             float volt = 100f * trackFanVoltage.Value / 255;
-            labelVoltage.Text = "Output " + volt.ToString("0.0") + "%";
+            labelVoltage.Text = Trans.T1("L_OUTPUT_PERCENT",volt.ToString("0.0")); //"Output " + volt.ToString("0.0") + "%";
             arrowButtonXMinus.PossibleValues = Custom.GetString("xyMoveDistances", arrowButtonXMinus.PossibleValues);
             arrowButtonXPlus.PossibleValues = Custom.GetString("xyMoveDistances", arrowButtonXPlus.PossibleValues);
             arrowButtonYMinus.PossibleValues = Custom.GetString("xyMoveDistances", arrowButtonYMinus.PossibleValues);
@@ -62,6 +62,39 @@ namespace RepetierHost.view
             if (Custom.GetBool("noPowerControlButton", false))
                 switchPower.Visible = false;
             timer.Start();
+            if (Main.main != null)
+            {
+                translate();
+                Main.main.languageChanged += translate;
+            }
+        }
+        public void translate() {
+            buttonSend.Text = Trans.T("B_SEND");
+            buttonSimulateOK.Text = Trans.T("B_SIMULATE_OK");
+            buttonStopMotor.Text = Trans.T("B_STOP_MOTOR");
+            buttonGoDisposeArea.Text = Trans.T("B_PARK");
+            //buttonRetract.Text = Trans.T("B_RETRACT");
+            //buttonExtrude.Text = Trans.T("B_EXTRUDE");
+            float volt = 100f * trackFanVoltage.Value / 255;
+            labelVoltage.Text = Trans.T1("L_OUTPUT_PERCENT", volt.ToString("0.0")); //"Output " + volt.ToString("0.0") + "%";
+            switchPower.TextOff = switchPower.TextOn = Trans.T("B_POWER");
+            switchExtruderHeatOn.TextOff = switchExtruderHeatOn.TextOn = Trans.T("B_HEAT_EXTRUDER");
+            switchBedHeat.TextOff = switchBedHeat.TextOn = Trans.T("B_HEAT_PRINTBED");
+            switchFanOn.TextOff = switchFanOn.TextOn = Trans.T("B_FAN");
+            switchErrors.TextOff = switchErrors.TextOn = Trans.T("B_DEBUG_ERRORS");
+            switchEcho.TextOff = switchEcho.TextOn = Trans.T("B_DEBUG_ECHO");
+            switchDryRun.TextOff = switchDryRun.TextOn = Trans.T("B_DRY_RUN");
+            switchInfo.TextOff = switchInfo.TextOn = Trans.T("B_DEBUG_INFO");
+            groupExtruder.Text = Trans.T("L_EXTRUDER");
+            groupPrintbed.Text = Trans.T("L_PRINTBED");
+            groupSpeedMultiply.Text = Trans.T("L_SPEED_MULTIPLY");
+            labelExtrude.Text = Trans.T("L_EXTRUDE_MM");
+            labelExtruderSpeed.Text = Trans.T("L_EXTRUDER_SPEED_MM_MIN");
+            labelRetract.Text = Trans.T("L_RETRACT_MM");
+            labelTemp.Text = labelTemp2.Text = Trans.T("L_TEMP");
+            labelFeedrate.Text = Trans.T("L_FEEDRATE:");
+            labelFlowrate.Text = Trans.T("L_FLOWRATE:");
+            Status = status;
         }
         public void updateStatus()
         {
@@ -94,7 +127,9 @@ namespace RepetierHost.view
                 Status = PrinterStatus.idle;
         }
         public MethodInvoker SetStatusJobFinished = delegate {Main.main.printPanel.Status = PrinterStatus.jobFinsihed;};
-        public PrinterStatus Status {
+        public MethodInvoker SetStatusJobKilled = delegate { Main.main.printPanel.Status = PrinterStatus.jobKilled; };
+        public PrinterStatus Status
+        {
             set
             {
                 TimeSpan t = (DateTime.UtcNow - new DateTime(1970, 1, 1));
@@ -104,35 +139,38 @@ namespace RepetierHost.view
                 switch (value)
                 {
                     case PrinterStatus.disconnected:
-                        labelStatus.Text = "Disconnected";
+                        labelStatus.Text = Trans.T("L_DISCONNECTED"); // "Disconnected";
                         break;
                     case PrinterStatus.heatingBed:
-                        labelStatus.Text = "Heating bed";
+                        labelStatus.Text = Trans.T("L_HEATING_BED"); // "Heating bed";
                         break;
                     case PrinterStatus.heatingExtruder:
-                        labelStatus.Text = "Heating extruder";
+                        labelStatus.Text = Trans.T("L_HEATING_EXTRUDER"); // "Heating extruder";
                         break;
                     case PrinterStatus.jobKilled:
-                        labelStatus.Text = "Print job killed";
+                        labelStatus.Text = Trans.T("L_PRINT_JOB_KILLED"); //"Print job killed";
                         break;
                     case PrinterStatus.jobPaused:
-                        labelStatus.Text = "Print job paused";
+                        labelStatus.Text = Trans.T("L_PRINT_JOB_PAUSED"); // "Print job paused";
                         break;
                     case PrinterStatus.jobFinsihed:
-                        labelStatus.Text = "Print job finished";
+                        labelStatus.Text = Trans.T("L_PRINT_JOB_FINISHED"); // "Print job finished";
                         break;
                     default:
                     case PrinterStatus.idle:
                         if (Main.conn.job.mode==1)
                         {
                             if (Main.conn.analyzer.uploading)
-                                labelStatus.Text = "Uploading ...";
+                                labelStatus.Text = Trans.T("L_UPLOADING..."); //"Uploading ...";
                             else
-                                labelStatus.Text = "Printing job ETA " + Main.conn.job.ETA;
+                                labelStatus.Text = Trans.T1("L_PRINTING_JOB_ETA",Main.conn.job.ETA); //Printing job ETA " + Main.conn.job.ETA;
                         }
                         else
                         {
-                            labelStatus.Text = "Idle";
+                            if (Main.conn.injectCommands.Count == 0)
+                                labelStatus.Text = Trans.T("L_IDLE"); //"Idle";
+                            else
+                                labelStatus.Text = Trans.T1("L_X_COMMANDS_WAITING", Main.conn.injectCommands.Count.ToString()); // +" commands waiting";
                         }
                         break;
                 }
@@ -145,14 +183,14 @@ namespace RepetierHost.view
         {
             labelExtruderTemp.Text = extruder.ToString() + "°C /";
             labelPrintbedTemp.Text = printbed.ToString() + "°C /";
-            string tr = "Extruder: " + con.extruderTemp.ToString();
+            string tr = Trans.T("L_EXTRUDER:")+" " + con.extruderTemp.ToString();
             if (switchExtruderHeatOn.On) tr += "/" + ann.extruderTemp.ToString() + "°C";
-            else tr += "°C/Off";
+            else tr += "°C/" + Trans.T("L_OFF");
             if (con.bedTemp > 0)
             {
-                tr += " Bed: " + con.bedTemp.ToString();
+                tr += " "+Trans.T("L_BED:")+" " + con.bedTemp.ToString();
                 if (ann.bedTemp > 0) tr += "/" + ann.bedTemp.ToString() + "°C ";
-                else tr += "°C/Off ";
+                else tr += "°C/"+Trans.T("L_OFF");
             }
             Main.main.toolTempReading.Text = tr;
         }
@@ -243,6 +281,7 @@ namespace RepetierHost.view
             arrowButtonZMinus.Enabled = c;
             arrowButtonZPlus.Enabled = c;
             sliderSpeed.Enabled = c && (con.isMarlin || con.isRepetier);
+            sliderFlowrate.Enabled = c && (con.isMarlin || con.isRepetier);
             numericUpDownSpeed.Enabled = c && (con.isMarlin || con.isRepetier);
             if (c) sendDebug();
         }
@@ -452,7 +491,7 @@ namespace RepetierHost.view
         private void trackFanVoltage_ValueChanged(object sender, EventArgs e)
         {
             float volt = 100f*trackFanVoltage.Value/255;
-            labelVoltage.Text = "Output " + volt.ToString("0.0") + "%";
+            labelVoltage.Text = Trans.T1("L_OUTPUT_PERCENT", volt.ToString("0.0"));
             if (!createCommands) return;
             //switchFanOn.On = true;
             if(switchFanOn.On)
@@ -579,7 +618,7 @@ namespace RepetierHost.view
             }
             catch
             {
-                errorProvider.SetError(box, "Not a number.");
+                errorProvider.SetError(box, Trans.T("L_NOT_A_NUMBER")); //"Not a number.");
             }
         }
         private void floatPos_Validating(object sender, CancelEventArgs e)
@@ -591,11 +630,11 @@ namespace RepetierHost.view
                 if (x >= 0)
                     errorProvider.SetError(box, "");
                 else
-                    errorProvider.SetError(box, "Positive number required.");
+                    errorProvider.SetError(box, Trans.T("L_POSITIVE_NUMBER_REQUIRED")); //"Positive number required.");
             }
             catch
             {
-                errorProvider.SetError(box, "Not a number.");
+                errorProvider.SetError(box, Trans.T("L_NOT_A_NUMBER"));
             }
         }
         private void int_Validating(object sender, CancelEventArgs e)
@@ -608,7 +647,7 @@ namespace RepetierHost.view
             }
             catch
             {
-                errorProvider.SetError(box, "Not an integer.");
+                errorProvider.SetError(box,Trans.T("L_NOT_AN_INTEGER"));// "Not an integer.");
             }
         }
 
@@ -776,6 +815,32 @@ namespace RepetierHost.view
             float d = -((ArrowButton)sender).CurrentValueF;
             if (ann.hasZHome && d + ann.z < 0) d = -ann.z;
             moveHead("Z", d);
+
+        }
+
+        private void sliderSlowrate_ValueChanged(object sender, EventArgs e)
+        {
+            if (!createCommands) return;
+            //labelSpeed.Text = sliderSpeed.Value.ToString() + "%";
+            int oldcon = con.flowMultiply;
+            if (sender == sliderFlowrate)
+            {
+                if (con.flowMultiply != sliderFlowrate.Value)
+                {
+                    con.flowMultiply = sliderFlowrate.Value;
+                    numericUpDownFlow.Value = con.flowMultiply;
+                }
+            }
+            else
+            {
+                if (con.flowMultiply != numericUpDownFlow.Value)
+                {
+                    con.flowMultiply = (int)numericUpDownFlow.Value;
+                    sliderFlowrate.Value = con.flowMultiply;
+                }
+            }
+            if (oldcon != con.flowMultiply && con.connected && (con.isMarlin || con.isRepetier))
+                con.injectManualCommand("M221 S" + sliderFlowrate.Value.ToString());
 
         }
 

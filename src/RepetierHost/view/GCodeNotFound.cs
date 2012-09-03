@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using RepetierHost.model;
 
 namespace RepetierHost.view
 {
@@ -22,8 +23,16 @@ namespace RepetierHost.view
         public GCodeNotFound()
         {
             InitializeComponent();
+            translate();
+            Main.main.languageChanged += translate;
         }
-
+        public void translate()
+        {
+            Text = Trans.T("W_GCODE_NOT_FOUND");
+            labelExpectedFilenameLocation.Text = Trans.T("L_EXPECTED_FILENAME_AND_LOCATION");
+            labelGCodeNotFoundInfo.Text = Trans.T("L_GCODE_NOT_FOUND_INFO");
+            buttonClose.Text = Trans.T("B_CLOSE");
+        }
         private void buttonClose_Click(object sender, EventArgs e)
         {
             Close();

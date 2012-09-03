@@ -23,6 +23,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using RepetierHost.view.utils;
+using RepetierHost.model;
 
 namespace RepetierHost.view
 {
@@ -34,8 +35,16 @@ namespace RepetierHost.view
             RegMemory.RestoreWindowPos("aboutWindow", this);
             textLicence.SelectionLength = 0;
             textLicence.SelectionStart = 0;
+            translate();
+            Main.main.languageChanged += translate;
         }
-
+        void translate()
+        {
+            buttonOK.Text = Trans.T("B_OK");
+            Text = Trans.T("W_ABOUT_REPETIER_HOST");
+            labelLicenceAndLibraries.Text = Trans.T("L_LICENCE_AND_LIBRARIES");
+            labelRepetierInfo.Text = Trans.T("L_REPETIER_INFO");
+        }
         private void buttonOK_Click(object sender, EventArgs e)
         {
             Hide();

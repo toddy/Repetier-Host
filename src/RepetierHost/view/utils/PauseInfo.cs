@@ -36,15 +36,22 @@ namespace RepetierHost.view.utils
         public PauseInfo()
         {
             InitializeComponent();
+            translate();
+            Main.main.languageChanged += translate;
         }
-
+        public void translate()
+        {
+            Text = Trans.T("W_PRINT_PAUSED");
+            labelPauseHint.Text = Trans.T("L_PAUSE_HINT");
+            buttonContinuePrinting.Text = Trans.T("B_CONTINUE_PRINTING");
+        }
         private void buttonContinuePrinting_Click(object sender, EventArgs e)
         {
             Hide();
             GCodeAnalyzer a = Main.conn.analyzer;
             PrinterConnection c = Main.conn;
             c.injectManualCommand("G90");
-            c.injectManualCommand("G1 X"+x.ToString(GCode.format)+" Y"+y.ToString(GCode.format)+" Z"+z.ToString(GCode.format)+" F"+c.travelFeedRate.ToString(GCode.format));
+            c.injectManualCommand("G1 X"+x.ToString(GCode.format)+" Y"+y.ToString(GCode.format)+" F"+c.travelFeedRate.ToString(GCode.format));
             c.injectManualCommand("G1 Z"+z.ToString(GCode.format)+" F"+c.maxZFeedRate.ToString(GCode.format));
             c.injectManualCommand("G92 E" + PauseInfo.e.ToString(GCode.format));
             if (a.relative != relative)

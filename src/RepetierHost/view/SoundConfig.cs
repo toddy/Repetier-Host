@@ -24,6 +24,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using RepetierHost.view.utils;
+using RepetierHost.model;
 
 namespace RepetierHost.view
 {
@@ -47,10 +48,27 @@ namespace RepetierHost.view
             checkPrintPaused.Checked = RegMemory.GetBool("soundPrintPausedEnabled", checkPrintPaused.Checked);
             checkError.Checked = RegMemory.GetBool("soundErrorEnabled", checkError.Checked);
             checkSoundCommand.Checked = RegMemory.GetBool("soundSoundCommandEnabled", checkSoundCommand.Checked);
-            labelPrintFinished.Text = "File:" + filePrintFinished;
-            labelPrintPaused.Text = "File:" + filePrintPaused;
-            labelError.Text = "File:" + fileError;
-            labelSoundCommand.Text = "File:" + fileSoundCommand;
+            translate();
+            Main.main.languageChanged += translate;
+        }
+        private void translate()
+        {
+            Text = Trans.T("SOUND_CONFIGURATION");
+            openFile.Title = Trans.T("L_SELECT_WAV_FILE_TO_PLAY");// Select WAV file to play
+            groupSounds.Text = Trans.T("L_SOUNDS");
+            checkError.Text = Trans.T("L_ERROR_SOUND");
+            checkPrintFinished.Text = Trans.T("L_PRINT_FINISHED_SOUND");
+            checkPrintPaused.Text = Trans.T("L_PRINT_PAUSED_SOUND");
+            checkSoundCommand.Text = Trans.T("L_SOUND_COMMAND_SOUND");
+            labelPrintFinished.Text = Trans.T1("L_FILE:X", filePrintFinished);
+            labelPrintPaused.Text = Trans.T1("L_FILE:X", filePrintPaused);
+            labelError.Text = Trans.T1("L_FILE:X", fileError);
+            labelSoundCommand.Text = Trans.T1("L_FILE:X", fileSoundCommand);
+            buttonBrowseError.Text = Trans.T("B_BROWSE");
+            buttonBrowsePrintFinsihed.Text = Trans.T("B_BROWSE");
+            buttonBrowsePrintPaused.Text = Trans.T("B_BROWSE");
+            buttonBrowseSoundCommand.Text = Trans.T("B_BROWSE");
+            buttonOK.Text = Trans.T("B_OK");
         }
         public void saveSettings()
         {
@@ -111,7 +129,7 @@ namespace RepetierHost.view
             if (openFile.ShowDialog() == DialogResult.OK)
             {
                 filePrintFinished = openFile.FileName;
-                labelPrintFinished.Text = "File:" + filePrintFinished;
+                labelPrintFinished.Text = Trans.T1("L_FILE:X", filePrintFinished);
             }
         }
 
@@ -140,7 +158,7 @@ namespace RepetierHost.view
             if (openFile.ShowDialog() == DialogResult.OK)
             {
                 filePrintPaused = openFile.FileName;
-                labelPrintPaused.Text = "File:" + filePrintPaused;
+                labelPrintPaused.Text = Trans.T1("L_FILE:X", filePrintPaused);
             }
         }
 
@@ -149,7 +167,7 @@ namespace RepetierHost.view
             if (openFile.ShowDialog() == DialogResult.OK)
             {
                 fileError = openFile.FileName;
-                labelError.Text = "File:" + fileError;
+                labelError.Text = Trans.T1("L_FILE:X", fileError);
             }
         }
 
@@ -158,7 +176,7 @@ namespace RepetierHost.view
             if (openFile.ShowDialog() == DialogResult.OK)
             {
                 fileSoundCommand = openFile.FileName;
-                labelSoundCommand.Text = "File:" + fileSoundCommand;
+                labelSoundCommand.Text = Trans.T1("L_FILE:X", fileSoundCommand);
             }
         }
     }

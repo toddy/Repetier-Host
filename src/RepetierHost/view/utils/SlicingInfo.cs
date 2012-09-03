@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using RepetierHost.model;
 
 namespace RepetierHost.view.utils
 {
@@ -47,6 +48,16 @@ namespace RepetierHost.view.utils
         public SlicingInfo()
         {
             InitializeComponent();
+            translate();
+            Main.main.languageChanged += translate;
+        }
+        void translate()
+        {
+            Text = Trans.T("W_SLICING_INFO");
+            labelAction_.Text = Trans.T("L_ACTION:");
+            labelDuration_.Text = Trans.T("L_DURATION:");
+            labelSlicer_.Text = Trans.T("L_SLICER:");
+            checkStartBoxAfterSlicing.Text = Trans.T("L_START_JOB_AFTER_SLICING");
         }
         private void ResetTimer() {
             min = sec = 0;

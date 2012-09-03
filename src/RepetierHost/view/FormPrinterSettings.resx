@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="label16.Text" xml:space="preserve">
+  <data name="labelConnectionInfo.Text" xml:space="preserve">
     <value>The printer settings always correspond to the selected printer at the top. They
 are stored with every OK or apply. To create a new printer, just enter a new
 printer name and press apply. The new printer starts with the last settings

@@ -29,28 +29,31 @@ namespace RepetierHost.model
     public class EEPROMMarlinStorage
     {
         public event OnEEPROMMarlinAdded eventAdded = null;
-        public string sx="";
-        public string sy="";
-        public string sz="";
-        public string se="";
-        public string fx="";
-        public string fy="";
-        public string fz="";
-        public string fe="";
-        public string ax="";
-        public string ay="";
-        public string az="";
-        public string ae="";
-        public string acc="";
-        public string racc="";
-        public string avs="";
-        public string avt="";
-        public string avb="";
-        public string avx="";
-        public string avz="";
+        public string sx="0";
+        public string sy="0";
+        public string sz="0";
+        public string se="0";
+        public string fx="0";
+        public string fy="0";
+        public string fz="0";
+        public string fe="0";
+        public string ax="0";
+        public string ay="0";
+        public string az="0";
+        public string ae="0";
+        public string acc="0";
+        public string racc="0";
+        public string avs="0";
+        public string avt="0";
+        public string avb="0";
+        public string avx="0";
+        public string avz="0";
         public string ppid="0";
         public string ipid="0";
         public string dpid="0";
+        public string hox = "0";
+        public string hoy = "0";
+        public string hoz = "0";
         public bool hasPID = false;
 
         bool changed = false;
@@ -179,6 +182,24 @@ namespace RepetierHost.model
                         dpid = token.Substring(1);
                     }
                 }
+                if ((token != " ") && ((token == "M206") || (mode == "M206")))
+                {
+                    mode = "M206";
+                    hasPID = true;
+                    if (token[0] == 'X')
+                    {
+                        hox = token.Substring(1);
+                    }
+                    if (token[0] == 'Y')
+                    {
+                        hoy = token.Substring(1);
+
+                    }
+                    if (token[0] == 'Z')
+                    {
+                        hoz = token.Substring(1);
+                    }
+                }
             }
             changed = false;
         }
@@ -190,12 +211,14 @@ namespace RepetierHost.model
             string cmdmacc = "M201 X" + ax + " Y" + ay + " Z" + az + " E" + ae;
             string cmdacc = "M204 S" + acc + " T" + racc;
             string cmdav = "M205 S" + avs + " T" + avt + " B" + avb + " X" + avx + " Z" + avz;
+            string cmdho = "M206 X" + hox + " Y" + hoy + " Z" + hoz;
             string cmdpid = "M301 P" + ppid + " I" + ipid + " D" + dpid;
             Main.conn.injectManualCommand(cmdsteps);
             Main.conn.injectManualCommand(cmdfeed);
             Main.conn.injectManualCommand(cmdmacc);
             Main.conn.injectManualCommand(cmdacc);
             Main.conn.injectManualCommand(cmdav);
+            Main.conn.injectManualCommand(cmdho);
             if(hasPID)
                 Main.conn.injectManualCommand(cmdpid);
             changed = false;
@@ -309,6 +332,21 @@ namespace RepetierHost.model
         {
             get { return dpid; }
             set { if (dpid.Equals(value)) return; dpid = value; changed = true; }
+        }
+        public string HOX
+        {
+            get { return hox; }
+            set { if (hox.Equals(value)) return; hox = value; changed = true; }
+        }
+        public string HOY
+        {
+            get { return hoy; }
+            set { if (hoy.Equals(value)) return; hoy = value; changed = true; }
+        }
+        public string HOZ
+        {
+            get { return hoz; }
+            set { if (hoz.Equals(value)) return; hoz = value; changed = true; }
         }
         public void SaveToEEPROM()
         {

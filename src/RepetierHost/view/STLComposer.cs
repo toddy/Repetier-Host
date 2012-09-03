@@ -22,10 +22,10 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using RepetierHost.model;
 using System.Globalization;
 using System.IO;
 using OpenTK;
+using RepetierHost.model;
 
 namespace RepetierHost.view
 {
@@ -51,8 +51,28 @@ namespace RepetierHost.view
                 cont.eventObjectSelected += objectSelected;
                 cont.autoupdateable = true;
                 updateEnabled();
+                if (Main.main != null)
+                {
+                    Main.main.languageChanged += translate;
+                    translate();
+                }
             }
             catch { }
+        }
+        public void translate()
+        {
+            labelTranslation.Text = Trans.T("L_TRANSLATION:");
+            labelScale.Text = Trans.T("L_SCALE:");
+            labelRotate.Text = Trans.T("L_ROTATE:");
+            labelSTLObjects.Text = Trans.T("L_STL_OBJECTS");
+            buttonSave.Text = Trans.T("B_SAVE_AS_STL");
+            buttonRemoveSTL.Text = Trans.T("B_REMOVE_STL_OBJECT");
+            buttonAddSTL.Text = Trans.T("B_ADD_STL_OBJECT");
+            buttonAutoplace.Text = Trans.T("B_AUTOPOSITION");
+            buttonLand.Text = Trans.T("B_DROP_OBJECT");
+            buttonCopyObjects.Text = Trans.T("B_COPY_OBJECTS");
+            buttonCenter.Text = Trans.T("B_CENTER_OBJECT");
+            checkScaleAll.Text = Trans.T("L_LOCK_ASPECT_RATIO");
         }
         public void Update3D()
         {
@@ -89,7 +109,8 @@ namespace RepetierHost.view
                 buttonCenter.Enabled = false;
                 buttonAutoplace.Enabled = listSTLObjects.Items.Count > 1;
                 buttonLand.Enabled = n > 0;
-                Main.main.threedview.SetObjectSelected(n > 0);
+                if(Main.main.threedview!=null)
+                    Main.main.threedview.SetObjectSelected(n > 0);
                 buttonCopyObjects.Enabled = n>0;
             }
             else
@@ -108,7 +129,8 @@ namespace RepetierHost.view
                 textTransZ.Enabled = true;
                 buttonCenter.Enabled = true;
                 buttonLand.Enabled = true;
-                Main.main.threedview.SetObjectSelected(true);
+                if (Main.main.threedview != null)
+                    Main.main.threedview.SetObjectSelected(true);
             }
             buttonRemoveSTL.Enabled = n!=0;
             buttonSlice.Enabled = listSTLObjects.Items.Count > 0;

@@ -48,6 +48,64 @@ namespace RepetierHost.view
             threedKey = repetierKey.CreateSubKey("3D");
             if (comboFilamentVisualization.SelectedIndex < 0) comboFilamentVisualization.SelectedIndex = 1;
             RegistryToForm();
+            translate();
+            Main.main.languageChanged += translate;
+        }
+        public void translate()
+        {
+            Text = Trans.T("W_3D_VISUALIZATION_SETTINGS");
+            groupColors.Text = Trans.T("L_COLORS");
+            groupColors2.Text = Trans.T("L_COLORS");
+            groupEditor.Text = Trans.T("L_EDITOR");
+            groupPrintbed.Text = Trans.T("L_PRINTBED");
+            groupVisualization.Text = Trans.T("L_VISUALIZATION");
+            labelAmbientColor.Text = Trans.T("L_AMBIENT_COLOR");
+            labelBackground.Text = Trans.T("L_BACKGROUND");
+            labelDiffuseColor.Text = Trans.T("L_DIFFUSE_COLOR");
+            labelDrawMethod.Text = Trans.T("L_DRAW_METHOD");
+            labelEdges.Text = Trans.T("L_EDGES");
+            labelExtruder1.Text = Trans.T1("L_EXTRUDER_X:", "1");
+            labelExtruder2.Text = Trans.T1("L_EXTRUDER_X:", "2");
+            labelExtruder3.Text = Trans.T1("L_EXTRUDER_X:", "3");
+            labelFaces.Text = Trans.T("L_FACES");
+            labelFilamentVisInfo.Text = Trans.T("L_FILAMENT_VISUALIZATION_INFO");
+            labelFilamentVisualization.Text = Trans.T("L_FILAMENT_VISUALIZATION");
+            labelHotFilament.Text = Trans.T("L_HOT_FILAMENT");
+            labelHotFilamentLength.Text = Trans.T("L_HOT_FILAMENT_LENGTH");
+            labelLight1.Text = Trans.T1("L_LIGHT_X", "1");
+            labelLight2.Text = Trans.T1("L_LIGHT_X", "2");
+            labelLight3.Text = Trans.T1("L_LIGHT_X", "3");
+            labelLight4.Text = Trans.T1("L_LIGHT_X", "4");
+            labelObjectsOutsidePrintbed.Text = Trans.T("L_OBJECTS_OUTSIDE_PRINTBED");
+            labelPrinterBase.Text = Trans.T("L_PRINTER_BASE");
+            labelSelectedFaces.Text = Trans.T("L_SELECTED_FACES");
+            labelSelectedFilament.Text = Trans.T("L_SELECTED_FILAMENT");
+            labelSpecularColor.Text = Trans.T("L_SPECULAR_COLOR");
+            labelWidthOverThickness.Text = Trans.T("L_WIDTH_OVER_THICKNESS");
+            labelXDirection.Text = Trans.T("L_X_DIRECTION");
+            labelYDirection.Text = Trans.T("L_Y_DIRECTION");
+            labelZDirection.Text = Trans.T("L_Z_DIRECTION");
+            checkDisableFilamentVisualization.Text = Trans.T("L_DISABLE_FILAMENT_VISUALIZATION");
+            enableLight1.Text = enableLight2.Text = enableLight3.Text = enableLight4.Text = Trans.T("L_ENABLE_LIGHT");
+            showEdges.Text = Trans.T("L_SHOW_EDGES");
+            showFaces.Text = Trans.T("L_SHOW_FACES");
+            showPrintbed.Text = Trans.T("L_SHOW_PRINTBED");
+            pulseOutside.Text = Trans.T("L_PULSE_OBJECT_IF_NOT_PRINTABLE");
+            tabGeneral.Text = Trans.T("TAB_GENERAL");
+            tabFilament.Text = Trans.T("TAB_FILAMENT");
+            tabModel.Text = Trans.T("TAB_MODEL");
+            tabLights.Text = Trans.T("TAB_LIGHTS");
+            radioHeight.Text = Trans.T("L_LAYER_HEIGHT");
+            radioDiameter.Text = Trans.T("L_FILAMENT_DIAMETER");
+            /* Autodetect best
+VBOs (fastest)
+Arrays (medium)
+Immediate (slow)*/
+            comboDrawMethod.Items[0] = Trans.T("L_DRAW_METHOD_AUTODETECT");
+            comboDrawMethod.Items[1] = Trans.T("L_DRAW_METHOD_VBOS");
+            comboDrawMethod.Items[2] = Trans.T("L_DRAW_METHOD_ARRAYS");
+            comboDrawMethod.Items[3] = Trans.T("L_DRAW_METHOD_IMMEDIATE");
+            buttonOK.Text = Trans.T("B_OK");
         }
         public int filamentVisualization
         {
@@ -280,7 +338,7 @@ namespace RepetierHost.view
             }
             catch
             {
-                errorProvider.SetError(box, "Not a number.");
+                errorProvider.SetError(box, Trans.T("L_NOT_A_NUMBER"));
             }
         }
 

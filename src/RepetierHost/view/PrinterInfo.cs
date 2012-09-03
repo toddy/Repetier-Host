@@ -36,6 +36,23 @@ namespace RepetierHost.view
             InitializeComponent();
             RegMemory.RestoreWindowPos("printerInfoWindow", this);
             timer_Tick(null, null);
+            translate();
+            Main.main.languageChanged += translate;
+        }
+        private void translate()
+        {
+            Text = Trans.T("W_PRINTER_INFO");
+            groupConnectionInformation.Text = Trans.T("L_CONNECTION_INFORMATION");
+            groupPrinterData.Text = Trans.T("L_PRINTER_DATA");
+            labBytesSend.Text = Trans.T("L_BYTES_SEND:");
+            labErrorsReceived.Text = Trans.T("L_ERRORS_RECEIVED:");
+            labFirmware.Text = Trans.T("L_FIRMWARE:");
+            labFirmwareURL.Text = Trans.T("L_FIRMWARE_URL:");
+            labLinesSend.Text = Trans.T("L_LINES_SEND:");
+            labMachineType.Text = Trans.T("L_MACHINE_TYPE:");
+            labNumberExtruder.Text = Trans.T("L_NUMBER_EXTRUDER:");
+            labProtocol.Text = Trans.T("L_PROTOCOL:");
+            buttonClose.Text = Trans.T("B_CLOSE");
         }
         /// <summary>
         /// Update the informations every second.

@@ -49,7 +49,7 @@ namespace RepetierHost.model
 
         public void BeginJob()
         {
-            con.firePrinterAction("Building print job...");
+            con.firePrinterAction(Trans.T("L_BUILDING_PRINT_JOB...")); //"Building print job...");
             dataComplete = false;
             jobList.Clear();
             //times.Clear();
@@ -68,22 +68,25 @@ namespace RepetierHost.model
             if (jobList.Count == 0)
             {
                 mode = 0;
-                con.firePrinterAction("Idle");
+                con.firePrinterAction(Trans.T("L_IDLE"));
                 Main.main.Invoke(Main.main.UpdateJobButtons);
                 Main.main.printPanel.Invoke(Main.main.printPanel.SetStatusJobFinished);
                 return;
             }
             dataComplete = true;
             jobStarted = DateTime.Now;
-            con.firePrinterAction("Printing...");
+            con.firePrinterAction(Trans.T("L_PRINTING..."));
         }
         public void KillJob()
         {
-            if (dataComplete == false && jobList.Count == 0) return;
-            dataComplete = false;
-            jobFinished = DateTime.Now;
-            jobList.Clear();
             mode = 3;
+            lock (jobList)
+            {
+                if (dataComplete == false && jobList.Count == 0) return;
+                dataComplete = false;
+                jobFinished = DateTime.Now;
+                jobList.Clear();
+            }
             exclusive = false;
             con.injectManualCommandFirst("M29");
             foreach (GCodeShort code in Main.main.editor.getContentArray(3))
@@ -91,9 +94,9 @@ namespace RepetierHost.model
                 con.injectManualCommand(code.text);
             }
             Main.main.Invoke(Main.main.UpdateJobButtons);
-            con.firePrinterAction("Job killed");
+            con.firePrinterAction(Trans.T("L_JOB_KILLED")); //"Job killed");
             DoEndKillActions();
-            Main.main.printPanel.Status = PrinterStatus.jobKilled;
+            Main.main.printPanel.Invoke(Main.main.printPanel.SetStatusJobKilled);
         }
         public void DoEndKillActions()
         {
@@ -164,25 +167,30 @@ namespace RepetierHost.model
         }
         public GCode PopData()
         {
-            if (jobList.Count == 0) return null;
             GCode gc = null;
-            try
+            bool finished = false;
+            lock (jobList)
             {
-                gc = jobList.First.Value;
-                jobList.RemoveFirst();
-                linesSend++;
-                /*PrintTime pt = new PrintTime();
-                pt.line = linesSend;
-                pt.time = DateTime.Now.Ticks;
-                lock (times)
+                if (jobList.Count == 0) return null;
+                try
                 {
-                    times.AddLast(pt);
-                    if (times.Count > 1500)
-                        times.RemoveFirst();
-                }*/
+                    gc = jobList.First.Value;
+                    jobList.RemoveFirst();
+                    linesSend++;
+                    /*PrintTime pt = new PrintTime();
+                    pt.line = linesSend;
+                    pt.time = DateTime.Now.Ticks;
+                    lock (times)
+                    {
+                        times.AddLast(pt);
+                        if (times.Count > 1500)
+                            times.RemoveFirst();
+                    }*/
+                }
+                catch { };
+                finished = jobList.Count == 0 && mode != 3;
             }
-            catch { };
-            if (jobList.Count == 0)
+            if (finished)
             {
                 dataComplete = false;
                 mode = 2;
@@ -193,23 +201,20 @@ namespace RepetierHost.model
                 long min = ticks / 60000;
                 ticks -= 60000 * min;
                 long sec = ticks / 1000;
-                Main.conn.log("Printjob finished at " + jobFinished.ToShortDateString()+" "+jobFinished.ToShortTimeString(),false,3);
+                //Main.conn.log("Printjob finished at " + jobFinished.ToShortDateString()+" "+jobFinished.ToShortTimeString(),false,3);
+                Main.conn.log(Trans.T1("L_PRINTJOB_FINISHED_AT",jobFinished.ToShortDateString() + " " + jobFinished.ToShortTimeString()), false, 3);
                 StringBuilder s = new StringBuilder();
                 if (hours > 0)
-                {
-                    s.Append(hours);
-                    s.Append("h:");
-                }
+                    s.Append(Trans.T1("L_TIME_H:",hours.ToString())); //"h:");
                 if (min > 0)
-                {
-                    s.Append(min);
-                    s.Append("m:");
-                }
-                s.Append(sec);
-                s.Append("s");
-                Main.conn.log("printing time:"+s.ToString(),false,3);
-                Main.conn.log("lines send:" + linesSend.ToString(), false, 3);
-                Main.conn.firePrinterAction("Finished in "+s.ToString());
+                    s.Append(Trans.T1("L_TIME_M:",min.ToString()));
+                s.Append(Trans.T1("L_TIME_S",sec.ToString()));
+                //Main.conn.log("Printing time:"+s.ToString(),false,3);
+                //Main.conn.log("Lines send:" + linesSend.ToString(), false, 3);
+                //Main.conn.firePrinterAction("Finished in "+s.ToString());
+                Main.conn.log(Trans.T1("L_PRINTING_TIME:",s.ToString()), false, 3);
+                Main.conn.log(Trans.T1("L_LINES_SEND:X",linesSend.ToString()), false, 3);
+                Main.conn.firePrinterAction(Trans.T1("L_FINISHED_IN",s.ToString()));
                 DoEndKillActions();
                 Main.main.Invoke(Main.main.UpdateJobButtons);
                 Main.main.printPanel.Invoke(Main.main.printPanel.SetStatusJobFinished);
@@ -248,17 +253,10 @@ namespace RepetierHost.model
                     long sec = ticks / 1000;
                     StringBuilder s = new StringBuilder();
                     if (hours > 0)
-                    {
-                        s.Append(hours);
-                        s.Append("h:");
-                    }
+                        s.Append(Trans.T1("L_TIME_H:", hours.ToString())); //"h:");
                     if (min > 0)
-                    {
-                        s.Append(min);
-                        s.Append("m:");
-                    }
-                    s.Append(sec);
-                    s.Append("s");
+                        s.Append(Trans.T1("L_TIME_M:", min.ToString()));
+                    s.Append(Trans.T1("L_TIME_S", sec.ToString()));
                     return s.ToString();
                 }
                 catch

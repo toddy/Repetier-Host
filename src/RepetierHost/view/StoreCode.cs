@@ -41,8 +41,19 @@ namespace RepetierHost.view
         public StoreCode()
         {
             InitializeComponent();
+            translate();
+            Main.main.languageChanged += translate;
         }
-
+        private void translate()
+        {
+            Text = Trans.T("W_SAVE_GCODE_DIRECT_PRINT");
+            labelSaveDirectInfo.Text = Trans.T("L_SAVE_DIRECT_INFO");
+            checkBinary.Text = Trans.T("L_SAVE_AS_BINARY");
+            checkIncludeJobFinished.Text = Trans.T("L_INCLUDE_JOB_FINISHED_COMMANDS");
+            checkIncludeStartEnd.Text = Trans.T("L_INCLUDE_START_END_CODE");
+            buttonCancel.Text = Trans.T("B_CANCEL");
+            buttonSave.Text = Trans.T("B_SAVE");
+        }
         private void buttonSave_Click(object sender, EventArgs e)
         {
             Hide();

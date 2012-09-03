@@ -32,13 +32,13 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ThreeDControl));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolRotate = new System.Windows.Forms.ToolStripButton();
-            this.toolMove = new System.Windows.Forms.ToolStripButton();
             this.toolMoveViewpoint = new System.Windows.Forms.ToolStripButton();
+            this.toolMove = new System.Windows.Forms.ToolStripButton();
+            this.toolMoveObject = new System.Windows.Forms.ToolStripButton();
             this.toolZoom = new System.Windows.Forms.ToolStripButton();
             this.toolResetView = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolTopView = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolMoveObject = new System.Windows.Forms.ToolStripButton();
             this.toolStripClear = new System.Windows.Forms.ToolStripButton();
             this.gl = new RepetierHost.view.utils.RHOpenGL();
             this.timer = new System.Windows.Forms.Timer(this.components);
@@ -57,7 +57,7 @@
             this.toolMoveObject,
             this.toolZoom,
             this.toolResetView,
-            this.toolStripButton1,
+            this.toolTopView,
             this.toolStripSeparator1,
             this.toolStripClear});
             this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.VerticalStackWithOverflow;
@@ -79,6 +79,16 @@
             this.toolRotate.Text = "Rotate";
             this.toolRotate.Click += new System.EventHandler(this.toolRotate_Click);
             // 
+            // toolMoveViewpoint
+            // 
+            this.toolMoveViewpoint.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolMoveViewpoint.Image = ((System.Drawing.Image)(resources.GetObject("toolMoveViewpoint.Image")));
+            this.toolMoveViewpoint.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolMoveViewpoint.Name = "toolMoveViewpoint";
+            this.toolMoveViewpoint.Size = new System.Drawing.Size(34, 36);
+            this.toolMoveViewpoint.Text = "Move viewpoint";
+            this.toolMoveViewpoint.Click += new System.EventHandler(this.toolMoveViewpoint_Click);
+            // 
             // toolMove
             // 
             this.toolMove.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -89,15 +99,15 @@
             this.toolMove.Text = "Move camera";
             this.toolMove.Click += new System.EventHandler(this.toolMove_Click);
             // 
-            // toolMoveViewpoint
+            // toolMoveObject
             // 
-            this.toolMoveViewpoint.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolMoveViewpoint.Image = ((System.Drawing.Image)(resources.GetObject("toolMoveViewpoint.Image")));
-            this.toolMoveViewpoint.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolMoveViewpoint.Name = "toolMoveViewpoint";
-            this.toolMoveViewpoint.Size = new System.Drawing.Size(34, 36);
-            this.toolMoveViewpoint.Text = "Move viewpoint";
-            this.toolMoveViewpoint.Click += new System.EventHandler(this.toolMoveViewpoint_Click);
+            this.toolMoveObject.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolMoveObject.Image = ((System.Drawing.Image)(resources.GetObject("toolMoveObject.Image")));
+            this.toolMoveObject.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolMoveObject.Name = "toolMoveObject";
+            this.toolMoveObject.Size = new System.Drawing.Size(34, 36);
+            this.toolMoveObject.Text = "Move object";
+            this.toolMoveObject.Click += new System.EventHandler(this.toolMoveObject_Click);
             // 
             // toolZoom
             // 
@@ -119,30 +129,20 @@
             this.toolResetView.Text = "Reset view";
             this.toolResetView.Click += new System.EventHandler(this.toolResetView_Click);
             // 
-            // toolStripButton1
+            // toolTopView
             // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(34, 36);
-            this.toolStripButton1.Text = "Top view";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            this.toolTopView.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolTopView.Image = ((System.Drawing.Image)(resources.GetObject("toolTopView.Image")));
+            this.toolTopView.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolTopView.Name = "toolTopView";
+            this.toolTopView.Size = new System.Drawing.Size(34, 36);
+            this.toolTopView.Text = "Top view";
+            this.toolTopView.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(34, 6);
-            // 
-            // toolMoveObject
-            // 
-            this.toolMoveObject.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolMoveObject.Image = ((System.Drawing.Image)(resources.GetObject("toolMoveObject.Image")));
-            this.toolMoveObject.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolMoveObject.Name = "toolMoveObject";
-            this.toolMoveObject.Size = new System.Drawing.Size(34, 36);
-            this.toolMoveObject.Text = "Move object";
-            this.toolMoveObject.Click += new System.EventHandler(this.toolMoveObject_Click);
             // 
             // toolStripClear
             // 
@@ -207,6 +207,6 @@
         private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.ToolStripButton toolStripClear;
         public RepetierHost.view.utils.RHOpenGL gl;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton toolTopView;
     }
 }

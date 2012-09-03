@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SoundConfig));
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupSounds = new System.Windows.Forms.GroupBox();
             this.buttonPlaySoundCommand = new System.Windows.Forms.Button();
             this.buttonPlayError = new System.Windows.Forms.Button();
             this.buttonPlayPrintPaused = new System.Windows.Forms.Button();
@@ -48,33 +48,33 @@
             this.checkPrintFinished = new System.Windows.Forms.CheckBox();
             this.buttonOK = new System.Windows.Forms.Button();
             this.openFile = new System.Windows.Forms.OpenFileDialog();
-            this.groupBox1.SuspendLayout();
+            this.groupSounds.SuspendLayout();
             this.SuspendLayout();
             // 
-            // groupBox1
+            // groupSounds
             // 
-            this.groupBox1.Controls.Add(this.buttonPlaySoundCommand);
-            this.groupBox1.Controls.Add(this.buttonPlayError);
-            this.groupBox1.Controls.Add(this.buttonPlayPrintPaused);
-            this.groupBox1.Controls.Add(this.buttonPlayPrintFinished);
-            this.groupBox1.Controls.Add(this.buttonBrowseSoundCommand);
-            this.groupBox1.Controls.Add(this.buttonBrowseError);
-            this.groupBox1.Controls.Add(this.buttonBrowsePrintPaused);
-            this.groupBox1.Controls.Add(this.buttonBrowsePrintFinsihed);
-            this.groupBox1.Controls.Add(this.labelSoundCommand);
-            this.groupBox1.Controls.Add(this.labelError);
-            this.groupBox1.Controls.Add(this.labelPrintPaused);
-            this.groupBox1.Controls.Add(this.labelPrintFinished);
-            this.groupBox1.Controls.Add(this.checkSoundCommand);
-            this.groupBox1.Controls.Add(this.checkError);
-            this.groupBox1.Controls.Add(this.checkPrintPaused);
-            this.groupBox1.Controls.Add(this.checkPrintFinished);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(581, 192);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Sounds";
+            this.groupSounds.Controls.Add(this.buttonPlaySoundCommand);
+            this.groupSounds.Controls.Add(this.buttonPlayError);
+            this.groupSounds.Controls.Add(this.buttonPlayPrintPaused);
+            this.groupSounds.Controls.Add(this.buttonPlayPrintFinished);
+            this.groupSounds.Controls.Add(this.buttonBrowseSoundCommand);
+            this.groupSounds.Controls.Add(this.buttonBrowseError);
+            this.groupSounds.Controls.Add(this.buttonBrowsePrintPaused);
+            this.groupSounds.Controls.Add(this.buttonBrowsePrintFinsihed);
+            this.groupSounds.Controls.Add(this.labelSoundCommand);
+            this.groupSounds.Controls.Add(this.labelError);
+            this.groupSounds.Controls.Add(this.labelPrintPaused);
+            this.groupSounds.Controls.Add(this.labelPrintFinished);
+            this.groupSounds.Controls.Add(this.checkSoundCommand);
+            this.groupSounds.Controls.Add(this.checkError);
+            this.groupSounds.Controls.Add(this.checkPrintPaused);
+            this.groupSounds.Controls.Add(this.checkPrintFinished);
+            this.groupSounds.Location = new System.Drawing.Point(12, 12);
+            this.groupSounds.Name = "groupSounds";
+            this.groupSounds.Size = new System.Drawing.Size(581, 192);
+            this.groupSounds.TabIndex = 0;
+            this.groupSounds.TabStop = false;
+            this.groupSounds.Text = "Sounds";
             // 
             // buttonPlaySoundCommand
             // 
@@ -118,9 +118,9 @@
             // 
             // buttonBrowseSoundCommand
             // 
-            this.buttonBrowseSoundCommand.Location = new System.Drawing.Point(423, 140);
+            this.buttonBrowseSoundCommand.Location = new System.Drawing.Point(400, 140);
             this.buttonBrowseSoundCommand.Name = "buttonBrowseSoundCommand";
-            this.buttonBrowseSoundCommand.Size = new System.Drawing.Size(75, 23);
+            this.buttonBrowseSoundCommand.Size = new System.Drawing.Size(98, 23);
             this.buttonBrowseSoundCommand.TabIndex = 2;
             this.buttonBrowseSoundCommand.Text = "Browse";
             this.buttonBrowseSoundCommand.UseVisualStyleBackColor = true;
@@ -128,9 +128,9 @@
             // 
             // buttonBrowseError
             // 
-            this.buttonBrowseError.Location = new System.Drawing.Point(423, 100);
+            this.buttonBrowseError.Location = new System.Drawing.Point(400, 100);
             this.buttonBrowseError.Name = "buttonBrowseError";
-            this.buttonBrowseError.Size = new System.Drawing.Size(75, 23);
+            this.buttonBrowseError.Size = new System.Drawing.Size(98, 23);
             this.buttonBrowseError.TabIndex = 2;
             this.buttonBrowseError.Text = "Browse";
             this.buttonBrowseError.UseVisualStyleBackColor = true;
@@ -138,9 +138,9 @@
             // 
             // buttonBrowsePrintPaused
             // 
-            this.buttonBrowsePrintPaused.Location = new System.Drawing.Point(424, 60);
+            this.buttonBrowsePrintPaused.Location = new System.Drawing.Point(401, 60);
             this.buttonBrowsePrintPaused.Name = "buttonBrowsePrintPaused";
-            this.buttonBrowsePrintPaused.Size = new System.Drawing.Size(75, 23);
+            this.buttonBrowsePrintPaused.Size = new System.Drawing.Size(98, 23);
             this.buttonBrowsePrintPaused.TabIndex = 2;
             this.buttonBrowsePrintPaused.Text = "Browse";
             this.buttonBrowsePrintPaused.UseVisualStyleBackColor = true;
@@ -148,9 +148,9 @@
             // 
             // buttonBrowsePrintFinsihed
             // 
-            this.buttonBrowsePrintFinsihed.Location = new System.Drawing.Point(424, 20);
+            this.buttonBrowsePrintFinsihed.Location = new System.Drawing.Point(401, 20);
             this.buttonBrowsePrintFinsihed.Name = "buttonBrowsePrintFinsihed";
-            this.buttonBrowsePrintFinsihed.Size = new System.Drawing.Size(75, 23);
+            this.buttonBrowsePrintFinsihed.Size = new System.Drawing.Size(98, 23);
             this.buttonBrowsePrintFinsihed.TabIndex = 2;
             this.buttonBrowsePrintFinsihed.Text = "Browse";
             this.buttonBrowsePrintFinsihed.UseVisualStyleBackColor = true;
@@ -255,19 +255,19 @@
             this.ClientSize = new System.Drawing.Size(605, 272);
             this.ControlBox = false;
             this.Controls.Add(this.buttonOK);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.groupSounds);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SoundConfig";
             this.Text = "Sound configuration";
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.groupSounds.ResumeLayout(false);
+            this.groupSounds.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupSounds;
         private System.Windows.Forms.Button buttonPlaySoundCommand;
         private System.Windows.Forms.Button buttonPlayError;
         private System.Windows.Forms.Button buttonPlayPrintPaused;

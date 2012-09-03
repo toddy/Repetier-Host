@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EEPROMMarlin));
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelStepsPerMM = new System.Windows.Forms.Label();
             this.xstepsbox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -43,7 +43,7 @@
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonRestore = new System.Windows.Forms.Button();
             this.buttonAbort = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
+            this.labelMaxFeedrate = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -52,7 +52,7 @@
             this.yfeedbox = new System.Windows.Forms.TextBox();
             this.zfeedbox = new System.Windows.Forms.TextBox();
             this.efeedbox = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
+            this.labelMaxAcceleration = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
@@ -63,17 +63,17 @@
             this.maccebox = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.mzjerkbox = new System.Windows.Forms.TextBox();
-            this.label23 = new System.Windows.Forms.Label();
+            this.labelMaxZJerk = new System.Windows.Forms.Label();
             this.maxxyjerkbox = new System.Windows.Forms.TextBox();
-            this.label22 = new System.Windows.Forms.Label();
+            this.labelMaxXYJerk = new System.Windows.Forms.Label();
             this.minsegtbox = new System.Windows.Forms.TextBox();
-            this.label21 = new System.Windows.Forms.Label();
+            this.labelMinSegmentTime = new System.Windows.Forms.Label();
             this.mintfeedbox = new System.Windows.Forms.TextBox();
-            this.label20 = new System.Windows.Forms.Label();
+            this.labelMinTravelFeedrate = new System.Windows.Forms.Label();
             this.minfeedbox = new System.Windows.Forms.TextBox();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
+            this.labelMinFeedrate = new System.Windows.Forms.Label();
+            this.labelAdvancedVariables = new System.Windows.Forms.Label();
+            this.labelPIDSettings = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
@@ -81,29 +81,36 @@
             this.ipidbox = new System.Windows.Forms.TextBox();
             this.dpidbox = new System.Windows.Forms.TextBox();
             this.accbox = new System.Windows.Forms.TextBox();
-            this.lable17 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
+            this.lableRetractAcceleration = new System.Windows.Forms.Label();
+            this.labelAcceleration = new System.Windows.Forms.Label();
             this.raccbox = new System.Windows.Forms.TextBox();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.hozbox = new System.Windows.Forms.TextBox();
+            this.hoybox = new System.Windows.Forms.TextBox();
+            this.hoxbox = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
+            this.labelHomingOffset = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
             // 
-            // label1
+            // labelStepsPerMM
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(74, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Steps per mm:";
+            this.labelStepsPerMM.AutoSize = true;
+            this.labelStepsPerMM.Location = new System.Drawing.Point(12, 9);
+            this.labelStepsPerMM.Name = "labelStepsPerMM";
+            this.labelStepsPerMM.Size = new System.Drawing.Size(74, 13);
+            this.labelStepsPerMM.TabIndex = 0;
+            this.labelStepsPerMM.Text = "Steps per mm:";
             // 
             // xstepsbox
             // 
             this.xstepsbox.Location = new System.Drawing.Point(207, 6);
             this.xstepsbox.Name = "xstepsbox";
             this.xstepsbox.Size = new System.Drawing.Size(63, 20);
-            this.xstepsbox.TabIndex = 1;
+            this.xstepsbox.TabIndex = 0;
             this.xstepsbox.Validating += new System.ComponentModel.CancelEventHandler(this.floatPos_Validating);
             // 
             // label2
@@ -129,7 +136,7 @@
             this.ystepsbox.Location = new System.Drawing.Point(299, 6);
             this.ystepsbox.Name = "ystepsbox";
             this.ystepsbox.Size = new System.Drawing.Size(63, 20);
-            this.ystepsbox.TabIndex = 4;
+            this.ystepsbox.TabIndex = 1;
             this.ystepsbox.Validating += new System.ComponentModel.CancelEventHandler(this.floatPos_Validating);
             // 
             // label4
@@ -146,7 +153,7 @@
             this.zstepsbox.Location = new System.Drawing.Point(391, 6);
             this.zstepsbox.Name = "zstepsbox";
             this.zstepsbox.Size = new System.Drawing.Size(63, 20);
-            this.zstepsbox.TabIndex = 6;
+            this.zstepsbox.TabIndex = 2;
             this.zstepsbox.Validating += new System.ComponentModel.CancelEventHandler(this.floatPos_Validating);
             // 
             // label5
@@ -163,35 +170,35 @@
             this.estepsbox.Location = new System.Drawing.Point(483, 6);
             this.estepsbox.Name = "estepsbox";
             this.estepsbox.Size = new System.Drawing.Size(63, 20);
-            this.estepsbox.TabIndex = 8;
+            this.estepsbox.TabIndex = 3;
             this.estepsbox.Validating += new System.ComponentModel.CancelEventHandler(this.floatPos_Validating);
             // 
             // buttonLoad
             // 
             this.buttonLoad.Location = new System.Drawing.Point(15, 356);
             this.buttonLoad.Name = "buttonLoad";
-            this.buttonLoad.Size = new System.Drawing.Size(95, 22);
-            this.buttonLoad.TabIndex = 9;
+            this.buttonLoad.Size = new System.Drawing.Size(149, 22);
+            this.buttonLoad.TabIndex = 20;
             this.buttonLoad.Text = "Reload Config";
             this.buttonLoad.UseVisualStyleBackColor = true;
             this.buttonLoad.Click += new System.EventHandler(this.buttonLoad_Click);
             // 
             // buttonSave
             // 
-            this.buttonSave.Location = new System.Drawing.Point(372, 357);
+            this.buttonSave.Location = new System.Drawing.Point(349, 357);
             this.buttonSave.Name = "buttonSave";
-            this.buttonSave.Size = new System.Drawing.Size(105, 22);
-            this.buttonSave.TabIndex = 10;
+            this.buttonSave.Size = new System.Drawing.Size(128, 22);
+            this.buttonSave.TabIndex = 22;
             this.buttonSave.Text = "Save to EEPROM";
             this.buttonSave.UseVisualStyleBackColor = true;
             this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
             // buttonRestore
             // 
-            this.buttonRestore.Location = new System.Drawing.Point(116, 355);
+            this.buttonRestore.Location = new System.Drawing.Point(170, 357);
             this.buttonRestore.Name = "buttonRestore";
-            this.buttonRestore.Size = new System.Drawing.Size(141, 23);
-            this.buttonRestore.TabIndex = 11;
+            this.buttonRestore.Size = new System.Drawing.Size(173, 23);
+            this.buttonRestore.TabIndex = 21;
             this.buttonRestore.Text = "Restore factory settings";
             this.buttonRestore.UseVisualStyleBackColor = true;
             this.buttonRestore.Click += new System.EventHandler(this.buttonRestore_Click);
@@ -201,19 +208,19 @@
             this.buttonAbort.Location = new System.Drawing.Point(496, 356);
             this.buttonAbort.Name = "buttonAbort";
             this.buttonAbort.Size = new System.Drawing.Size(95, 23);
-            this.buttonAbort.TabIndex = 12;
+            this.buttonAbort.TabIndex = 23;
             this.buttonAbort.Text = "Cancel";
             this.buttonAbort.UseVisualStyleBackColor = true;
             this.buttonAbort.Click += new System.EventHandler(this.buttonAbort_Click_1);
             // 
-            // label6
+            // labelMaxFeedrate
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 35);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(136, 13);
-            this.label6.TabIndex = 13;
-            this.label6.Text = "Maximum feedrates [mm/s]:";
+            this.labelMaxFeedrate.AutoSize = true;
+            this.labelMaxFeedrate.Location = new System.Drawing.Point(12, 35);
+            this.labelMaxFeedrate.Name = "labelMaxFeedrate";
+            this.labelMaxFeedrate.Size = new System.Drawing.Size(136, 13);
+            this.labelMaxFeedrate.TabIndex = 13;
+            this.labelMaxFeedrate.Text = "Maximum feedrates [mm/s]:";
             // 
             // label7
             // 
@@ -256,7 +263,7 @@
             this.xfeedbox.Location = new System.Drawing.Point(207, 32);
             this.xfeedbox.Name = "xfeedbox";
             this.xfeedbox.Size = new System.Drawing.Size(63, 20);
-            this.xfeedbox.TabIndex = 18;
+            this.xfeedbox.TabIndex = 4;
             this.xfeedbox.Validating += new System.ComponentModel.CancelEventHandler(this.floatPos_Validating);
             // 
             // yfeedbox
@@ -264,7 +271,7 @@
             this.yfeedbox.Location = new System.Drawing.Point(299, 32);
             this.yfeedbox.Name = "yfeedbox";
             this.yfeedbox.Size = new System.Drawing.Size(63, 20);
-            this.yfeedbox.TabIndex = 19;
+            this.yfeedbox.TabIndex = 5;
             this.yfeedbox.Validating += new System.ComponentModel.CancelEventHandler(this.floatPos_Validating);
             // 
             // zfeedbox
@@ -272,7 +279,7 @@
             this.zfeedbox.Location = new System.Drawing.Point(391, 32);
             this.zfeedbox.Name = "zfeedbox";
             this.zfeedbox.Size = new System.Drawing.Size(63, 20);
-            this.zfeedbox.TabIndex = 20;
+            this.zfeedbox.TabIndex = 6;
             this.zfeedbox.Validating += new System.ComponentModel.CancelEventHandler(this.floatPos_Validating);
             // 
             // efeedbox
@@ -280,17 +287,17 @@
             this.efeedbox.Location = new System.Drawing.Point(483, 32);
             this.efeedbox.Name = "efeedbox";
             this.efeedbox.Size = new System.Drawing.Size(63, 20);
-            this.efeedbox.TabIndex = 21;
+            this.efeedbox.TabIndex = 7;
             this.efeedbox.Validating += new System.ComponentModel.CancelEventHandler(this.floatPos_Validating);
             // 
-            // label11
+            // labelMaxAcceleration
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(12, 61);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(154, 13);
-            this.label11.TabIndex = 22;
-            this.label11.Text = "Maximum Acceleration [mm/s²]:";
+            this.labelMaxAcceleration.AutoSize = true;
+            this.labelMaxAcceleration.Location = new System.Drawing.Point(12, 61);
+            this.labelMaxAcceleration.Name = "labelMaxAcceleration";
+            this.labelMaxAcceleration.Size = new System.Drawing.Size(154, 13);
+            this.labelMaxAcceleration.TabIndex = 22;
+            this.labelMaxAcceleration.Text = "Maximum Acceleration [mm/s²]:";
             // 
             // label12
             // 
@@ -333,7 +340,7 @@
             this.maccxbox.Location = new System.Drawing.Point(207, 58);
             this.maccxbox.Name = "maccxbox";
             this.maccxbox.Size = new System.Drawing.Size(63, 20);
-            this.maccxbox.TabIndex = 27;
+            this.maccxbox.TabIndex = 8;
             this.maccxbox.Validating += new System.ComponentModel.CancelEventHandler(this.floatPos_Validating);
             // 
             // maccybox
@@ -341,7 +348,7 @@
             this.maccybox.Location = new System.Drawing.Point(299, 58);
             this.maccybox.Name = "maccybox";
             this.maccybox.Size = new System.Drawing.Size(63, 20);
-            this.maccybox.TabIndex = 28;
+            this.maccybox.TabIndex = 9;
             this.maccybox.Validating += new System.ComponentModel.CancelEventHandler(this.floatPos_Validating);
             // 
             // macczbox
@@ -349,7 +356,7 @@
             this.macczbox.Location = new System.Drawing.Point(391, 58);
             this.macczbox.Name = "macczbox";
             this.macczbox.Size = new System.Drawing.Size(63, 20);
-            this.macczbox.TabIndex = 29;
+            this.macczbox.TabIndex = 10;
             this.macczbox.Validating += new System.ComponentModel.CancelEventHandler(this.floatPos_Validating);
             // 
             // maccebox
@@ -357,130 +364,131 @@
             this.maccebox.Location = new System.Drawing.Point(483, 58);
             this.maccebox.Name = "maccebox";
             this.maccebox.Size = new System.Drawing.Size(63, 20);
-            this.maccebox.TabIndex = 30;
+            this.maccebox.TabIndex = 11;
             this.maccebox.Validating += new System.ComponentModel.CancelEventHandler(this.floatPos_Validating);
             // 
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel2.Controls.Add(this.mzjerkbox);
-            this.panel2.Controls.Add(this.label23);
+            this.panel2.Controls.Add(this.labelMaxZJerk);
             this.panel2.Controls.Add(this.maxxyjerkbox);
-            this.panel2.Controls.Add(this.label22);
+            this.panel2.Controls.Add(this.labelMaxXYJerk);
             this.panel2.Controls.Add(this.minsegtbox);
-            this.panel2.Controls.Add(this.label21);
+            this.panel2.Controls.Add(this.labelMinSegmentTime);
             this.panel2.Controls.Add(this.mintfeedbox);
-            this.panel2.Controls.Add(this.label20);
+            this.panel2.Controls.Add(this.labelMinTravelFeedrate);
             this.panel2.Controls.Add(this.minfeedbox);
-            this.panel2.Controls.Add(this.label19);
-            this.panel2.Controls.Add(this.label18);
-            this.panel2.Location = new System.Drawing.Point(15, 162);
+            this.panel2.Controls.Add(this.labelMinFeedrate);
+            this.panel2.Controls.Add(this.labelAdvancedVariables);
+            this.panel2.Location = new System.Drawing.Point(15, 188);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(576, 168);
+            this.panel2.Size = new System.Drawing.Size(576, 134);
             this.panel2.TabIndex = 36;
             // 
             // mzjerkbox
             // 
-            this.mzjerkbox.Location = new System.Drawing.Point(20, 118);
+            this.mzjerkbox.Location = new System.Drawing.Point(467, 60);
             this.mzjerkbox.Name = "mzjerkbox";
             this.mzjerkbox.Size = new System.Drawing.Size(63, 20);
-            this.mzjerkbox.TabIndex = 44;
+            this.mzjerkbox.TabIndex = 4;
             this.mzjerkbox.Validating += new System.ComponentModel.CancelEventHandler(this.floatPos_Validating);
             // 
-            // label23
+            // labelMaxZJerk
             // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(4, 91);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(116, 13);
-            this.label23.TabIndex = 43;
-            this.label23.Text = "Maximum Z jerk [mm/s]";
+            this.labelMaxZJerk.AutoSize = true;
+            this.labelMaxZJerk.Location = new System.Drawing.Point(312, 63);
+            this.labelMaxZJerk.Name = "labelMaxZJerk";
+            this.labelMaxZJerk.Size = new System.Drawing.Size(116, 13);
+            this.labelMaxZJerk.TabIndex = 43;
+            this.labelMaxZJerk.Text = "Maximum Z jerk [mm/s]";
             // 
             // maxxyjerkbox
             // 
-            this.maxxyjerkbox.Location = new System.Drawing.Point(438, 56);
+            this.maxxyjerkbox.Location = new System.Drawing.Point(467, 34);
             this.maxxyjerkbox.Name = "maxxyjerkbox";
             this.maxxyjerkbox.Size = new System.Drawing.Size(63, 20);
-            this.maxxyjerkbox.TabIndex = 42;
+            this.maxxyjerkbox.TabIndex = 3;
             this.maxxyjerkbox.Validating += new System.ComponentModel.CancelEventHandler(this.floatPos_Validating);
             // 
-            // label22
+            // labelMaxXYJerk
             // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(420, 31);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(126, 13);
-            this.label22.TabIndex = 41;
-            this.label22.Text = "Maximum X-Y jerk [mm/s]";
+            this.labelMaxXYJerk.AutoSize = true;
+            this.labelMaxXYJerk.Location = new System.Drawing.Point(312, 37);
+            this.labelMaxXYJerk.Name = "labelMaxXYJerk";
+            this.labelMaxXYJerk.Size = new System.Drawing.Size(126, 13);
+            this.labelMaxXYJerk.TabIndex = 41;
+            this.labelMaxXYJerk.Text = "Maximum X-Y jerk [mm/s]";
             // 
             // minsegtbox
             // 
-            this.minsegtbox.Location = new System.Drawing.Point(285, 56);
+            this.minsegtbox.Location = new System.Drawing.Point(204, 86);
             this.minsegtbox.Name = "minsegtbox";
             this.minsegtbox.Size = new System.Drawing.Size(63, 20);
-            this.minsegtbox.TabIndex = 40;
+            this.minsegtbox.TabIndex = 2;
             this.minsegtbox.Validating += new System.ComponentModel.CancelEventHandler(this.int_Validating);
             // 
-            // label21
+            // labelMinSegmentTime
             // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(267, 31);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(135, 13);
-            this.label21.TabIndex = 39;
-            this.label21.Text = "Minimum segment time [ms]";
+            this.labelMinSegmentTime.AutoSize = true;
+            this.labelMinSegmentTime.Location = new System.Drawing.Point(13, 89);
+            this.labelMinSegmentTime.Name = "labelMinSegmentTime";
+            this.labelMinSegmentTime.Size = new System.Drawing.Size(135, 13);
+            this.labelMinSegmentTime.TabIndex = 39;
+            this.labelMinSegmentTime.Text = "Minimum segment time [ms]";
             // 
             // mintfeedbox
             // 
-            this.mintfeedbox.Location = new System.Drawing.Point(149, 56);
+            this.mintfeedbox.Location = new System.Drawing.Point(204, 60);
             this.mintfeedbox.Name = "mintfeedbox";
             this.mintfeedbox.Size = new System.Drawing.Size(63, 20);
-            this.mintfeedbox.TabIndex = 38;
+            this.mintfeedbox.TabIndex = 1;
             this.mintfeedbox.Validating += new System.ComponentModel.CancelEventHandler(this.floatPos_Validating);
             // 
-            // label20
+            // labelMinTravelFeedrate
             // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(131, 31);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(130, 13);
-            this.label20.TabIndex = 37;
-            this.label20.Text = "Min travel feedrate [mm/s]";
+            this.labelMinTravelFeedrate.AutoSize = true;
+            this.labelMinTravelFeedrate.Location = new System.Drawing.Point(13, 63);
+            this.labelMinTravelFeedrate.Name = "labelMinTravelFeedrate";
+            this.labelMinTravelFeedrate.Size = new System.Drawing.Size(130, 13);
+            this.labelMinTravelFeedrate.TabIndex = 37;
+            this.labelMinTravelFeedrate.Text = "Min travel feedrate [mm/s]";
             // 
             // minfeedbox
             // 
-            this.minfeedbox.Location = new System.Drawing.Point(23, 56);
+            this.minfeedbox.Location = new System.Drawing.Point(204, 34);
             this.minfeedbox.Name = "minfeedbox";
             this.minfeedbox.Size = new System.Drawing.Size(63, 20);
-            this.minfeedbox.TabIndex = 36;
+            this.minfeedbox.TabIndex = 0;
             this.minfeedbox.Validating += new System.ComponentModel.CancelEventHandler(this.floatPos_Validating);
             // 
-            // label19
+            // labelMinFeedrate
             // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(13, 31);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(101, 13);
-            this.label19.TabIndex = 1;
-            this.label19.Text = "Min feedrate [mm/s]";
+            this.labelMinFeedrate.AutoSize = true;
+            this.labelMinFeedrate.Location = new System.Drawing.Point(13, 37);
+            this.labelMinFeedrate.Name = "labelMinFeedrate";
+            this.labelMinFeedrate.Size = new System.Drawing.Size(101, 13);
+            this.labelMinFeedrate.TabIndex = 1;
+            this.labelMinFeedrate.Text = "Min feedrate [mm/s]";
             // 
-            // label18
+            // labelAdvancedVariables
             // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(13, 4);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(104, 13);
-            this.label18.TabIndex = 0;
-            this.label18.Text = "Advanced variables:";
+            this.labelAdvancedVariables.AutoSize = true;
+            this.labelAdvancedVariables.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelAdvancedVariables.Location = new System.Drawing.Point(13, 4);
+            this.labelAdvancedVariables.Name = "labelAdvancedVariables";
+            this.labelAdvancedVariables.Size = new System.Drawing.Size(123, 13);
+            this.labelAdvancedVariables.TabIndex = 0;
+            this.labelAdvancedVariables.Text = "Advanced variables:";
             // 
-            // label24
+            // labelPIDSettings
             // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(12, 137);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(67, 13);
-            this.label24.TabIndex = 37;
-            this.label24.Text = "PID settings:";
+            this.labelPIDSettings.AutoSize = true;
+            this.labelPIDSettings.Location = new System.Drawing.Point(12, 137);
+            this.labelPIDSettings.Name = "labelPIDSettings";
+            this.labelPIDSettings.Size = new System.Drawing.Size(67, 13);
+            this.labelPIDSettings.TabIndex = 37;
+            this.labelPIDSettings.Text = "PID settings:";
             // 
             // label25
             // 
@@ -514,7 +522,7 @@
             this.ppidbox.Location = new System.Drawing.Point(207, 136);
             this.ppidbox.Name = "ppidbox";
             this.ppidbox.Size = new System.Drawing.Size(63, 20);
-            this.ppidbox.TabIndex = 50;
+            this.ppidbox.TabIndex = 14;
             this.ppidbox.Validating += new System.ComponentModel.CancelEventHandler(this.floatPos_Validating);
             // 
             // ipidbox
@@ -522,7 +530,7 @@
             this.ipidbox.Location = new System.Drawing.Point(295, 134);
             this.ipidbox.Name = "ipidbox";
             this.ipidbox.Size = new System.Drawing.Size(63, 20);
-            this.ipidbox.TabIndex = 51;
+            this.ipidbox.TabIndex = 15;
             this.ipidbox.Validating += new System.ComponentModel.CancelEventHandler(this.floatPos_Validating);
             // 
             // dpidbox
@@ -530,7 +538,7 @@
             this.dpidbox.Location = new System.Drawing.Point(388, 134);
             this.dpidbox.Name = "dpidbox";
             this.dpidbox.Size = new System.Drawing.Size(63, 20);
-            this.dpidbox.TabIndex = 52;
+            this.dpidbox.TabIndex = 16;
             this.dpidbox.Validating += new System.ComponentModel.CancelEventHandler(this.floatPos_Validating);
             // 
             // accbox
@@ -538,56 +546,120 @@
             this.accbox.Location = new System.Drawing.Point(207, 84);
             this.accbox.Name = "accbox";
             this.accbox.Size = new System.Drawing.Size(63, 20);
-            this.accbox.TabIndex = 32;
+            this.accbox.TabIndex = 12;
             this.accbox.Validating += new System.ComponentModel.CancelEventHandler(this.floatPos_Validating);
             // 
-            // lable17
+            // lableRetractAcceleration
             // 
-            this.lable17.AutoSize = true;
-            this.lable17.Location = new System.Drawing.Point(12, 113);
-            this.lable17.Name = "lable17";
-            this.lable17.Size = new System.Drawing.Size(107, 13);
-            this.lable17.TabIndex = 33;
-            this.lable17.Text = "Retract Acceleration:";
+            this.lableRetractAcceleration.AutoSize = true;
+            this.lableRetractAcceleration.Location = new System.Drawing.Point(12, 113);
+            this.lableRetractAcceleration.Name = "lableRetractAcceleration";
+            this.lableRetractAcceleration.Size = new System.Drawing.Size(107, 13);
+            this.lableRetractAcceleration.TabIndex = 33;
+            this.lableRetractAcceleration.Text = "Retract Acceleration:";
             // 
-            // label16
+            // labelAcceleration
             // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(12, 87);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(69, 13);
-            this.label16.TabIndex = 31;
-            this.label16.Text = "Acceleration:";
+            this.labelAcceleration.AutoSize = true;
+            this.labelAcceleration.Location = new System.Drawing.Point(12, 87);
+            this.labelAcceleration.Name = "labelAcceleration";
+            this.labelAcceleration.Size = new System.Drawing.Size(69, 13);
+            this.labelAcceleration.TabIndex = 31;
+            this.labelAcceleration.Text = "Acceleration:";
             // 
             // raccbox
             // 
             this.raccbox.Location = new System.Drawing.Point(207, 110);
             this.raccbox.Name = "raccbox";
             this.raccbox.Size = new System.Drawing.Size(63, 20);
-            this.raccbox.TabIndex = 34;
+            this.raccbox.TabIndex = 13;
             this.raccbox.Validating += new System.ComponentModel.CancelEventHandler(this.floatPos_Validating);
             // 
             // errorProvider
             // 
             this.errorProvider.ContainerControl = this;
             // 
+            // hozbox
+            // 
+            this.hozbox.Location = new System.Drawing.Point(388, 159);
+            this.hozbox.Name = "hozbox";
+            this.hozbox.Size = new System.Drawing.Size(63, 20);
+            this.hozbox.TabIndex = 19;
+            // 
+            // hoybox
+            // 
+            this.hoybox.Location = new System.Drawing.Point(295, 159);
+            this.hoybox.Name = "hoybox";
+            this.hoybox.Size = new System.Drawing.Size(63, 20);
+            this.hoybox.TabIndex = 18;
+            // 
+            // hoxbox
+            // 
+            this.hoxbox.Location = new System.Drawing.Point(207, 161);
+            this.hoxbox.Name = "hoxbox";
+            this.hoxbox.Size = new System.Drawing.Size(63, 20);
+            this.hoxbox.TabIndex = 17;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(364, 162);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(17, 13);
+            this.label17.TabIndex = 58;
+            this.label17.Text = "Z:";
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(276, 162);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(17, 13);
+            this.label28.TabIndex = 57;
+            this.label28.Text = "Y:";
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(184, 162);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(17, 13);
+            this.label29.TabIndex = 56;
+            this.label29.Text = "X:";
+            // 
+            // labelHomingOffset
+            // 
+            this.labelHomingOffset.AutoSize = true;
+            this.labelHomingOffset.Location = new System.Drawing.Point(12, 162);
+            this.labelHomingOffset.Name = "labelHomingOffset";
+            this.labelHomingOffset.Size = new System.Drawing.Size(81, 13);
+            this.labelHomingOffset.TabIndex = 55;
+            this.labelHomingOffset.Text = "Homeing offset:";
+            // 
             // EEPROMMarlin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(615, 408);
+            this.ClientSize = new System.Drawing.Size(615, 404);
             this.ControlBox = false;
+            this.Controls.Add(this.hozbox);
+            this.Controls.Add(this.hoybox);
+            this.Controls.Add(this.hoxbox);
+            this.Controls.Add(this.label17);
+            this.Controls.Add(this.label28);
+            this.Controls.Add(this.label29);
+            this.Controls.Add(this.labelHomingOffset);
             this.Controls.Add(this.raccbox);
             this.Controls.Add(this.dpidbox);
-            this.Controls.Add(this.label16);
+            this.Controls.Add(this.labelAcceleration);
             this.Controls.Add(this.ipidbox);
-            this.Controls.Add(this.lable17);
+            this.Controls.Add(this.lableRetractAcceleration);
             this.Controls.Add(this.ppidbox);
             this.Controls.Add(this.accbox);
             this.Controls.Add(this.label27);
             this.Controls.Add(this.label26);
             this.Controls.Add(this.label25);
-            this.Controls.Add(this.label24);
+            this.Controls.Add(this.labelPIDSettings);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.maccebox);
             this.Controls.Add(this.macczbox);
@@ -597,7 +669,7 @@
             this.Controls.Add(this.label14);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.label12);
-            this.Controls.Add(this.label11);
+            this.Controls.Add(this.labelMaxAcceleration);
             this.Controls.Add(this.efeedbox);
             this.Controls.Add(this.zfeedbox);
             this.Controls.Add(this.yfeedbox);
@@ -606,7 +678,7 @@
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
-            this.Controls.Add(this.label6);
+            this.Controls.Add(this.labelMaxFeedrate);
             this.Controls.Add(this.buttonAbort);
             this.Controls.Add(this.buttonRestore);
             this.Controls.Add(this.buttonSave);
@@ -619,7 +691,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.xstepsbox);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.labelStepsPerMM);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "EEPROMMarlin";
@@ -635,7 +707,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelStepsPerMM;
         private System.Windows.Forms.TextBox xstepsbox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
@@ -648,7 +720,7 @@
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.Button buttonRestore;
         private System.Windows.Forms.Button buttonAbort;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label labelMaxFeedrate;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
@@ -657,7 +729,7 @@
         private System.Windows.Forms.TextBox yfeedbox;
         private System.Windows.Forms.TextBox zfeedbox;
         private System.Windows.Forms.TextBox efeedbox;
-        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label labelMaxAcceleration;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label14;
@@ -667,18 +739,18 @@
         private System.Windows.Forms.TextBox macczbox;
         private System.Windows.Forms.TextBox maccebox;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label labelAdvancedVariables;
+        private System.Windows.Forms.Label labelMinFeedrate;
+        private System.Windows.Forms.Label labelMinTravelFeedrate;
         private System.Windows.Forms.TextBox minfeedbox;
         private System.Windows.Forms.TextBox mintfeedbox;
-        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label labelMinSegmentTime;
         private System.Windows.Forms.TextBox minsegtbox;
         private System.Windows.Forms.TextBox maxxyjerkbox;
-        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label labelMaxXYJerk;
         private System.Windows.Forms.TextBox mzjerkbox;
-        private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label labelMaxZJerk;
+        private System.Windows.Forms.Label labelPIDSettings;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.Label label27;
@@ -686,10 +758,17 @@
         private System.Windows.Forms.TextBox ipidbox;
         private System.Windows.Forms.TextBox dpidbox;
         private System.Windows.Forms.TextBox accbox;
-        private System.Windows.Forms.Label lable17;
-        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label lableRetractAcceleration;
+        private System.Windows.Forms.Label labelAcceleration;
         private System.Windows.Forms.TextBox raccbox;
         private System.Windows.Forms.ErrorProvider errorProvider;
+        private System.Windows.Forms.TextBox hozbox;
+        private System.Windows.Forms.TextBox hoybox;
+        private System.Windows.Forms.TextBox hoxbox;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.Label labelHomingOffset;
        
     }
 }

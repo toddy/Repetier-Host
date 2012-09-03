@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="label3.Text" xml:space="preserve">
+  <data name="labelSlic3rInfo.Text" xml:space="preserve">
     <value>With these settings, you are able to use different versions of Slic3r.
 You can get new versions from http://www.slic3r.org
 The minimum version required is 0.9.0. Leave all fields blank to simply

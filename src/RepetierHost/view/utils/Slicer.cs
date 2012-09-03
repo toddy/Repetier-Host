@@ -140,8 +140,9 @@ namespace RepetierHost.view.utils
                 Main.main.slic3rToolStripMenuItem.Checked = _ActiveSlicer == SlicerID.Slic3r;
                 Main.main.skeinforgeToolStripMenuItem1.Checked = _ActiveSlicer == SlicerID.Skeinforge;
                 Main.main.externalSlic3rToolStripMenuItem.Checked = _ActiveSlicer == SlicerID.Slic3rExternal;
-                Main.main.stlComposer1.buttonSlice.Text = "Slice with " + SlicerName;
-                Main.main.slicerPanel.UpdateSelection();
+                Main.main.stlComposer1.buttonSlice.Text = Trans.T1("L_SLICE_WITH", SlicerName);
+                if( Main.main.slicerPanel!=null)
+                    Main.main.slicerPanel.UpdateSelection();
             }
         }
         public void Update()
@@ -213,7 +214,11 @@ namespace RepetierHost.view.utils
                     case SlicerID.Slic3rExternal:
                         return "external Slic3r";
                     case SlicerID.Skeinforge:
-                        return "Skeinforge";
+                        {
+                            if (BasicConfiguration.basicConf.SkeinforgeProfileDir.IndexOf("sfact") >= 0)
+                                return "SFACT";
+                            return "Skeinforge";
+                        }
                 }
                 return "Unknown";
             }

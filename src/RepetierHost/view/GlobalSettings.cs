@@ -39,13 +39,29 @@ namespace RepetierHost.view
             RegMemory.RestoreWindowPos("globalSettingsWindow", this);
             repetierKey = Custom.BaseKey; // Registry.CurrentUser.CreateSubKey("SOFTWARE\\Repetier");
             RegToForm();
+            translate();
+            Main.main.languageChanged += translate;
+        }
+        public void translate()
+        {
+            Text = Trans.T("W_REPETIER_SETTINGS");
+            groupBehaviour.Text = Trans.T("L_BEHAVIOUR");
+            groupFilesAndDirectories.Text = Trans.T("L_FILES_AND_DIRECTORIES");
+            groupGUI.Text = Trans.T("L_GUI");
+            labelInfoWorkdir.Text = Trans.T("L_INFO_WORKDIR");
+            checkLogfile.Text = Trans.T("L_LOG_SESSION");
+            checkReduceToolbarSize.Text = Trans.T("REDUCE_TOOLBAR_SIZE");
+            checkDisableQualityReduction.Text = Trans.T("L_DISABLE_QUALITY_REDUCTION");
+            labelWorkdir.Text = Trans.T("L_WORKDIR:");
+            buttonSearchWorkdir.Text = Trans.T("B_BROWSE");
+            folderBrowser.Description = Trans.T("L_SELECT_WORKING_DIRECTORY"); // Select working directory
         }
         public bool WorkdirOK()
         {
             string wd = Workdir;
             if (wd.Length == 0 || !Directory.Exists(wd))
             {
-                labelOKMasg.Text = "Existing work directory required!";
+                labelOKMasg.Text = Trans.T("L_EXISTING_WORKDIR_REQUIRED"); // "Existing work directory required!";
                 return false;
             }
             labelOKMasg.Text = "";
@@ -56,12 +72,14 @@ namespace RepetierHost.view
             repetierKey.SetValue("workdir", Workdir);
             repetierKey.SetValue("logEnabled", LogEnabled ? 1 : 0);
             repetierKey.SetValue("disableQualityReduction", DisableQualityReduction ? 1 : 0);
+            repetierKey.SetValue("reduceToolbarSize", ReduceToolbarSize ? 1 : 0);
         }
         public void RegToForm()
         {
             Workdir = (string)repetierKey.GetValue("workdir", Workdir);
             checkLogfile.Checked = 1== (int) repetierKey.GetValue("logEnabled", LogEnabled ? 1 : 0);
             checkDisableQualityReduction.Checked = 1 == (int)repetierKey.GetValue("disableQualityReduction", DisableQualityReduction ? 1 : 0);
+            checkReduceToolbarSize.Checked = 1 == (int)repetierKey.GetValue("reduceToolbarSize", ReduceToolbarSize ? 1 : 0);
         }
         public string Workdir
         {
@@ -75,6 +93,10 @@ namespace RepetierHost.view
         public Boolean DisableQualityReduction
         {
             get { return checkDisableQualityReduction.Checked; }
+        }
+        public Boolean ReduceToolbarSize
+        {
+            get { return checkReduceToolbarSize.Checked; }
         }
         private void buttonAbort_Click(object sender, EventArgs e)
         {
@@ -106,6 +128,11 @@ namespace RepetierHost.view
         private void textWorkdir_TextChanged(object sender, EventArgs e)
         {
             WorkdirOK();
+        }
+
+        private void checkReduceToolbarSize_CheckedChanged(object sender, EventArgs e)
+        {
+            Main.main.UpdateToolbarSize();
         }
     }
 }

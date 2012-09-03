@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CopyObjectsDialog));
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelNumberOfCopies = new System.Windows.Forms.Label();
             this.numericCopies = new System.Windows.Forms.NumericUpDown();
             this.checkAutoposition = new System.Windows.Forms.CheckBox();
             this.buttonCopy = new System.Windows.Forms.Button();
@@ -37,14 +37,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericCopies)).BeginInit();
             this.SuspendLayout();
             // 
-            // label1
+            // labelNumberOfCopies
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 13);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(93, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Number of copies:";
+            this.labelNumberOfCopies.AutoSize = true;
+            this.labelNumberOfCopies.Location = new System.Drawing.Point(13, 13);
+            this.labelNumberOfCopies.Name = "labelNumberOfCopies";
+            this.labelNumberOfCopies.Size = new System.Drawing.Size(93, 13);
+            this.labelNumberOfCopies.TabIndex = 0;
+            this.labelNumberOfCopies.Text = "Number of copies:";
             // 
             // numericCopies
             // 
@@ -110,7 +110,7 @@
             this.Controls.Add(this.buttonCopy);
             this.Controls.Add(this.checkAutoposition);
             this.Controls.Add(this.numericCopies);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.labelNumberOfCopies);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "CopyObjectsDialog";
@@ -124,7 +124,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelNumberOfCopies;
         public System.Windows.Forms.NumericUpDown numericCopies;
         public System.Windows.Forms.CheckBox checkAutoposition;
         private System.Windows.Forms.Button buttonCopy;

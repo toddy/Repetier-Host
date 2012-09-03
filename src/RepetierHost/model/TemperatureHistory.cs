@@ -149,7 +149,7 @@ namespace RepetierHost.model
             xpos = 100;
             // for(NSString *key in arr)
             //     [d addObserver:self forKeyPath:key options:NSKeyValueObservingOptionNew context:NULL];
-            ToolStripMenuItem item = new ToolStripMenuItem("Past 60 minutes",null,Main.main.selectTimePeriod);
+            ToolStripMenuItem item = new ToolStripMenuItem(Trans.T("L_PAST_60_MINUTES"),null,Main.main.selectTimePeriod);
             item.Tag = 0;
             lists.AddLast(history);
             Main.main.timeperiodMenuItem.DropDownItems.Add(item);

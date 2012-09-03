@@ -30,53 +30,53 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PrinterInfo));
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupPrinterData = new System.Windows.Forms.GroupBox();
             this.labelFirmwareURL = new System.Windows.Forms.LinkLabel();
             this.labelNumExtruder = new System.Windows.Forms.Label();
             this.labelProtocol = new System.Windows.Forms.Label();
             this.labelFirmware = new System.Windows.Forms.Label();
             this.labelMachine = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.labNumberExtruder = new System.Windows.Forms.Label();
+            this.labProtocol = new System.Windows.Forms.Label();
+            this.labFirmwareURL = new System.Windows.Forms.Label();
+            this.labFirmware = new System.Windows.Forms.Label();
+            this.labMachineType = new System.Windows.Forms.Label();
+            this.groupConnectionInformation = new System.Windows.Forms.GroupBox();
             this.labelErrorsReceived = new System.Windows.Forms.Label();
             this.labelBytesSend = new System.Windows.Forms.Label();
             this.labelLinesSend = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
+            this.labBytesSend = new System.Windows.Forms.Label();
+            this.labErrorsReceived = new System.Windows.Forms.Label();
+            this.labLinesSend = new System.Windows.Forms.Label();
             this.buttonClose = new System.Windows.Forms.Button();
             this.timer = new System.Windows.Forms.Timer(this.components);
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.groupPrinterData.SuspendLayout();
+            this.groupConnectionInformation.SuspendLayout();
             this.SuspendLayout();
             // 
-            // groupBox1
+            // groupPrinterData
             // 
-            this.groupBox1.Controls.Add(this.labelFirmwareURL);
-            this.groupBox1.Controls.Add(this.labelNumExtruder);
-            this.groupBox1.Controls.Add(this.labelProtocol);
-            this.groupBox1.Controls.Add(this.labelFirmware);
-            this.groupBox1.Controls.Add(this.labelMachine);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(13, 13);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(445, 140);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Printer data";
+            this.groupPrinterData.Controls.Add(this.labelFirmwareURL);
+            this.groupPrinterData.Controls.Add(this.labelNumExtruder);
+            this.groupPrinterData.Controls.Add(this.labelProtocol);
+            this.groupPrinterData.Controls.Add(this.labelFirmware);
+            this.groupPrinterData.Controls.Add(this.labelMachine);
+            this.groupPrinterData.Controls.Add(this.labNumberExtruder);
+            this.groupPrinterData.Controls.Add(this.labProtocol);
+            this.groupPrinterData.Controls.Add(this.labFirmwareURL);
+            this.groupPrinterData.Controls.Add(this.labFirmware);
+            this.groupPrinterData.Controls.Add(this.labMachineType);
+            this.groupPrinterData.Location = new System.Drawing.Point(13, 13);
+            this.groupPrinterData.Name = "groupPrinterData";
+            this.groupPrinterData.Size = new System.Drawing.Size(445, 140);
+            this.groupPrinterData.TabIndex = 0;
+            this.groupPrinterData.TabStop = false;
+            this.groupPrinterData.Text = "Printer data";
             // 
             // labelFirmwareURL
             // 
             this.labelFirmwareURL.AutoSize = true;
-            this.labelFirmwareURL.Location = new System.Drawing.Point(121, 64);
+            this.labelFirmwareURL.Location = new System.Drawing.Point(135, 64);
             this.labelFirmwareURL.Name = "labelFirmwareURL";
             this.labelFirmwareURL.Size = new System.Drawing.Size(10, 13);
             this.labelFirmwareURL.TabIndex = 6;
@@ -87,7 +87,7 @@
             // labelNumExtruder
             // 
             this.labelNumExtruder.AutoSize = true;
-            this.labelNumExtruder.Location = new System.Drawing.Point(118, 111);
+            this.labelNumExtruder.Location = new System.Drawing.Point(132, 111);
             this.labelNumExtruder.Name = "labelNumExtruder";
             this.labelNumExtruder.Size = new System.Drawing.Size(10, 13);
             this.labelNumExtruder.TabIndex = 5;
@@ -96,7 +96,7 @@
             // labelProtocol
             // 
             this.labelProtocol.AutoSize = true;
-            this.labelProtocol.Location = new System.Drawing.Point(118, 87);
+            this.labelProtocol.Location = new System.Drawing.Point(132, 87);
             this.labelProtocol.Name = "labelProtocol";
             this.labelProtocol.Size = new System.Drawing.Size(10, 13);
             this.labelProtocol.TabIndex = 5;
@@ -105,7 +105,7 @@
             // labelFirmware
             // 
             this.labelFirmware.AutoSize = true;
-            this.labelFirmware.Location = new System.Drawing.Point(118, 41);
+            this.labelFirmware.Location = new System.Drawing.Point(132, 41);
             this.labelFirmware.Name = "labelFirmware";
             this.labelFirmware.Size = new System.Drawing.Size(10, 13);
             this.labelFirmware.TabIndex = 5;
@@ -114,76 +114,76 @@
             // labelMachine
             // 
             this.labelMachine.AutoSize = true;
-            this.labelMachine.Location = new System.Drawing.Point(118, 20);
+            this.labelMachine.Location = new System.Drawing.Point(132, 20);
             this.labelMachine.Name = "labelMachine";
             this.labelMachine.Size = new System.Drawing.Size(10, 13);
             this.labelMachine.TabIndex = 5;
             this.labelMachine.Text = "-";
             // 
-            // label5
+            // labNumberExtruder
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(7, 111);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(88, 13);
-            this.label5.TabIndex = 4;
-            this.label5.Text = "Number extruder:";
+            this.labNumberExtruder.AutoSize = true;
+            this.labNumberExtruder.Location = new System.Drawing.Point(7, 111);
+            this.labNumberExtruder.Name = "labNumberExtruder";
+            this.labNumberExtruder.Size = new System.Drawing.Size(88, 13);
+            this.labNumberExtruder.TabIndex = 4;
+            this.labNumberExtruder.Text = "Number extruder:";
             // 
-            // label4
+            // labProtocol
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(7, 87);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(49, 13);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "Protocol:";
+            this.labProtocol.AutoSize = true;
+            this.labProtocol.Location = new System.Drawing.Point(7, 87);
+            this.labProtocol.Name = "labProtocol";
+            this.labProtocol.Size = new System.Drawing.Size(49, 13);
+            this.labProtocol.TabIndex = 3;
+            this.labProtocol.Text = "Protocol:";
             // 
-            // label3
+            // labFirmwareURL
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(7, 64);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(77, 13);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Firmware URL:";
+            this.labFirmwareURL.AutoSize = true;
+            this.labFirmwareURL.Location = new System.Drawing.Point(7, 64);
+            this.labFirmwareURL.Name = "labFirmwareURL";
+            this.labFirmwareURL.Size = new System.Drawing.Size(77, 13);
+            this.labFirmwareURL.TabIndex = 2;
+            this.labFirmwareURL.Text = "Firmware URL:";
             // 
-            // label2
+            // labFirmware
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(7, 41);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(52, 13);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Firmware:";
+            this.labFirmware.AutoSize = true;
+            this.labFirmware.Location = new System.Drawing.Point(7, 41);
+            this.labFirmware.Name = "labFirmware";
+            this.labFirmware.Size = new System.Drawing.Size(52, 13);
+            this.labFirmware.TabIndex = 1;
+            this.labFirmware.Text = "Firmware:";
             // 
-            // label1
+            // labMachineType
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 20);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(74, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Machine type:";
+            this.labMachineType.AutoSize = true;
+            this.labMachineType.Location = new System.Drawing.Point(7, 20);
+            this.labMachineType.Name = "labMachineType";
+            this.labMachineType.Size = new System.Drawing.Size(74, 13);
+            this.labMachineType.TabIndex = 0;
+            this.labMachineType.Text = "Machine type:";
             // 
-            // groupBox2
+            // groupConnectionInformation
             // 
-            this.groupBox2.Controls.Add(this.labelErrorsReceived);
-            this.groupBox2.Controls.Add(this.labelBytesSend);
-            this.groupBox2.Controls.Add(this.labelLinesSend);
-            this.groupBox2.Controls.Add(this.label8);
-            this.groupBox2.Controls.Add(this.label7);
-            this.groupBox2.Controls.Add(this.label6);
-            this.groupBox2.Location = new System.Drawing.Point(13, 160);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(445, 100);
-            this.groupBox2.TabIndex = 1;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Connection information";
+            this.groupConnectionInformation.Controls.Add(this.labelErrorsReceived);
+            this.groupConnectionInformation.Controls.Add(this.labelBytesSend);
+            this.groupConnectionInformation.Controls.Add(this.labelLinesSend);
+            this.groupConnectionInformation.Controls.Add(this.labBytesSend);
+            this.groupConnectionInformation.Controls.Add(this.labErrorsReceived);
+            this.groupConnectionInformation.Controls.Add(this.labLinesSend);
+            this.groupConnectionInformation.Location = new System.Drawing.Point(13, 160);
+            this.groupConnectionInformation.Name = "groupConnectionInformation";
+            this.groupConnectionInformation.Size = new System.Drawing.Size(445, 100);
+            this.groupConnectionInformation.TabIndex = 1;
+            this.groupConnectionInformation.TabStop = false;
+            this.groupConnectionInformation.Text = "Connection information";
             // 
             // labelErrorsReceived
             // 
             this.labelErrorsReceived.AutoSize = true;
-            this.labelErrorsReceived.Location = new System.Drawing.Point(118, 65);
+            this.labelErrorsReceived.Location = new System.Drawing.Point(132, 65);
             this.labelErrorsReceived.Name = "labelErrorsReceived";
             this.labelErrorsReceived.Size = new System.Drawing.Size(10, 13);
             this.labelErrorsReceived.TabIndex = 5;
@@ -192,7 +192,7 @@
             // labelBytesSend
             // 
             this.labelBytesSend.AutoSize = true;
-            this.labelBytesSend.Location = new System.Drawing.Point(118, 43);
+            this.labelBytesSend.Location = new System.Drawing.Point(132, 43);
             this.labelBytesSend.Name = "labelBytesSend";
             this.labelBytesSend.Size = new System.Drawing.Size(10, 13);
             this.labelBytesSend.TabIndex = 5;
@@ -201,38 +201,38 @@
             // labelLinesSend
             // 
             this.labelLinesSend.AutoSize = true;
-            this.labelLinesSend.Location = new System.Drawing.Point(118, 20);
+            this.labelLinesSend.Location = new System.Drawing.Point(132, 20);
             this.labelLinesSend.Name = "labelLinesSend";
             this.labelLinesSend.Size = new System.Drawing.Size(10, 13);
             this.labelLinesSend.TabIndex = 5;
             this.labelLinesSend.Text = "-";
             // 
-            // label8
+            // labBytesSend
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(10, 43);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(62, 13);
-            this.label8.TabIndex = 2;
-            this.label8.Text = "Bytes send:";
+            this.labBytesSend.AutoSize = true;
+            this.labBytesSend.Location = new System.Drawing.Point(7, 43);
+            this.labBytesSend.Name = "labBytesSend";
+            this.labBytesSend.Size = new System.Drawing.Size(62, 13);
+            this.labBytesSend.TabIndex = 2;
+            this.labBytesSend.Text = "Bytes send:";
             // 
-            // label7
+            // labErrorsReceived
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(7, 65);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(81, 13);
-            this.label7.TabIndex = 1;
-            this.label7.Text = "Errors received:";
+            this.labErrorsReceived.AutoSize = true;
+            this.labErrorsReceived.Location = new System.Drawing.Point(7, 65);
+            this.labErrorsReceived.Name = "labErrorsReceived";
+            this.labErrorsReceived.Size = new System.Drawing.Size(81, 13);
+            this.labErrorsReceived.TabIndex = 1;
+            this.labErrorsReceived.Text = "Errors received:";
             // 
-            // label6
+            // labLinesSend
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(10, 20);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(61, 13);
-            this.label6.TabIndex = 0;
-            this.label6.Text = "Lines send:";
+            this.labLinesSend.AutoSize = true;
+            this.labLinesSend.Location = new System.Drawing.Point(7, 20);
+            this.labLinesSend.Name = "labLinesSend";
+            this.labLinesSend.Size = new System.Drawing.Size(61, 13);
+            this.labLinesSend.TabIndex = 0;
+            this.labLinesSend.Text = "Lines send:";
             // 
             // buttonClose
             // 
@@ -257,33 +257,33 @@
             this.ClientSize = new System.Drawing.Size(472, 317);
             this.ControlBox = false;
             this.Controls.Add(this.buttonClose);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.groupConnectionInformation);
+            this.Controls.Add(this.groupPrinterData);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "PrinterInfo";
             this.Text = "Printer information";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PrinterInfo_FormClosing);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            this.groupPrinterData.ResumeLayout(false);
+            this.groupPrinterData.PerformLayout();
+            this.groupConnectionInformation.ResumeLayout(false);
+            this.groupConnectionInformation.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.GroupBox groupPrinterData;
+        private System.Windows.Forms.Label labMachineType;
+        private System.Windows.Forms.Label labProtocol;
+        private System.Windows.Forms.Label labFirmwareURL;
+        private System.Windows.Forms.Label labFirmware;
+        private System.Windows.Forms.Label labNumberExtruder;
+        private System.Windows.Forms.GroupBox groupConnectionInformation;
+        private System.Windows.Forms.Label labErrorsReceived;
+        private System.Windows.Forms.Label labLinesSend;
+        private System.Windows.Forms.Label labBytesSend;
         private System.Windows.Forms.Button buttonClose;
         private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.Label labelNumExtruder;

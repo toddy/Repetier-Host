@@ -29,36 +29,39 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GlobalSettings));
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupFilesAndDirectories = new System.Windows.Forms.GroupBox();
             this.labelOKMasg = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.labelInfoWorkdir = new System.Windows.Forms.Label();
             this.checkLogfile = new System.Windows.Forms.CheckBox();
             this.buttonSearchWorkdir = new System.Windows.Forms.Button();
             this.textWorkdir = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelWorkdir = new System.Windows.Forms.Label();
             this.buttonOK = new System.Windows.Forms.Button();
             this.buttonAbort = new System.Windows.Forms.Button();
             this.folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBehaviour = new System.Windows.Forms.GroupBox();
             this.checkDisableQualityReduction = new System.Windows.Forms.CheckBox();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.groupGUI = new System.Windows.Forms.GroupBox();
+            this.checkReduceToolbarSize = new System.Windows.Forms.CheckBox();
+            this.groupFilesAndDirectories.SuspendLayout();
+            this.groupBehaviour.SuspendLayout();
+            this.groupGUI.SuspendLayout();
             this.SuspendLayout();
             // 
-            // groupBox1
+            // groupFilesAndDirectories
             // 
-            this.groupBox1.Controls.Add(this.labelOKMasg);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.checkLogfile);
-            this.groupBox1.Controls.Add(this.buttonSearchWorkdir);
-            this.groupBox1.Controls.Add(this.textWorkdir);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(13, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(518, 142);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Files and directories";
+            this.groupFilesAndDirectories.Controls.Add(this.labelOKMasg);
+            this.groupFilesAndDirectories.Controls.Add(this.labelInfoWorkdir);
+            this.groupFilesAndDirectories.Controls.Add(this.checkLogfile);
+            this.groupFilesAndDirectories.Controls.Add(this.buttonSearchWorkdir);
+            this.groupFilesAndDirectories.Controls.Add(this.textWorkdir);
+            this.groupFilesAndDirectories.Controls.Add(this.labelWorkdir);
+            this.groupFilesAndDirectories.Location = new System.Drawing.Point(13, 12);
+            this.groupFilesAndDirectories.Name = "groupFilesAndDirectories";
+            this.groupFilesAndDirectories.Size = new System.Drawing.Size(518, 158);
+            this.groupFilesAndDirectories.TabIndex = 0;
+            this.groupFilesAndDirectories.TabStop = false;
+            this.groupFilesAndDirectories.Text = "Files and directories";
             // 
             // labelOKMasg
             // 
@@ -70,14 +73,13 @@
             this.labelOKMasg.TabIndex = 5;
             this.labelOKMasg.Text = "workdirstatus";
             // 
-            // label2
+            // labelInfoWorkdir
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(10, 75);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(448, 52);
-            this.label2.TabIndex = 4;
-            this.label2.Text = resources.GetString("label2.Text");
+            this.labelInfoWorkdir.Location = new System.Drawing.Point(10, 75);
+            this.labelInfoWorkdir.Name = "labelInfoWorkdir";
+            this.labelInfoWorkdir.Size = new System.Drawing.Size(491, 52);
+            this.labelInfoWorkdir.TabIndex = 4;
+            this.labelInfoWorkdir.Text = resources.GetString("labelInfoWorkdir.Text");
             // 
             // checkLogfile
             // 
@@ -91,9 +93,9 @@
             // 
             // buttonSearchWorkdir
             // 
-            this.buttonSearchWorkdir.Location = new System.Drawing.Point(433, 20);
+            this.buttonSearchWorkdir.Location = new System.Drawing.Point(400, 20);
             this.buttonSearchWorkdir.Name = "buttonSearchWorkdir";
-            this.buttonSearchWorkdir.Size = new System.Drawing.Size(68, 22);
+            this.buttonSearchWorkdir.Size = new System.Drawing.Size(101, 22);
             this.buttonSearchWorkdir.TabIndex = 1;
             this.buttonSearchWorkdir.Text = "Browse ...";
             this.buttonSearchWorkdir.UseVisualStyleBackColor = true;
@@ -101,24 +103,24 @@
             // 
             // textWorkdir
             // 
-            this.textWorkdir.Location = new System.Drawing.Point(99, 20);
+            this.textWorkdir.Location = new System.Drawing.Point(119, 20);
             this.textWorkdir.Name = "textWorkdir";
-            this.textWorkdir.Size = new System.Drawing.Size(327, 20);
+            this.textWorkdir.Size = new System.Drawing.Size(275, 20);
             this.textWorkdir.TabIndex = 0;
             this.textWorkdir.TextChanged += new System.EventHandler(this.textWorkdir_TextChanged);
             // 
-            // label1
+            // labelWorkdir
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 20);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(79, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Work directory:";
+            this.labelWorkdir.AutoSize = true;
+            this.labelWorkdir.Location = new System.Drawing.Point(7, 23);
+            this.labelWorkdir.Name = "labelWorkdir";
+            this.labelWorkdir.Size = new System.Drawing.Size(79, 13);
+            this.labelWorkdir.TabIndex = 0;
+            this.labelWorkdir.Text = "Work directory:";
             // 
             // buttonOK
             // 
-            this.buttonOK.Location = new System.Drawing.Point(365, 235);
+            this.buttonOK.Location = new System.Drawing.Point(365, 314);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(80, 22);
             this.buttonOK.TabIndex = 0;
@@ -128,7 +130,7 @@
             // 
             // buttonAbort
             // 
-            this.buttonAbort.Location = new System.Drawing.Point(451, 235);
+            this.buttonAbort.Location = new System.Drawing.Point(451, 314);
             this.buttonAbort.Name = "buttonAbort";
             this.buttonAbort.Size = new System.Drawing.Size(80, 22);
             this.buttonAbort.TabIndex = 1;
@@ -141,15 +143,15 @@
             this.folderBrowser.Description = "Select working directory";
             this.folderBrowser.RootFolder = System.Environment.SpecialFolder.MyComputer;
             // 
-            // groupBox2
+            // groupBehaviour
             // 
-            this.groupBox2.Controls.Add(this.checkDisableQualityReduction);
-            this.groupBox2.Location = new System.Drawing.Point(13, 161);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(518, 51);
-            this.groupBox2.TabIndex = 2;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Behaviour";
+            this.groupBehaviour.Controls.Add(this.checkDisableQualityReduction);
+            this.groupBehaviour.Location = new System.Drawing.Point(13, 176);
+            this.groupBehaviour.Name = "groupBehaviour";
+            this.groupBehaviour.Size = new System.Drawing.Size(518, 51);
+            this.groupBehaviour.TabIndex = 2;
+            this.groupBehaviour.TabStop = false;
+            this.groupBehaviour.Text = "Behaviour";
             // 
             // checkDisableQualityReduction
             // 
@@ -161,16 +163,38 @@
             this.checkDisableQualityReduction.Text = "Disable quality reduction during print";
             this.checkDisableQualityReduction.UseVisualStyleBackColor = true;
             // 
+            // groupGUI
+            // 
+            this.groupGUI.Controls.Add(this.checkReduceToolbarSize);
+            this.groupGUI.Location = new System.Drawing.Point(13, 233);
+            this.groupGUI.Name = "groupGUI";
+            this.groupGUI.Size = new System.Drawing.Size(519, 61);
+            this.groupGUI.TabIndex = 3;
+            this.groupGUI.TabStop = false;
+            this.groupGUI.Text = "GUI";
+            // 
+            // checkReduceToolbarSize
+            // 
+            this.checkReduceToolbarSize.AutoSize = true;
+            this.checkReduceToolbarSize.Location = new System.Drawing.Point(13, 20);
+            this.checkReduceToolbarSize.Name = "checkReduceToolbarSize";
+            this.checkReduceToolbarSize.Size = new System.Drawing.Size(126, 17);
+            this.checkReduceToolbarSize.TabIndex = 0;
+            this.checkReduceToolbarSize.Text = "Reduce Toolbar Size";
+            this.checkReduceToolbarSize.UseVisualStyleBackColor = true;
+            this.checkReduceToolbarSize.CheckedChanged += new System.EventHandler(this.checkReduceToolbarSize_CheckedChanged);
+            // 
             // GlobalSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(544, 283);
+            this.ClientSize = new System.Drawing.Size(544, 381);
             this.ControlBox = false;
-            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupGUI);
+            this.Controls.Add(this.groupBehaviour);
             this.Controls.Add(this.buttonAbort);
             this.Controls.Add(this.buttonOK);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.groupFilesAndDirectories);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -179,28 +203,32 @@
             this.ShowInTaskbar = false;
             this.Text = "Repetier settings";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GlobalSettings_FormClosing);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            this.groupFilesAndDirectories.ResumeLayout(false);
+            this.groupFilesAndDirectories.PerformLayout();
+            this.groupBehaviour.ResumeLayout(false);
+            this.groupBehaviour.PerformLayout();
+            this.groupGUI.ResumeLayout(false);
+            this.groupGUI.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.GroupBox groupFilesAndDirectories;
+        private System.Windows.Forms.Label labelInfoWorkdir;
         private System.Windows.Forms.CheckBox checkLogfile;
         private System.Windows.Forms.Button buttonSearchWorkdir;
         private System.Windows.Forms.TextBox textWorkdir;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelWorkdir;
         private System.Windows.Forms.Button buttonOK;
         private System.Windows.Forms.Button buttonAbort;
         private System.Windows.Forms.FolderBrowserDialog folderBrowser;
         private System.Windows.Forms.Label labelOKMasg;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox groupBehaviour;
         private System.Windows.Forms.CheckBox checkDisableQualityReduction;
+        private System.Windows.Forms.GroupBox groupGUI;
+        private System.Windows.Forms.CheckBox checkReduceToolbarSize;
 
     }
 }

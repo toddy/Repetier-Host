@@ -68,6 +68,19 @@ namespace RepetierHost.view
             InitializeComponent();
             gl.MouseWheel += gl_MouseWheel;
             timer.Start();
+            translate();
+            Main.main.languageChanged += translate;
+        }
+        private void translate()
+        {
+            toolMove.ToolTipText = Trans.T("L_MOVE_CAMERA");
+            toolMoveObject.ToolTipText = Trans.T("L_MOVE_OBJECT");
+            toolMoveViewpoint.ToolTipText = Trans.T("L_MOVE_VIEWPOINT");
+            toolResetView.ToolTipText = Trans.T("L_RESET_VIEW");
+            toolRotate.ToolTipText = Trans.T("L_ROTATE");
+            toolTopView.ToolTipText = Trans.T("L_TOP_VIEW");
+            toolZoom.ToolTipText = Trans.T("T_ZOOM_VIEW");
+            toolStripClear.ToolTipText = Trans.T("T_CLEAR_OBJECTS");
         }
         public void SetView(ThreeDView view)
         {
@@ -186,6 +199,7 @@ namespace RepetierHost.view
                 fpsTimer.Reset();
                 fpsTimer.Start();
                 gl.MakeCurrent();
+                //GL.Enable(EnableCap.Multisample);
                 GL.ClearColor(Main.threeDSettings.background.BackColor);
                 GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
                 GL.Enable(EnableCap.DepthTest);
@@ -254,7 +268,12 @@ namespace RepetierHost.view
                 GL.Enable(EnableCap.Lighting);
                 //Enable Backfaceculling
                 GL.Enable(EnableCap.CullFace);
-
+                GL.Enable(EnableCap.LineSmooth);
+                //GL.Enable(EnableCap.PolygonSmooth);
+                GL.Enable(EnableCap.Blend);
+                GL.LineWidth(1.5f);
+                GL.Hint(HintTarget.LineSmoothHint, HintMode.Nicest);
+                GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
                 Color col = Main.threeDSettings.printerBase.BackColor;
                 // Draw viewpoint
                 /*GL.Material(

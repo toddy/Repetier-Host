@@ -131,7 +131,7 @@
         vpHB80WaDptrm81GfjE5xCX1+O6Gf53CJxYa0KmgozN8AAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="label1.Text" xml:space="preserve">
+  <data name="labelPauseHint.Text" xml:space="preserve">
     <value>Hint: You are allowed to move the extruder around and to extrude filament
 in order to change the filament or refill the nozzle if oozing occured. The
 host will restore the position at the start of the pause for you.

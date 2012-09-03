@@ -38,8 +38,25 @@ namespace RepetierHost.view
             InitializeComponent();
             key = Custom.BaseKey; // Registry.CurrentUser.CreateSubKey("SOFTWARE\\Repetier");
             RegToForm();
+            if (Main.main != null)
+            {
+                Main.main.languageChanged += translate;
+                translate();
+            }
         }
         static bool readingReg = false;
+        public void translate()
+        {
+            labelShowInLog.Text = Trans.T("L_SHOW_IN_LOG");
+            switchACK.TextOff = switchACK.TextOn = Trans.T("B_ACK");
+            switchAutoscroll.TextOff = switchAutoscroll.TextOn = Trans.T("B_AUTO_SCROLL");
+            switchCommandsSend.TextOff = switchCommandsSend.TextOn = Trans.T("B_COMMANDS");
+            switchErrors.TextOff = switchErrors.TextOn = Trans.T("B_LOG_ERRORS");
+            switchInfo.TextOff = switchInfo.TextOn = Trans.T("B_LOG_INFO");
+            switchWarnings.TextOff = switchWarnings.TextOn = Trans.T("B_LOG_WARNINGS");
+            buttonCopy.Text = Trans.T("B_COPY");
+            buttonClearLog.Text = Trans.T("B_CLEAR_LOG");
+        }
         public void FormToReg()
         {
             if (readingReg) return;

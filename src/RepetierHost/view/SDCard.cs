@@ -61,6 +61,21 @@ namespace RepetierHost.view
             ana += analyzer;
             InitializeComponent();
             RegMemory.RestoreWindowPos("sdcardWindow",this);
+            translate();
+            Main.main.languageChanged += translate;
+        }
+        private void translate()
+        {
+            Text = Trans.T("W_SD_CARD_MANAGER");
+            buttonClose.Text = Trans.T("B_CLOSE");
+            columnHeaderName.Text = Trans.T("L_FILENAME");
+            columnHeaderSize.Text = Trans.T("L_SIZE");
+            toolAddFile.ToolTipText = Trans.T("L_UPLOAD_FILE");
+            toolDelFile.ToolTipText = Trans.T("L_DELETE_FILE");
+            toolStartPrint.ToolTipText = Trans.T("L_RUN_CONTINUE_UPLOAD"); // Run selected file / Continue paused print
+            toolStopPrint.ToolTipText = Trans.T("L_STOP_UPLOAD");
+            toolMount.ToolTipText = Trans.T("L_MOUNT_SD_CARD");
+            toolUnmount.ToolTipText = Trans.T("L_UNMOUNT_SD_CARD");
         }
         public void RefreshFilenames()
         {
@@ -71,7 +86,7 @@ namespace RepetierHost.view
         {
             try
             {
-                this.Invoke(ana, res); //new object[] {res});
+                Main.main.Invoke(ana, res); //new object[] {res});
             }
             catch { }
         }
@@ -108,7 +123,7 @@ namespace RepetierHost.view
             if (res.IndexOf("Not SD printing") != -1 || res.IndexOf("Done printing file")!=-1)
             {
                 printing = false;
-                toolStatus.Text = "Print finished";
+                toolStatus.Text = Trans.T("L_PRINT_FINISHED"); // "Print finished";
                 progress.Value = 200;
             }
             else if (res.IndexOf("SD printing byte ") != -1) // Print status update
@@ -136,12 +151,12 @@ namespace RepetierHost.view
             {
                 uploading = false;
                 progress.Value = 200;
-                toolStatus.Text = "Upload finished.";
+                toolStatus.Text = Trans.T("L_UPLOAD_FINISHED"); // "Upload finished.";
                 updateFilenames = true;
             }
             else if (res.IndexOf("File selected") != -1)
             {
-                toolStatus.Text = "SD printing ...";
+                toolStatus.Text = Trans.T("L_SD_PRINTING..."); // "SD printing ...";
                 progress.Value = 0;
                 printing = true;
                 printPaused = false;
@@ -151,18 +166,18 @@ namespace RepetierHost.view
             {
                 Main.conn.job.KillJob();
                 Main.conn.analyzer.uploading = false;
-                toolStatus.Text = "Upload failed.";
+                toolStatus.Text = Trans.T("L_UPLOAD_FAILED"); // "Upload failed.";
             }
             else if (res.StartsWith("File deleted"))
             {
                 waitDelete = 0;
-                toolStatus.Text = "File deleted";
+                toolStatus.Text = Trans.T("L_FILE_DELETED"); // "File deleted";
                 updateFilenames = true;
             }
             else if (res.StartsWith("Deletion failed"))
             {
                 waitDelete = 0;
-                toolStatus.Text = "Delete failed";
+                toolStatus.Text = Trans.T("L_DELETE_FAILED"); // "Delete failed";
             }
         }
         private void updateButtons()
@@ -214,7 +229,7 @@ namespace RepetierHost.view
             SDCardUpload f = SDCardUpload.Execute();
             if (f.exit)
             {
-                toolStatus.Text = "Uploading file ...";
+                toolStatus.Text = Trans.T("L_UPLOADING_FILE..."); // "Uploading file ...";
                 progress.Value = 0;
                 job.BeginJob();
                 job.exclusive = true;
@@ -287,7 +302,8 @@ namespace RepetierHost.view
             {
                 if (--waitDelete == 0)
                 {
-                    MessageBox.Show("Your firmware doesn't implement file delete or has an unknown implementation.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //MessageBox.Show("Your firmware doesn't implement file delete or has an unknown implementation.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(Trans.T("L_FIRMWARE_NO_DELETE"), Trans.T("L_ERROR"), MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             updateButtons();
@@ -298,20 +314,20 @@ namespace RepetierHost.view
             if (printPaused)
             {
                 printPaused = false;
-                toolStatus.Text = "Print aborted";
+                toolStatus.Text = Trans.T("L_PRINT_ABORTED"); // "Print aborted";
                 return;
             }
             Main.conn.injectManualCommand("M25");
             printPaused = true;
             printing = false;
-            toolStatus.Text = "Print paused";
+            toolStatus.Text = Trans.T("L_PRINT_PAUSED"); // "Print paused";
         }
 
         private void toolStartPrint_Click(object sender, EventArgs e)
         {
             if (printPaused)
             {
-                toolStatus.Text = "SD printing ...";
+                toolStatus.Text = Trans.T("L_SD_PRINTING...");
                 printing = true;
                 printPaused = false;
                 Main.conn.injectManualCommand("M24");
@@ -340,15 +356,16 @@ namespace RepetierHost.view
         {
             Main.conn.injectManualCommand("M22");
             mounted = false;
-            MessageBox.Show("You can remove the sd card.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(Trans.T("L_REMOVE_SD_CARD")/*"You can remove the sd card."*/,Trans.T("L_INFORMATION"), MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
             if (files.SelectedItems.Count == 0) return;
             string fname = files.SelectedItems[0].Text;
-            if (MessageBox.Show("Really delete "+fname,"Security question",MessageBoxButtons.YesNo,MessageBoxIcon.Question) == DialogResult.Yes)
-            {
+            //if (MessageBox.Show("Really delete "+fname,"Security question",MessageBoxButtons.YesNo,MessageBoxIcon.Question) == DialogResult.Yes)
+            if (MessageBox.Show(Trans.T1("L_REALLY_DELETE_X",fname), Trans.T("L_SECURITY_QUESTION"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
                 waitDelete = 6;
                 Main.conn.injectManualCommand("M30 " + fname);
             }

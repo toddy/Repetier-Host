@@ -134,6 +134,7 @@ namespace RepetierHost.model
         public bool isMarlin = false;
         public bool isSprinter = false;
         public int speedMultiply = 100;
+        public int flowMultiply = 100;
 
         public PrinterConnection()
         {
@@ -231,7 +232,7 @@ namespace RepetierHost.model
             {
                 // force response, even if we
                 // get a resend request
-                log("Reset output. After some wait, I got only " + read, false, 2);
+                log(Trans.T1("L_RESET_OUTPUT",read), false, 2); // "Reset output. After some wait, I got only " + read
                 read = "";
                 if (pingpong)
                     readyForNextSend = true;
@@ -352,7 +353,7 @@ namespace RepetierHost.model
             LinkedListNode<GCode> node = history.Last;
             if (resendError > 5 || node == null)
             {
-                log("Receiving only error messages. Stopped communication.", false, 2);
+                log(Trans.T("L_RECEIVING_ONLY_ERRORS"), false, 2); // Receiving only error messages. Stopped communication.
                 close();
                 RepetierHost.view.SoundConfig.PlayError(false);
                 return; // give up, something is terribly wrong
@@ -389,11 +390,11 @@ namespace RepetierHost.model
         {
             if (paused) return;
             paused = true;
+            PauseInfo.ShowPause(text);
             foreach (GCodeShort code in Main.main.editor.getContentArray(4))
             {
                 injectManualCommand(code.text);
             }
-            PauseInfo.ShowPause(text);
             //MessageBox.Show(Main.main, text, "Printer paused", MessageBoxButtons.OK, MessageBoxIcon.Stop);
             //paused = false;
         }
@@ -542,11 +543,11 @@ namespace RepetierHost.model
                             {
                                 if (injectCommands.Count == 0)
                                 {
-                                    printeraction = "Idle";
+                                    printeraction = Trans.T("L_IDLE");
                                 }
                                 else
                                 {
-                                    printeraction = injectCommands.Count.ToString() + " commands waiting";
+                                    printeraction = Trans.T1("L_X_COMMANDS_WAITING", injectCommands.Count.ToString());
                                 }
                             }
                             return true;
@@ -600,9 +601,9 @@ namespace RepetierHost.model
                             {
                                 linesSend++;
                                 lastCommandSend = DateTime.Now.Ticks;
-                                printeraction = "Printing...ETA " + job.ETA;
+                                printeraction = Trans.T1("L_PRINTING..ETA", job.ETA); //"Printing...ETA " + job.ETA;
                                 if (job.maxLayer > 0)
-                                    printeraction += " Layer " + analyzer.layer + "/" + job.maxLayer;
+                                    printeraction += Trans.T2("L_LAYER_X/Y", analyzer.layer.ToString(), job.maxLayer.ToString()); // Layer " + analyzer.layer + "/" + job.maxLayer;
                                 logprogress = job.PercentDone;
                             }
                             analyzer.Analyze(gc);
@@ -611,7 +612,7 @@ namespace RepetierHost.model
                     }
                     catch (InvalidOperationException ex)
                     {
-                        logtext = "Error sending data:" + ex;
+                        logtext = Trans.T("L_ERROR_SENDING_DATA:") + ex; // "Error sending data:" + ex;
                         loglevel = 2;
                     }
                 }
@@ -655,7 +656,7 @@ namespace RepetierHost.model
             isMarlin = isRepetier = false;
             try
             {
-                if (port.Equals("Virtual printer"))
+                if (port.ToLower().Equals("virtual printer"))
                 {
                     isVirtualActive = true;
                     virtualPrinter.open();
@@ -677,7 +678,7 @@ namespace RepetierHost.model
                     gc.Parse("M105");
                     virtualPrinter.receiveLine(gc);
                     if (eventConnectionChange != null)
-                        eventConnectionChange("Connected");
+                        eventConnectionChange(Trans.T("L_CONNECTED"));
                     Main.main.Invoke(Main.main.UpdateJobButtons);
                     return;
                 }
@@ -728,7 +729,7 @@ namespace RepetierHost.model
                 injectManualCommand("M105"); // Read temperature
                 ReturnInjectLock();
                 if (eventConnectionChange != null)
-                    eventConnectionChange("Connected");
+                    eventConnectionChange(Trans.T("L_CONNECTED"));
                 Main.main.Invoke(Main.main.UpdateJobButtons);
             }
             catch (IOException ex)
@@ -736,7 +737,7 @@ namespace RepetierHost.model
                 serial = null;
                 log(ex.Message, true, 2);
                 if (eventConnectionChange != null)
-                    eventConnectionChange("Conn. error");
+                    eventConnectionChange(Trans.T("L_CONNECTION_ERROR")); // "Conn. error");
                 RepetierHost.view.SoundConfig.PlayError(false);
             }
         }
@@ -761,10 +762,10 @@ namespace RepetierHost.model
                 if (eventConnectionChange != null)
                     try
                     {
-                        Main.main.Invoke(eventConnectionChange, "Disconnected");
+                        Main.main.Invoke(eventConnectionChange, Trans.T("L_DISCONNECTED"));
                     }
                     catch { } // Closing the app can cause an exception, if event comes after Main handle is destroyed
-                firePrinterAction("Idle");
+                firePrinterAction(Trans.T("L_IDLE"));
                 Main.main.Invoke(Main.main.UpdateJobButtons);
                 return;
             }
@@ -796,10 +797,10 @@ namespace RepetierHost.model
             if (eventConnectionChange != null)
                 try
                 {
-                    Main.main.Invoke(eventConnectionChange, "Disconnected");
+                    Main.main.Invoke(eventConnectionChange, Trans.T("L_DISCONNECTED"));
                 }
                 catch { } // Closing the app can cause an exception, if event comes after Main handle is destroyed
-            firePrinterAction("Idle");
+            firePrinterAction(Trans.T("L_IDLE"));
             Main.main.Invoke(Main.main.UpdateJobButtons);
         }
 
@@ -811,7 +812,7 @@ namespace RepetierHost.model
         private void error(Object sender, SerialErrorReceivedEventArgs e)
         {
             comErrorsReceived++;
-            log("Serial com error:" + e.ToString(), false, 2);
+            log(Trans.T("L_SERIAL_COM_ERROR") + e.ToString(), false, 2); // "Serial com error:"
             if (comErrorsReceived == 10)
                 close();
         }
@@ -911,11 +912,11 @@ namespace RepetierHost.model
             {
                 if (injectCommands.Count == 0)
                 {
-                    firePrinterAction("Idle");
+                    firePrinterAction(Trans.T("L_IDLE"));
                 }
                 else
                 {
-                    firePrinterAction(injectCommands.Count.ToString() + " commands waiting");
+                    firePrinterAction(Trans.T1("L_X_COMMANDS_WAITING", injectCommands.Count.ToString()));
                 }
             }
         }
@@ -930,11 +931,11 @@ namespace RepetierHost.model
             {
                 if (injectCommands.Count == 0)
                 {
-                    firePrinterAction("Idle");
+                    firePrinterAction(Trans.T("L_IDLE"));
                 }
                 else
                 {
-                    firePrinterAction(injectCommands.Count.ToString() + " commands waiting");
+                    firePrinterAction(Trans.T1("L_X_COMMANDS_WAITING", injectCommands.Count.ToString()));
                 }
             }
         }
@@ -995,6 +996,7 @@ namespace RepetierHost.model
                 {
                     Main.main.Invoke(Main.main.UpdateEEPROM);
                     injectManualCommand("M220 S" + speedMultiply.ToString());
+                    injectManualCommand("M221 S" + flowMultiply.ToString());
                 }
                 Main.main.Invoke(Main.main.FirmwareDetected);
             }
@@ -1058,6 +1060,13 @@ namespace RepetierHost.model
                 int.TryParse(h,out speedMultiply);
                 if (speedMultiply < 25) speedMultiply = 25;
                 if (speedMultiply > 300) speedMultiply = 300;
+                analyzer.fireChanged();
+            }
+            if ((h = extract(res, "FlowMultiply:")) != null)
+            {
+                int.TryParse(h, out speedMultiply);
+                if (speedMultiply < 50) flowMultiply = 50;
+                if (speedMultiply > 150) flowMultiply = 150;
                 analyzer.fireChanged();
             }
             if ((h = extract(res, "TargetExtr0:")) != null)

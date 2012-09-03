@@ -35,6 +35,24 @@ namespace RepetierHost.view
         {
             InitializeComponent();
             //UpdateSelection();
+            if (Main.main != null)
+            {
+                Main.main.languageChanged += translate;
+                translate();
+            }
+        }
+        void translate() {
+            buttonKillSlicing.Text = Trans.T("B_KILL_SLICING_PROCESS");
+            buttonSetupSkeinforge.Text = Trans.T("B_SETUP_SKEINFORGE");
+            buttonSetupSlic3r.Text = Trans.T("B_SETUP_SLIC3R");
+            buttonSkeinConfigure.Text = Trans.T("B_CONFIGURE_SKEINFORGE");
+            buttonSlic3rConfigure.Text = Trans.T("B_CONFIGURE_SLIC3R");
+            switchSkeinforge.TextOn = switchSkeinforge.TextOff = Trans.T("B_ACTIVE");
+            switchSlic3rActive.TextOn = switchSlic3rActive.TextOff = Trans.T("B_ACTIVE");
+            labelFilamentSettings.Text = Trans.T("L_FILAMENT_SETTINGS");
+            labelPrinterSettings.Text = Trans.T("L_PRINTER_SETTINGS");
+            labelPrintSettings.Text = Trans.T("L_PRINT_SETTINGS");
+            labelProfile.Text = Trans.T("L_PROFILE");
         }
         private string noINI(string ini)
         {
@@ -176,15 +194,17 @@ namespace RepetierHost.view
                 switchSlic3rActive.On = true;
                 switchSkeinforge.On = false;
                 //buttonStartSlicing.Text = "Slice with Slic3r\r\n\r\nPrinter = " + b.Slic3rPrinterSettings + "\r\nFilament = " + b.Slic3rFilamentSettings + "\r\nPrint = " + b.Slic3rPrintSettings;
-                buttonStartSlicing.Text = "Slice with Slic3r";
             }
             else if (Main.slicer.ActiveSlicer == Slicer.SlicerID.Skeinforge)
             {
                 switchSlic3rActive.On = false;
                 switchSkeinforge.On = true;
                 //buttonStartSlicing.Text = "Slice with Skeinforge\r\n\r\nProfile = " + b.SkeinforgeProfile;
-                buttonStartSlicing.Text = "Slice with Skeinforge";
             }
+            buttonStartSlicing.Text = Trans.T1("L_SLICE_WITH", Main.slicer.SlicerName);
+            if (BasicConfiguration.basicConf.SkeinforgeProfileDir.IndexOf("sfact") >= 0)
+                groupSkeinforge.Text = "SFACT";
+            else groupSkeinforge.Text = "Skeinforge";
             updating = false;
         }
 

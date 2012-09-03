@@ -89,7 +89,62 @@ namespace RepetierHost.view
             {
                 checkHomeXMax.Visible = false;
                 checkHomeYMax.Visible = false;
+                checkHomeZMax.Visible = false;
             }
+            Main.main.languageChanged += translate;
+            translate();
+        }
+        public void translate()
+        {
+            labelAddPrintingTime.Text = Trans.T("L_ADD_PRINTING_TIME");
+            labelBaudRate.Text = Trans.T("L_BAUD_RATE");
+            labelCacheSizeHint.Text = Trans.T("L_CACHE_SIZE_HINT");
+            labelCheckEveryX.Text = Trans.T("L_CHECK_EVERY_X");
+            labelConnectionInfo.Text = Trans.T("L_CONNECTION_INFO");
+            labelDefExtruderTemp.Text = Trans.T("L_DEFAULT_EXTRUDER_TEMPERATURE");
+            labelDefHeatedBedTemp.Text = Trans.T("L_DEFAULT_HEATED_BED_TEMPERATURE");
+            labelDumpAreaDepth.Text = Trans.T("L_DUMP_AREA_DEPTH");
+            labelDumpAreaFront.Text = Trans.T("L_DUMP_AREA_FRONT");
+            labelDumpAreaLeft.Text = Trans.T("L_DUMP_AREA_LEFT");
+            labelDumpAreaWidth.Text = Trans.T("L_DUMP_AREA_WIDTH");
+            labelFilterInfo.Text = Trans.T("L_FILTER_INFO");
+            labelFilterPathParam.Text = Trans.T("L_FILTER_PATH_PARAM");
+            labelParity.Text = Trans.T("L_PARITY");
+            labelParkPosition.Text = Trans.T("L_PARK_POSITION");
+            labelPort.Text = Trans.T("L_PORT");
+            labelPrintAreaDepth.Text = Trans.T("L_PRINT_AREA_DEPTH");
+            labelPrintAreaHeight.Text = Trans.T("L_PRINT_AREA_HEIGHT");
+            labelPrintAreaWidth.Text = Trans.T("L_PRINT_AREA_WIDTH");
+            labelPrinter.Text = Trans.T("L_PRINTER");
+            labelReceiveCacheSize.Text = Trans.T("L_RECEIVE_CACHE_SIZE");
+            labelStopbits.Text = Trans.T("L_STOPBITS");
+            labelTransferProtocol.Text = Trans.T("L_TRANSFER_PROTOCOL");
+            labelTravelFeedRate.Text = Trans.T("L_TRAVEL_FEED_RATE");
+            labelZFeedRate.Text = Trans.T("L_ZFEED_RATE");
+            checkDisableExtruderAfterJob.Text = Trans.T("L_DISABLE_EXTRUDER_AFTER_JOB");
+            checkDisableMotors.Text = Trans.T("L_DISABLE_MOTORS");
+            checkDisbaleHeatedBedAfterJob.Text = Trans.T("L_DISABLE_HEATED_BED_AFTER_JOB");
+            checkGoDisposeAfterJob.Text = Trans.T("L_GO_PARK_POSITION");
+            checkHasDumpArea.Text = Trans.T("L_HAS_DUMP_AREA");
+            checkHomeXMax.Text = Trans.T("L_HOME_X_MAX");
+            checkHomeYMax.Text = Trans.T("L_HOME_Y_MAX");
+            checkHomeZMax.Text = Trans.T("L_HOME_Z_MAX");
+            checkPingPong.Text = Trans.T("L_PING_PONG_MODE");
+            checkRunFilterEverySlice.Text = Trans.T("L_RUN_FILTER_EVERY_SLICE");
+            labelCheckEveryX.Text = Trans.T1("L_CHECK_EVERY_X", trackTempPeriod.Value.ToString());
+            checkTemp.Text = Trans.T("L_CHECK_EXTRUDER_BED_TEMPERATURE");
+            logM105Checkbox.Text = Trans.T("L_REMOVE_M105_REQUEST_LOG");
+            buttonAbort.Text = Trans.T("B_CANCEL");
+            buttonApply.Text = Trans.T("B_APPLY");
+            buttonOK.Text = Trans.T("B_OK");
+            buttonDelete.Text = Trans.T("B_DELETE_PRINTER_SETTINGS");
+            tabPageConnection.Text = Trans.T("TAB_CONNECTION");
+            tabPagePrinter.Text = Trans.T("TAB_PRINTER");
+            tabPageShape.Text = Trans.T("TAB_PRINTER_SHAPE");
+            tabAdvanced.Text = Trans.T("TAB_ADVANCED");
+            this.Text = Trans.T("W_PRINTER_SETTINGS");
+            groupBoxPostSliceFilter.Text = Trans.T("L_POST_SLICE_FILTER");
+            labelZMin.Text = Trans.T("L_Z_MIN");
         }
         public void save(string printername)
         {
@@ -130,6 +185,7 @@ namespace RepetierHost.view
             p.SetValue("addPrintingTime", textAddPrintingTime.Text);
             p.SetValue("xhomeMax", checkHomeXMax.Checked ? 1 : 0);
             p.SetValue("yhomeMax", checkHomeYMax.Checked ? 1 : 0);
+            p.SetValue("zhomeMax", checkHomeZMax.Checked ? 1 : 0);
         }
         public void load(string printername)
         {
@@ -154,7 +210,7 @@ namespace RepetierHost.view
             checkDisbaleHeatedBedAfterJob.Checked = 1 == (int)p.GetValue("disableHeatedBetAfterJob", checkDisbaleHeatedBedAfterJob.Checked ? 1 : 0);
             checkDisableExtruderAfterJob.Checked = 1 == (int)p.GetValue("disableExtruderAfterJob", checkDisableExtruderAfterJob.Checked ? 1 : 0);
             checkDisableMotors.Checked = 1 == (int) p.GetValue("disableMotorsAfterJob", checkDisableMotors.Checked ? 1 : 0);
-            labelCheckInterval.Text = trackTempPeriod.Value.ToString();
+            labelCheckEveryX.Text = Trans.T1("L_CHECK_EVERY_X",trackTempPeriod.Value.ToString());
             textReceiveCacheSize.Text = (string)p.GetValue("receiveCacheSize", textReceiveCacheSize.Text);
             textPrintAreaWidth.Text = (string)p.GetValue("printAreaWidth", textPrintAreaWidth.Text);
             textPrintAreaDepth.Text = (string)p.GetValue("printAreaDepth", textPrintAreaDepth.Text);
@@ -172,6 +228,7 @@ namespace RepetierHost.view
             textAddPrintingTime.Text = (string)p.GetValue("addPrintingTime", textAddPrintingTime.Text);
             checkHomeXMax.Checked = 1 == (int)p.GetValue("xhomeMax", checkHomeXMax.Checked ? 1 : 0);
             checkHomeYMax.Checked = 1 == (int)p.GetValue("yhomeMax", checkHomeYMax.Checked ? 1 : 0);
+            checkHomeZMax.Checked = 1 == (int)p.GetValue("zhomeMax", checkHomeZMax.Checked ? 1 : 0);
         }
         public void UpdateDimensions()
         {
@@ -262,7 +319,7 @@ namespace RepetierHost.view
             checkDisableExtruderAfterJob.Checked = con.afterJobDisableExtruder;
             checkDisbaleHeatedBedAfterJob.Checked = con.afterJobDisablePrintbed;
             checkDisableMotors.Checked = con.afterJobDisableMotors;
-            labelCheckInterval.Text = trackTempPeriod.Value.ToString();
+            labelCheckEveryX.Text = Trans.T1("L_CHECK_EVERY_X", trackTempPeriod.Value.ToString());
             textReceiveCacheSize.Text = con.receiveCacheSize.ToString();
             textFilterPath.Text = con.filterCommand;
             checkRunFilterEverySlice.Checked = con.runFilterEverySlice;
@@ -296,7 +353,7 @@ namespace RepetierHost.view
         private void FormPrinterSettings_Shown(object sender, EventArgs e)
         {
             comboPort.Items.Clear();
-            comboPort.Items.Add("Virtual printer");
+            comboPort.Items.Add("Virtual Printer");
             if (Main.IsMono && Environment.OSVersion.Platform == PlatformID.Unix)
             {
                 DirectoryInfo di = new DirectoryInfo("/dev");
@@ -337,7 +394,7 @@ namespace RepetierHost.view
 
         private void buttonDelete_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Di you realy want to delete all settings for " + comboPrinter.Text, "Security question", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+            if (MessageBox.Show(Trans.T1("L_REALLY_DELETE_PRINTER",/*Do you realy want to delete all settings for*/ comboPrinter.Text),Trans.T("L_SECURITY_QUESTION"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
             {
                 string name = comboPrinter.Text;
                 printerKey.DeleteSubKeyTree(comboPrinter.Text);
@@ -350,7 +407,7 @@ namespace RepetierHost.view
 
         private void trackTempPeriod_ValueChanged(object sender, EventArgs e)
         {
-            labelCheckInterval.Text = trackTempPeriod.Value.ToString();
+            labelCheckEveryX.Text = Trans.T1("L_CHECK_EVERY_X", trackTempPeriod.Value.ToString());
         }
 
         private void float_Validating(object sender, CancelEventArgs e)
@@ -363,7 +420,7 @@ namespace RepetierHost.view
             }
             catch
             {
-                errorProvider.SetError(box, "Not a number.");
+                errorProvider.SetError(box, Trans.T("L_NOT_A_NUMBER"));
             }
         }
         private void int_Validating(object sender, CancelEventArgs e)
@@ -376,7 +433,7 @@ namespace RepetierHost.view
             }
             catch
             {
-                errorProvider.SetError(box, "Not an integer.");
+                errorProvider.SetError(box, Trans.T("L_NOT_AN_INTEGER"));
             }
         }
 

@@ -27,7 +27,23 @@ namespace RepetierHost.view
         public Slic3rSetup()
         {
             InitializeComponent();
-            LoadData();            
+            LoadData();
+            translate();
+            Main.main.languageChanged += translate;
+        }
+        private void translate()
+        {
+            Text = Trans.T("W_SLIC3R_SETUP");
+            groupSlic3rSetup.Text = Trans.T("L_SLIC3R_SETUP");
+            labelLeaveBlankBundle.Text = Trans.T("L_SLIC3R_BLANK_BUNDLE");
+            labelSlic3rConfigDir.Text = Trans.T("L_SLIC3R_CONFIG_DIR");
+            labelSlic3rExecutable.Text = Trans.T("L_SLIC3R_EXECUTABLE");
+            labelSlic3rInfo.Text = Trans.T("L_SLIC3R_INFO");
+            labelSlic3rLeaveBlankConfig.Text = Trans.T("L_SLIC3R_BLANK_CONFIG");            
+            buttonBrowseConfigDir.Text = Trans.T("B_BROWSE");
+            buttonBrowseExecutable.Text = Trans.T("B_BROWSE");
+            buttonCancel.Text = Trans.T("B_CANCEL");
+            buttonOK.Text = Trans.T("B_OK");
         }
         private void LoadData()
         {

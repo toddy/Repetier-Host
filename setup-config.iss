@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Repetier-Host"
-#define MyAppVersion "0.70"
+#define MyAppVersion "0.71"
 #define MyAppPublisher "repetier"
 #define MyAppURL "https://github.com/repetier/Repetier-Host"
 #define MyAppExeName "RepetierHost.exe"
@@ -24,7 +24,7 @@ DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 LicenseFile=Repetier-Host-licence.txt
 OutputDir=.
-OutputBaseFilename=setupRepetierHost_0_70b
+OutputBaseFilename=setupRepetierHost_0_71
 Compression=lzma
 SolidCompression=yes
 ArchitecturesInstallIn64BitMode=x64
@@ -70,9 +70,9 @@ Source: "src\RepetierHost\bin\Release\OpenTK.xml"; DestDir: "{app}"; Flags: igno
 Source: "src\data\*"; DestDir: "{app}/data"; Flags: ignoreversion recursesubdirs
 Source: "win\32bit\Slic3r\*"; DestDir: "{app}/Slic3r"; Flags: ignoreversion recursesubdirs; Check: not Is64BitInstallMode
 Source: "win\64bit\Slic3r\*"; DestDir: "{app}/Slic3r"; Flags: ignoreversion recursesubdirs; Check: Is64BitInstallMode
-Source: "win\pypy\*"; DestDir: "{app}/pypy"; Flags: ignoreversion recursesubdirs
-Source: "win\python\*"; DestDir: "{app}/python"; Flags: ignoreversion recursesubdirs
-Source: "win\Skeinforge\*"; DestDir: "{app}/Skeinforge"; Flags: ignoreversion recursesubdirs
+Source: "win\pypy\*"; DestDir: "{app}/pypy"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "win\python\*"; DestDir: "{app}/python"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "win\Skeinforge\*"; DestDir: "{app}/Skeinforge"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "src\empty.txt"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 

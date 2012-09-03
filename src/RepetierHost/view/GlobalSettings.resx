@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="label2.Text" xml:space="preserve">
+  <data name="labelInfoWorkdir.Text" xml:space="preserve">
     <value>In the work directory, the logfile and temporary files for slicing are stored. If logging is enabled, 
 there will be a file repetier.log after the program is closed. Starting the program will delete the
 old log file! The logfile conatins all communication with the printer, even if disabled in the log

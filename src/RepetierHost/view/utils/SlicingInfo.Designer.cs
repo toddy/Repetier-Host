@@ -30,9 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SlicingInfo));
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.labelSlicer_ = new System.Windows.Forms.Label();
+            this.labelAction_ = new System.Windows.Forms.Label();
+            this.labelDuration_ = new System.Windows.Forms.Label();
             this.labelSlicer = new System.Windows.Forms.Label();
             this.labelAction = new System.Windows.Forms.Label();
             this.labelDuration = new System.Windows.Forms.Label();
@@ -40,32 +40,32 @@
             this.checkStartBoxAfterSlicing = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
-            // label1
+            // labelSlicer_
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 13);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(36, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Slicer:";
+            this.labelSlicer_.AutoSize = true;
+            this.labelSlicer_.Location = new System.Drawing.Point(13, 13);
+            this.labelSlicer_.Name = "labelSlicer_";
+            this.labelSlicer_.Size = new System.Drawing.Size(36, 13);
+            this.labelSlicer_.TabIndex = 0;
+            this.labelSlicer_.Text = "Slicer:";
             // 
-            // label2
+            // labelAction_
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 32);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(40, 13);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Action:";
+            this.labelAction_.AutoSize = true;
+            this.labelAction_.Location = new System.Drawing.Point(13, 32);
+            this.labelAction_.Name = "labelAction_";
+            this.labelAction_.Size = new System.Drawing.Size(40, 13);
+            this.labelAction_.TabIndex = 1;
+            this.labelAction_.Text = "Action:";
             // 
-            // label3
+            // labelDuration_
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(13, 52);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(50, 13);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Duration:";
+            this.labelDuration_.AutoSize = true;
+            this.labelDuration_.Location = new System.Drawing.Point(13, 52);
+            this.labelDuration_.Name = "labelDuration_";
+            this.labelDuration_.Size = new System.Drawing.Size(50, 13);
+            this.labelDuration_.TabIndex = 2;
+            this.labelDuration_.Text = "Duration:";
             // 
             // labelSlicer
             // 
@@ -119,9 +119,9 @@
             this.Controls.Add(this.labelDuration);
             this.Controls.Add(this.labelAction);
             this.Controls.Add(this.labelSlicer);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.labelDuration_);
+            this.Controls.Add(this.labelAction_);
+            this.Controls.Add(this.labelSlicer_);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SlicingInfo";
             this.ShowInTaskbar = false;
@@ -134,9 +134,9 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelSlicer_;
+        private System.Windows.Forms.Label labelAction_;
+        private System.Windows.Forms.Label labelDuration_;
         private System.Windows.Forms.Label labelSlicer;
         private System.Windows.Forms.Label labelAction;
         private System.Windows.Forms.Label labelDuration;

@@ -33,9 +33,11 @@ using System.Diagnostics;
 namespace RepetierHost
 {
     public delegate void executeHostCommandDelegate(GCode code);
+    public delegate void languageChangedEvent();
 
     public partial class Main : Form
     {
+        public event languageChangedEvent languageChanged;
         private const int InfoPanel2MinSize = 440;
         public static PrinterConnection conn;
         public static Main main;
@@ -53,6 +55,7 @@ namespace RepetierHost
         public ThreeDView printPreview = null;
         public GCodeVisual jobVisual = new GCodeVisual();
         public GCodeVisual printVisual = null;
+        public STLComposer stlComposer1 = null;
         public static GCodeGenerator generator = null;
         public string basicTitle = "";
         public volatile GCodeVisual newVisual = null;
@@ -69,6 +72,9 @@ namespace RepetierHost
         List<GCodeShort> previewArray0, previewArray1, previewArray2;
         public TemperatureHistory history = null;
         public TemperatureView tempView = null;
+        public Trans trans = null;
+        public RepetierHost.view.RepetierEditor editor;
+
         public class JobUpdater
         {
             GCodeVisual visual = null;
@@ -167,6 +173,8 @@ namespace RepetierHost
                 lastcom = s;
             }*/
             main = this;
+            trans = new Trans(Application.StartupPath + Path.DirectorySeparatorChar + "data" + Path.DirectorySeparatorChar + "translations");
+
             generator = new GCodeGenerator();
             globalSettings = new GlobalSettings();
             conn = new PrinterConnection();
@@ -174,6 +182,9 @@ namespace RepetierHost
             conn.analyzer.start();
             threeDSettings = new ThreeDSettings();
             InitializeComponent();
+            editor = new RepetierEditor();
+            editor.Dock = DockStyle.Fill;
+            tabGCode.Controls.Add(editor);
             updateShowFilament();
             RegMemory.RestoreWindowPos("mainWindow", this);
             if (WindowState == FormWindowState.Maximized)
@@ -215,6 +226,9 @@ namespace RepetierHost
             conn.eventConnectionChange += OnPrinterConnectionChange;
             conn.eventPrinterAction += OnPrinterAction;
             conn.eventJobProgress += OnJobProgress;
+            stlComposer1 = new STLComposer();
+            stlComposer1.Dock = DockStyle.Fill;
+            tabModel.Controls.Add(stlComposer1);
             printPanel = new PrintPanel();
             printPanel.Dock = DockStyle.Fill;
             tabPrint.Controls.Add(printPanel);
@@ -261,7 +275,7 @@ namespace RepetierHost
             if (IsMono)
                 showWorkdirectoryToolStripMenuItem.Visible = false;
             new SoundConfig();
-            stlComposer1.buttonSlice.Text = "Slice with " + slicer.SlicerName;
+            stlComposer1.buttonSlice.Text = Trans.T1("L_SLICE_WITH", slicer.SlicerName);
 
             // Customizations
 
@@ -277,8 +291,160 @@ namespace RepetierHost
                 Text = basicTitle;
             }
             slicerPanel.UpdateSelection();
+            if (Custom.GetBool("removeUpdates", false))
+                checkForUpdatesToolStripMenuItem.Visible = false;
+            else
+                RHUpdater.checkForUpdates(true);
+            UpdateToolbarSize();
+            // Add languages
+            foreach (Translation t in trans.translations.Values)
+            {
+                ToolStripMenuItem item = new ToolStripMenuItem(t.language,null, languageSelected);
+                item.Tag = t;
+                languageToolStripMenuItem.DropDownItems.Add(item);
+            }
+            languageChanged += translate;
+            translate();
+            toolAction.Text = Trans.T("L_IDLE");
+            toolConnection.Text = Trans.T("L_DISCONNECTED");
         }
-
+        public void translate()
+        {
+            fileToolStripMenuItem.Text = Trans.T("M_FILE");
+            settingsToolStripMenuItem.Text = Trans.T("M_CONFIG");
+            slicerToolStripMenuItem.Text = Trans.T("M_SLICER");
+            printerToolStripMenuItem.Text = Trans.T("M_PRINTER");
+            temperatureToolStripMenuItem.Text = Trans.T("M_TEMPERATURE");
+            helpToolStripMenuItem.Text = Trans.T("M_HELP");
+            loadGCodeToolStripMenuItem.Text = Trans.T("M_LOAD_GCODE");
+            showWorkdirectoryToolStripMenuItem.Text = Trans.T("M_SHOW_WORKDIRECTORY");
+            languageToolStripMenuItem.Text = Trans.T("M_LANGUAGE");
+            printerSettingsToolStripMenuItem.Text = Trans.T("M_PRINTER_SETTINGS");
+            eeprom.Text = Trans.T("M_EEPROM_SETTINGS");
+            threeDSettingsMenu.Text = Trans.T("M_3D_VIEWER_CONFIGURATION");
+            repetierSettingsToolStripMenuItem.Text = Trans.T("M_REPETIER_SETTINGS");
+            internalSlicingParameterToolStripMenuItem.Text = Trans.T("M_TESTCASE_SETTINGS");
+            soundConfigurationToolStripMenuItem.Text = Trans.T("M_SOUND_CONFIGURATION");
+            showExtruderTemperaturesMenuItem.Text = Trans.T("M_SHOW_EXTRUDER_TEMPERATURES");
+            showHeatedBedTemperaturesMenuItem.Text = Trans.T("M_SHOW_HEATED_BED_TEMPERATURES");
+            showTargetTemperaturesMenuItem.Text = Trans.T("M_SHOW_TARGET_TEMPERATURES");
+            showAverageTemperaturesMenuItem.Text = Trans.T("M_SHOW_AVERAGE_TEMPERATURES");
+            showHeaterPowerMenuItem.Text = Trans.T("M_SHOW_HEATER_POWER");
+            autoscrollTemperatureViewMenuItem.Text = Trans.T("M_AUTOSCROLL_TEMPERATURE_VIEW");
+            timeperiodMenuItem.Text = Trans.T("M_TIMEPERIOD");
+            temperatureZoomMenuItem.Text = Trans.T("M_TEMPERATURE_ZOOM");
+            buildAverageOverMenuItem.Text = Trans.T("M_BUILD_AVERAGE_OVER");
+            secondsToolStripMenuItem.Text = Trans.T("M_30_SECONDS");
+            minuteToolStripMenuItem.Text = Trans.T("M_1_MINUTE");
+            minuteToolStripMenuItem1.Text = Trans.T("M_1_MINUTE");
+            minutesToolStripMenuItem.Text = Trans.T("M_2_MINUTES");
+            minutesToolStripMenuItem1.Text = Trans.T("M_5_MINUTES");
+            minutes5ToolStripMenuItem.Text = Trans.T("M_5_MINUTES");
+            minutes10ToolStripMenuItem.Text = Trans.T("M_10_MINUTES");
+            minutes15ToolStripMenuItem.Text = Trans.T("M_15_MINUTES");
+            minutes30ToolStripMenuItem.Text = Trans.T("M_30_MINUTES");
+            minutes60ToolStripMenuItem.Text = Trans.T("M_60_MINUTES");
+            continuousMonitoringMenuItem.Text = Trans.T("M_CONTINUOUS_MONITORING");
+            disableToolStripMenuItem.Text = Trans.T("M_DISABLE");
+            extruder1ToolStripMenuItem.Text = Trans.T("M_EXTRUDER_1");
+            extruder2ToolStripMenuItem.Text = Trans.T("M_EXTRUDER_2");
+            heatedBedToolStripMenuItem.Text = Trans.T("M_HEATED_BED");
+            printerInformationsToolStripMenuItem.Text = Trans.T("M_PRINTER_INFORMATION");
+            jobStatusToolStripMenuItem.Text = Trans.T("M_JOB_STATUS");
+            menuSDCardManager.Text = Trans.T("M_SD_CARD_MANAGER");
+            testCaseGeneratorToolStripMenuItem.Text = Trans.T("M_TEST_CASE_GENERATOR");
+            sendScript1ToolStripMenuItem.Text = Trans.T("M_SEND_SCRIPT_1");
+            sendScript2ToolStripMenuItem.Text = Trans.T("M_SEND_SCRIPT_2");
+            sendScript3ToolStripMenuItem.Text = Trans.T("M_SEND_SCRIPT_3");
+            sendScript4ToolStripMenuItem.Text = Trans.T("M_SEND_SCRIPT_4");
+            sendScript5ToolStripMenuItem.Text = Trans.T("M_SEND_SCRIPT_5");
+            repetierHostHomepageToolStripMenuItem.Text = Trans.T("M_REPETIER_HOST_HOMEPAGE");
+            repetierHostDownloadPageToolStripMenuItem.Text = Trans.T("M_REPETIER_HOST_DOWNLOAD_PAGE");
+            manualToolStripMenuItem.Text = Trans.T("M_MANUAL");
+            slic3rHomepageToolStripMenuItem.Text = Trans.T("M_SLIC3R_HOMEPAGE");
+            skeinforgeHomepageToolStripMenuItem.Text = Trans.T("M_SKEINFORGE_HOMEPAGE");
+            repRapWebsiteToolStripMenuItem.Text = Trans.T("M_REPRAP_WEBSITE");
+            repRapForumToolStripMenuItem.Text = Trans.T("M_REPRAP_FORUM");
+            thingiverseNewestToolStripMenuItem.Text = Trans.T("M_THINGIVERSE_NEWEST");
+            thingiversePopularToolStripMenuItem.Text = Trans.T("M_THINGIVERSE_POPULAR");
+            aboutRepetierHostToolStripMenuItem.Text = Trans.T("M_ABOUT_REPETIER_HOST");
+            checkForUpdatesToolStripMenuItem.Text = Trans.T("M_CHECK_FOR_UPDATES");
+            quitToolStripMenuItem.Text = Trans.T("M_QUIT");
+            tabPage3DView.Text = Trans.T("TAB_3D_VIEW");
+            tabPageTemp.Text = Trans.T("TAB_TEMPERATURE_CURVE");
+            tabModel.Text = Trans.T("TAB_OBJECT_PLACEMENT");
+            tabSlicer.Text = Trans.T("TAB_SLICER");
+            tabGCode.Text = Trans.T("TAB_GCODE_EDITOR");
+            tabPrint.Text = Trans.T("TAB_MANUAL_CONTROL");
+            toolPrinterSettings.Text = Trans.T("M_PRINTER_SETTINGS");
+            toolPrinterSettings.ToolTipText = Trans.T("M_PRINTER_SETTINGS");
+            toolStripEmergencyButton.Text = Trans.T("M_EMERGENCY_STOP");
+            toolStripSDCard.Text = Trans.T("M_SD_CARD");
+            toolStripSDCard.ToolTipText = Trans.T("L_SD_CARD_MANAGEMENT");
+            toolStripEmergencyButton.ToolTipText = Trans.T("M_EMERGENCY_STOP");
+            toolLoad.Text = Trans.T("M_LOAD");
+            toolStripSaveJob.Text = Trans.T("M_SAVE_JOB");
+            toolKillJob.Text = Trans.T("M_KILL_JOB");
+            toolStripSDCard.Text = Trans.T("M_SD_CARD");
+            toolShowLog.Text = toolShowLog.ToolTipText = Trans.T("M_TOGGLE_LOG");
+            toolShowFilament.Text = Trans.T("M_SHOW_FILAMENT");
+            if (conn.connected)
+            {
+                toolConnect.ToolTipText = Trans.T("L_DISCONNECT_PRINTER"); // "Disconnect printer";
+                toolConnect.Text = Trans.T("M_DISCONNECT"); // "Disconnect";
+            }
+            else
+            {
+                toolConnect.ToolTipText = Trans.T("L_CONNECT_PRINTER"); // "Connect printer";
+                toolConnect.Text = Trans.T("M_CONNECT"); // "Connect";
+            }
+            if (threeDSettings.checkDisableFilamentVisualization.Checked)
+            {
+                toolShowFilament.ToolTipText = Trans.T("L_FILAMENT_VISUALIZATION_DISABLED"); // "Filament visualization disabled";
+                toolShowFilament.Text = Trans.T("M_SHOW_FILAMENT"); // "Show filament";
+            }
+            else
+            {
+                toolShowFilament.ToolTipText = Trans.T("L_FILAMENT_VISUALIZATION_ENABLED"); // "Filament visualization enabled";
+                toolShowFilament.Text = Trans.T("M_HIDE_FILAMENT"); // "Hide filament";
+            }
+            if (conn.job.mode != 1)
+            {
+                Main.main.toolRunJob.ToolTipText = Trans.T("M_RUN_JOB"); // "Run job";
+                Main.main.toolRunJob.Text = Trans.T("M_RUN_JOB"); //"Run job";
+            }
+            else
+            {
+                Main.main.toolRunJob.ToolTipText = Trans.T("M_PAUSE_JOB"); //"Pause job";
+                Main.main.toolRunJob.Text = Trans.T("M_PAUSE_JOB"); //"Pause job";
+            }
+            toolLoad.ToolTipText = Trans.T("L_LOAD_FILE"); // Load file
+            toolStripSaveJob.ToolTipText = Trans.T("M_SAVE_JOB");
+            openGCode.Title = Trans.T("L_IMPORT_G_CODE"); // Import G-Code
+            saveJobDialog.Title = Trans.T("L_SAVE_G_CODE"); //Save G-Code
+            foreach (ToolStripMenuItem item in languageToolStripMenuItem.DropDownItems)
+            {
+                item.Checked = item.Tag == trans.active;
+            }
+        }
+        public void UpdateToolbarSize()
+        {
+            bool mini = globalSettings.ReduceToolbarSize;
+            foreach (ToolStripItem it in toolStrip.Items)
+            {
+                if (mini)
+                    it.DisplayStyle = ToolStripItemDisplayStyle.Image;
+                else
+                    it.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
+            }
+        }
+        private void languageSelected(object sender, EventArgs e)
+        {
+            ToolStripItem it = (ToolStripItem)sender;
+            trans.selectLanguage((Translation)it.Tag);
+            if (languageChanged != null)
+                languageChanged();
+        }
         public void UpdateConnections()
         {
             toolConnect.DropDownItems.Clear();
@@ -343,7 +509,7 @@ namespace RepetierHost
         }
         public void PrinterChanged(RegistryKey pkey, bool printerChanged)
         {
-            if (printerChanged)
+            if (printerChanged && editor!=null)
             {
                 editor.UpdatePrependAppend();
             }
@@ -377,8 +543,8 @@ namespace RepetierHost
             if (conn.connected)
             {
                 toolConnect.Image = imageList.Images[0];
-                toolConnect.ToolTipText = "Disconnect printer";
-                toolConnect.Text = "Disconnect";
+                toolConnect.ToolTipText = Trans.T("L_DISCONNECT_PRINTER"); // "Disconnect printer";
+                toolConnect.Text = Trans.T("M_DISCONNECT"); // "Disconnect";
                 foreach (ToolStripItem it in toolConnect.DropDownItems)
                     it.Enabled = false;
                 //eeprom.Enabled = true;
@@ -387,8 +553,8 @@ namespace RepetierHost
             else
             {
                 toolConnect.Image = imageList.Images[1];
-                toolConnect.ToolTipText = "Connect printer";
-                toolConnect.Text = "Connect";
+                toolConnect.ToolTipText = Trans.T("L_CONNECT_PRINTER"); // "Connect printer";
+                toolConnect.Text = Trans.T("M_CONNECT"); // "Connect";
                 eeprom.Enabled = false;
                 continuousMonitoringMenuItem.Enabled = false;
                 if (eepromSettings != null && eepromSettings.Visible)
@@ -511,7 +677,7 @@ namespace RepetierHost
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(e.ToString(), Trans.T("L_ERROR"), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         public void LoadGCodeText(string text)
@@ -524,7 +690,7 @@ namespace RepetierHost
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(e.ToString(), Trans.T("L_ERROR"), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         public MethodInvoker StartJob = delegate
@@ -536,7 +702,7 @@ namespace RepetierHost
             Printjob job = conn.job;
             if (job.dataComplete)
             {
-                conn.pause("Press OK to continue.\n\nYou can add pauses in your code with\n@pause Some text like this");
+                conn.pause(Trans.T("L_PAUSE_MSG")); //"Press OK to continue.\n\nYou can add pauses in your code with\n@pause Some text like this");
             }
             else
             {
@@ -640,12 +806,12 @@ namespace RepetierHost
         }
         private void repetierHostHomepageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            openLink("https://github.com/repetier/Repetier-Host");
+            openLink("http://www.repetier.com");
         }
 
         private void manualToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            openLink("https://github.com/repetier/Repetier-Host/wiki");
+            openLink("http://www.repetier.com/documentation/repetier-host/");
         }
         public MethodInvoker FirmwareDetected = delegate
         {
@@ -661,8 +827,8 @@ namespace RepetierHost
             {
                 Main.main.toolKillJob.Enabled = false;
                 Main.main.toolRunJob.Enabled = conn.connected;
-                Main.main.toolRunJob.ToolTipText = "Run job";
-                Main.main.toolRunJob.Text = "Run job";
+                Main.main.toolRunJob.ToolTipText = Trans.T("M_RUN_JOB"); // "Run job";
+                Main.main.toolRunJob.Text = Trans.T("M_RUN_JOB"); //"Run job";
                 Main.main.toolRunJob.Image = Main.main.imageList.Images[2];
             }
             else
@@ -670,8 +836,8 @@ namespace RepetierHost
                 Main.main.toolRunJob.Enabled = true;
                 Main.main.toolKillJob.Enabled = true;
                 Main.main.toolRunJob.Image = Main.main.imageList.Images[3];
-                Main.main.toolRunJob.ToolTipText = "Pause job";
-                Main.main.toolRunJob.Text = "Pause job";
+                Main.main.toolRunJob.ToolTipText = Trans.T("M_PAUSE_JOB"); //"Pause job";
+                Main.main.toolRunJob.Text = Trans.T("M_PAUSE_JOB"); //"Pause job";
                 Main.main.printVisual.Clear();
             }
         };
@@ -772,7 +938,7 @@ namespace RepetierHost
                 recalcJobPreview = false;
                 jobPreviewThreadFinished = false;
                 JobUpdater workerObject = new JobUpdater();
-                editor.toolUpdating.Text = "Updating ...";
+                editor.toolUpdating.Text = Trans.T("L_UPDATING..."); // "Updating ...";
                 previewThread = new Thread(workerObject.DoWork);
                 previewThread.Start();
 
@@ -802,14 +968,10 @@ namespace RepetierHost
         {
             if (splitLog.Panel2Collapsed == true)
             {
-                toolShowLog.ToolTipText = "Hide log";
-                toolShowLog.Text = "Hide Log";
                 splitLog.Panel2Collapsed = false;
             }
             else
             {
-                toolShowLog.ToolTipText = "Show logs";
-                toolShowLog.Text = "Show Log";
                 splitLog.Panel2Collapsed = true;
             }            
             //toolShowLog.Checked = !toolShowLog.Checked;
@@ -819,14 +981,10 @@ namespace RepetierHost
         {
             if (splitLog.Panel2Collapsed == true)
             {
-                toolShowLog.ToolTipText = "Hide log";
-                toolShowLog.Text = "Hide Log";
                 splitLog.Panel2Collapsed = false;
             }
             else
             {
-                toolShowLog.ToolTipText = "Show logs";
-                toolShowLog.Text = "Show Log";
                 splitLog.Panel2Collapsed = true;
             }
         }
@@ -868,13 +1026,13 @@ namespace RepetierHost
         private void slic3rToolStripMenuItem_Click(object sender, EventArgs e)
         {
             slicer.ActiveSlicer = Slicer.SlicerID.Slic3r;
-            stlComposer1.buttonSlice.Text = "Slice with " + slicer.SlicerName;
+            stlComposer1.buttonSlice.Text = Trans.T1("L_SLICE_WITH", slicer.SlicerName);
         }
 
         private void skeinforgeToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             slicer.ActiveSlicer = Slicer.SlicerID.Skeinforge;
-            stlComposer1.buttonSlice.Text = "Slice with " + slicer.SlicerName;
+            stlComposer1.buttonSlice.Text = Trans.T1("L_SLICE_WITH", slicer.SlicerName);
         }
 
         private void slic3rConfigurationToolStripMenuItem_Click(object sender, EventArgs e)
@@ -970,14 +1128,14 @@ namespace RepetierHost
             if (threeDSettings.checkDisableFilamentVisualization.Checked)
             {
                 toolShowFilament.Image = imageList.Images[5];
-                toolShowFilament.ToolTipText = "Filament visualization disabled";
-                toolShowFilament.Text = "Show filament";
+                toolShowFilament.ToolTipText = Trans.T("L_FILAMENT_VISUALIZATION_DISABLED"); // "Filament visualization disabled";
+                toolShowFilament.Text = Trans.T("M_SHOW_FILAMENT"); // "Show filament";
             }
             else
             {
                 toolShowFilament.Image = imageList.Images[4];
-                toolShowFilament.ToolTipText = "Filament visualization enabled";
-                toolShowFilament.Text = "Hide filament";
+                toolShowFilament.ToolTipText = Trans.T("L_FILAMENT_VISUALIZATION_ENABLED"); // "Filament visualization enabled";
+                toolShowFilament.Text = Trans.T("M_HIDE_FILAMENT"); // "Hide filament";
             }
         }
         private void toolShowFilament_Click(object sender, EventArgs e)
@@ -991,7 +1149,7 @@ namespace RepetierHost
             if (!conn.connected) return;
             conn.injectManualCommandFirst("M112");
             conn.job.KillJob();
-            conn.log("Send emergency stop to printer. You may need to reset the printer for a restart!", false, 3);
+            conn.log(Trans.T("L_EMERGENCY_STOP_MSG"), false, 3);
             while (conn.hasInjectedMCommand(112))
             {
                 Application.DoEvents();
@@ -1014,7 +1172,7 @@ namespace RepetierHost
         private void externalSlic3rToolStripMenuItem_Click(object sender, EventArgs e)
         {
             slicer.ActiveSlicer = Slicer.SlicerID.Slic3rExternal;
-            stlComposer1.buttonSlice.Text = "Slice with " + slicer.SlicerName;
+            stlComposer1.buttonSlice.Text = Trans.T1("L_SLICE_WITH", slicer.SlicerName);
         }
 
         private void externalSlic3rConfigurationToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1113,9 +1271,9 @@ namespace RepetierHost
             }
         }
 
-        private void repetierHostDownloadPageToolStripMenuItem_Click(object sender, EventArgs e)
+        public void repetierHostDownloadPageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            openLink("https://github.com/repetier/Repetier-Host/downloads");
+            openLink(Custom.GetString("downloadUrl","http://www.repetier.com/download/"));
         }
 
         private void sendScript1ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1157,5 +1315,11 @@ namespace RepetierHost
                 conn.injectManualCommand(code.text);
             }
         }
+
+        private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RHUpdater.checkForUpdates(false);
+        }
+
     }
 }

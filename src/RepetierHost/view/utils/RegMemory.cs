@@ -33,6 +33,19 @@ namespace RepetierHost.view.utils
             initKeys();
             windowKey.SetValue(r, val);
         }
+        public static long GetLong(string r, long def)
+        {
+            initKeys();
+            string v = (string)windowKey.GetValue(r, def.ToString());
+            long l=0;
+            long.TryParse(v, out l);
+            return l;
+        }
+        public static void SetLong(string r, long val)
+        {
+            initKeys();
+            windowKey.SetValue(r, val.ToString());
+        }
         public static double GetDouble(string r, double def)
         {
             initKeys();

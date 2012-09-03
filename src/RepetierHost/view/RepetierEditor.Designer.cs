@@ -31,9 +31,17 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RepetierEditor));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolNew = new System.Windows.Forms.ToolStripButton();
+            this.toolSave = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolCut = new System.Windows.Forms.ToolStripButton();
+            this.toolCopy = new System.Windows.Forms.ToolStripButton();
+            this.toolPaste = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolUndo = new System.Windows.Forms.ToolStripButton();
+            this.toolRedo = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolPreview = new System.Windows.Forms.ToolStripButton();
             this.toolFile = new System.Windows.Forms.ToolStripComboBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolRow = new System.Windows.Forms.ToolStripStatusLabel();
@@ -44,6 +52,7 @@
             this.toolPrintingTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolUpdating = new System.Windows.Forms.ToolStripStatusLabel();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
+            this.editor = new RepetierHost.view.DoubleBufferPanel();
             this.scrollRows = new System.Windows.Forms.VScrollBar();
             this.scrollColumns = new System.Windows.Forms.HScrollBar();
             this.tabHelpview = new System.Windows.Forms.TabControl();
@@ -51,25 +60,16 @@
             this.help = new System.Windows.Forms.RichTextBox();
             this.tabPageVisualization = new System.Windows.Forms.TabPage();
             this.labelMaxLayer = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelLastLayer = new System.Windows.Forms.Label();
+            this.labelFirstLayer = new System.Windows.Forms.Label();
             this.numericShowMaxLayer = new System.Windows.Forms.NumericUpDown();
             this.numericShowMinLayer = new System.Windows.Forms.NumericUpDown();
             this.radioShowLayerRange = new System.Windows.Forms.RadioButton();
             this.radioShowSingleLayer = new System.Windows.Forms.RadioButton();
             this.radioShowAll = new System.Windows.Forms.RadioButton();
-            this.timer = new System.Windows.Forms.Timer(this.components);
-            this.toolNew = new System.Windows.Forms.ToolStripButton();
-            this.toolSave = new System.Windows.Forms.ToolStripButton();
-            this.toolCut = new System.Windows.Forms.ToolStripButton();
-            this.toolCopy = new System.Windows.Forms.ToolStripButton();
-            this.toolPaste = new System.Windows.Forms.ToolStripButton();
-            this.toolUndo = new System.Windows.Forms.ToolStripButton();
-            this.toolRedo = new System.Windows.Forms.ToolStripButton();
-            this.toolPreview = new System.Windows.Forms.ToolStripButton();
-            this.editor = new RepetierHost.view.DoubleBufferPanel();
             this.sliderShowMaxLayer = new MB.Controls.ColorSlider();
             this.sliderShowFirstLayer = new MB.Controls.ColorSlider();
+            this.timer = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.splitContainer.Panel1.SuspendLayout();
@@ -104,20 +104,112 @@
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip";
             // 
+            // toolNew
+            // 
+            this.toolNew.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolNew.Image = ((System.Drawing.Image)(resources.GetObject("toolNew.Image")));
+            this.toolNew.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolNew.Name = "toolNew";
+            this.toolNew.Size = new System.Drawing.Size(23, 22);
+            this.toolNew.Text = "toolStripButton1";
+            this.toolNew.ToolTipText = "New text";
+            this.toolNew.Click += new System.EventHandler(this.toolNew_Click);
+            // 
+            // toolSave
+            // 
+            this.toolSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolSave.Image = ((System.Drawing.Image)(resources.GetObject("toolSave.Image")));
+            this.toolSave.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolSave.Name = "toolSave";
+            this.toolSave.Size = new System.Drawing.Size(23, 22);
+            this.toolSave.Text = "toolStripButton2";
+            this.toolSave.ToolTipText = "Save";
+            this.toolSave.Click += new System.EventHandler(this.toolSave_Click);
+            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolCut
+            // 
+            this.toolCut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolCut.Image = ((System.Drawing.Image)(resources.GetObject("toolCut.Image")));
+            this.toolCut.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolCut.Name = "toolCut";
+            this.toolCut.Size = new System.Drawing.Size(23, 22);
+            this.toolCut.Text = "toolStripButton1";
+            this.toolCut.ToolTipText = "Cut";
+            this.toolCut.Click += new System.EventHandler(this.toolCut_Click);
+            // 
+            // toolCopy
+            // 
+            this.toolCopy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolCopy.Image = ((System.Drawing.Image)(resources.GetObject("toolCopy.Image")));
+            this.toolCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolCopy.Name = "toolCopy";
+            this.toolCopy.Size = new System.Drawing.Size(23, 22);
+            this.toolCopy.Text = "toolStripButton1";
+            this.toolCopy.ToolTipText = "Copy";
+            this.toolCopy.Click += new System.EventHandler(this.toolCopy_Click);
+            // 
+            // toolPaste
+            // 
+            this.toolPaste.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolPaste.Image = ((System.Drawing.Image)(resources.GetObject("toolPaste.Image")));
+            this.toolPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolPaste.Name = "toolPaste";
+            this.toolPaste.Size = new System.Drawing.Size(23, 22);
+            this.toolPaste.Text = "toolStripButton1";
+            this.toolPaste.ToolTipText = "Paste";
+            this.toolPaste.Click += new System.EventHandler(this.toolPaste_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
+            // toolUndo
+            // 
+            this.toolUndo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolUndo.Image = ((System.Drawing.Image)(resources.GetObject("toolUndo.Image")));
+            this.toolUndo.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolUndo.Name = "toolUndo";
+            this.toolUndo.Size = new System.Drawing.Size(23, 22);
+            this.toolUndo.Text = "toolStripButton1";
+            this.toolUndo.ToolTipText = "Undo";
+            this.toolUndo.Click += new System.EventHandler(this.toolUndo_Click);
+            // 
+            // toolRedo
+            // 
+            this.toolRedo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolRedo.Image = ((System.Drawing.Image)(resources.GetObject("toolRedo.Image")));
+            this.toolRedo.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolRedo.Name = "toolRedo";
+            this.toolRedo.Size = new System.Drawing.Size(23, 22);
+            this.toolRedo.Text = "toolStripButton1";
+            this.toolRedo.ToolTipText = "Redo";
+            this.toolRedo.Click += new System.EventHandler(this.toolRedo_Click);
+            // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolPreview
+            // 
+            this.toolPreview.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolPreview.Checked = true;
+            this.toolPreview.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.toolPreview.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolPreview.Image = ((System.Drawing.Image)(resources.GetObject("toolPreview.Image")));
+            this.toolPreview.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolPreview.Name = "toolPreview";
+            this.toolPreview.Size = new System.Drawing.Size(23, 22);
+            this.toolPreview.Text = "toolStripButton3";
+            this.toolPreview.ToolTipText = "Autoupdate preview code";
+            this.toolPreview.CheckedChanged += new System.EventHandler(this.toolPreview_CheckedChanged);
+            this.toolPreview.Click += new System.EventHandler(this.toolPreview_Click);
             // 
             // toolFile
             // 
@@ -217,6 +309,31 @@
             this.splitContainer.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.RepetierEditor_KeyPress);
             this.splitContainer.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RepetierEditor_KeyDown);
             // 
+            // editor
+            // 
+            this.editor.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.editor.Location = new System.Drawing.Point(3, 3);
+            this.editor.Name = "editor";
+            this.editor.Size = new System.Drawing.Size(595, 298);
+            this.editor.TabIndex = 2;
+            this.editor.MouseLeave += new System.EventHandler(this.editor_MouseLeave);
+            this.editor.Paint += new System.Windows.Forms.PaintEventHandler(this.editor_Paint);
+            this.editor.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.editor_PreviewKeyDown);
+            this.editor.MouseMove += new System.Windows.Forms.MouseEventHandler(this.editor_MouseMove);
+            this.editor.Click += new System.EventHandler(this.editor_Click);
+            this.editor.Leave += new System.EventHandler(this.RepetierEditor_Leave);
+            this.editor.KeyUp += new System.Windows.Forms.KeyEventHandler(this.editor_KeyUp);
+            this.editor.MouseClick += new System.Windows.Forms.MouseEventHandler(this.editor_MouseClick);
+            this.editor.MouseDown += new System.Windows.Forms.MouseEventHandler(this.editor_MouseDown);
+            this.editor.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.RepetierEditor_KeyPress);
+            this.editor.Enter += new System.EventHandler(this.RepetierEditor_Enter);
+            this.editor.MouseUp += new System.Windows.Forms.MouseEventHandler(this.editor_MouseUp);
+            this.editor.SizeChanged += new System.EventHandler(this.editor_SizeChanged);
+            this.editor.MouseEnter += new System.EventHandler(this.editor_MouseEnter);
+            this.editor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RepetierEditor_KeyDown);
+            // 
             // scrollRows
             // 
             this.scrollRows.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
@@ -274,8 +391,8 @@
             // tabPageVisualization
             // 
             this.tabPageVisualization.Controls.Add(this.labelMaxLayer);
-            this.tabPageVisualization.Controls.Add(this.label2);
-            this.tabPageVisualization.Controls.Add(this.label1);
+            this.tabPageVisualization.Controls.Add(this.labelLastLayer);
+            this.tabPageVisualization.Controls.Add(this.labelFirstLayer);
             this.tabPageVisualization.Controls.Add(this.numericShowMaxLayer);
             this.tabPageVisualization.Controls.Add(this.numericShowMinLayer);
             this.tabPageVisualization.Controls.Add(this.radioShowLayerRange);
@@ -302,27 +419,27 @@
             this.labelMaxLayer.Text = "-";
             this.labelMaxLayer.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // label2
+            // labelLastLayer
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(139, 37);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(55, 13);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "Last layer:";
+            this.labelLastLayer.AutoSize = true;
+            this.labelLastLayer.Location = new System.Drawing.Point(139, 37);
+            this.labelLastLayer.Name = "labelLastLayer";
+            this.labelLastLayer.Size = new System.Drawing.Size(55, 13);
+            this.labelLastLayer.TabIndex = 5;
+            this.labelLastLayer.Text = "Last layer:";
             // 
-            // label1
+            // labelFirstLayer
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(139, 11);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(54, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "First layer:";
+            this.labelFirstLayer.AutoSize = true;
+            this.labelFirstLayer.Location = new System.Drawing.Point(139, 11);
+            this.labelFirstLayer.Name = "labelFirstLayer";
+            this.labelFirstLayer.Size = new System.Drawing.Size(54, 13);
+            this.labelFirstLayer.TabIndex = 3;
+            this.labelFirstLayer.Text = "First layer:";
             // 
             // numericShowMaxLayer
             // 
-            this.numericShowMaxLayer.Location = new System.Drawing.Point(199, 33);
+            this.numericShowMaxLayer.Location = new System.Drawing.Point(220, 33);
             this.numericShowMaxLayer.Name = "numericShowMaxLayer";
             this.numericShowMaxLayer.Size = new System.Drawing.Size(59, 20);
             this.numericShowMaxLayer.TabIndex = 4;
@@ -330,7 +447,7 @@
             // 
             // numericShowMinLayer
             // 
-            this.numericShowMinLayer.Location = new System.Drawing.Point(199, 7);
+            this.numericShowMinLayer.Location = new System.Drawing.Point(220, 7);
             this.numericShowMinLayer.Name = "numericShowMinLayer";
             this.numericShowMinLayer.Size = new System.Drawing.Size(59, 20);
             this.numericShowMinLayer.TabIndex = 3;
@@ -374,129 +491,6 @@
             this.radioShowAll.UseVisualStyleBackColor = true;
             this.radioShowAll.Click += new System.EventHandler(this.radioShowMode_Click);
             // 
-            // timer
-            // 
-            this.timer.Enabled = true;
-            this.timer.Interval = 500;
-            this.timer.Tick += new System.EventHandler(this.timer_Tick);
-            // 
-            // toolNew
-            // 
-            this.toolNew.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolNew.Image = ((System.Drawing.Image)(resources.GetObject("toolNew.Image")));
-            this.toolNew.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolNew.Name = "toolNew";
-            this.toolNew.Size = new System.Drawing.Size(23, 22);
-            this.toolNew.Text = "toolStripButton1";
-            this.toolNew.ToolTipText = "New text";
-            this.toolNew.Click += new System.EventHandler(this.toolNew_Click);
-            // 
-            // toolSave
-            // 
-            this.toolSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolSave.Image = ((System.Drawing.Image)(resources.GetObject("toolSave.Image")));
-            this.toolSave.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolSave.Name = "toolSave";
-            this.toolSave.Size = new System.Drawing.Size(23, 22);
-            this.toolSave.Text = "toolStripButton2";
-            this.toolSave.ToolTipText = "Save";
-            this.toolSave.Click += new System.EventHandler(this.toolSave_Click);
-            // 
-            // toolCut
-            // 
-            this.toolCut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolCut.Image = ((System.Drawing.Image)(resources.GetObject("toolCut.Image")));
-            this.toolCut.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolCut.Name = "toolCut";
-            this.toolCut.Size = new System.Drawing.Size(23, 22);
-            this.toolCut.Text = "toolStripButton1";
-            this.toolCut.ToolTipText = "Cut";
-            this.toolCut.Click += new System.EventHandler(this.toolCut_Click);
-            // 
-            // toolCopy
-            // 
-            this.toolCopy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolCopy.Image = ((System.Drawing.Image)(resources.GetObject("toolCopy.Image")));
-            this.toolCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolCopy.Name = "toolCopy";
-            this.toolCopy.Size = new System.Drawing.Size(23, 22);
-            this.toolCopy.Text = "toolStripButton1";
-            this.toolCopy.ToolTipText = "Copy";
-            this.toolCopy.Click += new System.EventHandler(this.toolCopy_Click);
-            // 
-            // toolPaste
-            // 
-            this.toolPaste.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolPaste.Image = ((System.Drawing.Image)(resources.GetObject("toolPaste.Image")));
-            this.toolPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolPaste.Name = "toolPaste";
-            this.toolPaste.Size = new System.Drawing.Size(23, 22);
-            this.toolPaste.Text = "toolStripButton1";
-            this.toolPaste.ToolTipText = "Paste";
-            this.toolPaste.Click += new System.EventHandler(this.toolPaste_Click);
-            // 
-            // toolUndo
-            // 
-            this.toolUndo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolUndo.Image = ((System.Drawing.Image)(resources.GetObject("toolUndo.Image")));
-            this.toolUndo.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolUndo.Name = "toolUndo";
-            this.toolUndo.Size = new System.Drawing.Size(23, 22);
-            this.toolUndo.Text = "toolStripButton1";
-            this.toolUndo.ToolTipText = "Undo";
-            this.toolUndo.Click += new System.EventHandler(this.toolUndo_Click);
-            // 
-            // toolRedo
-            // 
-            this.toolRedo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolRedo.Image = ((System.Drawing.Image)(resources.GetObject("toolRedo.Image")));
-            this.toolRedo.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolRedo.Name = "toolRedo";
-            this.toolRedo.Size = new System.Drawing.Size(23, 22);
-            this.toolRedo.Text = "toolStripButton1";
-            this.toolRedo.ToolTipText = "Redo";
-            this.toolRedo.Click += new System.EventHandler(this.toolRedo_Click);
-            // 
-            // toolPreview
-            // 
-            this.toolPreview.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.toolPreview.Checked = true;
-            this.toolPreview.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.toolPreview.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolPreview.Image = ((System.Drawing.Image)(resources.GetObject("toolPreview.Image")));
-            this.toolPreview.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolPreview.Name = "toolPreview";
-            this.toolPreview.Size = new System.Drawing.Size(23, 22);
-            this.toolPreview.Text = "toolStripButton3";
-            this.toolPreview.ToolTipText = "Autoupdate preview code";
-            this.toolPreview.CheckedChanged += new System.EventHandler(this.toolPreview_CheckedChanged);
-            this.toolPreview.Click += new System.EventHandler(this.toolPreview_Click);
-            // 
-            // editor
-            // 
-            this.editor.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.editor.Location = new System.Drawing.Point(3, 3);
-            this.editor.Name = "editor";
-            this.editor.Size = new System.Drawing.Size(595, 298);
-            this.editor.TabIndex = 2;
-            this.editor.MouseLeave += new System.EventHandler(this.editor_MouseLeave);
-            this.editor.Paint += new System.Windows.Forms.PaintEventHandler(this.editor_Paint);
-            this.editor.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.editor_PreviewKeyDown);
-            this.editor.MouseMove += new System.Windows.Forms.MouseEventHandler(this.editor_MouseMove);
-            this.editor.Click += new System.EventHandler(this.editor_Click);
-            this.editor.Leave += new System.EventHandler(this.RepetierEditor_Leave);
-            this.editor.KeyUp += new System.Windows.Forms.KeyEventHandler(this.editor_KeyUp);
-            this.editor.MouseClick += new System.Windows.Forms.MouseEventHandler(this.editor_MouseClick);
-            this.editor.MouseDown += new System.Windows.Forms.MouseEventHandler(this.editor_MouseDown);
-            this.editor.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.RepetierEditor_KeyPress);
-            this.editor.Enter += new System.EventHandler(this.RepetierEditor_Enter);
-            this.editor.MouseUp += new System.Windows.Forms.MouseEventHandler(this.editor_MouseUp);
-            this.editor.SizeChanged += new System.EventHandler(this.editor_SizeChanged);
-            this.editor.MouseEnter += new System.EventHandler(this.editor_MouseEnter);
-            this.editor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RepetierEditor_KeyDown);
-            // 
             // sliderShowMaxLayer
             // 
             this.sliderShowMaxLayer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
@@ -505,9 +499,9 @@
             this.sliderShowMaxLayer.BorderRoundRectSize = new System.Drawing.Size(8, 8);
             this.sliderShowMaxLayer.DrawFocusRectangle = false;
             this.sliderShowMaxLayer.LargeChange = ((uint)(5u));
-            this.sliderShowMaxLayer.Location = new System.Drawing.Point(264, 31);
+            this.sliderShowMaxLayer.Location = new System.Drawing.Point(290, 31);
             this.sliderShowMaxLayer.Name = "sliderShowMaxLayer";
-            this.sliderShowMaxLayer.Size = new System.Drawing.Size(330, 22);
+            this.sliderShowMaxLayer.Size = new System.Drawing.Size(304, 22);
             this.sliderShowMaxLayer.SmallChange = ((uint)(1u));
             this.sliderShowMaxLayer.TabIndex = 6;
             this.sliderShowMaxLayer.Text = "colorSlider1";
@@ -522,14 +516,20 @@
             this.sliderShowFirstLayer.BorderRoundRectSize = new System.Drawing.Size(8, 8);
             this.sliderShowFirstLayer.DrawFocusRectangle = false;
             this.sliderShowFirstLayer.LargeChange = ((uint)(5u));
-            this.sliderShowFirstLayer.Location = new System.Drawing.Point(264, 7);
+            this.sliderShowFirstLayer.Location = new System.Drawing.Point(290, 7);
             this.sliderShowFirstLayer.Name = "sliderShowFirstLayer";
-            this.sliderShowFirstLayer.Size = new System.Drawing.Size(330, 22);
+            this.sliderShowFirstLayer.Size = new System.Drawing.Size(304, 22);
             this.sliderShowFirstLayer.SmallChange = ((uint)(1u));
             this.sliderShowFirstLayer.TabIndex = 5;
             this.sliderShowFirstLayer.Text = "colorSlider1";
             this.sliderShowFirstLayer.ThumbRoundRectSize = new System.Drawing.Size(8, 8);
             this.sliderShowFirstLayer.ValueChanged += new System.EventHandler(this.sliderShowFirstLayer_ValueChanged);
+            // 
+            // timer
+            // 
+            this.timer.Enabled = true;
+            this.timer.Interval = 500;
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
             // RepetierEditor
             // 
@@ -590,8 +590,8 @@
         private System.Windows.Forms.TabControl tabHelpview;
         private System.Windows.Forms.TabPage tabPageHelp;
         private System.Windows.Forms.TabPage tabPageVisualization;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelLastLayer;
+        private System.Windows.Forms.Label labelFirstLayer;
         private System.Windows.Forms.NumericUpDown numericShowMaxLayer;
         private System.Windows.Forms.NumericUpDown numericShowMinLayer;
         private System.Windows.Forms.RadioButton radioShowLayerRange;

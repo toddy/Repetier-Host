@@ -41,7 +41,7 @@
             this.buttonLand = new System.Windows.Forms.Button();
             this.buttonAutoplace = new System.Windows.Forms.Button();
             this.buttonCenter = new System.Windows.Forms.Button();
-            this.label13 = new System.Windows.Forms.Label();
+            this.labelSTLObjects = new System.Windows.Forms.Label();
             this.listSTLObjects = new System.Windows.Forms.ListBox();
             this.checkScaleAll = new System.Windows.Forms.CheckBox();
             this.label12 = new System.Windows.Forms.Label();
@@ -60,11 +60,11 @@
             this.textRotX = new System.Windows.Forms.TextBox();
             this.textScaleY = new System.Windows.Forms.TextBox();
             this.textScaleX = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
+            this.labelRotate = new System.Windows.Forms.Label();
             this.textTransY = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
+            this.labelScale = new System.Windows.Forms.Label();
             this.textTransX = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelTranslation = new System.Windows.Forms.Label();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.openFileSTL = new System.Windows.Forms.OpenFileDialog();
             this.saveSTL = new System.Windows.Forms.SaveFileDialog();
@@ -78,7 +78,7 @@
             // 
             this.panelControls.Controls.Add(this.tableLayoutPanel2);
             this.panelControls.Controls.Add(this.tableLayoutPanel1);
-            this.panelControls.Controls.Add(this.label13);
+            this.panelControls.Controls.Add(this.labelSTLObjects);
             this.panelControls.Controls.Add(this.listSTLObjects);
             this.panelControls.Controls.Add(this.checkScaleAll);
             this.panelControls.Controls.Add(this.label12);
@@ -97,11 +97,11 @@
             this.panelControls.Controls.Add(this.textRotX);
             this.panelControls.Controls.Add(this.textScaleY);
             this.panelControls.Controls.Add(this.textScaleX);
-            this.panelControls.Controls.Add(this.label9);
+            this.panelControls.Controls.Add(this.labelRotate);
             this.panelControls.Controls.Add(this.textTransY);
-            this.panelControls.Controls.Add(this.label5);
+            this.panelControls.Controls.Add(this.labelScale);
             this.panelControls.Controls.Add(this.textTransX);
-            this.panelControls.Controls.Add(this.label1);
+            this.panelControls.Controls.Add(this.labelTranslation);
             this.panelControls.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelControls.Location = new System.Drawing.Point(0, 0);
             this.panelControls.Name = "panelControls";
@@ -271,15 +271,15 @@
             this.buttonCenter.UseVisualStyleBackColor = true;
             this.buttonCenter.Click += new System.EventHandler(this.buttonCenter_Click);
             // 
-            // label13
+            // labelSTLObjects
             // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(9, 191);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(75, 13);
-            this.label13.TabIndex = 7;
-            this.label13.Text = "STL objects";
+            this.labelSTLObjects.AutoSize = true;
+            this.labelSTLObjects.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelSTLObjects.Location = new System.Drawing.Point(9, 191);
+            this.labelSTLObjects.Name = "labelSTLObjects";
+            this.labelSTLObjects.Size = new System.Drawing.Size(75, 13);
+            this.labelSTLObjects.TabIndex = 7;
+            this.labelSTLObjects.Text = "STL objects";
             // 
             // listSTLObjects
             // 
@@ -452,14 +452,14 @@
             this.textScaleX.TextChanged += new System.EventHandler(this.textScaleX_TextChanged);
             this.textScaleX.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
             // 
-            // label9
+            // labelRotate
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(4, 147);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(42, 13);
-            this.label9.TabIndex = 2;
-            this.label9.Text = "Rotate:";
+            this.labelRotate.AutoSize = true;
+            this.labelRotate.Location = new System.Drawing.Point(4, 147);
+            this.labelRotate.Name = "labelRotate";
+            this.labelRotate.Size = new System.Drawing.Size(42, 13);
+            this.labelRotate.TabIndex = 2;
+            this.labelRotate.Text = "Rotate:";
             // 
             // textTransY
             // 
@@ -470,14 +470,14 @@
             this.textTransY.TextChanged += new System.EventHandler(this.textTransY_TextChanged);
             this.textTransY.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
             // 
-            // label5
+            // labelScale
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(4, 78);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(37, 13);
-            this.label5.TabIndex = 2;
-            this.label5.Text = "Scale:";
+            this.labelScale.AutoSize = true;
+            this.labelScale.Location = new System.Drawing.Point(4, 78);
+            this.labelScale.Name = "labelScale";
+            this.labelScale.Size = new System.Drawing.Size(37, 13);
+            this.labelScale.TabIndex = 2;
+            this.labelScale.Text = "Scale:";
             // 
             // textTransX
             // 
@@ -488,14 +488,14 @@
             this.textTransX.TextChanged += new System.EventHandler(this.textTransX_TextChanged);
             this.textTransX.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
             // 
-            // label1
+            // labelTranslation
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(4, 33);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(62, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Translation:";
+            this.labelTranslation.AutoSize = true;
+            this.labelTranslation.Location = new System.Drawing.Point(4, 33);
+            this.labelTranslation.Name = "labelTranslation";
+            this.labelTranslation.Size = new System.Drawing.Size(62, 13);
+            this.labelTranslation.TabIndex = 2;
+            this.labelTranslation.Text = "Translation:";
             // 
             // errorProvider
             // 
@@ -538,7 +538,7 @@
         private System.Windows.Forms.TextBox textTransZ;
         private System.Windows.Forms.TextBox textTransY;
         private System.Windows.Forms.TextBox textTransX;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelTranslation;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
@@ -555,11 +555,11 @@
         private System.Windows.Forms.TextBox textRotX;
         private System.Windows.Forms.TextBox textScaleY;
         private System.Windows.Forms.TextBox textScaleX;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label labelRotate;
+        private System.Windows.Forms.Label labelScale;
         private System.Windows.Forms.Button buttonRemoveSTL;
         private System.Windows.Forms.Button buttonAddSTL;
-        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label labelSTLObjects;
         private System.Windows.Forms.ListBox listSTLObjects;
         private System.Windows.Forms.ErrorProvider errorProvider;
         private System.Windows.Forms.OpenFileDialog openFileSTL;

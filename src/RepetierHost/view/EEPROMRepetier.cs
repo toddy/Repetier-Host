@@ -43,6 +43,14 @@ namespace RepetierHost.view
             grid.Columns.Add("Value", "Value");
             grid.Columns[1].DataPropertyName = "Value";
             grid.DataSource = data;
+            translate();
+            Main.main.languageChanged += translate;
+        }
+        public void translate()
+        {
+            Text = Trans.T("W_FIRMWARE_EEPROM_SETTINGS");
+            buttonAbort.Text = Trans.T("B_CANCEL");
+            buttonOK.Text = Trans.T("B_OK");
         }
         public void Show2()
         {

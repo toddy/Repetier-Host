@@ -41,8 +41,31 @@ namespace RepetierHost.view
             RegMemory.RestoreWindowPos("eepromMarlinWindow", this);
             storage = Main.conn.eepromm;
             storage.eventAdded += newline;
+            translate();
+            Main.main.languageChanged += translate;
+            newline(Main.conn.eepromm);
         }
-
+        private void translate()
+        {
+            Text = Trans.T("W_EEPROM_MARLIN");
+            labelAcceleration.Text = Trans.T("L_M_ACCELERATION");
+            labelAdvancedVariables.Text = Trans.T("L_M_ADVANCED_VARIABLES");
+            labelHomingOffset.Text = Trans.T("L_M_HOMING_OFFSET");
+            labelMaxAcceleration.Text = Trans.T("L_M_MAX_ACCELERATION");
+            labelMaxFeedrate.Text = Trans.T("L_M_MAX_FEEDRATE");
+            labelMaxXYJerk.Text = Trans.T("L_M_MAX_XY_JERK");
+            labelMaxZJerk.Text = Trans.T("L_M_MAX_Z_JERK");
+            labelMinFeedrate.Text = Trans.T("L_M_MIN_FEEDRATE");
+            labelMinSegmentTime.Text = Trans.T("L_M_MIN_SEGMENT_TIME");
+            labelMinTravelFeedrate.Text = Trans.T("L_M_MIN_TRAVEL_FEEDRATE");
+            labelPIDSettings.Text = Trans.T("L_M_PID_SETTINGS");
+            labelStepsPerMM.Text = Trans.T("L_M_STEPS_PER_MM");
+            lableRetractAcceleration.Text = Trans.T("L_M_RETRACT_ACCELERATION");
+            buttonAbort.Text = Trans.T("B_CANCEL");
+            buttonLoad.Text = Trans.T("B_M_LOAD");
+            buttonRestore.Text = Trans.T("B_M_RESTORE");
+            buttonSave.Text = Trans.T("B_M_SAVE");            
+        }
         private void buttonLoad_Click(object sender, EventArgs e)
         {
             reinit = false;
@@ -53,8 +76,8 @@ namespace RepetierHost.view
         {
             reinit = true;
             storage.retriev_factory_settings();
-            string message = "Save retrieved Changes to EEPROM?";
-            string caption = "Factory Settings retrieved";
+            string message = Trans.T("L_M_SAVE_RETIEVED"); // "Save retrieved Changes to EEPROM?";
+            string caption = Trans.T("L_M_FACTORY_RETRIEVED"); // "Factory Settings retrieved";
             MessageBoxButtons buttons = MessageBoxButtons.YesNo;
             DialogResult result;
             result = MessageBox.Show(message, caption, buttons);
@@ -103,6 +126,9 @@ namespace RepetierHost.view
             ppidbox.Text = p.PPID;
             ipidbox.Text = p.IPID;
             dpidbox.Text = p.DPID;
+            hoxbox.Text = p.hox;
+            hoybox.Text = p.hoy;
+            hozbox.Text = p.hoz;
         }
 
         private void EEPROMMarlin_Activated(object sender, EventArgs e)
@@ -141,11 +167,14 @@ namespace RepetierHost.view
             storage.PPID = ppidbox.Text;
             storage.IPID = ipidbox.Text;
             storage.DPID = dpidbox.Text;
-
-            storage.Save();
+            storage.HOX = hoxbox.Text;
+            storage.HOY = hoybox.Text;
+            storage.HOZ = hozbox.Text;
             
-            string message = "Settings stored to running config.\n Write Changes to EEPROM?";
-            string caption = "Settings stored";
+            storage.Save();
+
+            string message = Trans.T("L_M_CONFIRM_WRITE"); // "Settings stored to running config.\n Write Changes to EEPROM?";
+            string caption = Trans.T("L_M_SETTINGS_STORED"); // "Settings stored";
             MessageBoxButtons buttons = MessageBoxButtons.YesNo;
             DialogResult result;
             result = MessageBox.Show(message, caption, buttons);
@@ -164,11 +193,11 @@ namespace RepetierHost.view
                 if (x >= 0)
                     errorProvider.SetError(box, "");
                 else
-                    errorProvider.SetError(box, "Positive number required.");
+                    errorProvider.SetError(box, Trans.T("L_POSITIVE_NUMBER_REQUIRED"));
             }
             catch
             {
-                errorProvider.SetError(box, "Not a number.");
+                errorProvider.SetError(box, Trans.T("L_NOT_A_NUMBER"));
             }
         }
         private void int_Validating(object sender, CancelEventArgs e)
@@ -181,9 +210,9 @@ namespace RepetierHost.view
             }
             catch
             {
-                errorProvider.SetError(box, "Not an integer.");
+                errorProvider.SetError(box, Trans.T("L_NOT_AN_INTEGER"));
             }
         }
 
-     }
+    }
 }

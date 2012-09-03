@@ -38,6 +38,7 @@
             this.toolStripEndHistory = new System.Windows.Forms.ToolStripSeparator();
             this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.languageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.printerSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.eeprom = new System.Windows.Forms.ToolStripMenuItem();
             this.threeDSettingsMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -68,11 +69,11 @@
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
             this.timeperiodMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.temperatureZoomMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.minuesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.minutesToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.minutesToolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
-            this.minutesToolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
-            this.minutesToolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
+            this.minutes60ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.minutes30ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.minutes15ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.minutes10ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.minutes5ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.minuteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.buildAverageOverMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.secondsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -84,7 +85,7 @@
             this.extruder1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.extruder2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.heatedBedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.windowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.printerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.printerInformationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.jobStatusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSDCardManager = new System.Windows.Forms.ToolStripMenuItem();
@@ -109,6 +110,7 @@
             this.thingiversePopularToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.aboutRepetierHostToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.status = new System.Windows.Forms.StatusStrip();
             this.toolConnection = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTempReading = new System.Windows.Forms.ToolStripStatusLabel();
@@ -140,9 +142,7 @@
             this.tabSlicer = new System.Windows.Forms.TabPage();
             this.tabGCode = new System.Windows.Forms.TabPage();
             this.tabPrint = new System.Windows.Forms.TabPage();
-            this.stlComposer1 = new RepetierHost.view.STLComposer();
             this.slicerPanel = new RepetierHost.view.SlicerPanel();
-            this.editor = new RepetierHost.view.RepetierEditor();
             this.menu.SuspendLayout();
             this.status.SuspendLayout();
             this.toolStrip.SuspendLayout();
@@ -153,9 +153,7 @@
             this.splitInfoEdit.SuspendLayout();
             this.tabControlView.SuspendLayout();
             this.tab.SuspendLayout();
-            this.tabModel.SuspendLayout();
             this.tabSlicer.SuspendLayout();
-            this.tabGCode.SuspendLayout();
             this.SuspendLayout();
             // 
             // menu
@@ -165,7 +163,7 @@
             this.settingsToolStripMenuItem,
             this.slicerToolStripMenuItem,
             this.temperatureToolStripMenuItem,
-            this.windowsToolStripMenuItem,
+            this.printerToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menu.Location = new System.Drawing.Point(0, 0);
             this.menu.Name = "menu";
@@ -221,6 +219,7 @@
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.languageToolStripMenuItem,
             this.printerSettingsToolStripMenuItem,
             this.eeprom,
             this.threeDSettingsMenu,
@@ -230,6 +229,12 @@
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
             this.settingsToolStripMenuItem.Text = "&Config";
+            // 
+            // languageToolStripMenuItem
+            // 
+            this.languageToolStripMenuItem.Name = "languageToolStripMenuItem";
+            this.languageToolStripMenuItem.Size = new System.Drawing.Size(283, 22);
+            this.languageToolStripMenuItem.Text = "Language";
             // 
             // printerSettingsToolStripMenuItem
             // 
@@ -467,55 +472,55 @@
             // temperatureZoomMenuItem
             // 
             this.temperatureZoomMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.minuesToolStripMenuItem,
-            this.minutesToolStripMenuItem2,
-            this.minutesToolStripMenuItem3,
-            this.minutesToolStripMenuItem4,
-            this.minutesToolStripMenuItem5,
+            this.minutes60ToolStripMenuItem,
+            this.minutes30ToolStripMenuItem,
+            this.minutes15ToolStripMenuItem,
+            this.minutes10ToolStripMenuItem,
+            this.minutes5ToolStripMenuItem,
             this.minuteToolStripMenuItem1});
             this.temperatureZoomMenuItem.Name = "temperatureZoomMenuItem";
             this.temperatureZoomMenuItem.Size = new System.Drawing.Size(238, 22);
             this.temperatureZoomMenuItem.Text = "Zoom";
             // 
-            // minuesToolStripMenuItem
+            // minutes60ToolStripMenuItem
             // 
-            this.minuesToolStripMenuItem.Name = "minuesToolStripMenuItem";
-            this.minuesToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
-            this.minuesToolStripMenuItem.Tag = "60";
-            this.minuesToolStripMenuItem.Text = "60 Minues";
-            this.minuesToolStripMenuItem.Click += new System.EventHandler(this.selectZoom);
+            this.minutes60ToolStripMenuItem.Name = "minutes60ToolStripMenuItem";
+            this.minutes60ToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.minutes60ToolStripMenuItem.Tag = "60";
+            this.minutes60ToolStripMenuItem.Text = "60 Minues";
+            this.minutes60ToolStripMenuItem.Click += new System.EventHandler(this.selectZoom);
             // 
-            // minutesToolStripMenuItem2
+            // minutes30ToolStripMenuItem
             // 
-            this.minutesToolStripMenuItem2.Name = "minutesToolStripMenuItem2";
-            this.minutesToolStripMenuItem2.Size = new System.Drawing.Size(132, 22);
-            this.minutesToolStripMenuItem2.Tag = "30";
-            this.minutesToolStripMenuItem2.Text = "30 Minutes";
-            this.minutesToolStripMenuItem2.Click += new System.EventHandler(this.selectZoom);
+            this.minutes30ToolStripMenuItem.Name = "minutes30ToolStripMenuItem";
+            this.minutes30ToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.minutes30ToolStripMenuItem.Tag = "30";
+            this.minutes30ToolStripMenuItem.Text = "30 Minutes";
+            this.minutes30ToolStripMenuItem.Click += new System.EventHandler(this.selectZoom);
             // 
-            // minutesToolStripMenuItem3
+            // minutes15ToolStripMenuItem
             // 
-            this.minutesToolStripMenuItem3.Name = "minutesToolStripMenuItem3";
-            this.minutesToolStripMenuItem3.Size = new System.Drawing.Size(132, 22);
-            this.minutesToolStripMenuItem3.Tag = "15";
-            this.minutesToolStripMenuItem3.Text = "15 Minutes";
-            this.minutesToolStripMenuItem3.Click += new System.EventHandler(this.selectZoom);
+            this.minutes15ToolStripMenuItem.Name = "minutes15ToolStripMenuItem";
+            this.minutes15ToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.minutes15ToolStripMenuItem.Tag = "15";
+            this.minutes15ToolStripMenuItem.Text = "15 Minutes";
+            this.minutes15ToolStripMenuItem.Click += new System.EventHandler(this.selectZoom);
             // 
-            // minutesToolStripMenuItem4
+            // minutes10ToolStripMenuItem
             // 
-            this.minutesToolStripMenuItem4.Name = "minutesToolStripMenuItem4";
-            this.minutesToolStripMenuItem4.Size = new System.Drawing.Size(132, 22);
-            this.minutesToolStripMenuItem4.Tag = "10";
-            this.minutesToolStripMenuItem4.Text = "10 Minutes";
-            this.minutesToolStripMenuItem4.Click += new System.EventHandler(this.selectZoom);
+            this.minutes10ToolStripMenuItem.Name = "minutes10ToolStripMenuItem";
+            this.minutes10ToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.minutes10ToolStripMenuItem.Tag = "10";
+            this.minutes10ToolStripMenuItem.Text = "10 Minutes";
+            this.minutes10ToolStripMenuItem.Click += new System.EventHandler(this.selectZoom);
             // 
-            // minutesToolStripMenuItem5
+            // minutes5ToolStripMenuItem
             // 
-            this.minutesToolStripMenuItem5.Name = "minutesToolStripMenuItem5";
-            this.minutesToolStripMenuItem5.Size = new System.Drawing.Size(132, 22);
-            this.minutesToolStripMenuItem5.Tag = "5";
-            this.minutesToolStripMenuItem5.Text = "5 Minutes";
-            this.minutesToolStripMenuItem5.Click += new System.EventHandler(this.selectZoom);
+            this.minutes5ToolStripMenuItem.Name = "minutes5ToolStripMenuItem";
+            this.minutes5ToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.minutes5ToolStripMenuItem.Tag = "5";
+            this.minutes5ToolStripMenuItem.Text = "5 Minutes";
+            this.minutes5ToolStripMenuItem.Click += new System.EventHandler(this.selectZoom);
             // 
             // minuteToolStripMenuItem1
             // 
@@ -608,9 +613,9 @@
             this.heatedBedToolStripMenuItem.Text = "Heated Bed";
             this.heatedBedToolStripMenuItem.Click += new System.EventHandler(this.heatedBedToolStripMenuItem_Click);
             // 
-            // windowsToolStripMenuItem
+            // printerToolStripMenuItem
             // 
-            this.windowsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.printerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.printerInformationsToolStripMenuItem,
             this.jobStatusToolStripMenuItem,
             this.menuSDCardManager,
@@ -621,9 +626,9 @@
             this.sendScript3ToolStripMenuItem,
             this.sendScript4ToolStripMenuItem,
             this.sendScript5ToolStripMenuItem});
-            this.windowsToolStripMenuItem.Name = "windowsToolStripMenuItem";
-            this.windowsToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
-            this.windowsToolStripMenuItem.Text = "&Printer";
+            this.printerToolStripMenuItem.Name = "printerToolStripMenuItem";
+            this.printerToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
+            this.printerToolStripMenuItem.Text = "&Printer";
             // 
             // printerInformationsToolStripMenuItem
             // 
@@ -711,7 +716,8 @@
             this.thingiverseNewestToolStripMenuItem,
             this.thingiversePopularToolStripMenuItem,
             this.toolStripMenuItem1,
-            this.aboutRepetierHostToolStripMenuItem});
+            this.aboutRepetierHostToolStripMenuItem,
+            this.checkForUpdatesToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "&Help";
@@ -801,6 +807,13 @@
             this.aboutRepetierHostToolStripMenuItem.Text = "&About Repetier-Host";
             this.aboutRepetierHostToolStripMenuItem.Click += new System.EventHandler(this.aboutRepetierHostToolStripMenuItem_Click);
             // 
+            // checkForUpdatesToolStripMenuItem
+            // 
+            this.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
+            this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.checkForUpdatesToolStripMenuItem.Text = "Check for updates";
+            this.checkForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.checkForUpdatesToolStripMenuItem_Click);
+            // 
             // status
             // 
             this.status.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -853,6 +866,7 @@
             // toolStrip
             // 
             this.toolStrip.BackColor = System.Drawing.Color.Transparent;
+            this.toolStrip.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.toolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1096,7 +1110,6 @@
             // tabModel
             // 
             this.tabModel.BackColor = System.Drawing.Color.Transparent;
-            this.tabModel.Controls.Add(this.stlComposer1);
             this.tabModel.Location = new System.Drawing.Point(4, 22);
             this.tabModel.Name = "tabModel";
             this.tabModel.Size = new System.Drawing.Size(467, 304);
@@ -1118,7 +1131,6 @@
             // 
             this.tabGCode.AutoScroll = true;
             this.tabGCode.BackColor = System.Drawing.Color.Transparent;
-            this.tabGCode.Controls.Add(this.editor);
             this.tabGCode.Location = new System.Drawing.Point(4, 22);
             this.tabGCode.Name = "tabGCode";
             this.tabGCode.Padding = new System.Windows.Forms.Padding(3);
@@ -1138,15 +1150,6 @@
             this.tabPrint.Text = "Manual control";
             this.tabPrint.UseVisualStyleBackColor = true;
             // 
-            // stlComposer1
-            // 
-            this.stlComposer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.stlComposer1.Location = new System.Drawing.Point(0, 0);
-            this.stlComposer1.Margin = new System.Windows.Forms.Padding(4);
-            this.stlComposer1.Name = "stlComposer1";
-            this.stlComposer1.Size = new System.Drawing.Size(467, 304);
-            this.stlComposer1.TabIndex = 0;
-            // 
             // slicerPanel
             // 
             this.slicerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -1154,22 +1157,6 @@
             this.slicerPanel.Name = "slicerPanel";
             this.slicerPanel.Size = new System.Drawing.Size(467, 304);
             this.slicerPanel.TabIndex = 0;
-            // 
-            // editor
-            // 
-            this.editor.AccessibleRole = System.Windows.Forms.AccessibleRole.Caret;
-            this.editor.autopreview = true;
-            this.editor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.editor.Location = new System.Drawing.Point(3, 3);
-            this.editor.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
-            this.editor.MaxLayer = 0;
-            this.editor.MinimumSize = new System.Drawing.Size(160, 138);
-            this.editor.Name = "editor";
-            this.editor.ShowMaxLayer = 0;
-            this.editor.ShowMinLayer = 0;
-            this.editor.ShowMode = 0;
-            this.editor.Size = new System.Drawing.Size(461, 298);
-            this.editor.TabIndex = 0;
             // 
             // Main
             // 
@@ -1184,7 +1171,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menu;
             this.Name = "Main";
-            this.Text = "Repetier-Host V0.70b";
+            this.Text = "Repetier-Host V0.71";
             this.Load += new System.EventHandler(this.Main_Load);
             this.Shown += new System.EventHandler(this.Main_Shown);
             this.Activated += new System.EventHandler(this.Main_Activated);
@@ -1204,9 +1191,7 @@
             this.splitInfoEdit.ResumeLayout(false);
             this.tabControlView.ResumeLayout(false);
             this.tab.ResumeLayout(false);
-            this.tabModel.ResumeLayout(false);
             this.tabSlicer.ResumeLayout(false);
-            this.tabGCode.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1220,7 +1205,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripEndHistory;
         private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
         private System.Windows.Forms.StatusStrip status;
-        private System.Windows.Forms.ToolStrip toolStrip;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutRepetierHostToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel toolConnection;
@@ -1229,7 +1213,7 @@
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem printerSettingsToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openGCode;
-        private System.Windows.Forms.ToolStripMenuItem windowsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem printerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem threeDSettingsMenu;
         private System.Windows.Forms.ToolStripMenuItem printerInformationsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem repetierSettingsToolStripMenuItem;
@@ -1249,7 +1233,6 @@
         public System.Windows.Forms.ToolStripMenuItem menuSDCardManager;
         public System.Windows.Forms.SaveFileDialog saveJobDialog;
         public System.Windows.Forms.TabPage tabGCode;
-        public RepetierHost.view.RepetierEditor editor;
         private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.ToolStripSplitButton toolConnect;
         private System.Windows.Forms.SplitContainer splitLog;
@@ -1278,7 +1261,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem killSlicingProcessToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton toolPrinterSettings;
-        public RepetierHost.view.STLComposer stlComposer1;
         public System.Windows.Forms.ToolStripMenuItem eeprom;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem externalSlic3rSetupToolStripMenuItem;
@@ -1290,15 +1272,15 @@
         public System.Windows.Forms.TabPage tabPageTemp;
         private System.Windows.Forms.ToolStripMenuItem temperatureToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
-        private System.Windows.Forms.ToolStripMenuItem minuesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem minutesToolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem minutes60ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem minutes30ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem secondsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem minuteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem minutesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem minutesToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem minutesToolStripMenuItem3;
-        private System.Windows.Forms.ToolStripMenuItem minutesToolStripMenuItem4;
-        private System.Windows.Forms.ToolStripMenuItem minutesToolStripMenuItem5;
+        private System.Windows.Forms.ToolStripMenuItem minutes15ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem minutes10ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem minutes5ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem minuteToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem disableToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem extruder1ToolStripMenuItem;
@@ -1320,13 +1302,16 @@
         public System.Windows.Forms.ImageList imageList;
         private System.Windows.Forms.ToolStripMenuItem repetierHostDownloadPageToolStripMenuItem;
         public System.Windows.Forms.TabPage tabSlicer;
-        public RepetierHost.view.SlicerPanel slicerPanel;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem6;
         private System.Windows.Forms.ToolStripMenuItem sendScript1ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sendScript2ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sendScript3ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sendScript4ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sendScript5ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem languageToolStripMenuItem;
+        public RepetierHost.view.SlicerPanel slicerPanel;
+        public System.Windows.Forms.ToolStrip toolStrip;
+        public System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
     }
 }
 

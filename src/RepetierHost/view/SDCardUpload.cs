@@ -23,6 +23,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using RepetierHost.view.utils;
+using RepetierHost.model;
 
 namespace RepetierHost.view
 {
@@ -43,8 +44,22 @@ namespace RepetierHost.view
         {
             InitializeComponent();
             RegMemory.RestoreWindowPos("sdcardUploadWindow",this);
+            translate();
+            Main.main.languageChanged += translate;
         }
-
+        private void translate()
+        {
+            Text = Trans.T("W_SD_CARD_UPLOAD");
+            labelFile.Text = Trans.T("L_FILE:");
+            labelUploadedFilename.Text = Trans.T("L_UPLOADED_FILENAME:");
+            checkJobFinished.Text = Trans.T("L_INCLUDE_JOB_FINISHED_COMMANDS");
+            checkAppendPrepend.Text = Trans.T("L_INCLUDE_START_END_CODE");
+            radioCurrent.Text = Trans.T("L_UPLOAD_CURRENG_GCODE");
+            radioExternal.Text = Trans.T("L_UPLOAD_EXTERNAL_FILE");
+            buttonBrowse.Text = Trans.T("B_BROWSE");
+            buttonCancel.Text = Trans.T("B_CANCEL");
+            buttonOK.Text = Trans.T("B_OK");
+        }
         private void buttonOK_Click(object sender, EventArgs e)
         {
             exit = true;
@@ -101,7 +116,7 @@ namespace RepetierHost.view
             if(ok)
                 errorProvider.SetError(box, "");
             else
-                errorProvider.SetError(box, "Not a valid 8.3 filename.");
+                errorProvider.SetError(box, Trans.T("L_NOT_VALID_83_FILENAME")); //"Not a valid 8.3 filename.");
         }
 
         private void SDCardUpload_FormClosing(object sender, FormClosingEventArgs e)

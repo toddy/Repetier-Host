@@ -32,7 +32,7 @@
             this.labelInfo = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.buttonContinuePrinting = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelPauseHint = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -67,14 +67,13 @@
             this.buttonContinuePrinting.UseVisualStyleBackColor = true;
             this.buttonContinuePrinting.Click += new System.EventHandler(this.buttonContinuePrinting_Click);
             // 
-            // label1
+            // labelPauseHint
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 113);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(354, 39);
-            this.label1.TabIndex = 3;
-            this.label1.Text = resources.GetString("label1.Text");
+            this.labelPauseHint.Location = new System.Drawing.Point(13, 113);
+            this.labelPauseHint.Name = "labelPauseHint";
+            this.labelPauseHint.Size = new System.Drawing.Size(383, 56);
+            this.labelPauseHint.TabIndex = 3;
+            this.labelPauseHint.Text = resources.GetString("labelPauseHint.Text");
             // 
             // PauseInfo
             // 
@@ -82,7 +81,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(408, 178);
             this.ControlBox = false;
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.labelPauseHint);
             this.Controls.Add(this.buttonContinuePrinting);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.labelInfo);
@@ -96,7 +95,6 @@
             this.TopMost = true;
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -105,6 +103,6 @@
         private System.Windows.Forms.Label labelInfo;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button buttonContinuePrinting;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelPauseHint;
     }
 }

@@ -389,6 +389,39 @@ namespace RepetierHost.view
                            this, "ShowMaxLayer");
             sliderShowFirstLayer.DataBindings.Add("value", this, "ShowMinLayer");
             sliderShowMaxLayer.DataBindings.Add("value", this, "ShowMaxLayer");
+            Main.main.languageChanged += translate;
+            translate();
+        }
+        void translate()
+        {
+            toolCopy.ToolTipText = Trans.T("L_COPY");
+            toolCut.ToolTipText = Trans.T("L_CUT");
+            toolNew.ToolTipText = Trans.T("L_NEW_TEXT");
+            toolSave.ToolTipText = Trans.T("L_SAVE");
+            toolPaste.ToolTipText = Trans.T("L_PASTE");
+            toolUndo.ToolTipText = Trans.T("L_UNDO");
+            toolRedo.ToolTipText = Trans.T("L_REDO");
+            toolPreview.ToolTipText = Trans.T("L_AUTO_UPDATE_PREVIEW"); // Autoupdate preview
+            overwrite = _overwrite;
+            row = _row;
+            col = _col;
+            UpdateLayerInfo();
+            ((Content)toolFile.Items[1]).name = Trans.T("L_START_CODE");
+            ((Content)toolFile.Items[2]).name = Trans.T("L_END_CODE");
+            ((Content)toolFile.Items[3]).name = Trans.T("L_RUN_ON_KILL");
+            ((Content)toolFile.Items[4]).name = Trans.T("L_RUN_ON_PAUSE");
+            ((Content)toolFile.Items[5]).name = Trans.T1("L_SCRIPT_X","1");
+            ((Content)toolFile.Items[6]).name = Trans.T1("L_SCRIPT_X", "2");
+            ((Content)toolFile.Items[7]).name = Trans.T1("L_SCRIPT_X", "3");
+            ((Content)toolFile.Items[8]).name = Trans.T1("L_SCRIPT_X", "4");
+            ((Content)toolFile.Items[9]).name = Trans.T1("L_SCRIPT_X", "5");
+            tabPageHelp.Text = Trans.T("TAB_HELP");
+            tabPageVisualization.Text = Trans.T("TAB_VISUALIZATION");
+            radioShowAll.Text = Trans.T("L_SHOW_COMPLETE_CODE");
+            radioShowLayerRange.Text = Trans.T("L_SHOW_LAYER_RANGE");
+            radioShowSingleLayer.Text = Trans.T("L_SHOW_SINGLE_LAYER");
+            labelFirstLayer.Text = Trans.T("L_FIRST_LAYER");
+            labelLastLayer.Text = Trans.T("L_LAST_LAYER");
         }
         public int FileIndex
         {
@@ -526,8 +559,8 @@ namespace RepetierHost.view
         {
             if (_row < 0 || _row >= lines.Count) return;
             GCodeShort s = lines[_row];
-            toolLayer.Text = "Layer " + (!s.hasLayer ? "-" : s.layer.ToString());
-            toolExtruder.Text = "Extruder " + (!s.hasLayer ? "-" : s.tool.ToString());
+            toolLayer.Text = Trans.T1("L_LAYER_X",(!s.hasLayer ? "-" : s.layer.ToString()));
+            toolExtruder.Text = Trans.T1("L_EXTRUDER_X",(!s.hasLayer ? "-" : s.tool.ToString()));
         }
         private int col
         {
@@ -535,13 +568,14 @@ namespace RepetierHost.view
             set
             {
                 _col = value; 
-                toolColumn.Text = "C" + (col + 1).ToString();
+                toolColumn.Text = Trans.T1("L_EDITOR_C",(col + 1).ToString());
             }
         }
         private int row
         {
             get { return _row; }
-            set { _row = value; toolRow.Text = "R" + (row + 1).ToString(); UpdateLayerInfo(); Main.main.threedview.UpdateChanges(); }
+            set { _row = value; toolRow.Text = Trans.T1("L_EDITOR_R",(row + 1).ToString());
+                UpdateLayerInfo(); if(Main.main.threedview!=null) Main.main.threedview.UpdateChanges(); }
         }
         private int topRow
         {
@@ -556,7 +590,7 @@ namespace RepetierHost.view
         private bool overwrite
         {
             get { return _overwrite; }
-            set { _overwrite = value; toolMode.Text = value ? "Overwrite" : "Insert"; CreateCursor(); }
+            set { _overwrite = value; toolMode.Text = value ? Trans.T("L_OVERWRITE") : Trans.T("L_INSERT"); CreateCursor(); }
         }
         public void AppendLine(string l)
         {
@@ -1537,7 +1571,7 @@ namespace RepetierHost.view
             s.Append(desc.command);
             s.Append(":");
             s.Append(desc.title);
-            s.Append("\\b0 \\line Syntax:");
+            s.Append("\\b0 \\line "+Trans.T("L_SYNTAX")+":");
             s.Append(desc.command);
             s.Append(" ");
             foreach (CommandParameter pa in desc.parameter)

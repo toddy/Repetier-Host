@@ -152,7 +152,7 @@
         rhj62j+3LOBr32FX+gW8BfwDFtY1vPbFG9IAAAAASUVORK5CYII=
 </value>
   </data>
-  <data name="label1.Text" xml:space="preserve">
+  <data name="labelSaveDirectInfo.Text" xml:space="preserve">
     <value>This save function is meant to generate G-code files that
 can be run from a sd card. For that reason it can add the
 start and end code along with the regular finish commands

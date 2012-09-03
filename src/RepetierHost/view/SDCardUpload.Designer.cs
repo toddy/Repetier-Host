@@ -30,11 +30,11 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SDCardUpload));
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelUploadedFilename = new System.Windows.Forms.Label();
             this.textFilename = new System.Windows.Forms.TextBox();
             this.radioCurrent = new System.Windows.Forms.RadioButton();
             this.radioExternal = new System.Windows.Forms.RadioButton();
-            this.label2 = new System.Windows.Forms.Label();
+            this.labelFile = new System.Windows.Forms.Label();
             this.extFilename = new System.Windows.Forms.TextBox();
             this.buttonBrowse = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
@@ -47,18 +47,18 @@
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
             // 
-            // label1
+            // labelUploadedFilename
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(14, 13);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(98, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Uploaded filename:";
+            this.labelUploadedFilename.AutoSize = true;
+            this.labelUploadedFilename.Location = new System.Drawing.Point(14, 13);
+            this.labelUploadedFilename.Name = "labelUploadedFilename";
+            this.labelUploadedFilename.Size = new System.Drawing.Size(98, 13);
+            this.labelUploadedFilename.TabIndex = 0;
+            this.labelUploadedFilename.Text = "Uploaded filename:";
             // 
             // textFilename
             // 
-            this.textFilename.Location = new System.Drawing.Point(125, 10);
+            this.textFilename.Location = new System.Drawing.Point(153, 10);
             this.textFilename.Name = "textFilename";
             this.textFilename.Size = new System.Drawing.Size(106, 20);
             this.textFilename.TabIndex = 1;
@@ -86,14 +86,14 @@
             this.radioExternal.Text = "Upload external file";
             this.radioExternal.UseVisualStyleBackColor = true;
             // 
-            // label2
+            // labelFile
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(44, 131);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(26, 13);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "File:";
+            this.labelFile.AutoSize = true;
+            this.labelFile.Location = new System.Drawing.Point(14, 131);
+            this.labelFile.Name = "labelFile";
+            this.labelFile.Size = new System.Drawing.Size(26, 13);
+            this.labelFile.TabIndex = 4;
+            this.labelFile.Text = "File:";
             // 
             // extFilename
             // 
@@ -188,11 +188,11 @@
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.buttonBrowse);
             this.Controls.Add(this.extFilename);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.labelFile);
             this.Controls.Add(this.radioExternal);
             this.Controls.Add(this.radioCurrent);
             this.Controls.Add(this.textFilename);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.labelUploadedFilename);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -207,8 +207,8 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label labelUploadedFilename;
+        private System.Windows.Forms.Label labelFile;
         private System.Windows.Forms.Button buttonBrowse;
         private System.Windows.Forms.Button buttonOK;
         private System.Windows.Forms.Button buttonCancel;

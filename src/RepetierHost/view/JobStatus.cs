@@ -42,15 +42,27 @@ namespace RepetierHost.view
         {
             InitializeComponent();
             RegMemory.RestoreWindowPos("jobStatusWindow", this);
+            translate();
+            Main.main.languageChanged += translate;
         }
-
+        private void translate()
+        {
+            Text = Trans.T("W_JOB_STATUS");
+            lETA.Text = Trans.T("L_ETA:");
+            lFinishTime.Text = Trans.T("L_FINISH_TIME:");
+            lLinesSend.Text = Trans.T("L_LINES_SEND:");
+            lStartTime.Text = Trans.T("L_START_TIME:");
+            lStatus.Text = Trans.T("L_STATUS:");
+            lTotalLines.Text = Trans.T("L_TOTAL_LINES:");
+            buttonClose.Text = Trans.T("B_CLOSE");
+        }
         private void timer_Tick(object sender, EventArgs e)
         {
             Printjob j = Main.conn.job;
             switch (j.mode)
             {
                 case 0:
-                    labelStatus.Text = "No job defined";
+                    labelStatus.Text = Trans.T("L_NO_JOB_DEFINED"); // "No job defined";
                     labelStartTime.Text = "-";
                     labelFinishTime.Text = "-";
                     labelETA.Text = "-";
@@ -58,7 +70,7 @@ namespace RepetierHost.view
                     labelTotalLines.Text = "-";
                     break;
                 case 1: // Running
-                    labelStatus.Text = "Running ...";
+                    labelStatus.Text = Trans.T("L_RUNNING..."); // "Running ...";
                     labelStartTime.Text = j.jobStarted.ToLongTimeString();
                     labelFinishTime.Text = "-";
                     labelETA.Text = j.ETA;
@@ -66,7 +78,7 @@ namespace RepetierHost.view
                     labelTotalLines.Text = j.totalLines.ToString();
                     break;
                 case 2:
-                    labelStatus.Text = "Finished";
+                    labelStatus.Text = Trans.T("L_FINISHED"); // "Finished";
                     labelStartTime.Text = j.jobStarted.ToLongTimeString();
                     labelFinishTime.Text = j.jobFinished.ToLongTimeString();
                     labelETA.Text = "-";
@@ -74,7 +86,7 @@ namespace RepetierHost.view
                     labelTotalLines.Text = j.totalLines.ToString();
                     break;
                 case 3:
-                    labelStatus.Text = "Aborted";
+                    labelStatus.Text = Trans.T("L_ABORTED"); // "Aborted";
                     labelStartTime.Text = j.jobStarted.ToLongTimeString();
                     labelFinishTime.Text = j.jobFinished.ToLongTimeString();
                     labelETA.Text = "-";

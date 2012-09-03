@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using RepetierHost.model;
 
 namespace RepetierHost.view.utils
 {
@@ -24,6 +25,7 @@ namespace RepetierHost.view.utils
         public StringInput()
         {
             InitializeComponent();
+            buttonOK.Text = Trans.T("B_OK");
         }
     }
 }
