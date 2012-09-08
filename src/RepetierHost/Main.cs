@@ -43,7 +43,7 @@ namespace RepetierHost
         public static Main main;
         public static FormPrinterSettings printerSettings;
         public static ThreeDSettings threeDSettings;
-        public static GlobalSettings globalSettings;
+        public static GlobalSettings globalSettings = null;
         public Skeinforge skeinforge = null;
         public EEPROMRepetier eepromSettings = null;
         public EEPROMMarlin eepromSettingsm = null;
@@ -429,6 +429,7 @@ namespace RepetierHost
         }
         public void UpdateToolbarSize()
         {
+            if (globalSettings == null) return;
             bool mini = globalSettings.ReduceToolbarSize;
             foreach (ToolStripItem it in toolStrip.Items)
             {

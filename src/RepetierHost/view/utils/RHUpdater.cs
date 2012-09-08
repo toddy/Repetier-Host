@@ -22,7 +22,7 @@ namespace RepetierHost.view.utils
         public static int newestBuildVersion = 0;
         public static string updateText = "";
         public static bool silent = false;
-        public static string downloadUrl = "http://www.repetier.com/download/";
+        public static string downloadUrl = Custom.GetString("downloadUrl", "http://www.repetier.com/download/");
         public static bool running = false;
         public static Thread thread = null;
         public static string url = "";
@@ -237,7 +237,7 @@ namespace RepetierHost.view.utils
             int.TryParse(arr[1].Trim(), out newestBuildVersion);
             downloadUrl = arr[2].Trim();
             StringBuilder b = new StringBuilder();
-            for (int i = 2; i < arr.Length; i++)
+            for (int i = 3; i < arr.Length; i++)
             {
                 b.AppendLine(arr[i].Trim());
             }

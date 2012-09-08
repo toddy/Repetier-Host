@@ -271,7 +271,7 @@ namespace RepetierHost.view
                 GL.Enable(EnableCap.LineSmooth);
                 //GL.Enable(EnableCap.PolygonSmooth);
                 GL.Enable(EnableCap.Blend);
-                GL.LineWidth(1.5f);
+                GL.LineWidth(2f);
                 GL.Hint(HintTarget.LineSmoothHint, HintMode.Nicest);
                 GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
                 Color col = Main.threeDSettings.printerBase.BackColor;
