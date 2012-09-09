@@ -70,7 +70,7 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.labelMoveDist = new System.Windows.Forms.Label();
             this.labelZDiff = new System.Windows.Forms.Label();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.groupDebugOptions = new System.Windows.Forms.GroupBox();
             this.groupSpeedMultiply = new System.Windows.Forms.GroupBox();
             this.labelFeedrate = new System.Windows.Forms.Label();
             this.numericUpDownFlow = new System.Windows.Forms.NumericUpDown();
@@ -103,7 +103,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSpeed)).BeginInit();
             this.panel2.SuspendLayout();
-            this.groupBox4.SuspendLayout();
+            this.groupDebugOptions.SuspendLayout();
             this.groupSpeedMultiply.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownFlow)).BeginInit();
             this.SuspendLayout();
@@ -603,19 +603,19 @@
             this.labelZDiff.TabIndex = 53;
             this.labelZDiff.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // groupBox4
+            // groupDebugOptions
             // 
-            this.groupBox4.Controls.Add(this.switchEcho);
-            this.groupBox4.Controls.Add(this.switchInfo);
-            this.groupBox4.Controls.Add(this.switchErrors);
-            this.groupBox4.Controls.Add(this.switchDryRun);
-            this.groupBox4.Controls.Add(this.buttonSimulateOK);
-            this.groupBox4.Location = new System.Drawing.Point(8, 628);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(442, 50);
-            this.groupBox4.TabIndex = 54;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Debug options";
+            this.groupDebugOptions.Controls.Add(this.switchEcho);
+            this.groupDebugOptions.Controls.Add(this.switchInfo);
+            this.groupDebugOptions.Controls.Add(this.switchErrors);
+            this.groupDebugOptions.Controls.Add(this.switchDryRun);
+            this.groupDebugOptions.Controls.Add(this.buttonSimulateOK);
+            this.groupDebugOptions.Location = new System.Drawing.Point(8, 628);
+            this.groupDebugOptions.Name = "groupDebugOptions";
+            this.groupDebugOptions.Size = new System.Drawing.Size(442, 50);
+            this.groupDebugOptions.TabIndex = 54;
+            this.groupDebugOptions.TabStop = false;
+            this.groupDebugOptions.Text = "Debug options";
             // 
             // groupSpeedMultiply
             // 
@@ -1006,7 +1006,7 @@
             this.AutoScroll = true;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.Controls.Add(this.groupSpeedMultiply);
-            this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.groupDebugOptions);
             this.Controls.Add(this.labelZDiff);
             this.Controls.Add(this.labelMoveDist);
             this.Controls.Add(this.arrowButtonXPlus);
@@ -1050,7 +1050,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSpeed)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
+            this.groupDebugOptions.ResumeLayout(false);
             this.groupSpeedMultiply.ResumeLayout(false);
             this.groupSpeedMultiply.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownFlow)).EndInit();
@@ -1114,7 +1114,7 @@
         private RepetierHost.view.utils.ArrowButton arrowButtonZPlus;
         private RepetierHost.view.utils.ArrowButton arrowButtonZMinus;
         private System.Windows.Forms.Label labelZDiff;
-        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.GroupBox groupDebugOptions;
         private System.Windows.Forms.GroupBox groupSpeedMultiply;
         private System.Windows.Forms.NumericUpDown textExtrudeSpeed;
         private System.Windows.Forms.NumericUpDown textExtrudeAmount;

@@ -287,6 +287,10 @@ namespace RepetierHost.model
                 case 'E':
                     E = (float)d;
                     break;
+                case 'A':
+                    E = (float)d;
+                    forceAscii = true;
+                    break;
                 case 'F':
                     F = (float)d;
                     break;
@@ -311,19 +315,24 @@ namespace RepetierHost.model
         {
             hostCommand = false;
             orig = line.Trim();
-            if (line.StartsWith("@"))
+            if (orig.StartsWith("@"))
             {
                 hostCommand = true;
                 return;
             }
             fields = 128;
-            int l = line.Length,i;
+            int l = orig.Length,i;
             int mode = 0; // 0 = search code, 1 = search value
             char code = ';';
             int p1=0;
             for (i = 0; i < l; i++)
             {
-                char c = line[i];
+                char c = orig[i];
+                if (mode == 0 && c >= 'a' && c <= 'z')
+                {
+                    c -= (char)32;
+                    orig = orig.Substring(0,i)+c+orig.Substring(i+1);
+                }
                 if (mode == 0 && c >= 'A' && c <= 'Z')
                 {
                     code = c;
@@ -335,15 +344,15 @@ namespace RepetierHost.model
                 {
                     if (c == ' ' || c=='\t' || c==';')
                     {
-                        AddCode(code,line.Substring(p1, i - p1));
+                        AddCode(code,orig.Substring(p1, i - p1));
                         mode = 0;
                         if (hasM && (m == 23 || m == 28 || m == 29 || m == 30 || m == 117))
                         {
                             int pos = i;
-                            while (pos < line.Length && char.IsWhiteSpace(line[pos])) pos++;
+                            while (pos < orig.Length && char.IsWhiteSpace(orig[pos])) pos++;
                             int end = pos;
-                            while (end < line.Length && !char.IsWhiteSpace(line[end])) end++;
-                            Text = line.Substring(pos, end - pos);
+                            while (end < orig.Length && !char.IsWhiteSpace(orig[end])) end++;
+                            Text = orig.Substring(pos, end - pos);
                             break;
                         }
                     }
@@ -351,7 +360,7 @@ namespace RepetierHost.model
                 if (c == ';') break;
             }
             if (mode == 1)
-                AddCode(code, line.Substring(p1, line.Length - p1));
+                AddCode(code, orig.Substring(p1, orig.Length - p1));
             /* Slow version
             int iv;
             float fv;

@@ -127,6 +127,7 @@ namespace RepetierHost.model
                     z = (float)d;
                     break;
                 case 'E':
+                case 'A':
                     e = (float)d;
                     break;
                 case 'F':

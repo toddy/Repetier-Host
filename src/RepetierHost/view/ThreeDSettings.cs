@@ -292,10 +292,11 @@ Immediate (slow)*/
 
         private void filament_Click(object sender, EventArgs e)
         {
-            colorDialog.Color = filament.BackColor;
+            Panel p = (Panel)sender;
+            colorDialog.Color = p.BackColor;
             if (colorDialog.ShowDialog() == DialogResult.OK)
             {
-                filament.BackColor = colorDialog.Color;
+                p.BackColor = colorDialog.Color;
                 Main.main.Update3D();
             }
         }
@@ -373,7 +374,7 @@ Immediate (slow)*/
             colorDialog.Color = printerBase.BackColor;
             if (colorDialog.ShowDialog() == DialogResult.OK)
             {
-                printerBase.BackColor = colorDialog.Color;
+                outsidePrintbed.BackColor = colorDialog.Color;
                 Main.main.Update3D();
             }
         }

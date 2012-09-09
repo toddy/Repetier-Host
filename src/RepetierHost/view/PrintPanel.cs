@@ -94,6 +94,7 @@ namespace RepetierHost.view
             labelTemp.Text = labelTemp2.Text = Trans.T("L_TEMP");
             labelFeedrate.Text = Trans.T("L_FEEDRATE:");
             labelFlowrate.Text = Trans.T("L_FLOWRATE:");
+            groupDebugOptions.Text = Trans.T("L_DEBUG_OPTIONS");
             Status = status;
         }
         public void updateStatus()

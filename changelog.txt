@@ -1,3 +1,6 @@
+Version 0.72 08-09-2012
+  Fixed crash on startup when toolbar size reduced.
+
 Version 0.71 03-09-2012
   Made GUI localizable.
   Added german language.

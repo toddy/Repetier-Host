@@ -465,5 +465,6 @@ Mögliche Gründe:
 <t id="L_TOP_VIEW" ver="1">Draufsicht</t>
 <t id="T_ZOOM_VIEW" ver="1">Vergrößern</t>
 <t id="T_CLEAR_OBJECTS" ver="1">Löschen</t>
+<t id="L_DEBUG_OPTIONS" ver="2">Debug Optionen</t>
 </translation>
 

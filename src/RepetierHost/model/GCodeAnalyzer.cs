@@ -128,7 +128,7 @@ namespace RepetierHost.model
                 }
                 return;
             }
-            if (code.forceAscii) return; // Don't analyse host commands and unknown commands
+            //if (code.forceAscii) return; // Don't analyse host commands and unknown commands
             if (code.hasN)
                 lastline = code.N;
             if (uploading && !code.hasM && code.M != 29) return; // ignore upload commands

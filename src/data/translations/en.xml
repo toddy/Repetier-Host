@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<translation revision="1" language="English" languageInEnglish="English" author="Repetier">
+<translation revision="2" language="English" languageInEnglish="English" author="Repetier">
 <t id="M_FILE" ver="1">File</t>
 <t id="M_CONFIG" ver="1">Config</t>
 <t id="M_SLICER" ver="1">Slicer</t>
@@ -474,5 +474,6 @@ Write Changes to EEPROM?</t>
 <t id="L_TOP_VIEW" ver="1">Top View</t>
 <t id="T_ZOOM_VIEW" ver="1">Zoom</t>
 <t id="T_CLEAR_OBJECTS" ver="1">Clear</t>
+<t id="L_DEBUG_OPTIONS" ver="2">Debug Options</t>
 </translation>
 

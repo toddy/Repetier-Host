@@ -184,7 +184,7 @@
             this.selectedFilament.Name = "selectedFilament";
             this.selectedFilament.Size = new System.Drawing.Size(111, 22);
             this.selectedFilament.TabIndex = 3;
-            this.selectedFilament.Click += new System.EventHandler(this.hotFilament_Click);
+            this.selectedFilament.Click += new System.EventHandler(this.filament_Click);
             // 
             // hotFilament
             // 
