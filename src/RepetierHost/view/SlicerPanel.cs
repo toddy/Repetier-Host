@@ -71,7 +71,7 @@ namespace RepetierHost.view
                     if (Main.IsMono)
                     {
                         cdir =  System.Environment.GetEnvironmentVariable("HOME")+"/.Slic3r";
-                        Console.WriteLine("Slic3r home:" + cdir);
+                        //Console.WriteLine("Slic3r home:" + cdir);
                         return cdir;
                         //return "~/.Slic3r";
                         //cdir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);

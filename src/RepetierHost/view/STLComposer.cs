@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2011 repetier repetierdev@googlemail.com
+   Copyright 2011 repetier repetierdev@gmail.com
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -166,13 +166,14 @@ namespace RepetierHost.view
         /// </summary>
         public void updateSTLState(STL stl)
         {
+            FormPrinterSettings ps = Main.printerSettings;
             stl.UpdateBoundingBox();
-            if (stl.xMin < 0 || stl.yMin < 0 || stl.zMin < -0.001 || stl.xMax > Main.printerSettings.PrintAreaWidth ||
-                stl.yMax > Main.printerSettings.PrintAreaDepth || stl.zMax > Main.printerSettings.PrintAreaHeight)
+            if (stl.xMin < ps.BedLeft || stl.yMin < ps.BedFront || stl.zMin < -0.001 || stl.xMax > ps.BedLeft+Main.printerSettings.PrintAreaWidth ||
+                stl.yMax > ps.BedFront+Main.printerSettings.PrintAreaDepth || stl.zMax > Main.printerSettings.PrintAreaHeight)
             {
                 stl.outside = true;
                 if (Main.threeDSettings.pulseOutside.Checked && !stl.hasAnimationWithName("pulse"))
-                    stl.addAnimation(new PulseAnimation("pulse", 0.05, 0.05, 0.05, 0.5));
+                    stl.addAnimation(new PulseAnimation("pulse", 0.03, 0.03, 0.03, 0.3));
             }
             else
             {
@@ -438,7 +439,7 @@ namespace RepetierHost.view
             //if (stl == null) return;
             foreach (STL stl in listSTLObjects.SelectedItems)
             {
-                stl.Center(Main.printerSettings.PrintAreaWidth/2, Main.printerSettings.PrintAreaDepth/2);
+                stl.Center(Main.printerSettings.BedLeft + Main.printerSettings.PrintAreaWidth / 2, Main.printerSettings.BedFront+ Main.printerSettings.PrintAreaDepth / 2);
                 listSTLObjects_SelectedIndexChanged(null, null);
 
             }
@@ -477,27 +478,27 @@ namespace RepetierHost.view
             FormPrinterSettings ps = Main.printerSettings;
             float maxW = ps.PrintAreaWidth;
             float maxH = ps.PrintAreaDepth;
-            float xOff = 0, yOff = 0;
+            float xOff = ps.BedLeft, yOff = ps.BedFront;
             if (ps.HasDumpArea)
             {
                 if (ps.DumpAreaFront <= 0)
                 {
-                    yOff = ps.DumpAreaDepth - ps.DumpAreaFront;
+                    yOff = ps.BedFront+ps.DumpAreaDepth - ps.DumpAreaFront;
                     maxH -= yOff;
                 }
                 else if (ps.DumpAreaDepth + ps.DumpAreaFront >= maxH)
                 {
-                    yOff = -(maxH - ps.DumpAreaFront);
+                    yOff = ps.BedFront + -(maxH - ps.DumpAreaFront);
                     maxH += yOff;
                 }
                 else if (ps.DumpAreaLeft <= 0)
                 {
-                    xOff = ps.DumpAreaWidth - ps.DumpAreaLeft;
+                    xOff = ps.BedLeft+ps.DumpAreaWidth - ps.DumpAreaLeft;
                     maxW -= xOff;
                 }
                 else if (ps.DumpAreaWidth + ps.DumpAreaLeft >= maxW)
                 {
-                    xOff = maxW - ps.DumpAreaLeft;
+                    xOff = ps.BedLeft + maxW - ps.DumpAreaLeft;
                     maxW += xOff;
                 }
             }

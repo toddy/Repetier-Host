@@ -125,6 +125,8 @@
             this.specular3 = new System.Windows.Forms.Panel();
             this.specular4 = new System.Windows.Forms.Panel();
             this.diffuse4 = new System.Windows.Forms.Panel();
+            this.selectionBox = new System.Windows.Forms.Panel();
+            this.labelSelectionBox = new System.Windows.Forms.Label();
             this.groupColors2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -342,7 +344,7 @@
             // labelEdges
             // 
             this.labelEdges.AutoSize = true;
-            this.labelEdges.Location = new System.Drawing.Point(6, 75);
+            this.labelEdges.Location = new System.Drawing.Point(6, 78);
             this.labelEdges.Name = "labelEdges";
             this.labelEdges.Size = new System.Drawing.Size(40, 13);
             this.labelEdges.TabIndex = 1;
@@ -351,7 +353,7 @@
             // labelSelectedFaces
             // 
             this.labelSelectedFaces.AutoSize = true;
-            this.labelSelectedFaces.Location = new System.Drawing.Point(6, 45);
+            this.labelSelectedFaces.Location = new System.Drawing.Point(6, 48);
             this.labelSelectedFaces.Name = "labelSelectedFaces";
             this.labelSelectedFaces.Size = new System.Drawing.Size(81, 13);
             this.labelSelectedFaces.TabIndex = 2;
@@ -360,7 +362,7 @@
             // labelFaces
             // 
             this.labelFaces.AutoSize = true;
-            this.labelFaces.Location = new System.Drawing.Point(6, 17);
+            this.labelFaces.Location = new System.Drawing.Point(6, 20);
             this.labelFaces.Name = "labelFaces";
             this.labelFaces.Size = new System.Drawing.Size(39, 13);
             this.labelFaces.TabIndex = 1;
@@ -663,7 +665,7 @@
             this.groupEditor.Controls.Add(this.pulseOutside);
             this.groupEditor.Controls.Add(this.showFaces);
             this.groupEditor.Controls.Add(this.showEdges);
-            this.groupEditor.Location = new System.Drawing.Point(14, 168);
+            this.groupEditor.Location = new System.Drawing.Point(14, 186);
             this.groupEditor.Name = "groupEditor";
             this.groupEditor.Size = new System.Drawing.Size(456, 98);
             this.groupEditor.TabIndex = 1;
@@ -673,8 +675,6 @@
             // pulseOutside
             // 
             this.pulseOutside.AutoSize = true;
-            this.pulseOutside.Checked = true;
-            this.pulseOutside.CheckState = System.Windows.Forms.CheckState.Checked;
             this.pulseOutside.Location = new System.Drawing.Point(7, 67);
             this.pulseOutside.Name = "pulseOutside";
             this.pulseOutside.Size = new System.Drawing.Size(153, 17);
@@ -702,13 +702,15 @@
             this.groupColors.Controls.Add(this.labelSelectedFaces);
             this.groupColors.Controls.Add(this.faces);
             this.groupColors.Controls.Add(this.selectedFaces);
+            this.groupColors.Controls.Add(this.labelSelectionBox);
             this.groupColors.Controls.Add(this.labelObjectsOutsidePrintbed);
+            this.groupColors.Controls.Add(this.selectionBox);
             this.groupColors.Controls.Add(this.outsidePrintbed);
             this.groupColors.Controls.Add(this.labelEdges);
             this.groupColors.Controls.Add(this.edges);
             this.groupColors.Location = new System.Drawing.Point(14, 13);
             this.groupColors.Name = "groupColors";
-            this.groupColors.Size = new System.Drawing.Size(456, 142);
+            this.groupColors.Size = new System.Drawing.Size(456, 167);
             this.groupColors.TabIndex = 0;
             this.groupColors.TabStop = false;
             this.groupColors.Text = "Colors";
@@ -716,7 +718,7 @@
             // labelObjectsOutsidePrintbed
             // 
             this.labelObjectsOutsidePrintbed.AutoSize = true;
-            this.labelObjectsOutsidePrintbed.Location = new System.Drawing.Point(6, 105);
+            this.labelObjectsOutsidePrintbed.Location = new System.Drawing.Point(6, 108);
             this.labelObjectsOutsidePrintbed.Name = "labelObjectsOutsidePrintbed";
             this.labelObjectsOutsidePrintbed.Size = new System.Drawing.Size(124, 13);
             this.labelObjectsOutsidePrintbed.TabIndex = 1;
@@ -1185,6 +1187,25 @@
             this.diffuse4.TabIndex = 27;
             this.diffuse4.Click += new System.EventHandler(this.lightcolor_Click);
             // 
+            // selectionBox
+            // 
+            this.selectionBox.BackColor = System.Drawing.Color.DodgerBlue;
+            this.selectionBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.selectionBox.Location = new System.Drawing.Point(159, 133);
+            this.selectionBox.Name = "selectionBox";
+            this.selectionBox.Size = new System.Drawing.Size(111, 22);
+            this.selectionBox.TabIndex = 3;
+            this.selectionBox.Click += new System.EventHandler(this.lightcolor_Click);
+            // 
+            // labelSelectionBox
+            // 
+            this.labelSelectionBox.AutoSize = true;
+            this.labelSelectionBox.Location = new System.Drawing.Point(6, 136);
+            this.labelSelectionBox.Name = "labelSelectionBox";
+            this.labelSelectionBox.Size = new System.Drawing.Size(75, 13);
+            this.labelSelectionBox.TabIndex = 1;
+            this.labelSelectionBox.Text = "Selection Box:";
+            // 
             // ThreeDSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1321,5 +1342,7 @@
         public System.Windows.Forms.TextBox zdir2;
         public System.Windows.Forms.TextBox zdir3;
         public System.Windows.Forms.TextBox ydir3;
+        private System.Windows.Forms.Label labelSelectionBox;
+        public System.Windows.Forms.Panel selectionBox;
     }
 }

@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2011 repetier repetierdev@googlemail.com
+   Copyright 2011 repetier repetierdev@gmail.com
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -777,21 +777,21 @@ namespace RepetierHost.view
         private void arrowButtonXPlus_Click(object sender, EventArgs e)
         {
             float d = ((ArrowButton)sender).CurrentValueF;
-            if (ann.hasXHome && d + ann.x > Main.printerSettings.PrintAreaWidth) d = Main.printerSettings.PrintAreaWidth - ann.x;
+            if (ann.hasXHome && d + ann.x > Main.printerSettings.XMax) d = Main.printerSettings.XMax - ann.x;
             moveHead("X", d);
         }
 
         private void arrowButtonXMinus_Click(object sender, EventArgs e)
         {
             float d = -((ArrowButton)sender).CurrentValueF;
-            if (ann.hasXHome && d + ann.x <0) d = -ann.x;
+            if (ann.hasXHome && d + ann.x < Main.printerSettings.XMin) d = Main.printerSettings.XMin - ann.x;
             moveHead("X", d);
         }
 
         private void arrowButtonYPlus_Click(object sender, EventArgs e)
         {
             float d = ((ArrowButton)sender).CurrentValueF;
-            if (ann.hasYHome && d + ann.y > Main.printerSettings.PrintAreaDepth) d = Main.printerSettings.PrintAreaDepth - ann.y;
+            if (ann.hasYHome && d + ann.y > Main.printerSettings.YMax) d = Main.printerSettings.YMax - ann.y;
             moveHead("Y",d);
 
         }
@@ -799,7 +799,7 @@ namespace RepetierHost.view
         private void arrowButtonYMinus_Click(object sender, EventArgs e)
         {
             float d = -((ArrowButton)sender).CurrentValueF;
-            if (ann.hasYHome && d + ann.y < 0) d = -ann.y;
+            if (ann.hasYHome && d + ann.y < Main.printerSettings.YMin) d = Main.printerSettings.YMin - ann.y;
             moveHead("Y", d);
         }
 

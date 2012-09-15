@@ -1,3 +1,10 @@
+Version 0.73
+  Fixed color change of some colors.
+  Added visualization of Mach3 like g-code.
+  More fleximble coordinate system.
+  New translation: dutch by M3chTroniC
+  New translation: italien by Sarah Camerino and Angelo Di Tullio
+
 Version 0.72 08-09-2012
   Fixed crash on startup when toolbar size reduced.
 

@@ -108,6 +108,7 @@
     <Compile Include="model\GCodeGenerator.cs" />
     <Compile Include="model\GCodeShort.cs" />
     <Compile Include="model\GCodeVisual.cs" />
+    <Compile Include="model\Geom3D.cs" />
     <Compile Include="model\IniManager.cs" />
     <Compile Include="model\LogLine.cs" />
     <Compile Include="model\ModelAnimation.cs" />

@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2011 repetier repetierdev@googlemail.com
+   Copyright 2011 repetier repetierdev@gmail.com
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -42,6 +42,7 @@ namespace RepetierHost.model
         private Coord3D rotation = new Coord3D();
         private Coord3D scale = new Coord3D(1, 1, 1);
         public LinkedList<ModelAnimation> animations = new LinkedList<ModelAnimation>();
+        public float xMin = 0, yMin = 0, zMin = 0, xMax = 0, yMax = 0, zMax = 0;
 
         public void addAnimation(ModelAnimation anim)
         {

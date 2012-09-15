@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2011 repetier repetierdev@googlemail.com
+   Copyright 2011 repetier repetierdev@gmail.com
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -72,7 +72,6 @@ namespace RepetierHost.model
         public string filename = "";
         long lastModified = 0;
         public bool outside = false;
-        public float xMin = 0, yMin = 0, zMin = 0, xMax = 0, yMax = 0, zMax = 0;
         public Matrix4 trans;
         public STL copySTL()
         {

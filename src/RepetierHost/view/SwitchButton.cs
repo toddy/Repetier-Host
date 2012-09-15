@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2011 repetier repetierdev@googlemail.com
+   Copyright 2011 repetier repetierdev@gmail.com
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -36,6 +36,18 @@ namespace RepetierHost.view
         public SwitchButton()
         {
             InitializeComponent();
+        }
+        public override bool AutoSize
+        {
+            get
+            {
+                return base.AutoSize;
+            }
+            set
+            {
+                base.AutoSize = value;
+                button.AutoSize = value;
+            }
         }
         public FlatStyle ButtonFlatStyle
         {

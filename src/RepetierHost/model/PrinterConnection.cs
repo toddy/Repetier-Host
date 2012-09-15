@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2011 repetier repetierdev@googlemail.com
+   Copyright 2011 repetier repetierdev@gmail.com
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -1064,9 +1064,9 @@ namespace RepetierHost.model
             }
             if ((h = extract(res, "FlowMultiply:")) != null)
             {
-                int.TryParse(h, out speedMultiply);
-                if (speedMultiply < 50) flowMultiply = 50;
-                if (speedMultiply > 150) flowMultiply = 150;
+                int.TryParse(h, out flowMultiply);
+                if (flowMultiply < 50) flowMultiply = 50;
+                if (flowMultiply > 150) flowMultiply = 150;
                 analyzer.fireChanged();
             }
             if ((h = extract(res, "TargetExtr0:")) != null)

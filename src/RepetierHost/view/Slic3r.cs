@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2011 repetier repetierdev@googlemail.com
+   Copyright 2011 repetier repetierdev@gmail.com
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -678,6 +678,7 @@ namespace RepetierHost.view
                 MessageBox.Show("Last slice job still running. Slicing of new job is canceled.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            FormPrinterSettings ps = Main.printerSettings;
             SlicingInfo.Start("Slic3r");
             SlicingInfo.SetAction("Analyzing STL file ...");
             try
@@ -685,7 +686,7 @@ namespace RepetierHost.view
                 STL stl = new STL();
                 stl.Load(file);
                 stl.UpdateBoundingBox();
-                if (stl.xMin > 0 && stl.yMin > 0 && stl.xMax < Main.printerSettings.PrintAreaWidth && stl.yMax < Main.printerSettings.PrintAreaDepth)
+                if (stl.xMin > ps.BedLeft && stl.yMin > ps.BedFront && stl.xMax < ps.BedLeft + ps.PrintAreaWidth && stl.yMax < ps.BedFront+ps.PrintAreaDepth)
                 {
                     // User assigned valid position, so we use this
                     centerx = stl.xMin + (stl.xMax - stl.xMin) / 2;

@@ -84,6 +84,13 @@
             this.textTravelFeedrate = new System.Windows.Forms.TextBox();
             this.labelTravelFeedRate = new System.Windows.Forms.Label();
             this.tabPageShape = new System.Windows.Forms.TabPage();
+            this.labelShapeInfo = new System.Windows.Forms.Label();
+            this.labelBedFront = new System.Windows.Forms.Label();
+            this.labelBedLeft = new System.Windows.Forms.Label();
+            this.labelYMax = new System.Windows.Forms.Label();
+            this.labelXMax = new System.Windows.Forms.Label();
+            this.labelYMin = new System.Windows.Forms.Label();
+            this.labelXMin = new System.Windows.Forms.Label();
             this.checkHomeZMax = new System.Windows.Forms.CheckBox();
             this.checkHomeYMax = new System.Windows.Forms.CheckBox();
             this.checkHomeXMax = new System.Windows.Forms.CheckBox();
@@ -100,6 +107,12 @@
             this.labelDumpAreaLeft = new System.Windows.Forms.Label();
             this.checkHasDumpArea = new System.Windows.Forms.CheckBox();
             this.textPrintAreaHeight = new System.Windows.Forms.TextBox();
+            this.textBedFront = new System.Windows.Forms.TextBox();
+            this.textBedLeft = new System.Windows.Forms.TextBox();
+            this.textPrinterYMax = new System.Windows.Forms.TextBox();
+            this.textPrinterXMax = new System.Windows.Forms.TextBox();
+            this.textPrinterYMin = new System.Windows.Forms.TextBox();
+            this.textPrinterXMin = new System.Windows.Forms.TextBox();
             this.textDumpAreaDepth = new System.Windows.Forms.TextBox();
             this.textDumpAreaWidth = new System.Windows.Forms.TextBox();
             this.textDumpAreaFront = new System.Windows.Forms.TextBox();
@@ -717,6 +730,13 @@
             // tabPageShape
             // 
             this.tabPageShape.BackColor = System.Drawing.Color.Transparent;
+            this.tabPageShape.Controls.Add(this.labelShapeInfo);
+            this.tabPageShape.Controls.Add(this.labelBedFront);
+            this.tabPageShape.Controls.Add(this.labelBedLeft);
+            this.tabPageShape.Controls.Add(this.labelYMax);
+            this.tabPageShape.Controls.Add(this.labelXMax);
+            this.tabPageShape.Controls.Add(this.labelYMin);
+            this.tabPageShape.Controls.Add(this.labelXMin);
             this.tabPageShape.Controls.Add(this.checkHomeZMax);
             this.tabPageShape.Controls.Add(this.checkHomeYMax);
             this.tabPageShape.Controls.Add(this.checkHomeXMax);
@@ -733,6 +753,12 @@
             this.tabPageShape.Controls.Add(this.labelDumpAreaLeft);
             this.tabPageShape.Controls.Add(this.checkHasDumpArea);
             this.tabPageShape.Controls.Add(this.textPrintAreaHeight);
+            this.tabPageShape.Controls.Add(this.textBedFront);
+            this.tabPageShape.Controls.Add(this.textBedLeft);
+            this.tabPageShape.Controls.Add(this.textPrinterYMax);
+            this.tabPageShape.Controls.Add(this.textPrinterXMax);
+            this.tabPageShape.Controls.Add(this.textPrinterYMin);
+            this.tabPageShape.Controls.Add(this.textPrinterXMin);
             this.tabPageShape.Controls.Add(this.textDumpAreaDepth);
             this.tabPageShape.Controls.Add(this.textDumpAreaWidth);
             this.tabPageShape.Controls.Add(this.textDumpAreaFront);
@@ -749,13 +775,75 @@
             this.tabPageShape.Text = "Printer shape";
             this.tabPageShape.UseVisualStyleBackColor = true;
             // 
+            // labelShapeInfo
+            // 
+            this.labelShapeInfo.Location = new System.Drawing.Point(12, 291);
+            this.labelShapeInfo.Name = "labelShapeInfo";
+            this.labelShapeInfo.Size = new System.Drawing.Size(460, 74);
+            this.labelShapeInfo.TabIndex = 10;
+            this.labelShapeInfo.Text = resources.GetString("labelShapeInfo.Text");
+            // 
+            // labelBedFront
+            // 
+            this.labelBedFront.AutoSize = true;
+            this.labelBedFront.Location = new System.Drawing.Point(280, 258);
+            this.labelBedFront.Name = "labelBedFront";
+            this.labelBedFront.Size = new System.Drawing.Size(56, 13);
+            this.labelBedFront.TabIndex = 9;
+            this.labelBedFront.Text = "Bed Front:";
+            // 
+            // labelBedLeft
+            // 
+            this.labelBedLeft.AutoSize = true;
+            this.labelBedLeft.Location = new System.Drawing.Point(280, 232);
+            this.labelBedLeft.Name = "labelBedLeft";
+            this.labelBedLeft.Size = new System.Drawing.Size(50, 13);
+            this.labelBedLeft.TabIndex = 9;
+            this.labelBedLeft.Text = "Bed Left:";
+            // 
+            // labelYMax
+            // 
+            this.labelYMax.AutoSize = true;
+            this.labelYMax.Location = new System.Drawing.Point(137, 258);
+            this.labelYMax.Name = "labelYMax";
+            this.labelYMax.Size = new System.Drawing.Size(40, 13);
+            this.labelYMax.TabIndex = 9;
+            this.labelYMax.Text = "Y Max:";
+            // 
+            // labelXMax
+            // 
+            this.labelXMax.AutoSize = true;
+            this.labelXMax.Location = new System.Drawing.Point(137, 232);
+            this.labelXMax.Name = "labelXMax";
+            this.labelXMax.Size = new System.Drawing.Size(40, 13);
+            this.labelXMax.TabIndex = 9;
+            this.labelXMax.Text = "X Max:";
+            // 
+            // labelYMin
+            // 
+            this.labelYMin.AutoSize = true;
+            this.labelYMin.Location = new System.Drawing.Point(9, 258);
+            this.labelYMin.Name = "labelYMin";
+            this.labelYMin.Size = new System.Drawing.Size(37, 13);
+            this.labelYMin.TabIndex = 9;
+            this.labelYMin.Text = "Y Min:";
+            // 
+            // labelXMin
+            // 
+            this.labelXMin.AutoSize = true;
+            this.labelXMin.Location = new System.Drawing.Point(9, 232);
+            this.labelXMin.Name = "labelXMin";
+            this.labelXMin.Size = new System.Drawing.Size(37, 13);
+            this.labelXMin.TabIndex = 9;
+            this.labelXMin.Text = "X Min:";
+            // 
             // checkHomeZMax
             // 
             this.checkHomeZMax.AutoSize = true;
             this.checkHomeZMax.Location = new System.Drawing.Point(306, 66);
             this.checkHomeZMax.Name = "checkHomeZMax";
             this.checkHomeZMax.Size = new System.Drawing.Size(106, 17);
-            this.checkHomeZMax.TabIndex = 8;
+            this.checkHomeZMax.TabIndex = 15;
             this.checkHomeZMax.Text = "Home is at z max";
             this.checkHomeZMax.UseVisualStyleBackColor = true;
             // 
@@ -765,7 +853,7 @@
             this.checkHomeYMax.Location = new System.Drawing.Point(306, 40);
             this.checkHomeYMax.Name = "checkHomeYMax";
             this.checkHomeYMax.Size = new System.Drawing.Size(106, 17);
-            this.checkHomeYMax.TabIndex = 8;
+            this.checkHomeYMax.TabIndex = 14;
             this.checkHomeYMax.Text = "Home is at y max";
             this.checkHomeYMax.UseVisualStyleBackColor = true;
             // 
@@ -775,7 +863,7 @@
             this.checkHomeXMax.Location = new System.Drawing.Point(307, 14);
             this.checkHomeXMax.Name = "checkHomeXMax";
             this.checkHomeXMax.Size = new System.Drawing.Size(106, 17);
-            this.checkHomeXMax.TabIndex = 8;
+            this.checkHomeXMax.TabIndex = 13;
             this.checkHomeXMax.Text = "Home is at x max";
             this.checkHomeXMax.UseVisualStyleBackColor = true;
             // 
@@ -897,12 +985,66 @@
             this.textPrintAreaHeight.Text = "100";
             this.textPrintAreaHeight.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
             // 
+            // textBedFront
+            // 
+            this.textBedFront.Location = new System.Drawing.Point(358, 255);
+            this.textBedFront.Name = "textBedFront";
+            this.textBedFront.Size = new System.Drawing.Size(60, 20);
+            this.textBedFront.TabIndex = 12;
+            this.textBedFront.Text = "0";
+            this.textBedFront.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
+            // 
+            // textBedLeft
+            // 
+            this.textBedLeft.Location = new System.Drawing.Point(358, 229);
+            this.textBedLeft.Name = "textBedLeft";
+            this.textBedLeft.Size = new System.Drawing.Size(60, 20);
+            this.textBedLeft.TabIndex = 9;
+            this.textBedLeft.Text = "0";
+            this.textBedLeft.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
+            // 
+            // textPrinterYMax
+            // 
+            this.textPrinterYMax.Location = new System.Drawing.Point(189, 255);
+            this.textPrinterYMax.Name = "textPrinterYMax";
+            this.textPrinterYMax.Size = new System.Drawing.Size(60, 20);
+            this.textPrinterYMax.TabIndex = 11;
+            this.textPrinterYMax.Text = "200";
+            this.textPrinterYMax.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
+            // 
+            // textPrinterXMax
+            // 
+            this.textPrinterXMax.Location = new System.Drawing.Point(189, 229);
+            this.textPrinterXMax.Name = "textPrinterXMax";
+            this.textPrinterXMax.Size = new System.Drawing.Size(60, 20);
+            this.textPrinterXMax.TabIndex = 8;
+            this.textPrinterXMax.Text = "200";
+            this.textPrinterXMax.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
+            // 
+            // textPrinterYMin
+            // 
+            this.textPrinterYMin.Location = new System.Drawing.Point(61, 255);
+            this.textPrinterYMin.Name = "textPrinterYMin";
+            this.textPrinterYMin.Size = new System.Drawing.Size(60, 20);
+            this.textPrinterYMin.TabIndex = 10;
+            this.textPrinterYMin.Text = "0";
+            this.textPrinterYMin.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
+            // 
+            // textPrinterXMin
+            // 
+            this.textPrinterXMin.Location = new System.Drawing.Point(61, 229);
+            this.textPrinterXMin.Name = "textPrinterXMin";
+            this.textPrinterXMin.Size = new System.Drawing.Size(60, 20);
+            this.textPrinterXMin.TabIndex = 7;
+            this.textPrinterXMin.Text = "0";
+            this.textPrinterXMin.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
+            // 
             // textDumpAreaDepth
             // 
             this.textDumpAreaDepth.Location = new System.Drawing.Point(143, 192);
             this.textDumpAreaDepth.Name = "textDumpAreaDepth";
             this.textDumpAreaDepth.Size = new System.Drawing.Size(106, 20);
-            this.textDumpAreaDepth.TabIndex = 7;
+            this.textDumpAreaDepth.TabIndex = 6;
             this.textDumpAreaDepth.Text = "40";
             this.textDumpAreaDepth.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
             // 
@@ -911,7 +1053,7 @@
             this.textDumpAreaWidth.Location = new System.Drawing.Point(143, 166);
             this.textDumpAreaWidth.Name = "textDumpAreaWidth";
             this.textDumpAreaWidth.Size = new System.Drawing.Size(106, 20);
-            this.textDumpAreaWidth.TabIndex = 6;
+            this.textDumpAreaWidth.TabIndex = 5;
             this.textDumpAreaWidth.Text = "22";
             this.textDumpAreaWidth.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
             // 
@@ -920,7 +1062,7 @@
             this.textDumpAreaFront.Location = new System.Drawing.Point(143, 141);
             this.textDumpAreaFront.Name = "textDumpAreaFront";
             this.textDumpAreaFront.Size = new System.Drawing.Size(106, 20);
-            this.textDumpAreaFront.TabIndex = 5;
+            this.textDumpAreaFront.TabIndex = 4;
             this.textDumpAreaFront.Text = "0";
             this.textDumpAreaFront.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
             // 
@@ -929,7 +1071,7 @@
             this.textDumpAreaLeft.Location = new System.Drawing.Point(143, 115);
             this.textDumpAreaLeft.Name = "textDumpAreaLeft";
             this.textDumpAreaLeft.Size = new System.Drawing.Size(106, 20);
-            this.textDumpAreaLeft.TabIndex = 4;
+            this.textDumpAreaLeft.TabIndex = 3;
             this.textDumpAreaLeft.Text = "125";
             this.textDumpAreaLeft.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
             // 
@@ -1217,5 +1359,18 @@
         public System.Windows.Forms.CheckBox checkHomeYMax;
         public System.Windows.Forms.CheckBox checkHomeXMax;
         public System.Windows.Forms.CheckBox checkHomeZMax;
+        private System.Windows.Forms.Label labelBedFront;
+        private System.Windows.Forms.Label labelBedLeft;
+        private System.Windows.Forms.Label labelYMax;
+        private System.Windows.Forms.Label labelXMax;
+        private System.Windows.Forms.Label labelYMin;
+        private System.Windows.Forms.Label labelXMin;
+        private System.Windows.Forms.TextBox textBedFront;
+        private System.Windows.Forms.TextBox textBedLeft;
+        private System.Windows.Forms.TextBox textPrinterYMax;
+        private System.Windows.Forms.TextBox textPrinterXMax;
+        private System.Windows.Forms.TextBox textPrinterYMin;
+        private System.Windows.Forms.TextBox textPrinterXMin;
+        private System.Windows.Forms.Label labelShapeInfo;
     }
 }

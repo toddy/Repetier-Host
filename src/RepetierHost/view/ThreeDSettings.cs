@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2011 repetier repetierdev@googlemail.com
+   Copyright 2011 repetier repetierdev@gmail.com
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -106,6 +106,7 @@ Immediate (slow)*/
             comboDrawMethod.Items[2] = Trans.T("L_DRAW_METHOD_ARRAYS");
             comboDrawMethod.Items[3] = Trans.T("L_DRAW_METHOD_IMMEDIATE");
             buttonOK.Text = Trans.T("B_OK");
+            labelSelectionBox.Text = Trans.T("L_SELECTION_BOX");
         }
         public int filamentVisualization
         {
@@ -173,6 +174,7 @@ Immediate (slow)*/
                 threedKey.SetValue("ambient4Color", ambient4.BackColor.ToArgb());
                 threedKey.SetValue("diffuse4Color", diffuse4.BackColor.ToArgb());
                 threedKey.SetValue("specular4Color", specular4.BackColor.ToArgb());
+                threedKey.SetValue("selectionBoxColor", selectionBox.BackColor.ToArgb());
                 threedKey.SetValue("light1X", xdir1.Text);
                 threedKey.SetValue("light1Y", ydir1.Text);
                 threedKey.SetValue("light1Z", zdir1.Text);
@@ -230,6 +232,7 @@ Immediate (slow)*/
                 ambient4.BackColor = Color.FromArgb((int)threedKey.GetValue("ambient4Color", ambient4.BackColor.ToArgb()));
                 diffuse4.BackColor = Color.FromArgb((int)threedKey.GetValue("diffuse4Color", diffuse4.BackColor.ToArgb()));
                 specular4.BackColor = Color.FromArgb((int)threedKey.GetValue("specular4Color", specular4.BackColor.ToArgb()));
+                selectionBox.BackColor = Color.FromArgb((int)threedKey.GetValue("selectionBoxColor", selectionBox.BackColor.ToArgb()));
                 xdir1.Text = (string)threedKey.GetValue("light1X", xdir1.Text);
                 ydir1.Text = (string)threedKey.GetValue("light1Y", ydir1.Text);
                 zdir1.Text = (string)threedKey.GetValue("light1Z", zdir1.Text);

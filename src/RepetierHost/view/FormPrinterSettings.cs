@@ -42,6 +42,7 @@ namespace RepetierHost.view
         public float PrintAreaWidth;
         public float PrintAreaDepth;
         public float PrintAreaHeight;
+        public float XMin, XMax, YMin, YMax, BedLeft, BedFront;
         public bool HasDumpArea;
         public float DumpAreaLeft;
         public float DumpAreaFront;
@@ -145,6 +146,13 @@ namespace RepetierHost.view
             this.Text = Trans.T("W_PRINTER_SETTINGS");
             groupBoxPostSliceFilter.Text = Trans.T("L_POST_SLICE_FILTER");
             labelZMin.Text = Trans.T("L_Z_MIN");
+            labelXMax.Text = Trans.T("L_X_MAX:");
+            labelYMin.Text = Trans.T("L_Y_MIN:");
+            labelYMax.Text = Trans.T("L_Y_MAX:");
+            labelBedLeft.Text = Trans.T("L_BED_LEFT:");
+            labelBedFront.Text = Trans.T("L_BED_FRONT:");
+            labelXMin.Text = Trans.T("L_X_MIN:");
+            labelShapeInfo.Text = Trans.T("L_SHAPE_INFO");
         }
         public void save(string printername)
         {
@@ -186,6 +194,12 @@ namespace RepetierHost.view
             p.SetValue("xhomeMax", checkHomeXMax.Checked ? 1 : 0);
             p.SetValue("yhomeMax", checkHomeYMax.Checked ? 1 : 0);
             p.SetValue("zhomeMax", checkHomeZMax.Checked ? 1 : 0);
+            p.SetValue("printerXMax", textPrinterXMax.Text);
+            p.SetValue("printerXMin", textPrinterXMin.Text);
+            p.SetValue("printerYMax", textPrinterYMax.Text);
+            p.SetValue("printerYMin", textPrinterYMin.Text);
+            p.SetValue("printerBedLeft", textBedLeft.Text);
+            p.SetValue("printerBedFront", textBedFront.Text);
         }
         public void load(string printername)
         {
@@ -229,6 +243,12 @@ namespace RepetierHost.view
             checkHomeXMax.Checked = 1 == (int)p.GetValue("xhomeMax", checkHomeXMax.Checked ? 1 : 0);
             checkHomeYMax.Checked = 1 == (int)p.GetValue("yhomeMax", checkHomeYMax.Checked ? 1 : 0);
             checkHomeZMax.Checked = 1 == (int)p.GetValue("zhomeMax", checkHomeZMax.Checked ? 1 : 0);
+            textPrinterXMax.Text = (string)p.GetValue("printerXMax", textPrintAreaWidth.Text);
+            textPrinterXMin.Text = (string)p.GetValue("printerXMin", "0");
+            textPrinterYMax.Text = (string)p.GetValue("printerYMax", textPrintAreaDepth.Text);
+            textPrinterYMin.Text = (string)p.GetValue("printerYMin", "0");
+            textBedLeft.Text = (string)p.GetValue("printerBedLeft", "0");
+            textBedFront.Text = (string)p.GetValue("printerBedFront", "0");
         }
         public void UpdateDimensions()
         {
@@ -239,6 +259,12 @@ namespace RepetierHost.view
             float.TryParse(textDumpAreaWidth.Text, NumberStyles.Float, GCode.format, out DumpAreaWidth);
             float.TryParse(textDumpAreaLeft.Text, NumberStyles.Float, GCode.format, out DumpAreaLeft);
             float.TryParse(textDumpAreaFront.Text, NumberStyles.Float, GCode.format, out DumpAreaFront);
+            float.TryParse(textPrinterXMin.Text, NumberStyles.Float, GCode.format, out XMin);
+            float.TryParse(textPrinterXMax.Text, NumberStyles.Float, GCode.format, out XMax);
+            float.TryParse(textPrinterYMin.Text, NumberStyles.Float, GCode.format, out YMin);
+            float.TryParse(textPrinterYMax.Text, NumberStyles.Float, GCode.format, out YMax);
+            float.TryParse(textBedLeft.Text, NumberStyles.Float, GCode.format, out BedLeft);
+            float.TryParse(textBedFront.Text, NumberStyles.Float, GCode.format, out BedFront);
             HasDumpArea = checkHasDumpArea.Checked;
         }
         public void formToCon()

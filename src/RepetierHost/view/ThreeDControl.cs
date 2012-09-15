@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2011 repetier repetierdev@googlemail.com
+   Copyright 2011 repetier repetierdev@gmail.com
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -291,7 +291,7 @@ namespace RepetierHost.view
 
                 GL.Rotate(view.rotX, 1, 0, 0);
                 GL.Rotate(view.rotZ, 0, 0, 1);
-                GL.Translate(-ps.PrintAreaWidth * 0.5f, -ps.PrintAreaDepth * 0.5f, -0.5f * ps.PrintAreaHeight);
+                GL.Translate(-ps.BedLeft-ps.PrintAreaWidth * 0.5f,-ps.BedFront -ps.PrintAreaDepth * 0.5f, -0.5f * ps.PrintAreaHeight);
                 GL.GetFloat(GetPName.ModelviewMatrix, out view.modelView);
                 GL.Material(
                     MaterialFace.Front,
@@ -312,38 +312,51 @@ namespace RepetierHost.view
                         MaterialFace.Front,
                         MaterialParameter.Emission,
                         new OpenTK.Graphics.Color4(col.R, col.G, col.B, col.A));
-                    GL.Begin(BeginMode.Lines);
                     int i;
+                    // Draw origin
+                    GL.Disable(EnableCap.CullFace);
+                    GL.Begin(BeginMode.Triangles);
+                    GL.Normal3(0, 0, 1);
+                    double delta = Math.PI / 8;
+                    double rad = 1.5;
+                    for (i = 0; i < 16; i++)
+                    {
+                        GL.Vertex3(0, 0, 0);
+                        GL.Vertex3(rad * Math.Sin(i * delta), rad * Math.Cos(i * delta), 0);
+                        GL.Vertex3(rad * Math.Sin((i + 1) * delta), rad * Math.Cos((i + 1) * delta), 0);
+                    }
+                    GL.End();
+                    GL.Begin(BeginMode.Lines);
                     // Print cube
-                    GL.Vertex3(0, 0, 0);
-                    GL.Vertex3(0, 0, ps.PrintAreaHeight);
-                    GL.Vertex3(ps.PrintAreaWidth, 0, 0);
-                    GL.Vertex3(ps.PrintAreaWidth, 0, ps.PrintAreaHeight);
-                    GL.Vertex3(0, ps.PrintAreaDepth, 0);
-                    GL.Vertex3(0, ps.PrintAreaDepth, ps.PrintAreaHeight);
-                    GL.Vertex3(ps.PrintAreaWidth, ps.PrintAreaDepth, 0);
-                    GL.Vertex3(ps.PrintAreaWidth, ps.PrintAreaDepth, ps.PrintAreaHeight);
-                    GL.Vertex3(0, 0, ps.PrintAreaHeight);
-                    GL.Vertex3(ps.PrintAreaWidth, 0, ps.PrintAreaHeight);
-                    GL.Vertex3(ps.PrintAreaWidth, 0, ps.PrintAreaHeight);
-                    GL.Vertex3(ps.PrintAreaWidth, ps.PrintAreaDepth, ps.PrintAreaHeight);
-                    GL.Vertex3(ps.PrintAreaWidth, ps.PrintAreaDepth, ps.PrintAreaHeight);
-                    GL.Vertex3(0, ps.PrintAreaDepth, ps.PrintAreaHeight);
-                    GL.Vertex3(0, ps.PrintAreaDepth, ps.PrintAreaHeight);
-                    GL.Vertex3(0, 0, ps.PrintAreaHeight);
+                    GL.Vertex3(ps.BedLeft, ps.BedFront, 0);
+                    GL.Vertex3(ps.BedLeft, ps.BedFront, ps.PrintAreaHeight);
+                    GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront, 0);
+                    GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront, ps.PrintAreaHeight);
+                    GL.Vertex3(ps.BedLeft, ps.BedFront+ps.PrintAreaDepth, 0);
+                    GL.Vertex3(ps.BedLeft, ps.BedFront+ps.PrintAreaDepth, ps.PrintAreaHeight);
+                    GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront+ps.PrintAreaDepth, 0);
+                    GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront+ps.PrintAreaDepth, ps.PrintAreaHeight);
+                    GL.Vertex3(ps.BedLeft, ps.BedFront, ps.PrintAreaHeight);
+                    GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront, ps.PrintAreaHeight);
+                    GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront, ps.PrintAreaHeight);
+                    GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront+ps.PrintAreaDepth, ps.PrintAreaHeight);
+                    GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront+ps.PrintAreaDepth, ps.PrintAreaHeight);
+                    GL.Vertex3(ps.BedLeft, ps.BedFront+ps.PrintAreaDepth, ps.PrintAreaHeight);
+                    GL.Vertex3(ps.BedLeft, ps.BedFront+ps.PrintAreaDepth, ps.PrintAreaHeight);
+                    GL.Vertex3(ps.BedLeft, ps.BedFront, ps.PrintAreaHeight);
                     if (ps.HasDumpArea)
                     {
                         if (dy1 != 0)
                         {
-                            GL.Vertex3(dx1, dy1, 0);
-                            GL.Vertex3(dx2, dy1, 0);
+                            GL.Vertex3(ps.BedLeft + dx1, ps.BedFront+dy1, 0);
+                            GL.Vertex3(ps.BedLeft + dx2, ps.BedFront+dy1, 0);
                         }
-                        GL.Vertex3(dx2, dy1, 0);
-                        GL.Vertex3(dx2, dy2, 0);
-                        GL.Vertex3(dx2, dy2, 0);
-                        GL.Vertex3(dx1, dy2, 0);
-                        GL.Vertex3(dx1, dy2, 0);
-                        GL.Vertex3(dx1, dy1, 0);
+                        GL.Vertex3(ps.BedLeft + dx2, ps.BedFront+dy1, 0);
+                        GL.Vertex3(ps.BedLeft + dx2, ps.BedFront+dy2, 0);
+                        GL.Vertex3(ps.BedLeft + dx2, ps.BedFront+dy2, 0);
+                        GL.Vertex3(ps.BedLeft + dx1, ps.BedFront+dy2, 0);
+                        GL.Vertex3(ps.BedLeft + dx1, ps.BedFront+dy2, 0);
+                        GL.Vertex3(ps.BedLeft + dx1, ps.BedFront+dy1, 0);
                     }
                     float dx = 10; // ps.PrintAreaWidth / 20f;
                     float dy = 10; // ps.PrintAreaDepth / 20f;
@@ -355,15 +368,15 @@ namespace RepetierHost.view
                             x=ps.PrintAreaWidth;
                         if (ps.HasDumpArea && x >= dx1 && x <= dx2)
                         {
-                            GL.Vertex3(x, 0, 0);
-                            GL.Vertex3(x, dy1, 0);
-                            GL.Vertex3(x, dy2, 0);
-                            GL.Vertex3(x, ps.PrintAreaDepth, 0);
+                            GL.Vertex3(ps.BedLeft + x, ps.BedFront, 0);
+                            GL.Vertex3(ps.BedLeft + x, ps.BedFront+dy1, 0);
+                            GL.Vertex3(ps.BedLeft + x, ps.BedFront+dy2, 0);
+                            GL.Vertex3(ps.BedLeft + x, ps.BedFront+ps.PrintAreaDepth, 0);
                         }
                         else
                         {
-                            GL.Vertex3(x, 0, 0);
-                            GL.Vertex3(x, ps.PrintAreaDepth, 0);
+                            GL.Vertex3(ps.BedLeft + x, ps.BedFront, 0);
+                            GL.Vertex3(ps.BedLeft + x, ps.BedFront+ps.PrintAreaDepth, 0);
                         }
                         if (x >= ps.PrintAreaWidth) break;
                     }
@@ -374,21 +387,23 @@ namespace RepetierHost.view
                             y = ps.PrintAreaDepth;
                         if (ps.HasDumpArea && y >= dy1 && y <= dy2)
                         {
-                            GL.Vertex3(0, y, 0);
-                            GL.Vertex3(dx1, y, 0);
-                            GL.Vertex3(dx2, y, 0);
-                            GL.Vertex3(ps.PrintAreaWidth, y, 0);
+                            GL.Vertex3(ps.BedLeft, ps.BedFront+y, 0);
+                            GL.Vertex3(ps.BedLeft + dx1, ps.BedFront+y, 0);
+                            GL.Vertex3(ps.BedLeft + dx2, ps.BedFront+y, 0);
+                            GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront+y, 0);
                         }
                         else
                         {
-                            GL.Vertex3(0, y, 0);
-                            GL.Vertex3(ps.PrintAreaWidth, y, 0);
+                            GL.Vertex3(ps.BedLeft, ps.BedFront+y, 0);
+                            GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront+y, 0);
                         }
                         if (y >= ps.PrintAreaDepth) 
                             break;
                     }
                     GL.End();
                 }
+                GL.Enable(EnableCap.CullFace);
+
                 foreach (ThreeDModel model in view.models)
                 {
                     GL.PushMatrix();
@@ -399,8 +414,57 @@ namespace RepetierHost.view
                     GL.Rotate(model.Rotation.x, Vector3.UnitX);
                     GL.Scale(model.Scale.x, model.Scale.y, model.Scale.z);
                     model.Paint();
-                    model.AnimationAfter();
+                    model.AnimationAfter();                    
                     GL.PopMatrix();
+                    if (model.Selected)
+                    {
+                        col = Main.threeDSettings.selectionBox.BackColor;
+                        GL.Material(MaterialFace.FrontAndBack, MaterialParameter.AmbientAndDiffuse, new OpenTK.Graphics.Color4(0, 0, 0, 255));
+                        GL.Material(MaterialFace.Front, MaterialParameter.Emission, new OpenTK.Graphics.Color4(0, 0, 0, 0));
+                        GL.Material(MaterialFace.Front, MaterialParameter.Specular, new float[] { 0.0f, 0.0f, 0.0f, 1.0f });
+                        GL.Material(
+                            MaterialFace.Front,
+                            MaterialParameter.Emission,
+                            new OpenTK.Graphics.Color4(col.R, col.G, col.B, col.A));
+                        GL.Begin(BeginMode.Lines);
+                        GL.Vertex3(model.xMin, model.yMin, model.zMin);
+                        GL.Vertex3(model.xMax, model.yMin, model.zMin);
+
+                        GL.Vertex3(model.xMin, model.yMin, model.zMin);
+                        GL.Vertex3(model.xMin, model.yMax, model.zMin);
+
+                        GL.Vertex3(model.xMin, model.yMin, model.zMin);
+                        GL.Vertex3(model.xMin, model.yMin, model.zMax);
+
+                        GL.Vertex3(model.xMax, model.yMax, model.zMax);
+                        GL.Vertex3(model.xMin, model.yMax, model.zMax);
+
+                        GL.Vertex3(model.xMax, model.yMax, model.zMax);
+                        GL.Vertex3(model.xMax, model.yMin, model.zMax);
+
+                        GL.Vertex3(model.xMax, model.yMax, model.zMax);
+                        GL.Vertex3(model.xMax, model.yMax, model.zMin);
+
+                        GL.Vertex3(model.xMin, model.yMax, model.zMax);
+                        GL.Vertex3(model.xMin, model.yMax, model.zMin);
+
+                        GL.Vertex3(model.xMin, model.yMax, model.zMax);
+                        GL.Vertex3(model.xMin, model.yMin, model.zMax);
+
+                        GL.Vertex3(model.xMax, model.yMax, model.zMin);
+                        GL.Vertex3(model.xMax, model.yMin, model.zMin);
+
+                        GL.Vertex3(model.xMax, model.yMax, model.zMin);
+                        GL.Vertex3(model.xMin, model.yMax, model.zMin);
+
+                        GL.Vertex3(model.xMax, model.yMin, model.zMax);
+                        GL.Vertex3(model.xMin, model.yMin, model.zMax);
+
+                        GL.Vertex3(model.xMax, model.yMin, model.zMax);
+                        GL.Vertex3(model.xMax, model.yMin, model.zMin);
+
+                        GL.End();
+                    }
                 }
                /* if (drawRay)
                 {
@@ -438,39 +502,39 @@ namespace RepetierHost.view
                     {
                         if (dy1 > 0)
                         {
-                            GL.Vertex3(0, 0, 0);
-                            GL.Vertex3(ps.PrintAreaWidth, 0, 0);
-                            GL.Vertex3(ps.PrintAreaWidth, dy1, 0);
-                            GL.Vertex3(0, dy1, 0);
+                            GL.Vertex3(ps.BedLeft, ps.BedFront, 0);
+                            GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront, 0);
+                            GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront+dy1, 0);
+                            GL.Vertex3(ps.BedLeft, ps.BedFront+dy1, 0);
                         }
                         if (dy2 < ps.PrintAreaDepth)
                         {
-                            GL.Vertex3(0, dy2, 0);
-                            GL.Vertex3(ps.PrintAreaWidth, dy2, 0);
-                            GL.Vertex3(ps.PrintAreaWidth, ps.PrintAreaDepth, 0);
-                            GL.Vertex3(0, ps.PrintAreaDepth, 0);
+                            GL.Vertex3(ps.BedLeft, ps.BedFront+dy2, 0);
+                            GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront+dy2, 0);
+                            GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront+ps.PrintAreaDepth, 0);
+                            GL.Vertex3(ps.BedLeft, ps.BedFront+ps.PrintAreaDepth, 0);
                         }
                         if (dx1 > 0)
                         {
-                            GL.Vertex3(0, dy1, 0);
-                            GL.Vertex3(dx1, dy1, 0);
-                            GL.Vertex3(dx1, dy2, 0);
-                            GL.Vertex3(0, dy2, 0);
+                            GL.Vertex3(ps.BedLeft, ps.BedFront+dy1, 0);
+                            GL.Vertex3(ps.BedLeft + dx1, ps.BedFront+dy1, 0);
+                            GL.Vertex3(ps.BedLeft + dx1, ps.BedFront+dy2, 0);
+                            GL.Vertex3(ps.BedLeft, ps.BedFront+dy2, 0);
                         }
                         if (dx2 < ps.PrintAreaWidth)
                         {
-                            GL.Vertex3(dx2, dy1, 0);
-                            GL.Vertex3(ps.PrintAreaWidth, dy1, 0);
-                            GL.Vertex3(ps.PrintAreaWidth, dy2, 0);
-                            GL.Vertex3(dx2, dy2, 0);
+                            GL.Vertex3(ps.BedLeft + dx2, ps.BedFront+dy1, 0);
+                            GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront+dy1, 0);
+                            GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront+dy2, 0);
+                            GL.Vertex3(ps.BedLeft + dx2, ps.BedFront+dy2, 0);
                         }
                     }
                     else
                     {
-                        GL.Vertex3(0, 0, 0);
-                        GL.Vertex3(ps.PrintAreaWidth, 0, 0);
-                        GL.Vertex3(ps.PrintAreaWidth, ps.PrintAreaDepth, 0);
-                        GL.Vertex3(0, ps.PrintAreaDepth, 0);
+                        GL.Vertex3(ps.BedLeft, ps.BedFront, 0);
+                        GL.Vertex3(ps.BedLeft+ps.PrintAreaWidth, ps.BedFront, 0);
+                        GL.Vertex3(ps.BedLeft+ps.PrintAreaWidth, ps.BedFront + ps.PrintAreaDepth, 0);
+                        GL.Vertex3(ps.BedLeft+0, ps.BedFront + ps.PrintAreaDepth, 0);
                     }
 
                     GL.End();
@@ -570,6 +634,43 @@ namespace RepetierHost.view
             result = Matrix4.Mult(Matrix4.Scale(scaleX, scaleY, 1.0f), result);
             return result;
         }
+        public uint lastDepth = 0;
+        public Geom3DLine pickLine = null; // Last pick up line ray
+        public Geom3DLine viewLine = null; // Direction of view
+        public Geom3DVector pickPoint = new Geom3DVector(0, 0, 0); // Koordinates of last pick
+        
+        public void UpdatePickLine(int x, int y)
+        {
+            // Intersection on bottom plane
+
+            int window_y = (Height - y) - Height / 2;
+            double norm_y = (double)window_y / (double)(Height / 2);
+            int window_x = x - Width / 2;
+            double norm_x = (double)window_x / (double)(Width / 2);
+            float fpy = (float)(view.nearHeight * 0.5 * norm_y);
+            float fpx = (float)(view.nearHeight * 0.5 * view.aspectRatio * norm_x);
+
+
+            Vector4 frontPointN = new Vector4(0, 0, 0, 1);
+            Vector4 dirN = new Vector4(fpx, fpy, -view.nearDist, 0);
+            Matrix4 rotx = Matrix4.CreateFromAxisAngle(new Vector3(1, 0, 0), (float)(view.rotX * Math.PI / 180.0));
+            Matrix4 rotz = Matrix4.CreateFromAxisAngle(new Vector3(0, 0, 1), (float)(view.rotZ * Math.PI / 180.0));
+            Matrix4 trans = Matrix4.CreateTranslation(-ps.BedLeft-ps.PrintAreaWidth * 0.5f,-ps.BedFront -ps.PrintAreaDepth * 0.5f, -0.5f * ps.PrintAreaHeight);
+            Matrix4 ntrans = view.lookAt;
+            ntrans = Matrix4.Mult(rotx, ntrans);
+            ntrans = Matrix4.Mult(rotz, ntrans);
+            ntrans = Matrix4.Mult(trans, ntrans);
+            ntrans = Matrix4.Invert(ntrans);
+            Vector4 frontPoint = ntrans.Row3;
+            Vector4 dirVec = Vector4.Transform(dirN, ntrans);
+            pickLine = new Geom3DLine(new Geom3DVector(frontPoint.X / frontPoint.W, frontPoint.Y / frontPoint.W, frontPoint.Z / frontPoint.W),
+                new Geom3DVector(dirVec.X, dirVec.Y, dirVec.Z), true);
+            pickLine.dir.normalize();
+            /*Geom3DPlane plane = new Geom3DPlane(new Geom3DVector(0, 0, 0), new Geom3DVector(0, 0, 1));
+            Geom3DVector cross = new Geom3DVector(0, 0, 0);
+            plane.intersectLine(pickLine, cross);
+            */
+        }
         private ThreeDModel Picktest(int x,int y)
         {
            // int x = Mouse.X;
@@ -591,6 +692,7 @@ namespace RepetierHost.view
             Matrix4 m = GluPickMatrix(x, viewport[3] - y, 1, 1, viewport);
             GL.MultMatrix(ref m);
 
+
             //GluPerspective(45, 32 / 24, 0.1f, 100.0f);
             //Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView((float)Math.PI / 4, 1, 0.1f, 100.0f);
             GL.MultMatrix(ref view.persp);
@@ -601,11 +703,49 @@ namespace RepetierHost.view
             GL.Enable(EnableCap.DepthTest);
             view.lookAt = Matrix4.LookAt(view.userPosition.X, view.userPosition.Y, view.userPosition.Z, view.viewCenter.X, view.viewCenter.Y, view.viewCenter.Z, 0, 0, 1.0f);
 
+            // Intersection on bottom plane
+
+            int window_y = (viewport[3] - y) - viewport[3]/2;
+            double norm_y = (double)window_y/(double)(viewport[3]/2);
+            int window_x = x - viewport[2]/2;
+            double norm_x = (double)window_x/(double)(viewport[2]/2);
+            float fpy = (float)(view.nearHeight*0.5 * norm_y);
+            float fpx = (float)(view.nearHeight*0.5 * view.aspectRatio * norm_x);
+
+
+            Vector4 frontPointN = new Vector4(0,0, 0, 1);
+            Vector4 dirN = new Vector4(fpx,fpy,-view.nearDist, 0);
+            Matrix4 rotx = Matrix4.CreateFromAxisAngle(new Vector3(1, 0, 0), (float)(view.rotX*Math.PI/180.0));
+            Matrix4 rotz = Matrix4.CreateFromAxisAngle(new Vector3(0, 0, 1), (float)(view.rotZ * Math.PI / 180.0));
+            Matrix4 trans = Matrix4.CreateTranslation(-ps.BedLeft-ps.PrintAreaWidth * 0.5f,-ps.BedFront -ps.PrintAreaDepth * 0.5f, -0.5f * ps.PrintAreaHeight);
+            Matrix4 ntrans = view.lookAt;            
+            ntrans = Matrix4.Mult(rotx,ntrans);
+            ntrans = Matrix4.Mult(rotz,ntrans);
+            ntrans = Matrix4.Mult(trans,ntrans );
+            ntrans = Matrix4.Invert(ntrans);
+            Vector4 frontPoint = ntrans.Row3;
+            Vector4 dirVec = Vector4.Transform(dirN, ntrans);
+            pickLine = new Geom3DLine(new Geom3DVector(frontPoint.X / frontPoint.W, frontPoint.Y / frontPoint.W, frontPoint.Z / frontPoint.W),
+                new Geom3DVector(dirVec.X , dirVec.Y , dirVec.Z ), true);
+            dirN = new Vector4(0, 0, -view.nearDist, 0);
+            dirVec = Vector4.Transform(dirN, ntrans);
+            viewLine = new Geom3DLine(new Geom3DVector(frontPoint.X / frontPoint.W, frontPoint.Y / frontPoint.W, frontPoint.Z / frontPoint.W),
+                new Geom3DVector(dirVec.X, dirVec.Y, dirVec.Z), true);
+            viewLine.dir.normalize();
+            pickLine.dir.normalize();
+           /* Geom3DPlane plane = new Geom3DPlane(new Geom3DVector(0, 0, 0), new Geom3DVector(0, 0, 1));
+            Geom3DVector cross = new Geom3DVector(0, 0, 0);
+            plane.intersectLine(pickLine, cross);
+            Main.conn.log("Linie: " + pickLine, false, 3);
+            Main.conn.log("Schnittpunkt: " + cross, false, 3);
+            */
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadMatrix(ref view.lookAt);
             GL.Rotate(view.rotX, 1, 0, 0);
             GL.Rotate(view.rotZ, 0, 0, 1);
-            GL.Translate(-ps.PrintAreaWidth * 0.5f, -ps.PrintAreaDepth * 0.5f, -0.5f * ps.PrintAreaHeight);
+            GL.Translate(-ps.BedLeft-ps.PrintAreaWidth * 0.5f, -ps.BedFront-ps.PrintAreaDepth * 0.5f, -0.5f * ps.PrintAreaHeight);
+
+            
 
             GL.InitNames();
             int pos = 0;
@@ -633,15 +773,22 @@ namespace RepetierHost.view
             if (hits > 0)
             {
                 selected = view.models.ElementAt((int)selectBuffer[3]);
-                uint depth = selectBuffer[1];
+                lastDepth = selectBuffer[1];
                 for (int i = 1; i < hits; i++)
                 {
-                    if (selectBuffer[4 * i + 1] < depth)
+                    if (selectBuffer[4 * i + 1] < lastDepth)
                     {
-                        depth = selectBuffer[i * 4 + 1];
+                        lastDepth = selectBuffer[i * 4 + 1];
                         selected = view.models.ElementAt((int)selectBuffer[i * 4 + 3]);
                     }
                 }
+                double dfac = (double)lastDepth/uint.MaxValue;
+                dfac = -(view.farDist * view.nearDist) / (dfac * (view.farDist - view.nearDist) - view.farDist);
+                Geom3DVector crossPlanePoint = new Geom3DVector(viewLine.dir).scale((float)dfac).add(viewLine.point);
+                Geom3DPlane objplane = new Geom3DPlane(crossPlanePoint, viewLine.dir);
+                objplane.intersectLine(pickLine, pickPoint);
+                //Main.conn.log("Objekttreffer: " + pickPoint, false, 3);
+
             }
             //PrinterConnection.logInfo("Hits: " + hits);
             return selected;
@@ -651,7 +798,8 @@ namespace RepetierHost.view
             SetupViewport();
             gl.Invalidate();
         }
-
+        Geom3DPlane movePlane = new Geom3DPlane(new Geom3DVector(0,0,0), new Geom3DVector(0, 0, 1)); // Plane where object movement occurs
+        Geom3DVector moveStart,moveLast,movePos;
         private void gl_MouseDown(object sender, MouseEventArgs e)
         {
             lastX = xDown = e.X;
@@ -660,9 +808,18 @@ namespace RepetierHost.view
             startRotZ = view.rotZ;
             startViewCenter = view.viewCenter;
             startUserPosition = view.userPosition;
+            movePlane = new Geom3DPlane(new Geom3DVector(0,0,0), new Geom3DVector(0, 0, 1));
+            moveStart = moveLast = new Geom3DVector(0,0,0);
+            UpdatePickLine(e.X,e.Y);
+            movePlane.intersectLine(pickLine, moveStart);
             if (e.Button == MouseButtons.Right)
             {
                 ThreeDModel sel = Picktest(e.X, e.Y);
+                if (sel != null)
+                {
+                    movePlane = new Geom3DPlane(pickPoint, new Geom3DVector(0, 0, 1));
+                    moveStart = moveLast = new Geom3DVector(pickPoint);
+                }
                 if(sel!=null && view.eventObjectMoved != null)
                     view.eventObjectSelected(sel);
                 //computeRay();
@@ -682,6 +839,9 @@ namespace RepetierHost.view
             }
             xPos = e.X;
             yPos = e.Y;
+            UpdatePickLine(e.X, e.Y);
+            movePos = new Geom3DVector(0, 0, 0);
+            movePlane.intersectLine(pickLine, movePos);
             float d = Math.Min(gl.Width, gl.Height) / 3;
             speedX = Math.Max(-1, Math.Min(1, (xPos - xDown) / d));
             speedY = Math.Max(-1, Math.Min(1, (yPos - yDown) / d));
@@ -759,10 +919,13 @@ namespace RepetierHost.view
             }
             else if (emode == 4)
             {
+                Geom3DVector diff = movePos.sub(moveLast);
+                moveLast = movePos;
                 speedX = (xPos - lastX) * 200 * view.zoom / gl.Width;
                 speedY = (yPos - lastY) * 200 * view.zoom / gl.Height;
                 if (view.eventObjectMoved != null)
-                    view.eventObjectMoved(speedX, -speedY);
+                    view.eventObjectMoved(diff.x, diff.y);
+ //               view.eventObjectMoved(speedX, -speedY);
                 //eventObjectMoved((float)milliseconds * speedX * Math.Abs(speedX) / 10.0f,
                 //   -(float)milliseconds * speedY * Math.Abs(speedY) / 10.0f);
                 lastX = xPos;
