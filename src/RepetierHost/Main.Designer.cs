@@ -143,6 +143,7 @@
             this.tabGCode = new System.Windows.Forms.TabPage();
             this.tabPrint = new System.Windows.Forms.TabPage();
             this.slicerPanel = new RepetierHost.view.SlicerPanel();
+            this.donateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menu.SuspendLayout();
             this.status.SuspendLayout();
             this.toolStrip.SuspendLayout();
@@ -717,6 +718,7 @@
             this.thingiversePopularToolStripMenuItem,
             this.toolStripMenuItem1,
             this.aboutRepetierHostToolStripMenuItem,
+            this.donateToolStripMenuItem,
             this.checkForUpdatesToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
@@ -1014,7 +1016,7 @@
             // openGCode
             // 
             this.openGCode.DefaultExt = "gcode";
-            this.openGCode.Filter = "GCode/STL-Files|*.gcode;*.stl|All files|*.*";
+            this.openGCode.Filter = "GCode/STL-Files|*.gcode;*.stl;*.STL|All files|*.*";
             this.openGCode.Title = "Import G-Code";
             // 
             // saveJobDialog
@@ -1158,6 +1160,13 @@
             this.slicerPanel.Size = new System.Drawing.Size(467, 304);
             this.slicerPanel.TabIndex = 0;
             // 
+            // donateToolStripMenuItem
+            // 
+            this.donateToolStripMenuItem.Name = "donateToolStripMenuItem";
+            this.donateToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.donateToolStripMenuItem.Text = "Donate";
+            this.donateToolStripMenuItem.Click += new System.EventHandler(this.donateToolStripMenuItem_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1171,8 +1180,9 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menu;
             this.Name = "Main";
-            this.Text = "Repetier-Host V0.72";
+            this.Text = "Repetier-Host V0.74";
             this.Load += new System.EventHandler(this.Main_Load);
+            this.SizeChanged += new System.EventHandler(this.Main_SizeChanged);
             this.Shown += new System.EventHandler(this.Main_Shown);
             this.Activated += new System.EventHandler(this.Main_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
@@ -1312,6 +1322,7 @@
         public RepetierHost.view.SlicerPanel slicerPanel;
         public System.Windows.Forms.ToolStrip toolStrip;
         public System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem donateToolStripMenuItem;
     }
 }
 

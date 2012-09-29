@@ -141,14 +141,15 @@ namespace RepetierHost
         }
         private void Main_Load(object sender, EventArgs e)
         {
-            RegMemory.RestoreWindowPos("mainWindow", this);
-            if (WindowState == FormWindowState.Maximized)
-                Application.DoEvents();
+        /*    RegMemory.RestoreWindowPos("mainWindow", this);
+           // if (WindowState == FormWindowState.Maximized)
+           //     Application.DoEvents(); // This crashes mono if run here
             splitLog.SplitterDistance = RegMemory.GetInt("logSplitterDistance", splitLog.SplitterDistance);
             splitInfoEdit.SplitterDistance = RegMemory.GetInt("infoEditSplitterDistance", Width - 470);
             //A bug causes the splitter to throw an exception if the PanelMinSize is set too soon.
             splitInfoEdit.Panel2MinSize = Main.InfoPanel2MinSize;
             //splitInfoEdit.SplitterDistance = (splitInfoEdit.Width - splitInfoEdit.Panel2MinSize);
+         * */
         }
         [System.Runtime.InteropServices.DllImport("libc")]
         static extern int uname(IntPtr buf);
@@ -370,6 +371,7 @@ namespace RepetierHost
             aboutRepetierHostToolStripMenuItem.Text = Trans.T("M_ABOUT_REPETIER_HOST");
             checkForUpdatesToolStripMenuItem.Text = Trans.T("M_CHECK_FOR_UPDATES");
             quitToolStripMenuItem.Text = Trans.T("M_QUIT");
+            donateToolStripMenuItem.Text = Trans.T("M_DONATE");
             tabPage3DView.Text = Trans.T("TAB_3D_VIEW");
             tabPageTemp.Text = Trans.T("TAB_TEMPERATURE_CURVE");
             tabModel.Text = Trans.T("TAB_OBJECT_PLACEMENT");
@@ -758,6 +760,14 @@ namespace RepetierHost
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (conn.job.mode==1)
+            {
+                if (MessageBox.Show(Trans.T("L_REALLY_QUIT"), Trans.T("L_SECURITY_QUESTION"), MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+            }
             conn.close();
             RegMemory.StoreWindowPos("mainWindow", this, true, true);
             RegMemory.SetInt("logSplitterDistance", splitLog.SplitterDistance);
@@ -1155,7 +1165,7 @@ namespace RepetierHost
             {
                 Application.DoEvents();
             }
-            conn.close();
+            //conn.close();
         }
 
         private void killSlicingProcessToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1320,6 +1330,24 @@ namespace RepetierHost
         private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             RHUpdater.checkForUpdates(false);
+        }
+
+
+        static bool firstSizeCall = true;
+        private void Main_SizeChanged(object sender, EventArgs e)
+        {
+            if(firstSizeCall) {
+                firstSizeCall = false;
+                splitLog.SplitterDistance = RegMemory.GetInt("logSplitterDistance", splitLog.SplitterDistance);
+                splitInfoEdit.SplitterDistance = RegMemory.GetInt("infoEditSplitterDistance", Width - 470);
+                //A bug causes the splitter to throw an exception if the PanelMinSize is set too soon.
+                splitInfoEdit.Panel2MinSize = Main.InfoPanel2MinSize;
+            }
+        }
+
+        private void donateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openLink("http://www.repetier.com/donate-or-support/");
         }
 
     }

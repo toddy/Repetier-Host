@@ -169,6 +169,10 @@ namespace RepetierHost.model
         {
             if (hostCommand) return orig;
             StringBuilder s = new StringBuilder();
+            if (hasM)
+            {
+                if (m == 117) inclChecksum = false; // For marlin
+            }
             if (inclLine && hasN)
             {
                 s.Append("N");

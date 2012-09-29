@@ -474,5 +474,8 @@ Mögliche Gründe:
 <t id="L_BED_FRONT:" ver="3">Bett vorne:</t>
 <t id="L_SHAPE_INFO" ver="3">Die min und max Werte definieren den möglichen Koordinatenbereich des Extruders. Diese Koordinaten können negativ sein und außerhalb des Druckbetts liegen. Bett links/vorne definiert die Koordinaten, wo das Druckbett anfängt. Durch ändern dieser Koordinaten kann der Ursprung verschoben werden, wenn dies von der Firmware unterstützt wird.</t>
 <t id="L_SELECTION_BOX" ver="3">Auswahlbox:</t>
+<t id="L_FILAMENT_NONE" ver="3">Keins/Wie Extruder 1</t>
+<t id="L_REALLY_QUIT" ver="3">Druck nicht beendet. Trotzdem beenden?</t>
+<t id="M_DONATE" ver="3">Spenden oder Unterstützen</t>
 </translation>
 

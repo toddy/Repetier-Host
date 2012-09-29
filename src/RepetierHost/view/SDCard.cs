@@ -48,7 +48,8 @@ namespace RepetierHost.view
                 Main.conn.eventResponse += f.analyzeEvent;
             }
             f.RefreshFilenames();
-            f.Show();            
+            f.Show();
+            f.BringToFront();
         }
         public static void Disconnected()
         {

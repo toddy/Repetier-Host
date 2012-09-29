@@ -22,9 +22,10 @@ using System.IO;
 
 namespace RepetierHost.model
 {
-    public class IniSection {
+    public class IniSection
+    {
         public string name;
-        public Dictionary<string,string> entries;
+        public Dictionary<string, string> entries;
         public IniSection(string _name)
         {
             entries = new Dictionary<string, string>();
@@ -37,11 +38,33 @@ namespace RepetierHost.model
             if (!entries.ContainsKey(name))
                 entries.Add(name, l);
         }
+        public void merge(IniSection s)
+        {
+            foreach (String name in s.entries.Keys)
+            {
+                if (name == "extrusion_multiplier" || name == "filament_diameter" || name=="first_layer_temperature"
+                    || name =="temperature")
+                {
+                    if (entries.ContainsKey(name))
+                    {
+                        string full = s.entries[name];
+                        int p = full.IndexOf('=');
+                        if (p >= 0)
+                            full = full.Substring(p + 1).Trim();
+                        entries[name] += "," + full;
+                    }
+                    else
+                    {
+                        entries.Add(name, s.entries[name]);
+                    }
+                }
+            }
+        }
     }
     public class IniFile
     {
-        public string path="";
-        public Dictionary<string,IniSection> sections = new Dictionary<string,IniSection>();
+        public string path = "";
+        public Dictionary<string, IniSection> sections = new Dictionary<string, IniSection>();
         public void read(string _path)
         {
             if (_path != null)
@@ -78,7 +101,28 @@ namespace RepetierHost.model
             {
                 if (!sections.ContainsKey(s.name))
                 {
-                    sections.Add(s.name,new IniSection(s.name));
+                    sections.Add(s.name, new IniSection(s.name));
+                }
+                IniSection ms = sections[s.name];
+                foreach (string ent in s.entries.Values)
+                    ms.addLine(ent);
+            }
+        }
+        /// <summary>
+        /// Merges the values of both ini files by seperating values by a ,
+        /// </summary>
+        /// <param name="f"></param>
+        public void merge(IniFile f)
+        {
+            foreach (IniSection s in f.sections.Values)
+            {
+                if (!sections.ContainsKey(s.name))
+                {
+                    sections.Add(s.name, new IniSection(s.name));
+                }
+                else
+                {
+                    sections[s.name].merge(s);
                 }
                 IniSection ms = sections[s.name];
                 foreach (string ent in s.entries.Values)

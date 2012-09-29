@@ -180,16 +180,16 @@ namespace RepetierHost.view
         public void ConnectionChanged(string msg) {
             UpdateConStatus(Main.conn.serial != null || Main.conn.isVirtualActive);
         }
-        private void tempUpdate(int extruder, int printbed)
+        private void tempUpdate(float extruder, float printbed)
         {
-            labelExtruderTemp.Text = extruder.ToString() + "°C /";
-            labelPrintbedTemp.Text = printbed.ToString() + "°C /";
-            string tr = Trans.T("L_EXTRUDER:")+" " + con.extruderTemp.ToString();
+            labelExtruderTemp.Text = extruder.ToString("0.00") + "°C /";
+            labelPrintbedTemp.Text = printbed.ToString("0.00") + "°C /";
+            string tr = Trans.T("L_EXTRUDER:")+" " + con.extruderTemp.ToString("0.00");
             if (switchExtruderHeatOn.On) tr += "/" + ann.extruderTemp.ToString() + "°C";
             else tr += "°C/" + Trans.T("L_OFF");
             if (con.bedTemp > 0)
             {
-                tr += " "+Trans.T("L_BED:")+" " + con.bedTemp.ToString();
+                tr += " "+Trans.T("L_BED:")+" " + con.bedTemp.ToString("0.00");
                 if (ann.bedTemp > 0) tr += "/" + ann.bedTemp.ToString() + "°C ";
                 else tr += "°C/"+Trans.T("L_OFF");
             }
@@ -198,10 +198,10 @@ namespace RepetierHost.view
         public void analyzerChange() {
             createCommands = false;
             if (ann.extruderTemp > 0)
-                numericUpDownExtruder.Value = ann.extruderTemp;
+                numericUpDownExtruder.Value = (int)ann.extruderTemp;
             //    textExtruderSetTemp.Text = ann.extruderTemp.ToString();
             if (ann.bedTemp > 0)
-                numericPrintBed.Value = ann.bedTemp;
+                numericPrintBed.Value = (int)ann.bedTemp;
             //    textPrintbedTemp.Text = ann.bedTemp.ToString();
             switchExtruderHeatOn.On = ann.extruderTemp > 0;
             switchFanOn.On = ann.fanOn;

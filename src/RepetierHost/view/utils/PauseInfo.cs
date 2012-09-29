@@ -23,10 +23,10 @@ namespace RepetierHost.view.utils
             }
             form.labelInfo.Text = info;
             GCodeAnalyzer a = Main.conn.analyzer;
-            x = a.x;
-            y = a.y;
-            z = a.z;
-            e = a.e;
+            x = a.x-a.xOffset;
+            y = a.y-a.yOffset;
+            z = a.z-a.zOffset;
+            e = a.e-a.eOffset;
             f = a.f;
             relative = a.relative;
 
@@ -47,7 +47,6 @@ namespace RepetierHost.view.utils
         }
         private void buttonContinuePrinting_Click(object sender, EventArgs e)
         {
-            Hide();
             GCodeAnalyzer a = Main.conn.analyzer;
             PrinterConnection c = Main.conn;
             c.injectManualCommand("G90");
@@ -60,6 +59,7 @@ namespace RepetierHost.view.utils
             }
             c.injectManualCommand("G1 F" + f.ToString(GCode.format)); // Reset old speed
             Main.conn.paused = false;
+            Hide();
         }
     }
 }

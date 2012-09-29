@@ -36,8 +36,6 @@ namespace RepetierHost.view
     public partial class ThreeDControl : UserControl
     {
         FormPrinterSettings ps = Main.printerSettings;
-        //public onObjectMoved eventObjectMoved;
-        //public onObjectSelected eventObjectSelected;
         bool loaded = false;
         float xDown, yDown;
         float xPos, yPos;
@@ -45,21 +43,15 @@ namespace RepetierHost.view
        // float zoom = 1.0f;
         Vector3 startViewCenter;
         Vector3 startUserPosition;
-      //  Matrix4 lookAt,persp,modelView;
         double normX=0, normY=0;
-       // float nearDist, farDist, aspectRatio,nearHeight;
-      //  float rotZ = 0, rotX = 0;
         float startRotZ = 0, startRotX = 0;
         float lastX, lastY;
         Stopwatch sw = new Stopwatch();
         Stopwatch fpsTimer = new Stopwatch();
         int mode = 0;
-      //  bool editor = false;
-      //  bool autoupdateable = false;
         int slowCounter = 0; // Indicates slow framerates
         uint timeCall=0;
 
-      //  public LinkedList<ThreeDModel> models;
 
         public ThreeDView view = null;
 
@@ -318,7 +310,7 @@ namespace RepetierHost.view
                     GL.Begin(BeginMode.Triangles);
                     GL.Normal3(0, 0, 1);
                     double delta = Math.PI / 8;
-                    double rad = 1.5;
+                    double rad = 2.5;
                     for (i = 0; i < 16; i++)
                     {
                         GL.Vertex3(0, 0, 0);
@@ -641,6 +633,7 @@ namespace RepetierHost.view
         
         public void UpdatePickLine(int x, int y)
         {
+            if (view == null) return;
             // Intersection on bottom plane
 
             int window_y = (Height - y) - Height / 2;
@@ -656,7 +649,8 @@ namespace RepetierHost.view
             Matrix4 rotx = Matrix4.CreateFromAxisAngle(new Vector3(1, 0, 0), (float)(view.rotX * Math.PI / 180.0));
             Matrix4 rotz = Matrix4.CreateFromAxisAngle(new Vector3(0, 0, 1), (float)(view.rotZ * Math.PI / 180.0));
             Matrix4 trans = Matrix4.CreateTranslation(-ps.BedLeft-ps.PrintAreaWidth * 0.5f,-ps.BedFront -ps.PrintAreaDepth * 0.5f, -0.5f * ps.PrintAreaHeight);
-            Matrix4 ntrans = view.lookAt;
+            Matrix4 ntrans = Matrix4.LookAt(view.userPosition.X, view.userPosition.Y, view.userPosition.Z, view.viewCenter.X, view.viewCenter.Y, view.viewCenter.Z, 0, 0, 1.0f);
+            ;
             ntrans = Matrix4.Mult(rotx, ntrans);
             ntrans = Matrix4.Mult(rotz, ntrans);
             ntrans = Matrix4.Mult(trans, ntrans);
@@ -673,7 +667,8 @@ namespace RepetierHost.view
         }
         private ThreeDModel Picktest(int x,int y)
         {
-           // int x = Mouse.X;
+            if (view == null) return null;
+            // int x = Mouse.X;
            // int y = Mouse.Y;
            // Console.WriteLine("X:" + x + " Y:" + y);
             gl.MakeCurrent();

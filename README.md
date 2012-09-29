@@ -10,14 +10,14 @@ firmwares.
 
 # Manual
 
-Read the wiki at [https://github.com/repetier/Repetier-Host/wiki](https://github.com/repetier/Repetier-Host/wiki)
+Read the wiki at [http://www.repetier.com/documentation/repetier-host/](http://www.repetier.com/documentation/repetier-host/)
 
 # Requirements
 
-* Windows XP or later, Linux or Mac OS X
-* .NET 3.5 of higher or Mono on non-Windows platforms.
+* Windows XP or later, Linux (For Mac OS X use Repetier-Host Mac [http://www.repetier.com/documentation/repetier-host-mac/](http://www.repetier.com/documentation/repetier-host-mac/) )
+* .NET 3.5 of higher or Mono on Linux platforms.
 * Skeinforge for slicing (optional).
 
 # Installation:
 
-[https://github.com/repetier/Repetier-Host/wiki/Installation](https://github.com/repetier/Repetier-Host/wiki/Installation)
+[http://www.repetier.com/documentation/repetier-host/rh-installation-and-configuration/](http://www.repetier.com/documentation/repetier-host/rh-installation-and-configuration/)

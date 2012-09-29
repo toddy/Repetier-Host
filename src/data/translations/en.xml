@@ -483,5 +483,8 @@ Write Changes to EEPROM?</t>
 <t id="L_BED_FRONT:" ver="3">Bed Front:</t>
 <t id="L_SHAPE_INFO" ver="3">The min and max values define the possible range of extruder coordinates. These coordinates can be negative and outside the print bed. Bed left/front define the coordinates where the printbed itself starts. By changing the min/max values you can even move the origin in the center of the print bed, if supported by firmware.</t>
 <t id="L_SELECTION_BOX" ver="3">Selection Box:</t>
+<t id="L_FILAMENT_NONE" ver="3">None/Same as Extruder 1</t>
+<t id="L_REALLY_QUIT" ver="3">Printing not finished. Exit anyway?</t>
+<t id="M_DONATE" ver="3">Donate or Support</t>
 </translation>
 

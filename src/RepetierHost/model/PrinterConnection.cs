@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2011 repetier repetierdev@gmail.com
+   Copyright 2011 repetier repetierdev@googlemail.com
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -37,9 +37,9 @@ namespace RepetierHost.model
     public delegate void OnLogCleared();
     public delegate void OnLogAppend(LogLine line);
     public delegate void OnLogRemoveLast(LogLine line);
-    public delegate void OnTempUpdate(int extruder, int printbed);
+    public delegate void OnTempUpdate(float extruder, float printbed);
     public delegate void OnJobProgress(float percent);
-    public delegate void OnTempMonitor(UInt32 time, int temp, int target, int output);
+    public delegate void OnTempMonitor(UInt32 time, float temp, float target, int output);
     public delegate void OnTempHistory(TemperatureEntry ent);
     public delegate void OnResponse(string response);
     public class PrinterConnection
@@ -100,8 +100,8 @@ namespace RepetierHost.model
         public string firmware_url = "";
         public string protocol = "";
         public int numberExtruder = 1;
-        public int extruderTemp;
-        public int bedTemp;
+        public float extruderTemp;
+        public float bedTemp;
         public int extruderOutput = -1;
         public float x, y, z, e;
         public bool paused = false;
@@ -462,7 +462,7 @@ namespace RepetierHost.model
                         if (resendNode != null)
                         {
                             gc = resendNode.Value;
-                            if (binaryVersion == 0)
+                            if (binaryVersion == 0 || gc.forceAscii)
                             {
                                 string cmd = gc.getAscii(true, true);
                                 if (!pingpong && receivedCount() + cmd.Length + 2 > receiveCacheSize) return false; // printer cache full
@@ -501,7 +501,8 @@ namespace RepetierHost.model
                                 }
                                 else
                                 {
-                                    gc.N = ++lastline;
+                                    if(gc.M!=117)
+                                        gc.N = ++lastline;
                                     if (isVirtualActive)
                                     {
                                         if (!pingpong && receivedCount() + gc.orig.Length > receiveCacheSize) { --lastline; return false; } // printer cache full
@@ -564,7 +565,8 @@ namespace RepetierHost.model
                                 }
                                 else
                                 {
-                                    gc.N = ++lastline;
+                                    if (gc.M != 117)
+                                        gc.N = ++lastline;
                                     if (isVirtualActive)
                                     {
                                         string cmd = gc.getAscii(true,true);
@@ -1072,18 +1074,18 @@ namespace RepetierHost.model
             if ((h = extract(res, "TargetExtr0:")) != null)
             {
                 if (analyzer.activeExtruder == 0)
-                    int.TryParse(h,out analyzer.extruderTemp);
+                    float.TryParse(h,NumberStyles.Float,GCode.format,out analyzer.extruderTemp);
                 analyzer.fireChanged();
             }
             if ((h = extract(res, "TargetExtr1:")) != null)
             {
                 if (analyzer.activeExtruder == 1)
-                    int.TryParse(h,out analyzer.extruderTemp);
+                    float.TryParse(h, NumberStyles.Float, GCode.format, out analyzer.extruderTemp);
                 analyzer.fireChanged();
             }
             if ((h = extract(res, "TargetBed:")) != null)
             {
-                int.TryParse(h,out analyzer.bedTemp);
+                float.TryParse(h, NumberStyles.Float, GCode.format, out analyzer.bedTemp);
                 analyzer.fireChanged();
             }
             if ((h = extract(res, "Fanspeed:")) != null)
@@ -1097,8 +1099,8 @@ namespace RepetierHost.model
             if (h != null)
             {
                 level = -1; // dont log, we see result in status
-                if (h.IndexOf('.') > 0) h = h.Substring(0, h.IndexOf('.'));
-                int.TryParse(h, out extruderTemp);
+                //if (h.IndexOf('.') > 0) h = h.Substring(0, h.IndexOf('.'));
+                float.TryParse(h, NumberStyles.Float, GCode.format, out extruderTemp);
                 tempChange = true;
                 extruderOutput = -1;
                 h = extract(res, "@:");
@@ -1109,8 +1111,8 @@ namespace RepetierHost.model
             if (h != null)
             {
                 level = -1; // don't log, we see result in status
-                if (h.IndexOf('.') > 0) h = h.Substring(0, h.IndexOf('.'));
-                int.TryParse(h, out bedTemp);
+                //if (h.IndexOf('.') > 0) h = h.Substring(0, h.IndexOf('.'));
+                float.TryParse(h, NumberStyles.Float, GCode.format, out bedTemp);
                 tempChange = true;
             }
             if (isRepetier)
@@ -1190,6 +1192,7 @@ namespace RepetierHost.model
                     te.output = extruderOutput;
                 Main.main.Invoke(eventTempHistory, te);
             }
+            if (res.StartsWith(" ")) level = 3;
             h = extract(res, "Resend:");
             if (h != null)
             {

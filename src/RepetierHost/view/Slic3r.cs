@@ -712,6 +712,12 @@ namespace RepetierHost.view
             ini2.read(cdir + Path.DirectorySeparatorChar + "printer" +Path.DirectorySeparatorChar+ b.Slic3rPrinterSettings + ".ini");
             IniFile ini3 = new IniFile();
             ini3.read(cdir + Path.DirectorySeparatorChar + "filament"+Path.DirectorySeparatorChar + b.Slic3rFilamentSettings + ".ini");
+            IniFile ini3_2 = new IniFile();
+            ini3_2.read(cdir + Path.DirectorySeparatorChar + "filament" + Path.DirectorySeparatorChar + b.Slic3rFilament2Settings + ".ini");
+            IniFile ini3_3 = new IniFile();
+            ini3_3.read(cdir + Path.DirectorySeparatorChar + "filament" + Path.DirectorySeparatorChar + b.Slic3rFilament3Settings + ".ini");
+            ini3.merge(ini3_2);
+            ini3.merge(ini3_3);
             ini.add(ini2);
             ini.add(ini3);
             ini.flatten();

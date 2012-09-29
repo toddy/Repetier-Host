@@ -106,7 +106,8 @@ namespace RepetierHost.view
             if (t.IndexOf("SD printing byte")!=-1) return true;
             if (t.IndexOf("Not SD printing")!=-1) return true;
             if (t.IndexOf("SpeedMultiply:")!=-1) return true;
-            if (t.IndexOf("TargetExtr0:")!=-1) return true;
+            if (t.IndexOf("FlowMultiply:") != -1) return true;
+            if (t.IndexOf("TargetExtr0:") != -1) return true;
             if (t.IndexOf("TargetExtr1:")!=-1) return true;
             if (t.IndexOf("TargetBed:")!=-1) return true;
             if (t.IndexOf("Fanspeed:")!=-1) return true;

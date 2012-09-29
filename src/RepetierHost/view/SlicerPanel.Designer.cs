@@ -35,6 +35,7 @@
             this.comboSlic3rPrinterSettings = new System.Windows.Forms.ComboBox();
             this.comboSlic3rFilamentSettings = new System.Windows.Forms.ComboBox();
             this.comboSlic3rPrintSettings = new System.Windows.Forms.ComboBox();
+            this.switchSlic3rActive = new RepetierHost.view.SwitchButton();
             this.labelPrinterSettings = new System.Windows.Forms.Label();
             this.labelFilamentSettings = new System.Windows.Forms.Label();
             this.labelPrintSettings = new System.Windows.Forms.Label();
@@ -42,11 +43,15 @@
             this.buttonSetupSkeinforge = new System.Windows.Forms.Button();
             this.buttonSkeinConfigure = new System.Windows.Forms.Button();
             this.comboSkeinProfile = new System.Windows.Forms.ComboBox();
+            this.switchSkeinforge = new RepetierHost.view.SwitchButton();
             this.labelProfile = new System.Windows.Forms.Label();
             this.buttonStartSlicing = new System.Windows.Forms.Button();
             this.buttonKillSlicing = new System.Windows.Forms.Button();
-            this.switchSkeinforge = new RepetierHost.view.SwitchButton();
-            this.switchSlic3rActive = new RepetierHost.view.SwitchButton();
+            this.labelSlic3rExtruder1 = new System.Windows.Forms.Label();
+            this.labelSlic3rExtruder2 = new System.Windows.Forms.Label();
+            this.comboSlic3rFilamentSettings2 = new System.Windows.Forms.ComboBox();
+            this.labelSlic3rExtruder3 = new System.Windows.Forms.Label();
+            this.comboSlic3rFilamentSettings3 = new System.Windows.Forms.ComboBox();
             this.groupBox2.SuspendLayout();
             this.groupSkeinforge.SuspendLayout();
             this.SuspendLayout();
@@ -58,15 +63,20 @@
             this.groupBox2.Controls.Add(this.buttonSetupSlic3r);
             this.groupBox2.Controls.Add(this.buttonSlic3rConfigure);
             this.groupBox2.Controls.Add(this.comboSlic3rPrinterSettings);
+            this.groupBox2.Controls.Add(this.comboSlic3rFilamentSettings3);
+            this.groupBox2.Controls.Add(this.comboSlic3rFilamentSettings2);
             this.groupBox2.Controls.Add(this.comboSlic3rFilamentSettings);
+            this.groupBox2.Controls.Add(this.labelSlic3rExtruder3);
             this.groupBox2.Controls.Add(this.comboSlic3rPrintSettings);
+            this.groupBox2.Controls.Add(this.labelSlic3rExtruder2);
             this.groupBox2.Controls.Add(this.switchSlic3rActive);
+            this.groupBox2.Controls.Add(this.labelSlic3rExtruder1);
             this.groupBox2.Controls.Add(this.labelPrinterSettings);
             this.groupBox2.Controls.Add(this.labelFilamentSettings);
             this.groupBox2.Controls.Add(this.labelPrintSettings);
             this.groupBox2.Location = new System.Drawing.Point(3, 81);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(604, 135);
+            this.groupBox2.Size = new System.Drawing.Size(604, 211);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Slic3r";
@@ -75,7 +85,7 @@
             // 
             this.buttonSetupSlic3r.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonSetupSlic3r.Image = ((System.Drawing.Image)(resources.GetObject("buttonSetupSlic3r.Image")));
-            this.buttonSetupSlic3r.Location = new System.Drawing.Point(487, 98);
+            this.buttonSetupSlic3r.Location = new System.Drawing.Point(487, 179);
             this.buttonSetupSlic3r.Name = "buttonSetupSlic3r";
             this.buttonSetupSlic3r.Size = new System.Drawing.Size(111, 23);
             this.buttonSetupSlic3r.TabIndex = 3;
@@ -101,7 +111,7 @@
             // 
             this.comboSlic3rPrinterSettings.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboSlic3rPrinterSettings.FormattingEnabled = true;
-            this.comboSlic3rPrinterSettings.Location = new System.Drawing.Point(126, 100);
+            this.comboSlic3rPrinterSettings.Location = new System.Drawing.Point(126, 73);
             this.comboSlic3rPrinterSettings.Name = "comboSlic3rPrinterSettings";
             this.comboSlic3rPrinterSettings.Size = new System.Drawing.Size(163, 21);
             this.comboSlic3rPrinterSettings.TabIndex = 1;
@@ -111,7 +121,7 @@
             // 
             this.comboSlic3rFilamentSettings.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboSlic3rFilamentSettings.FormattingEnabled = true;
-            this.comboSlic3rFilamentSettings.Location = new System.Drawing.Point(126, 73);
+            this.comboSlic3rFilamentSettings.Location = new System.Drawing.Point(126, 127);
             this.comboSlic3rFilamentSettings.Name = "comboSlic3rFilamentSettings";
             this.comboSlic3rFilamentSettings.Size = new System.Drawing.Size(163, 21);
             this.comboSlic3rFilamentSettings.TabIndex = 1;
@@ -127,10 +137,26 @@
             this.comboSlic3rPrintSettings.TabIndex = 1;
             this.comboSlic3rPrintSettings.SelectedIndexChanged += new System.EventHandler(this.comboSlic3rPrintSettings_SelectedIndexChanged);
             // 
+            // switchSlic3rActive
+            // 
+            this.switchSlic3rActive.ButtonFlatBorderColor = System.Drawing.Color.Empty;
+            this.switchSlic3rActive.ButtonFlatBorderSize = 1;
+            this.switchSlic3rActive.ButtonFlatStyle = System.Windows.Forms.FlatStyle.Standard;
+            this.switchSlic3rActive.ButtonTextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.switchSlic3rActive.Location = new System.Drawing.Point(10, 20);
+            this.switchSlic3rActive.Name = "switchSlic3rActive";
+            this.switchSlic3rActive.On = false;
+            this.switchSlic3rActive.Size = new System.Drawing.Size(100, 23);
+            this.switchSlic3rActive.TabIndex = 0;
+            this.switchSlic3rActive.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.switchSlic3rActive.TextOff = "Active";
+            this.switchSlic3rActive.TextOn = "Active";
+            this.switchSlic3rActive.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchSlic3rActive_OnChange);
+            // 
             // labelPrinterSettings
             // 
             this.labelPrinterSettings.AutoSize = true;
-            this.labelPrinterSettings.Location = new System.Drawing.Point(10, 106);
+            this.labelPrinterSettings.Location = new System.Drawing.Point(10, 76);
             this.labelPrinterSettings.Name = "labelPrinterSettings";
             this.labelPrinterSettings.Size = new System.Drawing.Size(79, 13);
             this.labelPrinterSettings.TabIndex = 0;
@@ -139,9 +165,10 @@
             // labelFilamentSettings
             // 
             this.labelFilamentSettings.AutoSize = true;
-            this.labelFilamentSettings.Location = new System.Drawing.Point(10, 76);
+            this.labelFilamentSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelFilamentSettings.Location = new System.Drawing.Point(10, 103);
             this.labelFilamentSettings.Name = "labelFilamentSettings";
-            this.labelFilamentSettings.Size = new System.Drawing.Size(88, 13);
+            this.labelFilamentSettings.Size = new System.Drawing.Size(106, 13);
             this.labelFilamentSettings.TabIndex = 0;
             this.labelFilamentSettings.Text = "Filament settings:";
             // 
@@ -163,7 +190,7 @@
             this.groupSkeinforge.Controls.Add(this.comboSkeinProfile);
             this.groupSkeinforge.Controls.Add(this.switchSkeinforge);
             this.groupSkeinforge.Controls.Add(this.labelProfile);
-            this.groupSkeinforge.Location = new System.Drawing.Point(3, 229);
+            this.groupSkeinforge.Location = new System.Drawing.Point(3, 297);
             this.groupSkeinforge.Name = "groupSkeinforge";
             this.groupSkeinforge.Size = new System.Drawing.Size(604, 86);
             this.groupSkeinforge.TabIndex = 2;
@@ -206,6 +233,22 @@
             this.comboSkeinProfile.TabIndex = 1;
             this.comboSkeinProfile.SelectedIndexChanged += new System.EventHandler(this.comboSkeinProfile_SelectedIndexChanged);
             // 
+            // switchSkeinforge
+            // 
+            this.switchSkeinforge.ButtonFlatBorderColor = System.Drawing.Color.Empty;
+            this.switchSkeinforge.ButtonFlatBorderSize = 1;
+            this.switchSkeinforge.ButtonFlatStyle = System.Windows.Forms.FlatStyle.Standard;
+            this.switchSkeinforge.ButtonTextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.switchSkeinforge.Location = new System.Drawing.Point(6, 19);
+            this.switchSkeinforge.Name = "switchSkeinforge";
+            this.switchSkeinforge.On = false;
+            this.switchSkeinforge.Size = new System.Drawing.Size(100, 23);
+            this.switchSkeinforge.TabIndex = 0;
+            this.switchSkeinforge.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.switchSkeinforge.TextOff = "Active";
+            this.switchSkeinforge.TextOn = "Active";
+            this.switchSkeinforge.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchSkeinforge_OnChange);
+            // 
             // labelProfile
             // 
             this.labelProfile.AutoSize = true;
@@ -242,37 +285,52 @@
             this.buttonKillSlicing.UseVisualStyleBackColor = true;
             this.buttonKillSlicing.Click += new System.EventHandler(this.buttonKillSlicing_Click);
             // 
-            // switchSkeinforge
+            // labelSlic3rExtruder1
             // 
-            this.switchSkeinforge.ButtonFlatBorderColor = System.Drawing.Color.Empty;
-            this.switchSkeinforge.ButtonFlatBorderSize = 1;
-            this.switchSkeinforge.ButtonFlatStyle = System.Windows.Forms.FlatStyle.Standard;
-            this.switchSkeinforge.ButtonTextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.switchSkeinforge.Location = new System.Drawing.Point(6, 19);
-            this.switchSkeinforge.Name = "switchSkeinforge";
-            this.switchSkeinforge.On = false;
-            this.switchSkeinforge.Size = new System.Drawing.Size(100, 23);
-            this.switchSkeinforge.TabIndex = 0;
-            this.switchSkeinforge.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
-            this.switchSkeinforge.TextOff = "Active";
-            this.switchSkeinforge.TextOn = "Active";
-            this.switchSkeinforge.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchSkeinforge_OnChange);
+            this.labelSlic3rExtruder1.AutoSize = true;
+            this.labelSlic3rExtruder1.Location = new System.Drawing.Point(10, 130);
+            this.labelSlic3rExtruder1.Name = "labelSlic3rExtruder1";
+            this.labelSlic3rExtruder1.Size = new System.Drawing.Size(58, 13);
+            this.labelSlic3rExtruder1.TabIndex = 0;
+            this.labelSlic3rExtruder1.Text = "Extruder 1:";
             // 
-            // switchSlic3rActive
+            // labelSlic3rExtruder2
             // 
-            this.switchSlic3rActive.ButtonFlatBorderColor = System.Drawing.Color.Empty;
-            this.switchSlic3rActive.ButtonFlatBorderSize = 1;
-            this.switchSlic3rActive.ButtonFlatStyle = System.Windows.Forms.FlatStyle.Standard;
-            this.switchSlic3rActive.ButtonTextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.switchSlic3rActive.Location = new System.Drawing.Point(10, 20);
-            this.switchSlic3rActive.Name = "switchSlic3rActive";
-            this.switchSlic3rActive.On = false;
-            this.switchSlic3rActive.Size = new System.Drawing.Size(100, 23);
-            this.switchSlic3rActive.TabIndex = 0;
-            this.switchSlic3rActive.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
-            this.switchSlic3rActive.TextOff = "Active";
-            this.switchSlic3rActive.TextOn = "Active";
-            this.switchSlic3rActive.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchSlic3rActive_OnChange);
+            this.labelSlic3rExtruder2.AutoSize = true;
+            this.labelSlic3rExtruder2.Location = new System.Drawing.Point(10, 155);
+            this.labelSlic3rExtruder2.Name = "labelSlic3rExtruder2";
+            this.labelSlic3rExtruder2.Size = new System.Drawing.Size(58, 13);
+            this.labelSlic3rExtruder2.TabIndex = 0;
+            this.labelSlic3rExtruder2.Text = "Extruder 2:";
+            // 
+            // comboSlic3rFilamentSettings2
+            // 
+            this.comboSlic3rFilamentSettings2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboSlic3rFilamentSettings2.FormattingEnabled = true;
+            this.comboSlic3rFilamentSettings2.Location = new System.Drawing.Point(126, 152);
+            this.comboSlic3rFilamentSettings2.Name = "comboSlic3rFilamentSettings2";
+            this.comboSlic3rFilamentSettings2.Size = new System.Drawing.Size(163, 21);
+            this.comboSlic3rFilamentSettings2.TabIndex = 1;
+            this.comboSlic3rFilamentSettings2.SelectedIndexChanged += new System.EventHandler(this.comboSlic3rFilamentSettings2_SelectedIndexChanged);
+            // 
+            // labelSlic3rExtruder3
+            // 
+            this.labelSlic3rExtruder3.AutoSize = true;
+            this.labelSlic3rExtruder3.Location = new System.Drawing.Point(10, 182);
+            this.labelSlic3rExtruder3.Name = "labelSlic3rExtruder3";
+            this.labelSlic3rExtruder3.Size = new System.Drawing.Size(58, 13);
+            this.labelSlic3rExtruder3.TabIndex = 0;
+            this.labelSlic3rExtruder3.Text = "Extruder 3:";
+            // 
+            // comboSlic3rFilamentSettings3
+            // 
+            this.comboSlic3rFilamentSettings3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboSlic3rFilamentSettings3.FormattingEnabled = true;
+            this.comboSlic3rFilamentSettings3.Location = new System.Drawing.Point(126, 179);
+            this.comboSlic3rFilamentSettings3.Name = "comboSlic3rFilamentSettings3";
+            this.comboSlic3rFilamentSettings3.Size = new System.Drawing.Size(163, 21);
+            this.comboSlic3rFilamentSettings3.TabIndex = 1;
+            this.comboSlic3rFilamentSettings3.SelectedIndexChanged += new System.EventHandler(this.comboSlic3rFilamentSettings3_SelectedIndexChanged);
             // 
             // SlicerPanel
             // 
@@ -312,5 +370,10 @@
         private System.Windows.Forms.Button buttonSetupSlic3r;
         private System.Windows.Forms.Button buttonSetupSkeinforge;
         private System.Windows.Forms.Button buttonKillSlicing;
+        private System.Windows.Forms.ComboBox comboSlic3rFilamentSettings3;
+        private System.Windows.Forms.ComboBox comboSlic3rFilamentSettings2;
+        private System.Windows.Forms.Label labelSlic3rExtruder3;
+        private System.Windows.Forms.Label labelSlic3rExtruder2;
+        private System.Windows.Forms.Label labelSlic3rExtruder1;
     }
 }

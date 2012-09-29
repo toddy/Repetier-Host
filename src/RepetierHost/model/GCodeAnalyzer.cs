@@ -33,9 +33,9 @@ namespace RepetierHost.model
         public event OnPosChangeFast eventPosChangedFast;
         public event OnAnalyzerChange eventChange;
         public int activeExtruder = 0;
-        public int extruderTemp = 0;
+        public float extruderTemp = 0;
         public bool uploading = false;
-        public int bedTemp = 0;
+        public float bedTemp = 0;
         public float x = 0, y = 0, z = 0, e = 0, emax = 0,f=1000;
         public float lastX=0, lastY=0, lastZ=0, lastE=0;
         public float xOffset = 0, yOffset = 0, zOffset = 0, eOffset = 0,lastZPrint = 0;

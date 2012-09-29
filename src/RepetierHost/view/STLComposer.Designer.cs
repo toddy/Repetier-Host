@@ -504,14 +504,14 @@
             // openFileSTL
             // 
             this.openFileSTL.DefaultExt = "stl";
-            this.openFileSTL.Filter = "STL-Files|*.stl|All files|*.*";
+            this.openFileSTL.Filter = "STL-Files|*.stl;*.STL|All files|*.*";
             this.openFileSTL.Multiselect = true;
             this.openFileSTL.Title = "Add STL file";
             // 
             // saveSTL
             // 
             this.saveSTL.DefaultExt = "stl";
-            this.saveSTL.Filter = "STL-Files|*.stl";
+            this.saveSTL.Filter = "STL-Files|*.stl;*.STL";
             this.saveSTL.Title = "Save composition";
             // 
             // STLComposer

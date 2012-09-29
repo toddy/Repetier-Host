@@ -51,13 +51,17 @@
             this.labelExtruderSpeed = new System.Windows.Forms.Label();
             this.buttonExtrude = new System.Windows.Forms.Button();
             this.labelExtruderTemp = new System.Windows.Forms.Label();
+            this.switchExtruderHeatOn = new RepetierHost.view.SwitchButton();
             this.labelTemp = new System.Windows.Forms.Label();
             this.groupPrintbed = new System.Windows.Forms.GroupBox();
             this.numericPrintBed = new System.Windows.Forms.NumericUpDown();
             this.labelPrintbedTemp = new System.Windows.Forms.Label();
+            this.switchBedHeat = new RepetierHost.view.SwitchButton();
             this.labelTemp2 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.trackFanVoltage = new MB.Controls.ColorSlider();
             this.labelVoltage = new System.Windows.Forms.Label();
+            this.switchFanOn = new RepetierHost.view.SwitchButton();
             this.buttonGoDisposeArea = new System.Windows.Forms.Button();
             this.buttonSimulateOK = new System.Windows.Forms.Button();
             this.buttonStopMotor = new System.Windows.Forms.Button();
@@ -71,26 +75,22 @@
             this.labelMoveDist = new System.Windows.Forms.Label();
             this.labelZDiff = new System.Windows.Forms.Label();
             this.groupDebugOptions = new System.Windows.Forms.GroupBox();
-            this.groupSpeedMultiply = new System.Windows.Forms.GroupBox();
-            this.labelFeedrate = new System.Windows.Forms.Label();
-            this.numericUpDownFlow = new System.Windows.Forms.NumericUpDown();
-            this.labelFlowrate = new System.Windows.Forms.Label();
-            this.sliderFlowrate = new MB.Controls.ColorSlider();
-            this.sliderSpeed = new MB.Controls.ColorSlider();
             this.switchEcho = new RepetierHost.view.SwitchButton();
             this.switchInfo = new RepetierHost.view.SwitchButton();
             this.switchErrors = new RepetierHost.view.SwitchButton();
             this.switchDryRun = new RepetierHost.view.SwitchButton();
+            this.groupSpeedMultiply = new System.Windows.Forms.GroupBox();
+            this.labelFlowrate = new System.Windows.Forms.Label();
+            this.labelFeedrate = new System.Windows.Forms.Label();
+            this.numericUpDownFlow = new System.Windows.Forms.NumericUpDown();
+            this.sliderFlowrate = new MB.Controls.ColorSlider();
+            this.sliderSpeed = new MB.Controls.ColorSlider();
             this.arrowButtonXPlus = new RepetierHost.view.utils.ArrowButton();
             this.arrowButtonXMinus = new RepetierHost.view.utils.ArrowButton();
             this.arrowButtonZPlus = new RepetierHost.view.utils.ArrowButton();
             this.arrowButtonZMinus = new RepetierHost.view.utils.ArrowButton();
             this.arrowButtonYPlus = new RepetierHost.view.utils.ArrowButton();
             this.arrowButtonYMinus = new RepetierHost.view.utils.ArrowButton();
-            this.trackFanVoltage = new MB.Controls.ColorSlider();
-            this.switchFanOn = new RepetierHost.view.SwitchButton();
-            this.switchBedHeat = new RepetierHost.view.SwitchButton();
-            this.switchExtruderHeatOn = new RepetierHost.view.SwitchButton();
             this.switchPower = new RepetierHost.view.SwitchButton();
             this.groupExtruder.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.textRetractAmount)).BeginInit();
@@ -328,7 +328,7 @@
             // 
             // numericUpDownExtruder
             // 
-            this.numericUpDownExtruder.Location = new System.Drawing.Point(118, 49);
+            this.numericUpDownExtruder.Location = new System.Drawing.Point(136, 49);
             this.numericUpDownExtruder.Maximum = new decimal(new int[] {
             400,
             0,
@@ -400,6 +400,22 @@
             this.labelExtruderTemp.TabIndex = 2;
             this.labelExtruderTemp.Text = "200°C /";
             // 
+            // switchExtruderHeatOn
+            // 
+            this.switchExtruderHeatOn.ButtonFlatBorderColor = System.Drawing.Color.Empty;
+            this.switchExtruderHeatOn.ButtonFlatBorderSize = 1;
+            this.switchExtruderHeatOn.ButtonFlatStyle = System.Windows.Forms.FlatStyle.Standard;
+            this.switchExtruderHeatOn.ButtonTextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.switchExtruderHeatOn.Location = new System.Drawing.Point(7, 20);
+            this.switchExtruderHeatOn.Name = "switchExtruderHeatOn";
+            this.switchExtruderHeatOn.On = false;
+            this.switchExtruderHeatOn.Size = new System.Drawing.Size(201, 23);
+            this.switchExtruderHeatOn.TabIndex = 0;
+            this.switchExtruderHeatOn.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.switchExtruderHeatOn.TextOff = "  Heat extruder ";
+            this.switchExtruderHeatOn.TextOn = "  Heat extruder ";
+            this.switchExtruderHeatOn.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchExtruderHeatOn_Change);
+            // 
             // labelTemp
             // 
             this.labelTemp.AutoSize = true;
@@ -424,7 +440,7 @@
             // 
             // numericPrintBed
             // 
-            this.numericPrintBed.Location = new System.Drawing.Point(96, 49);
+            this.numericPrintBed.Location = new System.Drawing.Point(114, 49);
             this.numericPrintBed.Maximum = new decimal(new int[] {
             300,
             0,
@@ -449,6 +465,22 @@
             this.labelPrintbedTemp.TabIndex = 7;
             this.labelPrintbedTemp.Text = "200°C /";
             // 
+            // switchBedHeat
+            // 
+            this.switchBedHeat.ButtonFlatBorderColor = System.Drawing.Color.Empty;
+            this.switchBedHeat.ButtonFlatBorderSize = 1;
+            this.switchBedHeat.ButtonFlatStyle = System.Windows.Forms.FlatStyle.Standard;
+            this.switchBedHeat.ButtonTextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.switchBedHeat.Location = new System.Drawing.Point(6, 19);
+            this.switchBedHeat.Name = "switchBedHeat";
+            this.switchBedHeat.On = false;
+            this.switchBedHeat.Size = new System.Drawing.Size(180, 23);
+            this.switchBedHeat.TabIndex = 0;
+            this.switchBedHeat.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.switchBedHeat.TextOff = "Heat Printbed ";
+            this.switchBedHeat.TextOn = "Heat Printbed ";
+            this.switchBedHeat.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchBedHeat_Change);
+            // 
             // labelTemp2
             // 
             this.labelTemp2.AutoSize = true;
@@ -470,6 +502,24 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Fan";
             // 
+            // trackFanVoltage
+            // 
+            this.trackFanVoltage.BackColor = System.Drawing.Color.Transparent;
+            this.trackFanVoltage.BarInnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(115)))), ((int)(((byte)(115)))), ((int)(((byte)(115)))));
+            this.trackFanVoltage.BarOuterColor = System.Drawing.Color.FromArgb(((int)(((byte)(87)))), ((int)(((byte)(87)))), ((int)(((byte)(87)))));
+            this.trackFanVoltage.BorderRoundRectSize = new System.Drawing.Size(8, 8);
+            this.trackFanVoltage.LargeChange = ((uint)(5u));
+            this.trackFanVoltage.Location = new System.Drawing.Point(9, 48);
+            this.trackFanVoltage.Maximum = 255;
+            this.trackFanVoltage.Name = "trackFanVoltage";
+            this.trackFanVoltage.Size = new System.Drawing.Size(182, 30);
+            this.trackFanVoltage.SmallChange = ((uint)(1u));
+            this.trackFanVoltage.TabIndex = 2;
+            this.trackFanVoltage.Text = "trackFanVoltage";
+            this.trackFanVoltage.ThumbRoundRectSize = new System.Drawing.Size(8, 8);
+            this.trackFanVoltage.Value = 128;
+            this.trackFanVoltage.ValueChanged += new System.EventHandler(this.trackFanVoltage_ValueChanged);
+            // 
             // labelVoltage
             // 
             this.labelVoltage.AutoSize = true;
@@ -478,6 +528,22 @@
             this.labelVoltage.Size = new System.Drawing.Size(39, 13);
             this.labelVoltage.TabIndex = 1;
             this.labelVoltage.Text = "Output";
+            // 
+            // switchFanOn
+            // 
+            this.switchFanOn.ButtonFlatBorderColor = System.Drawing.Color.Empty;
+            this.switchFanOn.ButtonFlatBorderSize = 1;
+            this.switchFanOn.ButtonFlatStyle = System.Windows.Forms.FlatStyle.Standard;
+            this.switchFanOn.ButtonTextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.switchFanOn.Location = new System.Drawing.Point(6, 19);
+            this.switchFanOn.Name = "switchFanOn";
+            this.switchFanOn.On = false;
+            this.switchFanOn.Size = new System.Drawing.Size(97, 23);
+            this.switchFanOn.TabIndex = 0;
+            this.switchFanOn.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.switchFanOn.TextOff = "Fan";
+            this.switchFanOn.TextOn = "Fan";
+            this.switchFanOn.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchFanOn_Change);
             // 
             // buttonGoDisposeArea
             // 
@@ -617,104 +683,6 @@
             this.groupDebugOptions.TabStop = false;
             this.groupDebugOptions.Text = "Debug options";
             // 
-            // groupSpeedMultiply
-            // 
-            this.groupSpeedMultiply.Controls.Add(this.labelFlowrate);
-            this.groupSpeedMultiply.Controls.Add(this.labelFeedrate);
-            this.groupSpeedMultiply.Controls.Add(this.numericUpDownFlow);
-            this.groupSpeedMultiply.Controls.Add(this.numericUpDownSpeed);
-            this.groupSpeedMultiply.Controls.Add(this.sliderFlowrate);
-            this.groupSpeedMultiply.Controls.Add(this.sliderSpeed);
-            this.groupSpeedMultiply.Location = new System.Drawing.Point(8, 362);
-            this.groupSpeedMultiply.Name = "groupSpeedMultiply";
-            this.groupSpeedMultiply.Size = new System.Drawing.Size(442, 83);
-            this.groupSpeedMultiply.TabIndex = 55;
-            this.groupSpeedMultiply.TabStop = false;
-            this.groupSpeedMultiply.Text = "Speed Multiply";
-            // 
-            // labelFeedrate
-            // 
-            this.labelFeedrate.AutoSize = true;
-            this.labelFeedrate.Location = new System.Drawing.Point(11, 25);
-            this.labelFeedrate.Name = "labelFeedrate";
-            this.labelFeedrate.Size = new System.Drawing.Size(52, 13);
-            this.labelFeedrate.TabIndex = 2;
-            this.labelFeedrate.Text = "Feedrate:";
-            // 
-            // numericUpDownFlow
-            // 
-            this.numericUpDownFlow.Location = new System.Drawing.Point(390, 50);
-            this.numericUpDownFlow.Maximum = new decimal(new int[] {
-            150,
-            0,
-            0,
-            0});
-            this.numericUpDownFlow.Minimum = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.numericUpDownFlow.Name = "numericUpDownFlow";
-            this.numericUpDownFlow.Size = new System.Drawing.Size(46, 20);
-            this.numericUpDownFlow.TabIndex = 1;
-            this.numericUpDownFlow.Value = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            this.numericUpDownFlow.ValueChanged += new System.EventHandler(this.sliderSlowrate_ValueChanged);
-            // 
-            // labelFlowrate
-            // 
-            this.labelFlowrate.AutoSize = true;
-            this.labelFlowrate.Location = new System.Drawing.Point(11, 56);
-            this.labelFlowrate.Name = "labelFlowrate";
-            this.labelFlowrate.Size = new System.Drawing.Size(50, 13);
-            this.labelFlowrate.TabIndex = 2;
-            this.labelFlowrate.Text = "Flowrate:";
-            // 
-            // sliderFlowrate
-            // 
-            this.sliderFlowrate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.sliderFlowrate.BackColor = System.Drawing.Color.Transparent;
-            this.sliderFlowrate.BarInnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(115)))), ((int)(((byte)(115)))), ((int)(((byte)(115)))));
-            this.sliderFlowrate.BarOuterColor = System.Drawing.Color.FromArgb(((int)(((byte)(87)))), ((int)(((byte)(87)))), ((int)(((byte)(87)))));
-            this.sliderFlowrate.BorderRoundRectSize = new System.Drawing.Size(8, 8);
-            this.sliderFlowrate.LargeChange = ((uint)(5u));
-            this.sliderFlowrate.Location = new System.Drawing.Point(112, 46);
-            this.sliderFlowrate.Maximum = 150;
-            this.sliderFlowrate.Minimum = 50;
-            this.sliderFlowrate.Name = "sliderFlowrate";
-            this.sliderFlowrate.Size = new System.Drawing.Size(272, 31);
-            this.sliderFlowrate.SmallChange = ((uint)(1u));
-            this.sliderFlowrate.TabIndex = 0;
-            this.sliderFlowrate.Text = "sliderSpeed";
-            this.sliderFlowrate.ThumbRoundRectSize = new System.Drawing.Size(8, 8);
-            this.sliderFlowrate.Value = 100;
-            this.sliderFlowrate.ValueChanged += new System.EventHandler(this.sliderSlowrate_ValueChanged);
-            // 
-            // sliderSpeed
-            // 
-            this.sliderSpeed.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.sliderSpeed.BackColor = System.Drawing.Color.Transparent;
-            this.sliderSpeed.BarInnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(115)))), ((int)(((byte)(115)))), ((int)(((byte)(115)))));
-            this.sliderSpeed.BarOuterColor = System.Drawing.Color.FromArgb(((int)(((byte)(87)))), ((int)(((byte)(87)))), ((int)(((byte)(87)))));
-            this.sliderSpeed.BorderRoundRectSize = new System.Drawing.Size(8, 8);
-            this.sliderSpeed.LargeChange = ((uint)(5u));
-            this.sliderSpeed.Location = new System.Drawing.Point(112, 15);
-            this.sliderSpeed.Maximum = 300;
-            this.sliderSpeed.Minimum = 25;
-            this.sliderSpeed.Name = "sliderSpeed";
-            this.sliderSpeed.Size = new System.Drawing.Size(272, 31);
-            this.sliderSpeed.SmallChange = ((uint)(1u));
-            this.sliderSpeed.TabIndex = 0;
-            this.sliderSpeed.Text = "sliderSpeed";
-            this.sliderSpeed.ThumbRoundRectSize = new System.Drawing.Size(8, 8);
-            this.sliderSpeed.Value = 100;
-            this.sliderSpeed.ValueChanged += new System.EventHandler(this.sliderSpeed_ValueChanged);
-            // 
             // switchEcho
             // 
             this.switchEcho.ButtonFlatBorderColor = System.Drawing.Color.Empty;
@@ -778,6 +746,104 @@
             this.switchDryRun.TextOff = "Dry run";
             this.switchDryRun.TextOn = "Dry run";
             this.switchDryRun.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchDryRun_Change);
+            // 
+            // groupSpeedMultiply
+            // 
+            this.groupSpeedMultiply.Controls.Add(this.labelFlowrate);
+            this.groupSpeedMultiply.Controls.Add(this.labelFeedrate);
+            this.groupSpeedMultiply.Controls.Add(this.numericUpDownFlow);
+            this.groupSpeedMultiply.Controls.Add(this.numericUpDownSpeed);
+            this.groupSpeedMultiply.Controls.Add(this.sliderFlowrate);
+            this.groupSpeedMultiply.Controls.Add(this.sliderSpeed);
+            this.groupSpeedMultiply.Location = new System.Drawing.Point(8, 362);
+            this.groupSpeedMultiply.Name = "groupSpeedMultiply";
+            this.groupSpeedMultiply.Size = new System.Drawing.Size(442, 83);
+            this.groupSpeedMultiply.TabIndex = 55;
+            this.groupSpeedMultiply.TabStop = false;
+            this.groupSpeedMultiply.Text = "Speed Multiply";
+            // 
+            // labelFlowrate
+            // 
+            this.labelFlowrate.AutoSize = true;
+            this.labelFlowrate.Location = new System.Drawing.Point(11, 56);
+            this.labelFlowrate.Name = "labelFlowrate";
+            this.labelFlowrate.Size = new System.Drawing.Size(50, 13);
+            this.labelFlowrate.TabIndex = 2;
+            this.labelFlowrate.Text = "Flowrate:";
+            // 
+            // labelFeedrate
+            // 
+            this.labelFeedrate.AutoSize = true;
+            this.labelFeedrate.Location = new System.Drawing.Point(11, 25);
+            this.labelFeedrate.Name = "labelFeedrate";
+            this.labelFeedrate.Size = new System.Drawing.Size(52, 13);
+            this.labelFeedrate.TabIndex = 2;
+            this.labelFeedrate.Text = "Feedrate:";
+            // 
+            // numericUpDownFlow
+            // 
+            this.numericUpDownFlow.Location = new System.Drawing.Point(390, 50);
+            this.numericUpDownFlow.Maximum = new decimal(new int[] {
+            150,
+            0,
+            0,
+            0});
+            this.numericUpDownFlow.Minimum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.numericUpDownFlow.Name = "numericUpDownFlow";
+            this.numericUpDownFlow.Size = new System.Drawing.Size(46, 20);
+            this.numericUpDownFlow.TabIndex = 1;
+            this.numericUpDownFlow.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.numericUpDownFlow.ValueChanged += new System.EventHandler(this.sliderSlowrate_ValueChanged);
+            // 
+            // sliderFlowrate
+            // 
+            this.sliderFlowrate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.sliderFlowrate.BackColor = System.Drawing.Color.Transparent;
+            this.sliderFlowrate.BarInnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(115)))), ((int)(((byte)(115)))), ((int)(((byte)(115)))));
+            this.sliderFlowrate.BarOuterColor = System.Drawing.Color.FromArgb(((int)(((byte)(87)))), ((int)(((byte)(87)))), ((int)(((byte)(87)))));
+            this.sliderFlowrate.BorderRoundRectSize = new System.Drawing.Size(8, 8);
+            this.sliderFlowrate.LargeChange = ((uint)(5u));
+            this.sliderFlowrate.Location = new System.Drawing.Point(112, 46);
+            this.sliderFlowrate.Maximum = 150;
+            this.sliderFlowrate.Minimum = 50;
+            this.sliderFlowrate.Name = "sliderFlowrate";
+            this.sliderFlowrate.Size = new System.Drawing.Size(272, 31);
+            this.sliderFlowrate.SmallChange = ((uint)(1u));
+            this.sliderFlowrate.TabIndex = 0;
+            this.sliderFlowrate.Text = "sliderSpeed";
+            this.sliderFlowrate.ThumbRoundRectSize = new System.Drawing.Size(8, 8);
+            this.sliderFlowrate.Value = 100;
+            this.sliderFlowrate.ValueChanged += new System.EventHandler(this.sliderSlowrate_ValueChanged);
+            // 
+            // sliderSpeed
+            // 
+            this.sliderSpeed.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.sliderSpeed.BackColor = System.Drawing.Color.Transparent;
+            this.sliderSpeed.BarInnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(115)))), ((int)(((byte)(115)))), ((int)(((byte)(115)))));
+            this.sliderSpeed.BarOuterColor = System.Drawing.Color.FromArgb(((int)(((byte)(87)))), ((int)(((byte)(87)))), ((int)(((byte)(87)))));
+            this.sliderSpeed.BorderRoundRectSize = new System.Drawing.Size(8, 8);
+            this.sliderSpeed.LargeChange = ((uint)(5u));
+            this.sliderSpeed.Location = new System.Drawing.Point(112, 15);
+            this.sliderSpeed.Maximum = 300;
+            this.sliderSpeed.Minimum = 25;
+            this.sliderSpeed.Name = "sliderSpeed";
+            this.sliderSpeed.Size = new System.Drawing.Size(272, 31);
+            this.sliderSpeed.SmallChange = ((uint)(1u));
+            this.sliderSpeed.TabIndex = 0;
+            this.sliderSpeed.Text = "sliderSpeed";
+            this.sliderSpeed.ThumbRoundRectSize = new System.Drawing.Size(8, 8);
+            this.sliderSpeed.Value = 100;
+            this.sliderSpeed.ValueChanged += new System.EventHandler(this.sliderSpeed_ValueChanged);
             // 
             // arrowButtonXPlus
             // 
@@ -916,72 +982,6 @@
             this.arrowButtonYMinus.UseVisualStyleBackColor = true;
             this.arrowButtonYMinus.Click += new System.EventHandler(this.arrowButtonYMinus_Click);
             this.arrowButtonYMinus.arrowValueChanged += new RepetierHost.view.utils.ArrowValueChanged(this.XY_arrowValueChanged);
-            // 
-            // trackFanVoltage
-            // 
-            this.trackFanVoltage.BackColor = System.Drawing.Color.Transparent;
-            this.trackFanVoltage.BarInnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(115)))), ((int)(((byte)(115)))), ((int)(((byte)(115)))));
-            this.trackFanVoltage.BarOuterColor = System.Drawing.Color.FromArgb(((int)(((byte)(87)))), ((int)(((byte)(87)))), ((int)(((byte)(87)))));
-            this.trackFanVoltage.BorderRoundRectSize = new System.Drawing.Size(8, 8);
-            this.trackFanVoltage.LargeChange = ((uint)(5u));
-            this.trackFanVoltage.Location = new System.Drawing.Point(9, 48);
-            this.trackFanVoltage.Maximum = 255;
-            this.trackFanVoltage.Name = "trackFanVoltage";
-            this.trackFanVoltage.Size = new System.Drawing.Size(182, 30);
-            this.trackFanVoltage.SmallChange = ((uint)(1u));
-            this.trackFanVoltage.TabIndex = 2;
-            this.trackFanVoltage.Text = "trackFanVoltage";
-            this.trackFanVoltage.ThumbRoundRectSize = new System.Drawing.Size(8, 8);
-            this.trackFanVoltage.Value = 128;
-            this.trackFanVoltage.ValueChanged += new System.EventHandler(this.trackFanVoltage_ValueChanged);
-            // 
-            // switchFanOn
-            // 
-            this.switchFanOn.ButtonFlatBorderColor = System.Drawing.Color.Empty;
-            this.switchFanOn.ButtonFlatBorderSize = 1;
-            this.switchFanOn.ButtonFlatStyle = System.Windows.Forms.FlatStyle.Standard;
-            this.switchFanOn.ButtonTextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.switchFanOn.Location = new System.Drawing.Point(6, 19);
-            this.switchFanOn.Name = "switchFanOn";
-            this.switchFanOn.On = false;
-            this.switchFanOn.Size = new System.Drawing.Size(97, 23);
-            this.switchFanOn.TabIndex = 0;
-            this.switchFanOn.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
-            this.switchFanOn.TextOff = "Fan";
-            this.switchFanOn.TextOn = "Fan";
-            this.switchFanOn.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchFanOn_Change);
-            // 
-            // switchBedHeat
-            // 
-            this.switchBedHeat.ButtonFlatBorderColor = System.Drawing.Color.Empty;
-            this.switchBedHeat.ButtonFlatBorderSize = 1;
-            this.switchBedHeat.ButtonFlatStyle = System.Windows.Forms.FlatStyle.Standard;
-            this.switchBedHeat.ButtonTextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.switchBedHeat.Location = new System.Drawing.Point(6, 19);
-            this.switchBedHeat.Name = "switchBedHeat";
-            this.switchBedHeat.On = false;
-            this.switchBedHeat.Size = new System.Drawing.Size(180, 23);
-            this.switchBedHeat.TabIndex = 0;
-            this.switchBedHeat.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
-            this.switchBedHeat.TextOff = "Heat Printbed ";
-            this.switchBedHeat.TextOn = "Heat Printbed ";
-            this.switchBedHeat.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchBedHeat_Change);
-            // 
-            // switchExtruderHeatOn
-            // 
-            this.switchExtruderHeatOn.ButtonFlatBorderColor = System.Drawing.Color.Empty;
-            this.switchExtruderHeatOn.ButtonFlatBorderSize = 1;
-            this.switchExtruderHeatOn.ButtonFlatStyle = System.Windows.Forms.FlatStyle.Standard;
-            this.switchExtruderHeatOn.ButtonTextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.switchExtruderHeatOn.Location = new System.Drawing.Point(7, 20);
-            this.switchExtruderHeatOn.Name = "switchExtruderHeatOn";
-            this.switchExtruderHeatOn.On = false;
-            this.switchExtruderHeatOn.Size = new System.Drawing.Size(201, 23);
-            this.switchExtruderHeatOn.TabIndex = 0;
-            this.switchExtruderHeatOn.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
-            this.switchExtruderHeatOn.TextOff = "  Heat extruder ";
-            this.switchExtruderHeatOn.TextOn = "  Heat extruder ";
-            this.switchExtruderHeatOn.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchExtruderHeatOn_Change);
             // 
             // switchPower
             // 
