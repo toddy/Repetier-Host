@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<translation revision="3" language="Deutsch" languageInEnglish="German" author="Repetier">
+<translation revision="4" language="Deutsch" languageInEnglish="German" author="Repetier">
 <t id="M_FILE" ver="1">Datei</t>
 <t id="M_CONFIG" ver="1">Konfiguration</t>
 <t id="M_SLICER" ver="1">Slicer</t>
@@ -124,6 +124,7 @@ Du kannst Pausen in deinem Code einfügen mit:
 <t id="B_HEAT_EXTRUDER" ver="1">Heize Extruder</t>
 <t id="B_HEAT_PRINTBED" ver="1">Heize Druckbett</t>
 <t id="B_FAN" ver="1">Lüfter</t>
+<t id="L_FAN" ver="1">Lüfter</t>
 <t id="B_DEBUG_ERRORS" ver="1">Fehler</t>
 <t id="B_DEBUG_ECHO" ver="1">Echo</t>
 <t id="B_DRY_RUN" ver="1">Trockenlauf</t>
@@ -232,7 +233,7 @@ Du kannst Pausen in deinem Code einfügen mit:
 <t id="L_HOME_Z_MAX" ver="1">Home ist bei Z-Max</t>
 <t id="L_PING_PONG_MODE" ver="1">Verwende Ping-Pong Kommunikation (Sende nur nach ok)</t>
 <t id="L_RUN_FILTER_EVERY_SLICE" ver="1">Starte Filter nach jedem slicing</t>
-<t id="L_CHECK_EXTRUDER_BED_TEMPERATURE" ver="1">Überprüfe Extruder &amp; Bed Temperatur</t>
+<t id="L_CHECK_EXTRUDER_BED_TEMPERATURE" ver="1">Überprüfe Extruder &amp;&amp; Bed Temperatur</t>
 <t id="L_REMOVE_M105_REQUEST_LOG" ver="1">Entferne M105 Anfragen aus dem Log</t>
 <t id="B_CANCEL" ver="1">Abbrechen</t>
 <t id="B_APPLY" ver="1">Übernehmen</t>
@@ -477,5 +478,10 @@ Mögliche Gründe:
 <t id="L_FILAMENT_NONE" ver="3">Keins/Wie Extruder 1</t>
 <t id="L_REALLY_QUIT" ver="3">Druck nicht beendet. Trotzdem beenden?</t>
 <t id="M_DONATE" ver="3">Spenden oder Unterstützen</t>
+<t id="L_HOME_X:" ver="4">Home X:</t>
+<t id="L_HOME_Y:" ver="4">Home Y:</t>
+<t id="L_HOME_Z:" ver="4">Home Z:</t>
+<t id="L_MIN" ver="4">Min</t>
+<t id="L_MAX" ver="4">Max</t>
 </translation>
 

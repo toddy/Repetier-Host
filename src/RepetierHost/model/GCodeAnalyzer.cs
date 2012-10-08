@@ -122,9 +122,9 @@ namespace RepetierHost.model
                 else if (cmd.Equals("@isathome"))
                 {
                     hasXHome = hasYHome = hasZHome = true;
-                    x = (Main.printerSettings.checkHomeXMax.Checked ? Main.printerSettings.XMax : Main.printerSettings.XMin);
-                    y = (Main.printerSettings.checkHomeYMax.Checked ? Main.printerSettings.YMax : Main.printerSettings.YMin);
-                    z = (Main.printerSettings.checkHomeZMax.Checked ? Main.printerSettings.PrintAreaHeight : 0);
+                    x = Main.printerSettings.XHomePos;
+                    y = Main.printerSettings.YHomePos;
+                    z = Main.printerSettings.ZHomePos;
                     xOffset = yOffset = zOffset = 0;
                 }
                 return;
@@ -172,7 +172,7 @@ namespace RepetierHost.model
                         if (e > emax)
                         {
                             emax = e;
-                            if (z > lastZPrint)
+                            if (z != lastZPrint)
                             {
                                 layer++;
                                 lastZPrint = z;
@@ -206,9 +206,9 @@ namespace RepetierHost.model
                     case 161:
                         {
                             bool homeAll = !(code.hasX || code.hasY || code.hasZ);
-                            if (code.hasX || homeAll) { xOffset = 0; x = (Main.printerSettings.checkHomeXMax.Checked ? Main.printerSettings.XMax : Main.printerSettings.XMin); hasXHome = true; }
-                            if (code.hasY || homeAll) { yOffset = 0; y = (Main.printerSettings.checkHomeYMax.Checked ? Main.printerSettings.YMax : Main.printerSettings.YMin); hasYHome = true; }
-                            if (code.hasZ || homeAll) { zOffset = 0; z = (Main.printerSettings.checkHomeZMax.Checked ? Main.printerSettings.PrintAreaHeight : 0); hasZHome = true; }
+                            if (code.hasX || homeAll) { xOffset = 0; x = Main.printerSettings.XHomePos; hasXHome = true; }
+                            if (code.hasY || homeAll) { yOffset = 0; y = Main.printerSettings.YHomePos; hasYHome = true; }
+                            if (code.hasZ || homeAll) { zOffset = 0; z = Main.printerSettings.ZHomePos; hasZHome = true; }
                             if (code.hasE) { eOffset = 0; e = 0; emax = 0; }
                             if (eventPosChanged != null)
                                 if (privateAnalyzer)
@@ -387,7 +387,7 @@ namespace RepetierHost.model
                             if (e > emax)
                             {
                                 emax = e;
-                                if (z > lastZPrint)
+                                if (z != lastZPrint)
                                 {
                                     lastZPrint = z;
                                     layer++;
@@ -414,9 +414,9 @@ namespace RepetierHost.model
                 case 4:
                     {
                         bool homeAll = !(code.hasX || code.hasY || code.hasZ);
-                        if (code.hasX || homeAll) { xOffset = 0; x = (Main.printerSettings.checkHomeXMax.Checked ? Main.printerSettings.XMax : Main.printerSettings.XMin); hasXHome = true; }
-                        if (code.hasY || homeAll) { yOffset = 0; y = (Main.printerSettings.checkHomeYMax.Checked ? Main.printerSettings.YMax : Main.printerSettings.YMin); hasYHome = true; }
-                        if (code.hasZ || homeAll) { zOffset = 0; z = (Main.printerSettings.checkHomeZMax.Checked ? Main.printerSettings.PrintAreaHeight : 0); hasZHome = true; }
+                        if (code.hasX || homeAll) { xOffset = 0; x = Main.printerSettings.XHomePos; hasXHome = true; }
+                        if (code.hasY || homeAll) { yOffset = 0; y = Main.printerSettings.YHomePos; hasYHome = true; }
+                        if (code.hasZ || homeAll) { zOffset = 0; z = Main.printerSettings.ZHomePos; hasZHome = true; }
                         if (code.hasE) { eOffset = 0; e = 0; emax = 0; }
                         // [delegate positionChangedFastX:x y:y z:z e:e];
                     }
@@ -452,9 +452,9 @@ namespace RepetierHost.model
                         else if (hc == "@isathome")
                         {
                             hasXHome = hasYHome = hasZHome = true;
-                            x = xOffset = (Main.printerSettings.checkHomeXMax.Checked ? Main.printerSettings.XMax : Main.printerSettings.XMin);
-                            y = yOffset = (Main.printerSettings.checkHomeYMax.Checked ? Main.printerSettings.YMax : Main.printerSettings.YMin);
-                            z = zOffset = (Main.printerSettings.checkHomeZMax.Checked ? Main.printerSettings.PrintAreaHeight : 0);
+                            x = xOffset = Main.printerSettings.XHomePos;
+                            y = yOffset = Main.printerSettings.YHomePos;
+                            z = zOffset = Main.printerSettings.ZHomePos;
                         }
                     }
                     break;

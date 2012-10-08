@@ -48,6 +48,7 @@ namespace RepetierHost.view
         public float DumpAreaFront;
         public float DumpAreaWidth;
         public float DumpAreaDepth;
+        int xhomeMode = 0, yhomeMode = 0, zhomemode = 0;
         public FormPrinterSettings()
         {
             InitializeComponent();
@@ -86,12 +87,6 @@ namespace RepetierHost.view
                 textDumpAreaLeft.Visible = false;
                 textDumpAreaWidth.Visible = false;
             }
-            if (Custom.GetBool("noMaxHoming", false))
-            {
-                checkHomeXMax.Visible = false;
-                checkHomeYMax.Visible = false;
-                checkHomeZMax.Visible = false;
-            }
             Main.main.languageChanged += translate;
             translate();
         }
@@ -127,9 +122,6 @@ namespace RepetierHost.view
             checkDisbaleHeatedBedAfterJob.Text = Trans.T("L_DISABLE_HEATED_BED_AFTER_JOB");
             checkGoDisposeAfterJob.Text = Trans.T("L_GO_PARK_POSITION");
             checkHasDumpArea.Text = Trans.T("L_HAS_DUMP_AREA");
-            checkHomeXMax.Text = Trans.T("L_HOME_X_MAX");
-            checkHomeYMax.Text = Trans.T("L_HOME_Y_MAX");
-            checkHomeZMax.Text = Trans.T("L_HOME_Z_MAX");
             checkPingPong.Text = Trans.T("L_PING_PONG_MODE");
             checkRunFilterEverySlice.Text = Trans.T("L_RUN_FILTER_EVERY_SLICE");
             labelCheckEveryX.Text = Trans.T1("L_CHECK_EVERY_X", trackTempPeriod.Value.ToString());
@@ -153,6 +145,15 @@ namespace RepetierHost.view
             labelBedFront.Text = Trans.T("L_BED_FRONT:");
             labelXMin.Text = Trans.T("L_X_MIN:");
             labelShapeInfo.Text = Trans.T("L_SHAPE_INFO");
+            labelHomeX.Text = Trans.T("L_HOME_X:");
+            labelHomeY.Text = Trans.T("L_HOME_Y:");
+            labelHomeZ.Text = Trans.T("L_HOME_Z:");
+            comboHomeX.Items[0] = Trans.T("L_MIN");
+            comboHomeX.Items[1] = Trans.T("L_MAX");
+            comboHomeY.Items[0] = Trans.T("L_MIN");
+            comboHomeY.Items[1] = Trans.T("L_MAX");
+            comboHomeZ.Items[0] = Trans.T("L_MIN");
+            comboHomeZ.Items[1] = Trans.T("L_MAX");
         }
         public void save(string printername)
         {
@@ -191,9 +192,9 @@ namespace RepetierHost.view
             p.SetValue("runFilterEverySlice", checkRunFilterEverySlice.Checked ? 1 : 0);
             p.SetValue("logM105", logM105Checkbox.Checked ? 1 : 0);
             p.SetValue("addPrintingTime", textAddPrintingTime.Text);
-            p.SetValue("xhomeMax", checkHomeXMax.Checked ? 1 : 0);
-            p.SetValue("yhomeMax", checkHomeYMax.Checked ? 1 : 0);
-            p.SetValue("zhomeMax", checkHomeZMax.Checked ? 1 : 0);
+            p.SetValue("xhomeMax", comboHomeX.SelectedIndex); // checkHomeXMax.Checked ? 1 : 0);
+            p.SetValue("yhomeMax", comboHomeY.SelectedIndex); // checkHomeYMax.Checked ? 1 : 0);
+            p.SetValue("zhomeMax", comboHomeZ.SelectedIndex); // checkHomeZMax.Checked ? 1 : 0);
             p.SetValue("printerXMax", textPrinterXMax.Text);
             p.SetValue("printerXMin", textPrinterXMin.Text);
             p.SetValue("printerYMax", textPrinterYMax.Text);
@@ -240,9 +241,12 @@ namespace RepetierHost.view
             checkRunFilterEverySlice.Checked = 1 == (int)p.GetValue("runFilterEverySlice", checkRunFilterEverySlice.Checked ? 1 : 0);
             logM105Checkbox.Checked = 1 == (int)p.GetValue("logM105", logM105Checkbox.Checked ? 1 : 0);
             textAddPrintingTime.Text = (string)p.GetValue("addPrintingTime", textAddPrintingTime.Text);
-            checkHomeXMax.Checked = 1 == (int)p.GetValue("xhomeMax", checkHomeXMax.Checked ? 1 : 0);
-            checkHomeYMax.Checked = 1 == (int)p.GetValue("yhomeMax", checkHomeYMax.Checked ? 1 : 0);
-            checkHomeZMax.Checked = 1 == (int)p.GetValue("zhomeMax", checkHomeZMax.Checked ? 1 : 0);
+            //checkHomeXMax.Checked = 1 == (int)p.GetValue("xhomeMax", checkHomeXMax.Checked ? 1 : 0);
+            //checkHomeYMax.Checked = 1 == (int)p.GetValue("yhomeMax", checkHomeYMax.Checked ? 1 : 0);
+            //checkHomeZMax.Checked = 1 == (int)p.GetValue("zhomeMax", checkHomeZMax.Checked ? 1 : 0);
+            comboHomeX.SelectedIndex = (int)p.GetValue("xhomeMax", 0);
+            comboHomeY.SelectedIndex = (int)p.GetValue("yhomeMax", 0);
+            comboHomeZ.SelectedIndex = (int)p.GetValue("zhomeMax", 0);
             textPrinterXMax.Text = (string)p.GetValue("printerXMax", textPrintAreaWidth.Text);
             textPrinterXMin.Text = (string)p.GetValue("printerXMin", "0");
             textPrinterYMax.Text = (string)p.GetValue("printerYMax", textPrintAreaDepth.Text);
@@ -466,6 +470,60 @@ namespace RepetierHost.view
         private void FormPrinterSettings_FormClosing(object sender, FormClosingEventArgs e)
         {
             RegMemory.StoreWindowPos("printerSettingsWindow", this, false, false);
+        }
+        public float XHomePos
+        {
+            get
+            {
+                switch (xhomeMode)
+                {
+                    case 0: return XMin;
+                    case 1: return XMax;
+                    case 2: return 0;
+                }
+                return 0;
+            }
+        }
+        public float YHomePos
+        {
+            get
+            {
+                switch (yhomeMode)
+                {
+                    case 0: return YMin;
+                    case 1: return YMax;
+                    case 2: return 0;
+                }
+                return 0;
+            }
+        }
+        public float ZHomePos
+        {
+            get
+            {
+                switch (zhomemode)
+                {
+                    case 0: return 0;
+                    case 1: return Height;
+                    case 2: return 0;
+                }
+                return 0;
+            }
+        }
+
+        private void comboHomeX_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            xhomeMode = comboHomeX.SelectedIndex;
+        }
+
+        private void comboHomeY_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            yhomeMode = comboHomeY.SelectedIndex;
+        }
+
+        private void comboHomeZ_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            zhomemode = comboHomeZ.SelectedIndex;
         }
     }
 }

@@ -91,9 +91,6 @@
             this.labelXMax = new System.Windows.Forms.Label();
             this.labelYMin = new System.Windows.Forms.Label();
             this.labelXMin = new System.Windows.Forms.Label();
-            this.checkHomeZMax = new System.Windows.Forms.CheckBox();
-            this.checkHomeYMax = new System.Windows.Forms.CheckBox();
-            this.checkHomeXMax = new System.Windows.Forms.CheckBox();
             this.labelDumpUnit4 = new System.Windows.Forms.Label();
             this.labelDumpUnit3 = new System.Windows.Forms.Label();
             this.labelDumpUnit2 = new System.Windows.Forms.Label();
@@ -133,6 +130,12 @@
             this.buttonAbort = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.labelHomeX = new System.Windows.Forms.Label();
+            this.comboHomeX = new System.Windows.Forms.ComboBox();
+            this.labelHomeY = new System.Windows.Forms.Label();
+            this.comboHomeY = new System.Windows.Forms.ComboBox();
+            this.labelHomeZ = new System.Windows.Forms.Label();
+            this.comboHomeZ = new System.Windows.Forms.ComboBox();
             this.panelPrinterSelect.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPageConnection.SuspendLayout();
@@ -730,6 +733,12 @@
             // tabPageShape
             // 
             this.tabPageShape.BackColor = System.Drawing.Color.Transparent;
+            this.tabPageShape.Controls.Add(this.comboHomeZ);
+            this.tabPageShape.Controls.Add(this.labelHomeZ);
+            this.tabPageShape.Controls.Add(this.comboHomeY);
+            this.tabPageShape.Controls.Add(this.labelHomeY);
+            this.tabPageShape.Controls.Add(this.comboHomeX);
+            this.tabPageShape.Controls.Add(this.labelHomeX);
             this.tabPageShape.Controls.Add(this.labelShapeInfo);
             this.tabPageShape.Controls.Add(this.labelBedFront);
             this.tabPageShape.Controls.Add(this.labelBedLeft);
@@ -737,9 +746,6 @@
             this.tabPageShape.Controls.Add(this.labelXMax);
             this.tabPageShape.Controls.Add(this.labelYMin);
             this.tabPageShape.Controls.Add(this.labelXMin);
-            this.tabPageShape.Controls.Add(this.checkHomeZMax);
-            this.tabPageShape.Controls.Add(this.checkHomeYMax);
-            this.tabPageShape.Controls.Add(this.checkHomeXMax);
             this.tabPageShape.Controls.Add(this.labelDumpUnit4);
             this.tabPageShape.Controls.Add(this.labelDumpUnit3);
             this.tabPageShape.Controls.Add(this.labelDumpUnit2);
@@ -836,36 +842,6 @@
             this.labelXMin.Size = new System.Drawing.Size(37, 13);
             this.labelXMin.TabIndex = 9;
             this.labelXMin.Text = "X Min:";
-            // 
-            // checkHomeZMax
-            // 
-            this.checkHomeZMax.AutoSize = true;
-            this.checkHomeZMax.Location = new System.Drawing.Point(306, 66);
-            this.checkHomeZMax.Name = "checkHomeZMax";
-            this.checkHomeZMax.Size = new System.Drawing.Size(106, 17);
-            this.checkHomeZMax.TabIndex = 15;
-            this.checkHomeZMax.Text = "Home is at z max";
-            this.checkHomeZMax.UseVisualStyleBackColor = true;
-            // 
-            // checkHomeYMax
-            // 
-            this.checkHomeYMax.AutoSize = true;
-            this.checkHomeYMax.Location = new System.Drawing.Point(306, 40);
-            this.checkHomeYMax.Name = "checkHomeYMax";
-            this.checkHomeYMax.Size = new System.Drawing.Size(106, 17);
-            this.checkHomeYMax.TabIndex = 14;
-            this.checkHomeYMax.Text = "Home is at y max";
-            this.checkHomeYMax.UseVisualStyleBackColor = true;
-            // 
-            // checkHomeXMax
-            // 
-            this.checkHomeXMax.AutoSize = true;
-            this.checkHomeXMax.Location = new System.Drawing.Point(307, 14);
-            this.checkHomeXMax.Name = "checkHomeXMax";
-            this.checkHomeXMax.Size = new System.Drawing.Size(106, 17);
-            this.checkHomeXMax.TabIndex = 13;
-            this.checkHomeXMax.Text = "Home is at x max";
-            this.checkHomeXMax.UseVisualStyleBackColor = true;
             // 
             // labelDumpUnit4
             // 
@@ -1227,6 +1203,75 @@
             // 
             this.errorProvider.ContainerControl = this;
             // 
+            // labelHomeX
+            // 
+            this.labelHomeX.AutoSize = true;
+            this.labelHomeX.Location = new System.Drawing.Point(307, 15);
+            this.labelHomeX.Name = "labelHomeX";
+            this.labelHomeX.Size = new System.Drawing.Size(48, 13);
+            this.labelHomeX.TabIndex = 16;
+            this.labelHomeX.Text = "Home X:";
+            // 
+            // comboHomeX
+            // 
+            this.comboHomeX.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboHomeX.FormattingEnabled = true;
+            this.comboHomeX.Items.AddRange(new object[] {
+            "Min",
+            "Max",
+            "0"});
+            this.comboHomeX.Location = new System.Drawing.Point(378, 12);
+            this.comboHomeX.Name = "comboHomeX";
+            this.comboHomeX.Size = new System.Drawing.Size(76, 21);
+            this.comboHomeX.TabIndex = 17;
+            this.comboHomeX.SelectedIndexChanged += new System.EventHandler(this.comboHomeX_SelectedIndexChanged);
+            // 
+            // labelHomeY
+            // 
+            this.labelHomeY.AutoSize = true;
+            this.labelHomeY.Location = new System.Drawing.Point(307, 42);
+            this.labelHomeY.Name = "labelHomeY";
+            this.labelHomeY.Size = new System.Drawing.Size(48, 13);
+            this.labelHomeY.TabIndex = 16;
+            this.labelHomeY.Text = "Home Y:";
+            // 
+            // comboHomeY
+            // 
+            this.comboHomeY.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboHomeY.FormattingEnabled = true;
+            this.comboHomeY.Items.AddRange(new object[] {
+            "Min",
+            "Max",
+            "0"});
+            this.comboHomeY.Location = new System.Drawing.Point(378, 39);
+            this.comboHomeY.Name = "comboHomeY";
+            this.comboHomeY.Size = new System.Drawing.Size(76, 21);
+            this.comboHomeY.TabIndex = 17;
+            this.comboHomeY.SelectedIndexChanged += new System.EventHandler(this.comboHomeY_SelectedIndexChanged);
+            // 
+            // labelHomeZ
+            // 
+            this.labelHomeZ.AutoSize = true;
+            this.labelHomeZ.Location = new System.Drawing.Point(307, 69);
+            this.labelHomeZ.Name = "labelHomeZ";
+            this.labelHomeZ.Size = new System.Drawing.Size(48, 13);
+            this.labelHomeZ.TabIndex = 16;
+            this.labelHomeZ.Text = "Home Z:";
+            // 
+            // comboHomeZ
+            // 
+            this.comboHomeZ.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboHomeZ.FormattingEnabled = true;
+            this.comboHomeZ.Items.AddRange(new object[] {
+            "Min",
+            "Max",
+            "0"});
+            this.comboHomeZ.Location = new System.Drawing.Point(378, 66);
+            this.comboHomeZ.Name = "comboHomeZ";
+            this.comboHomeZ.Size = new System.Drawing.Size(76, 21);
+            this.comboHomeZ.TabIndex = 17;
+            this.comboHomeZ.SelectedIndexChanged += new System.EventHandler(this.comboHomeZ_SelectedIndexChanged);
+            // 
             // FormPrinterSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1356,9 +1401,6 @@
         private System.Windows.Forms.Label label42;
         private System.Windows.Forms.TextBox textAddPrintingTime;
         private System.Windows.Forms.Label labelAddPrintingTime;
-        public System.Windows.Forms.CheckBox checkHomeYMax;
-        public System.Windows.Forms.CheckBox checkHomeXMax;
-        public System.Windows.Forms.CheckBox checkHomeZMax;
         private System.Windows.Forms.Label labelBedFront;
         private System.Windows.Forms.Label labelBedLeft;
         private System.Windows.Forms.Label labelYMax;
@@ -1372,5 +1414,11 @@
         private System.Windows.Forms.TextBox textPrinterYMin;
         private System.Windows.Forms.TextBox textPrinterXMin;
         private System.Windows.Forms.Label labelShapeInfo;
+        private System.Windows.Forms.ComboBox comboHomeX;
+        private System.Windows.Forms.Label labelHomeX;
+        private System.Windows.Forms.ComboBox comboHomeZ;
+        private System.Windows.Forms.Label labelHomeZ;
+        private System.Windows.Forms.ComboBox comboHomeY;
+        private System.Windows.Forms.Label labelHomeY;
     }
 }

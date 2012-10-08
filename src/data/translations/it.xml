@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<translation revision="2" language="Italiano" languageInEnglish="Italian" author="Sarah Camerino;Angelo Di Tullio">
+<translation revision="3" language="Italiano" languageInEnglish="Italian" author="Sarah Camerino;Angelo Di Tullio">
 <t id="M_FILE" ver="1">File</t>
 <t id="M_CONFIG" ver="1">Configurazione</t>
 <t id="M_SLICER" ver="1">Slicer</t>
@@ -234,7 +234,7 @@ prodotto dallo slicer. Utilizzare #in e #out per inserire i nomi dei file di inp
 <t id="L_HOME_Z_MAX" ver="1">Home e' allo Z Max</t>
 <t id="L_PING_PONG_MODE" ver="1">Usa Ping-Pong Communication (invia solo dopo ok)</t>
 <t id="L_RUN_FILTER_EVERY_SLICE" ver="1">Avvia filtro dopo ogni Slice</t>
-<t id="L_CHECK_EXTRUDER_BED_TEMPERATURE" ver="1">Controlla estrusore &amp;e temperatura piatto di stampa</t>
+<t id="L_CHECK_EXTRUDER_BED_TEMPERATURE" ver="1">Controlla estrusore &amp;&amp;e temperatura piatto di stampa</t>
 <t id="L_REMOVE_M105_REQUEST_LOG" ver="1">Rimuovi richiesta M105 dal Log</t>
 <t id="B_CANCEL" ver="1">Cancella</t>
 <t id="B_APPLY" ver="1">Applica</t>
@@ -469,4 +469,15 @@ Scrivere i cambiamenti sul EEPROM?</t>
 <t id="T_ZOOM_VIEW" ver="1">Zoom</t>
 <t id="T_CLEAR_OBJECTS" ver="1">Elimina</t>
 <t id="L_DEBUG_OPTIONS" ver="2">Debug</t>
+<t id="L_X_MIN:" ver="3">X Min</t>
+<t id="L_X_MAX:" ver="3">X Max</t>
+<t id="L_Y_MIN:" ver="3">Y Min</t>
+<t id="L_Y_MAX:" ver="3">Y Max</t>
+<t id="L_BED_LEFT:" ver="3">Piatto da sinistra:</t>
+<t id="L_BED_FRONT:" ver="3">Piatto da davanti:</t>
+<t id="L_SHAPE_INFO" ver="3">I valori min e max definiscono il range delle cordinate dell'estrusore. Queste coordinate possono essere negative e fuori dal piatto stampa. Il comando piatto a sinistra / davanti definisce le coordinate in cui la stessa stampa inizia. Modificando i valori min / max si puo' anche spostare l'origine nel centro del piatto di stampa, sempre se supportato dal firmware.</t>
+<t id="L_SELECTION_BOX" ver="3">Seleziona box:</t>
+<t id="L_FILAMENT_NONE" ver="3">Nessuno/Uguale a Estrusore 1</t>
+<t id="L_REALLY_QUIT" ver="3">Stampa non completata. Vuoi uscire comunque?</t>
+<t id="M_DONATE" ver="3">Dona o Supporta</t>
 </translation>

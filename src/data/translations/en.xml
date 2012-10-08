@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<translation revision="3" language="English" languageInEnglish="English" author="Repetier">
+<translation revision="4" language="English" languageInEnglish="English" author="Repetier">
 <t id="M_FILE" ver="1">File</t>
 <t id="M_CONFIG" ver="1">Config</t>
 <t id="M_SLICER" ver="1">Slicer</t>
@@ -88,6 +88,7 @@
 <t id="L_PAUSE_MSG" ver="1">Press OK to continue.
 You can add pauses in your code with
 @pause Some text like this</t>
+<t id="L_DISCONNECTED" ver="1">Disconnected</t>
 <t id="L_UPDATING..." ver="1">Updating ...</t>
 <t id="L_SLICE_WITH" ver="1">Slice with $1</t>
 <t id="L_EMERGENCY_STOP_MSG" ver="1">Send emergency stop to printer. You may need to reset the printer for a restart!</t>
@@ -135,7 +136,6 @@ You can add pauses in your code with
 <t id="L_EXTRUDER_SPEED_MM_MIN" ver="1">Speed [mm/min]</t>
 <t id="L_RETRACT_MM" ver="1">Retract [mm]</t>
 <t id="L_TEMP" ver="1">Temp.</t>
-<t id="L_DISCONNECTED" ver="1">Disconnected</t>
 <t id="L_CONNECTED" ver="1">Connected</t>
 <t id="L_HEATING_BED" ver="1">Heating Bed</t>
 <t id="L_HEATING_EXTRUDER" ver="1">Heating Extruder</t>
@@ -236,7 +236,7 @@ produced by the slicer. Use #in and #out to insert the input and output filename
 <t id="L_HOME_Z_MAX" ver="1">Home is at Z Max</t>
 <t id="L_PING_PONG_MODE" ver="1">Use Ping-Pong Communication (Send only after ok)</t>
 <t id="L_RUN_FILTER_EVERY_SLICE" ver="1">Run Filter after every Slice</t>
-<t id="L_CHECK_EXTRUDER_BED_TEMPERATURE" ver="1">Check Extruder &amp; Bed Temperature</t>
+<t id="L_CHECK_EXTRUDER_BED_TEMPERATURE" ver="1">Check Extruder &amp;&amp; Bed Temperature</t>
 <t id="L_REMOVE_M105_REQUEST_LOG" ver="1">Remove M105 Requests from Log</t>
 <t id="B_CANCEL" ver="1">Cancel</t>
 <t id="B_APPLY" ver="1">Apply</t>
@@ -486,5 +486,11 @@ Write Changes to EEPROM?</t>
 <t id="L_FILAMENT_NONE" ver="3">None/Same as Extruder 1</t>
 <t id="L_REALLY_QUIT" ver="3">Printing not finished. Exit anyway?</t>
 <t id="M_DONATE" ver="3">Donate or Support</t>
+<t id="L_FAN" ver="4">Fan</t>
+<t id="L_HOME_X:" ver="4">Home X:</t>
+<t id="L_HOME_Y:" ver="4">Home Y:</t>
+<t id="L_HOME_Z:" ver="4">Home Z:</t>
+<t id="L_MIN" ver="4">Min</t>
+<t id="L_MAX" ver="4">Max</t>
 </translation>
 

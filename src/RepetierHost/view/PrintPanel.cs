@@ -81,6 +81,7 @@ namespace RepetierHost.view
             switchExtruderHeatOn.TextOff = switchExtruderHeatOn.TextOn = Trans.T("B_HEAT_EXTRUDER");
             switchBedHeat.TextOff = switchBedHeat.TextOn = Trans.T("B_HEAT_PRINTBED");
             switchFanOn.TextOff = switchFanOn.TextOn = Trans.T("B_FAN");
+            groupBox_Fan.Text = Trans.T("L_FAN");
             switchErrors.TextOff = switchErrors.TextOn = Trans.T("B_DEBUG_ERRORS");
             switchEcho.TextOff = switchEcho.TextOn = Trans.T("B_DEBUG_ECHO");
             switchDryRun.TextOff = switchDryRun.TextOn = Trans.T("B_DRY_RUN");

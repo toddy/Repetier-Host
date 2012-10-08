@@ -21,9 +21,7 @@
    <t id="M_SHOW_AVERAGE_TEMPERATURES" ver="1">Toon Gemiddelde Temperatuur</t>
    <t id="M_SHOW_HEATER_POWER" ver="1">Toon verwarmings vermogen</t>
    <t id="M_AUTOSCROLL_TEMPERATURE_VIEW" ver="1">Autoscroll Temperatuur venster</t>
-   <t id="M_TIMEPERIOD" ver="1">
-      Periode
-   </t>
+   <t id="M_TIMEPERIOD" ver="1">Periode</t>
    <t id="M_TEMPERATURE_ZOOM" ver="1">
       Tijdsinterval
    </t>
@@ -641,7 +639,7 @@
       Start filter na iedere laag
    </t>
    <t id="L_CHECK_EXTRUDER_BED_TEMPERATURE" ver="1">
-      Controleer Extruder &amp; Bed Temperatuur
+      Controleer Extruder &amp;&amp; Bed Temperatuur
    </t>
    <t id="L_REMOVE_M105_REQUEST_LOG" ver="1">
       Verwijder M105 vragen uit Log

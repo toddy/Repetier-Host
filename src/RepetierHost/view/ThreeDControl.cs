@@ -410,6 +410,8 @@ namespace RepetierHost.view
                     GL.PopMatrix();
                     if (model.Selected)
                     {
+                        GL.PushMatrix();
+                        model.AnimationBefore();
                         col = Main.threeDSettings.selectionBox.BackColor;
                         GL.Material(MaterialFace.FrontAndBack, MaterialParameter.AmbientAndDiffuse, new OpenTK.Graphics.Color4(0, 0, 0, 255));
                         GL.Material(MaterialFace.Front, MaterialParameter.Emission, new OpenTK.Graphics.Color4(0, 0, 0, 0));
@@ -456,6 +458,8 @@ namespace RepetierHost.view
                         GL.Vertex3(model.xMax, model.yMin, model.zMin);
 
                         GL.End();
+                        model.AnimationAfter();
+                        GL.PopMatrix();
                     }
                 }
                /* if (drawRay)

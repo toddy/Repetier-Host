@@ -124,9 +124,9 @@ namespace RepetierHost.model
                 {
                     sections[s.name].merge(s);
                 }
-                IniSection ms = sections[s.name];
+                /*IniSection ms = sections[s.name];
                 foreach (string ent in s.entries.Values)
-                    ms.addLine(ent);
+                    ms.addLine(ent);*/
             }
         }
         public void flatten()
