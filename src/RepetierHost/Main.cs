@@ -74,7 +74,7 @@ namespace RepetierHost
         public TemperatureView tempView = null;
         public Trans trans = null;
         public RepetierHost.view.RepetierEditor editor;
-
+        public double gcodePrintingTime = 0;
         public class JobUpdater
         {
             GCodeVisual visual = null;
@@ -106,6 +106,7 @@ namespace RepetierHost
                 visual.parseGCodeShortArray(Main.main.previewArray2, false,2);
                 Main.main.previewArray0 = Main.main.previewArray1 = Main.main.previewArray2 = null;
                 visual.Reduce();
+                Main.main.gcodePrintingTime = visual.ana.printingTime;
                 //visual.stats();
                 Main.main.newVisual = visual;
                 Main.main.jobPreviewThreadFinished = true;
@@ -935,6 +936,23 @@ namespace RepetierHost
                 threedview.UpdateChanges();
                 newVisual = null;
                 editor.toolUpdating.Text = "";
+                if (Main.main.gcodePrintingTime > 0)
+                {
+                    Main.main.editor.printingTime = Main.main.gcodePrintingTime;
+                    int sec = (int)(Main.main.editor.printingTime * (1 + 0.01 * Main.conn.addPrintingTime));
+                    int hours = sec / 3600;
+                    sec -= 3600 * hours;
+                    int min = sec / 60;
+                    sec -= min * 60;
+                    StringBuilder s = new StringBuilder();
+                    if (hours > 0)
+                        s.Append(Trans.T1("L_TIME_H:", hours.ToString())); //"h:");
+                    if (min > 0)
+                        s.Append(Trans.T1("L_TIME_M:", min.ToString()));
+                    s.Append(Trans.T1("L_TIME_S", sec.ToString()));
+                    Main.main.editor.toolPrintingTime.Text = Trans.T1("L_PRINTING_TIME:", s.ToString());
+                }
+
                 editor.UpdateLayerInfo();
                 editor.MaxLayer = editor.getContentArray(0).Last<GCodeShort>().layer;
             }

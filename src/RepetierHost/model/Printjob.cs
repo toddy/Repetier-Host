@@ -86,6 +86,7 @@ namespace RepetierHost.model
                 dataComplete = false;
                 jobFinished = DateTime.Now;
                 jobList.Clear();
+                totalLines = linesSend;
             }
             exclusive = false;
             con.injectManualCommandFirst("M29");
@@ -227,6 +228,22 @@ namespace RepetierHost.model
               if(totalLines==0) return 100f;
               return 100f*(float)linesSend/(float)totalLines;
             }
+        }
+        public static String DoubleToTime(double time)
+        {
+            long ticks = (long)(time*1000);
+            long hours = ticks / 3600000;
+            ticks -= 3600000 * hours;
+            long min = ticks / 60000;
+            ticks -= 60000 * min;
+            long sec = ticks / 1000;
+            StringBuilder s = new StringBuilder();
+            if (hours > 0)
+                s.Append(Trans.T1("L_TIME_H:", hours.ToString())); //"h:");
+            if (min > 0)
+                s.Append(Trans.T1("L_TIME_M:", min.ToString()));
+            s.Append(Trans.T1("L_TIME_S", sec.ToString()));
+            return s.ToString();
         }
         public String ETA {
             get {

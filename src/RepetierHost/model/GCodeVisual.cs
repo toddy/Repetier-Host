@@ -407,7 +407,7 @@ namespace RepetierHost.model
     {
         static int MaxExtruder = 3;
         LinkedList<GCodePath>[] segments;
-        GCodeAnalyzer ana = new GCodeAnalyzer(true);
+        public GCodeAnalyzer ana = new GCodeAnalyzer(true);
         public GCode act = null;
         public float lastFilHeight = 999;
         public float lastFilWidth = 999;

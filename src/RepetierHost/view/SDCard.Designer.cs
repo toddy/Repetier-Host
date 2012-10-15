@@ -45,6 +45,8 @@
             this.columnHeaderSize = new System.Windows.Forms.ColumnHeader();
             this.buttonClose = new System.Windows.Forms.Button();
             this.timer = new System.Windows.Forms.Timer(this.components);
+            this.imageList = new System.Windows.Forms.ImageList(this.components);
+            this.toolNewFolder = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -56,6 +58,7 @@
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolAddFile,
             this.toolDelFile,
+            this.toolNewFolder,
             this.toolStartPrint,
             this.toolStopPrint,
             this.toolMount,
@@ -175,11 +178,13 @@
             this.files.MultiSelect = false;
             this.files.Name = "files";
             this.files.Size = new System.Drawing.Size(360, 294);
+            this.files.SmallImageList = this.imageList;
             this.files.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.files.TabIndex = 2;
             this.files.UseCompatibleStateImageBehavior = false;
             this.files.View = System.Windows.Forms.View.Details;
             this.files.SelectedIndexChanged += new System.EventHandler(this.files_SelectedIndexChanged);
+            this.files.DoubleClick += new System.EventHandler(this.files_DoubleClick);
             // 
             // columnHeaderName
             // 
@@ -207,6 +212,24 @@
             this.timer.Enabled = true;
             this.timer.Interval = 1000;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            // 
+            // imageList
+            // 
+            this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
+            this.imageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList.Images.SetKeyName(0, "load16.png");
+            this.imageList.Images.SetKeyName(1, "folder.png");
+            // 
+            // toolNewFolder
+            // 
+            this.toolNewFolder.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolNewFolder.Image = ((System.Drawing.Image)(resources.GetObject("toolNewFolder.Image")));
+            this.toolNewFolder.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolNewFolder.Name = "toolNewFolder";
+            this.toolNewFolder.Size = new System.Drawing.Size(36, 36);
+            this.toolNewFolder.Text = "New folder";
+            this.toolNewFolder.ToolTipText = "Create new folder";
+            this.toolNewFolder.Click += new System.EventHandler(this.toolNewFolder_Click);
             // 
             // SDCard
             // 
@@ -252,5 +275,7 @@
         private System.Windows.Forms.ToolStripButton toolDelFile;
         private System.Windows.Forms.ToolStripButton toolMount;
         private System.Windows.Forms.ToolStripButton toolUnmount;
+        private System.Windows.Forms.ImageList imageList;
+        private System.Windows.Forms.ToolStripButton toolNewFolder;
     }
 }

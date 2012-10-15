@@ -338,7 +338,7 @@ namespace RepetierHost.view
         int _showMode = 0;
         int _showMinLayer = 0;
         int _showMaxLayer = 1;
-        double printingTime = 0;
+        public double printingTime = 0;
         public event EventHandler ShowModeChanged;
         public event EventHandler ShowMinLayerChanged;
         public event EventHandler ShowMaxLayerChanged;
@@ -1497,9 +1497,17 @@ namespace RepetierHost.view
             {
                 printingTime = a.printingTime;
                 int sec = (int)(printingTime*(1+0.01*Main.conn.addPrintingTime));
+                int hours = sec / 3600;
+                sec -= 3600 * hours;
                 int min = sec/60;
                 sec-=min*60;
-                toolPrintingTime.Text = "Printing time:" + min.ToString() + " min";
+                StringBuilder s = new StringBuilder();
+                if (hours > 0)
+                    s.Append(Trans.T1("L_TIME_H:", hours.ToString())); //"h:");
+                if (min > 0)
+                    s.Append(Trans.T1("L_TIME_M:", min.ToString()));
+                s.Append(Trans.T1("L_TIME_S", sec.ToString()));
+                toolPrintingTime.Text = Trans.T1("L_PRINTING_TIME:",s.ToString());
             }
         }
         public void setContent(int idx,string text)

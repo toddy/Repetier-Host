@@ -105,6 +105,7 @@ namespace RepetierHost.model
             lastZPrint = 0;
             printingTime = 0;
             lastX = 0; lastY = 0; lastZ = 0; lastE = 0;
+            eOffset = 0; emax = 0; e = 0;
             drawing = true;
             uploading = false;
             if (!privateAnalyzer)

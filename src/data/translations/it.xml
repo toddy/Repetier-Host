@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<translation revision="3" language="Italiano" languageInEnglish="Italian" author="Sarah Camerino;Angelo Di Tullio">
+<translation revision="4" language="Italiano" languageInEnglish="Italian" author="Sarah Camerino;Angelo Di Tullio">
 <t id="M_FILE" ver="1">File</t>
 <t id="M_CONFIG" ver="1">Configurazione</t>
 <t id="M_SLICER" ver="1">Slicer</t>
@@ -13,7 +13,7 @@
 <t id="M_EEPROM_SETTINGS" ver="1">Configurazione Firmware EEPROM</t>
 <t id="M_3D_VIEWER_CONFIGURATION" ver="1">Configurazione visuale 3D</t>
 <t id="M_REPETIER_SETTINGS" ver="1">Repetier impostazioni generali</t>
-<t id="M_TESTCASE_SETTINGS" ver="1">Test Case Slicing Parameter</t>
+<t id="M_TESTCASE_SETTINGS" ver="1">Test parametri slicing</t>
 <t id="M_SOUND_CONFIGURATION" ver="1">Configurazione suoni</t>
 <t id="M_SHOW_EXTRUDER_TEMPERATURES" ver="1">Mostra temperatura estrusore</t>
 <t id="M_SHOW_HEATED_BED_TEMPERATURES" ver="1">Mostra temperatura piatto riscaldato</t>
@@ -99,7 +99,7 @@ Tu puoi mettere pausa al tuo codice con
 <t id="B_REMOVE_STL_OBJECT" ver="1">Rimuovi oggetto</t>
 <t id="B_ADD_STL_OBJECT" ver="1">Aggiungi oggetto</t>
 <t id="B_AUTOPOSITION" ver="1">Auto posiziona</t>
-<t id="B_DROP_OBJECT" ver="1">Drop oggetto</t>
+<t id="B_DROP_OBJECT" ver="1">Lascia cadere oggetto</t>
 <t id="B_COPY_OBJECTS" ver="1">Copia oggetto(i)</t>
 <t id="B_CENTER_OBJECT" ver="1">Centra oggetto</t>
 <t id="L_LOCK_ASPECT_RATIO" ver="1">Blocca proporzioni (aspect ratio)</t>
@@ -201,8 +201,7 @@ Tu puoi mettere pausa al tuo codice con
 <t id="L_BAUD_RATE" ver="1">Baud rate:</t>
 <t id="L_CACHE_SIZE_HINT" ver="1">From Arduino 1 on the receiving cache was reduced from 127 to 63 bytes!</t>
 <t id="L_CHECK_EVERY_X" ver="1">Controlla ogni $1 secondi.</t>
-<t id="L_CONNECTION_INFO" ver="1">Le impostazioni della stampante corrispondono sempre alla stampante selezionata in alto. Queste sono memorizzate con ogni OK o applica. Per creare una nuova stampante, basta inserire un nuovo 
-nome della stampante e premere il pulsante Applica. La nuova stampante inizia con le ultime impostazioni selezionate.</t>
+<t id="L_CONNECTION_INFO" ver="1">Le impostazioni della stampante corrispondono sempre alla stampante selezionata in alto. Queste sono memorizzate con ogni OK o applica. Per creare una nuova stampante, basta inserire un nuovo nome e premere il pulsante Applica. La nuova stampante inizia con le ultime impostazioni selezionate.</t>
 <t id="L_DEFAULT_EXTRUDER_TEMPERATURE" ver="1">Default temperatura estrusore:</t>
 <t id="L_DEFAULT_HEATED_BED_TEMPERATURE" ver="1">Default temperatura piatto riscaldato:</t>
 <t id="L_DUMP_AREA_DEPTH" ver="1">Area "scarto" profondita':</t>
@@ -234,7 +233,7 @@ prodotto dallo slicer. Utilizzare #in e #out per inserire i nomi dei file di inp
 <t id="L_HOME_Z_MAX" ver="1">Home e' allo Z Max</t>
 <t id="L_PING_PONG_MODE" ver="1">Usa Ping-Pong Communication (invia solo dopo ok)</t>
 <t id="L_RUN_FILTER_EVERY_SLICE" ver="1">Avvia filtro dopo ogni Slice</t>
-<t id="L_CHECK_EXTRUDER_BED_TEMPERATURE" ver="1">Controlla estrusore &amp;&amp;e temperatura piatto di stampa</t>
+<t id="L_CHECK_EXTRUDER_BED_TEMPERATURE" ver="1">Controlla estrusore &amp;e temperatura piatto di stampa</t>
 <t id="L_REMOVE_M105_REQUEST_LOG" ver="1">Rimuovi richiesta M105 dal Log</t>
 <t id="B_CANCEL" ver="1">Cancella</t>
 <t id="B_APPLY" ver="1">Applica</t>
@@ -255,7 +254,7 @@ prodotto dallo slicer. Utilizzare #in e #out per inserire i nomi dei file di inp
 <t id="B_REMIND_ME_LATER" ver="1">Ricordamelo dopo</t>
 <t id="B_SKIP_VERSION" ver="1">Salta questa versione</t>
 <t id="L_AVAILABLE_VERSION" ver="1">Versione disponibile:</t>
-<t id="L_INSTALLED_VERSION" ver="1">Versione Installata:</t>
+<t id="L_INSTALLED_VERSION" ver="1">Versione installata:</t>
 <t id="L_INFORMATION_ON_UPDATE" ver="1">Informazioni aggiornamenti</t>
 <t id="L_NO_NEW_UPDATES" ver="1">Nessun aggiornamento disponibile.
 Al momento stai utilizzando l'ultima versione =)</t>
@@ -380,19 +379,19 @@ risultati migliori, se il layer height cambia, cio' puo' accadere nelle versioni
 <t id="L_SAVE_AS_BINARY" ver="1">Salva in formato binario (for Repetier-Firmware)</t>
 <t id="B_SAVE" ver="1">Salva</t>
 <t id="W_SD_CARD_MANAGER" ver="1">Gestione SD Card</t>
-<t id="L_FILENAME" ver="1">File Name</t>
+<t id="L_FILENAME" ver="1">Nome file</t>
 <t id="L_SIZE" ver="1">Dimensione</t>
 <t id="L_UPLOAD_FILE" ver="1">Carica File</t>
 <t id="L_DELETE_FILE" ver="1">Cancella File</t>
 <t id="L_RUN_CONTINUE_UPLOAD" ver="1">Avvia file selezionato / Continua stampa in pausa</t>
-<t id="L_STOP_UPLOAD" ver="1">Pausa/Stop Running SD Print</t>
+<t id="L_STOP_UPLOAD" ver="1">Pausa/Stop stampa SD</t>
 <t id="L_MOUNT_SD_CARD" ver="1">Inserisci SD Card</t>
 <t id="L_UNMOUNT_SD_CARD" ver="1">Rimuovi SD Card</t>
 <t id="L_PRINT_FINISHED" ver="1">Stampa completata</t>
 <t id="L_UPLOAD_FINISHED" ver="1">Caricamento completato</t>
 <t id="L_SD_PRINTING..." ver="1">Stampa da SD ...</t>
 <t id="L_UPLOAD_FAILED" ver="1">Caricamento fallito</t>
-<t id="L_FILE_DELETED" ver="1">Rilevato file</t>
+<t id="L_FILE_DELETED" ver="1">File eliminato</t>
 <t id="L_DELETE_FAILED" ver="1">Eliminazione fallita</t>
 <t id="L_UPLOADING_FILE..." ver="1">Aggiornamento file ...</t>
 <t id="L_FIRMWARE_NO_DELETE" ver="1">Il firmware non implementa che si cancellino file o che ci sia una implementazione sconosciuta.</t>
@@ -400,7 +399,7 @@ risultati migliori, se il layer height cambia, cio' puo' accadere nelle versioni
 <t id="L_PRINT_PAUSED" ver="1">Stampa in pausa</t>
 <t id="L_REMOVE_SD_CARD" ver="1">Puoi rimuovere la sd card.</t>
 <t id="L_INFORMATION" ver="1">Informazioni</t>
-<t id="L_REALLY_DELETE_X" ver="1">Really delete $1</t>
+<t id="L_REALLY_DELETE_X" ver="1">Conferma eliminazione $1</t>
 <t id="SOUND_CONFIGURATION" ver="1">Configurazioni suoni</t>
 <t id="L_SOUNDS" ver="1">Suoni</t>
 <t id="L_ERROR_SOUND" ver="1">Suoni di errore</t>
@@ -430,8 +429,8 @@ risultati migliori, se il layer height cambia, cio' puo' accadere nelle versioni
 <t id="L_M_PID_SETTINGS" ver="1">PID settings:</t>
 <t id="L_M_STEPS_PER_MM" ver="1">Passi per mm:</t>
 <t id="L_M_RETRACT_ACCELERATION" ver="1">Accelerazione ritrazione:</t>
-<t id="B_M_LOAD" ver="1">Ricarica Config</t>
-<t id="B_M_RESTORE" ver="1">Ristabilisci impostazioni di fabbrica</t>
+<t id="B_M_LOAD" ver="1">Ricarica Configurazione</t>
+<t id="B_M_RESTORE" ver="1">Ristabilisci impostazioni iniziali</t>
 <t id="B_M_SAVE" ver="1">Salva su EEPROM</t>
 <t id="L_M_CONFIRM_WRITE" ver="1">Impostazioni memorizzate per l'esecuzione della configurazione.
 Scrivere i cambiamenti sul EEPROM?</t>
@@ -460,10 +459,10 @@ Scrivere i cambiamenti sul EEPROM?</t>
 <t id="L_FEEDRATE:" ver="1">Feedrate:</t>
 <t id="L_FLOWRATE:" ver="1">Flowrate:</t>
 <t id="L_UPDATE_NO_CONNECTION" ver="1">Impossibile ottenere una connessione al server di aggiornamento!</t>
-<t id="L_MOVE_CAMERA" ver="1">Muovi Camera</t>
+<t id="L_MOVE_CAMERA" ver="1">Muovi camera</t>
 <t id="L_MOVE_OBJECT" ver="1">Muovi oggetto</t>
-<t id="L_MOVE_VIEWPOINT" ver="1">Muovi punto di vista</t>
-<t id="L_RESET_VIEW" ver="1">Reset Visuale</t>
+<t id="L_MOVE_VIEWPOINT" ver="1">Muovi punto di visuale</t>
+<t id="L_RESET_VIEW" ver="1">Resetta visuale</t>
 <t id="L_ROTATE" ver="1">Ruota</t>
 <t id="L_TOP_VIEW" ver="1">Vista dall'alto</t>
 <t id="T_ZOOM_VIEW" ver="1">Zoom</t>
@@ -480,4 +479,10 @@ Scrivere i cambiamenti sul EEPROM?</t>
 <t id="L_FILAMENT_NONE" ver="3">Nessuno/Uguale a Estrusore 1</t>
 <t id="L_REALLY_QUIT" ver="3">Stampa non completata. Vuoi uscire comunque?</t>
 <t id="M_DONATE" ver="3">Dona o Supporta</t>
+<t id="L_FAN" ver="4">Ventola</t>
+<t id="L_HOME_X:" ver="4">Home X:</t>
+<t id="L_HOME_Y:" ver="4">Home Y:</t>
+<t id="L_HOME_Z:" ver="4">Home Z:</t>
+<t id="L_MIN" ver="4">Min</t>
+<t id="L_MAX" ver="4">Max</t>
 </translation>

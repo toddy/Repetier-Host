@@ -278,7 +278,7 @@
             // toolUpdating
             // 
             this.toolUpdating.Name = "toolUpdating";
-            this.toolUpdating.Size = new System.Drawing.Size(421, 17);
+            this.toolUpdating.Size = new System.Drawing.Size(390, 17);
             this.toolUpdating.Spring = true;
             this.toolUpdating.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -600,6 +600,6 @@
         private MB.Controls.ColorSlider sliderShowFirstLayer;
         private System.Windows.Forms.Label labelMaxLayer;
         private MB.Controls.ColorSlider sliderShowMaxLayer;
-        private System.Windows.Forms.ToolStripStatusLabel toolPrintingTime;
+        public System.Windows.Forms.ToolStripStatusLabel toolPrintingTime;
     }
 }

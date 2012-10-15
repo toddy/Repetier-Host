@@ -135,6 +135,7 @@ namespace RepetierHost.model
         public bool isSprinter = false;
         public int speedMultiply = 100;
         public int flowMultiply = 100;
+        public bool boostUpload = false;
 
         public PrinterConnection()
         {
@@ -490,7 +491,7 @@ namespace RepetierHost.model
                         }
                         if (resendError > 0) resendError--; // Drop error counter
                         // then check for manual commands
-                        if (injectCommands.Count > 0)
+                        if (injectCommands.Count > 0 && !job.exclusive)
                         {
                             lock (history)
                             {
@@ -569,7 +570,7 @@ namespace RepetierHost.model
                                         gc.N = ++lastline;
                                     if (isVirtualActive)
                                     {
-                                        string cmd = gc.getAscii(true,true);
+                                        string cmd = gc.getAscii(true, true);
                                         if (!pingpong && receivedCount() + cmd.Length /*gc.orig.Length*/ > receiveCacheSize) { --lastline; return false; } // printer cache full
                                         if (pingpong) readyForNextSend = false;
                                         else { lock (nackLines) { nackLines.AddLast(cmd.Length /*gc.orig.Length*/); } }
@@ -577,6 +578,8 @@ namespace RepetierHost.model
                                         bytesSend += cmd.Length; // gc.orig.Length;
                                     }
                                     else
+                                    {
+                                       // bool forceReady = job.exclusive && boostUpload;
                                         if (binaryVersion == 0 || gc.forceAscii)
                                         {
                                             string cmd = gc.getAscii(true, true);
@@ -595,6 +598,7 @@ namespace RepetierHost.model
                                             serial.Write(cmd, 0, cmd.Length);
                                             bytesSend += cmd.Length;
                                         }
+                                    }
                                     historygc = gc;
                                 }
                                 job.PopData();
@@ -656,6 +660,7 @@ namespace RepetierHost.model
                 writeThread.Start();
             }
             isMarlin = isRepetier = false;
+            resendError = 0;
             try
             {
                 if (port.ToLower().Equals("virtual printer"))
@@ -962,6 +967,10 @@ namespace RepetierHost.model
         {
             injectLock.Set();
         }
+        public MethodInvoker firmwareRequestedPause = delegate
+        {
+            Main.conn.pause(Trans.T("L_PAUSED_FIRMWARE"));
+        };
         /// <summary>
         /// Analyzes a response from the printer.
         /// Updates data and sends events according to the data.
@@ -1093,7 +1102,10 @@ namespace RepetierHost.model
                 int.TryParse(h, out analyzer.fanVoltage);
                 analyzer.fireChanged();
             }
-
+            if (res.Contains("RequestPause:"))
+            {
+                Main.main.Invoke(firmwareRequestedPause);
+            }
             bool tempChange = false;
             h = extract(res, "T:");
             if (h != null)

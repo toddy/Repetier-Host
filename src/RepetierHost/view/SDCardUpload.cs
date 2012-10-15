@@ -91,7 +91,7 @@ namespace RepetierHost.view
                 if (t.Length > 12 || t.Length == 0) ok = false;
                 int p = t.IndexOf('.');
                 if (p>8) ok = false;
-                
+                if (p < 0 && t.Length > 8) ok = false;
                 int i;
                 for (i = 0; i < t.Length; i++)
                 {

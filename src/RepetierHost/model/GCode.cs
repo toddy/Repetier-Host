@@ -35,10 +35,12 @@ namespace RepetierHost.model
         public bool forceAscii = false; // true if unpaseable content is found
         public bool hostCommand = false; // True if it contains a host command to be executed
         private ushort fields = 128;
+        private ushort fields2 = 0;
         int n;
         public bool comment = false;
-        private byte g = 0, m = 0, t = 0;
-        private float x, y, z, e, f;
+        private ushort g = 0, m = 0;
+        private byte t = 0;
+        private float x, y, z, e, f,ii,j;
         private int s;
         private int p;
         private String text = null;
@@ -49,7 +51,7 @@ namespace RepetierHost.model
         public String Text
         {
             get { return text; }
-            set { text = value; if (text.Length > 16) text = text.Substring(0, 16); fields |= 32768; }
+            set { text = value; if (text.Length > 16) ActivateV2OrForceAscii(); fields |= 32768; }
         }
         public bool hasN { get { return (fields & 1) != 0; } }
         public int N
@@ -58,13 +60,13 @@ namespace RepetierHost.model
             set { n = value; fields |= 1; }
         }
         public bool hasM {get { return (fields & 2) != 0; }}
-        public byte M
+        public ushort M
         {
             get { return m; }
             set { m = value; fields |= 2; }
         }
         public bool hasG { get { return (fields & 4) != 0; } }
-        public byte G
+        public ushort G
         {
             get { return g; }
             set { g = value; fields |= 4; }
@@ -118,6 +120,19 @@ namespace RepetierHost.model
             get { return f; }
             set { f = value; fields |= 256; }
         }
+        public bool hasI { get { return (fields2 & 1) != 0; } }
+        public float I
+        {
+            get { return ii; }
+            set { ii = value; fields2 |= 1; ActivateV2OrForceAscii(); }
+        }
+        public bool hasJ { get { return (fields2 & 2) != 0; } }
+        public float J
+        {
+            get { return j; }
+            set { j = value; fields2 |= 2; ActivateV2OrForceAscii(); }
+        }
+        public bool isV2 { get { return (fields & 4096) != 0; } }
         /// <summary>
         /// Converts a gcode line into a binary representation.
         /// </summary>
@@ -125,12 +140,27 @@ namespace RepetierHost.model
         /// <returns></returns>
         public byte[] getBinary(int version)
         {
+            bool v2 = isV2;
             MemoryStream ms = new MemoryStream();
             BinaryWriter bw = new BinaryWriter(ms,Encoding.ASCII);
             bw.Write(fields);
+            if (v2)
+            {
+                bw.Write(fields2);
+                if(hasText)
+                    bw.Write((byte)text.Length);
+            }
             if (hasN) bw.Write((ushort)(n & 65535));
-            if (hasM) bw.Write(m);
-            if (hasG) bw.Write(g);
+            if (v2)
+            {
+                if (hasM) bw.Write(m);
+                if (hasG) bw.Write(g);
+            }
+            else
+            {
+                if (hasM) bw.Write((byte)m);
+                if (hasG) bw.Write((byte)g);
+            }
             if (hasX) bw.Write(x);
             if (hasY) bw.Write(y);
             if (hasZ) bw.Write(z);
@@ -139,15 +169,27 @@ namespace RepetierHost.model
             if (hasT) bw.Write(t);
             if (hasS) bw.Write(s);
             if (hasP) bw.Write(p);
+            if (hasI) bw.Write(ii);
+            if (hasJ) bw.Write(j);
             if (hasText)
             {
                 int i, len = text.Length;
-                if (len > 16) len = 16;
-                for (i = 0; i < len; i++)
+                if (v2)
                 {
-                    bw.Write((byte)text[i]);
+                    for (i = 0; i < len; i++)
+                    {
+                        bw.Write((byte)text[i]);
+                    }
                 }
-                for(;i<16;i++) bw.Write((byte)0);
+                else
+                {
+                    if (len > 16) len = 16;
+                    for (i = 0; i < len; i++)
+                    {
+                        bw.Write((byte)text[i]);
+                    }
+                    for (; i < 16; i++) bw.Write((byte)0);
+                }
             }
             // compute fletcher-16 checksum
             int sum1 = 0, sum2 = 0;
@@ -230,6 +272,16 @@ namespace RepetierHost.model
                     s.Append(" F");
                     s.Append(f.ToString(format));
                 }
+                if (hasI)
+                {
+                    s.Append(" I");
+                    s.Append(ii.ToString(format));
+                }
+                if (hasJ)
+                {
+                    s.Append(" J");
+                    s.Append(j.ToString(format));
+                }
                 if (hasS)
                 {
                     s.Append(" S");
@@ -256,18 +308,27 @@ namespace RepetierHost.model
             }
             return s.ToString();
         }
+        private void ActivateV2OrForceAscii()
+        {
+            if (Main.conn.binaryVersion < 2)
+            {
+                forceAscii = true;
+                return;
+            }
+            fields |= 4096;
+        }
         private void AddCode(char c,string val) {
             double d;
             double.TryParse(val, NumberStyles.Float, format, out d);
             switch (c)
             {
                 case 'G':
-                    if (d > 255) forceAscii = true;
-                    G = (byte)d;
+                    if (d > 255) ActivateV2OrForceAscii();
+                    G = (ushort)d;
                     break;
                 case 'M':
-                    if (d > 255) forceAscii = true;
-                    M = (byte)d;
+                    if (d > 255) ActivateV2OrForceAscii();
+                    M = (ushort)d;
                     break;
                 case 'T':
                     if (d > 255) forceAscii = true;
@@ -298,6 +359,12 @@ namespace RepetierHost.model
                 case 'F':
                     F = (float)d;
                     break;
+                case 'I':
+                    F = (float)d;
+                    break;
+                case 'J':
+                    F = (float)d;
+                    break;
                 default:
                     forceAscii = true;
                     break;
@@ -325,6 +392,7 @@ namespace RepetierHost.model
                 return;
             }
             fields = 128;
+            fields2 = 0;
             int l = orig.Length,i;
             int mode = 0; // 0 = search code, 1 = search value
             char code = ';';
@@ -350,13 +418,14 @@ namespace RepetierHost.model
                     {
                         AddCode(code,orig.Substring(p1, i - p1));
                         mode = 0;
-                        if (hasM && (m == 23 || m == 28 || m == 29 || m == 30 || m == 117))
+                        if (hasM && (m == 23 || m == 28 || m == 29 || m == 30 || m == 32|| m == 117))
                         {
                             int pos = i;
                             while (pos < orig.Length && char.IsWhiteSpace(orig[pos])) pos++;
                             int end = pos;
                             while (end < orig.Length && !char.IsWhiteSpace(orig[end])) end++;
                             Text = orig.Substring(pos, end - pos);
+                            if (Text.Length > 16) ActivateV2OrForceAscii();
                             break;
                         }
                     }

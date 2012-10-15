@@ -154,7 +154,7 @@ Du kannst Pausen in deinem Code einfügen mit:
 <t id="L_POSITIVE_NUMBER_REQUIRED" ver="1">Positive Zahl benötigt</t>
 <t id="L_NOT_AN_INTEGER" ver="1">Keine ganze Zahl</t>
 <t id="L_RESET_OUTPUT" ver="1">Ausgabe zurückgesetzt. Nach einigem warten bekam ich nur $1</t>
-<t id="L_RECEIVING_ONLY_ERRORS" ver="1">Empfange nut Fehlermeldungen. Verbindung getrennt.</t>
+<t id="L_RECEIVING_ONLY_ERRORS" ver="1">Empfange nur Fehlermeldungen. Verbindung getrennt.</t>
 <t id="L_PRINTING..ETA" ver="1">Drucke...Ende in $1</t>
 <t id="L_LAYER_X/Y" ver="1"> Layer $1/$2</t>
 <t id="L_ERROR_SENDING_DATA:" ver="1">Sendefehler:</t>
@@ -483,5 +483,9 @@ Mögliche Gründe:
 <t id="L_HOME_Z:" ver="4">Home Z:</t>
 <t id="L_MIN" ver="4">Min</t>
 <t id="L_MAX" ver="4">Max</t>
+<t id="L_PAUSED_FIRMWARE" ver="4">Ihr Drucker verlangte eine Pause.</t>
+<t id="L_CREATE_FOLDER" ver="4">Neues Verzeichnis erstellen</t>
+<t id="L_CREATE_FOLDER_INFO" ver="4">Verzeichnisname in 8.3 Notation:</t>
+<t id="L_UPLOADING_TIME" ver="4">Zeit zum hochladen: $1</t>
 </translation>
 
