@@ -37,7 +37,7 @@ namespace RepetierHost.model
         public int mode = 0; // 0 = no job defines, 1 = printing, 2 = finished, 3 = aborted
         public double computedPrintingTime = 0;
         public DateTime jobStarted, jobFinished;
-        LinkedList<GCode> jobList = new LinkedList<GCode>();
+        LinkedList<GCodeCompressed> jobList = new LinkedList<GCodeCompressed>();
         //LinkedList<PrintTime> times = new LinkedList<PrintTime>();
         PrinterConnection con;
         GCodeAnalyzer ana = null;
@@ -130,7 +130,7 @@ namespace RepetierHost.model
                 gcode.Parse(line);
                 if (!gcode.comment)
                 {
-                    jobList.AddLast(gcode);
+                    jobList.AddLast(new GCodeCompressed(gcode));
                     totalLines++;
                 }
             }
@@ -145,7 +145,7 @@ namespace RepetierHost.model
                 gcode.Parse(line.text);
                 if (!gcode.comment)
                 {
-                    jobList.AddLast(gcode);
+                    jobList.AddLast(new GCodeCompressed(gcode));
                     totalLines++;
                 }
                 if (line.hasLayer)
@@ -164,7 +164,7 @@ namespace RepetierHost.model
         public GCode PeekData()
         {
             if (jobList.Count == 0) return null;
-            return jobList.First.Value;
+            return new GCode(jobList.First.Value);
         }
         public GCode PopData()
         {
@@ -175,7 +175,7 @@ namespace RepetierHost.model
                 if (jobList.Count == 0) return null;
                 try
                 {
-                    gc = jobList.First.Value;
+                    gc = new GCode(jobList.First.Value);
                     jobList.RemoveFirst();
                     linesSend++;
                     /*PrintTime pt = new PrintTime();

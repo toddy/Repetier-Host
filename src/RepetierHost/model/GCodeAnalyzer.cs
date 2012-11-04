@@ -471,6 +471,7 @@ namespace RepetierHost.model
             }
             code.layer = layer;
             code.tool = activeExtruder;
+            code.emax = emax;
         }
     }
 }

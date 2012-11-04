@@ -487,5 +487,8 @@ Mögliche Gründe:
 <t id="L_CREATE_FOLDER" ver="4">Neues Verzeichnis erstellen</t>
 <t id="L_CREATE_FOLDER_INFO" ver="4">Verzeichnisname in 8.3 Notation:</t>
 <t id="L_UPLOADING_TIME" ver="4">Zeit zum hochladen: $1</t>
+<t id="L_FILAMENT_POS" ver="4">Fil: $1</t>
+<t id="L_GO_FIRST_LAYER" ver="4">Zum ersten Layer</t>
+<t id="L_GO_LAST_LAYER" ver="4">Zum letzten Layer</t>
 </translation>
 

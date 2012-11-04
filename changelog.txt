@@ -1,3 +1,11 @@
+Version 0.76
+  New translation: Spanish by Mecano
+  New translation: Portugues by Alexandre Dias
+  New translation: French by contact@labsud.org
+  SD manager now supports directories.
+  Support for Repetier-Protocol V2.
+  Ready for Rostock.  
+
 Version 0.74 29-09-2012
   Slic3r 0.9.3 now included.
   Fixed color change of some colors.

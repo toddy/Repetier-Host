@@ -8,7 +8,7 @@ namespace RepetierHost.model
 {
     public class GCodeShort
     {
-        public float x, y, z, e,f;
+        public float x, y, z, e,f,emax;
         // Bit 0-19 : Layer 
         // Bit 20-23 : Tool
         // Bit 24-29 : Compressed command
@@ -19,6 +19,7 @@ namespace RepetierHost.model
             text = cmd;
             flags = 1048575 + (0 << 24);
             x = y = z = e = f = -99999;
+            emax = -1;
             parse();
         }
         public int layer

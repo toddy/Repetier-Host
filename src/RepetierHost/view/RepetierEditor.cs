@@ -422,6 +422,8 @@ namespace RepetierHost.view
             radioShowSingleLayer.Text = Trans.T("L_SHOW_SINGLE_LAYER");
             labelFirstLayer.Text = Trans.T("L_FIRST_LAYER");
             labelLastLayer.Text = Trans.T("L_LAST_LAYER");
+            buttonGoFirstLayer.Text = Trans.T("L_GO_FIRST_LAYER");
+            buttonGoLastLayer.Text = Trans.T("L_GO_LAST_LAYER");
         }
         public int FileIndex
         {
@@ -559,7 +561,7 @@ namespace RepetierHost.view
         {
             if (_row < 0 || _row >= lines.Count) return;
             GCodeShort s = lines[_row];
-            toolLayer.Text = Trans.T1("L_LAYER_X",(!s.hasLayer ? "-" : s.layer.ToString()));
+            toolLayer.Text = Trans.T1("L_LAYER_X",(!s.hasLayer ? "-" : s.layer.ToString()))+(s.emax>0?" "+Trans.T1("L_FILAMENT_POS",s.emax.ToString("0.0")):"");
             toolExtruder.Text = Trans.T1("L_EXTRUDER_X",(!s.hasLayer ? "-" : s.tool.ToString()));
         }
         private int col
@@ -824,6 +826,26 @@ namespace RepetierHost.view
                 col = lines[row].Length;
                 PositionShowCursor();
             }
+        }
+        private void goLayer(int lay)
+        {
+            int line = 0;
+            foreach(GCodeShort gc in cur.textArray) {
+                if (gc.layer == lay) break;
+                line++;
+            }
+            if (line < cur.textArray.Count)
+            {
+                row = line;
+                col = 0;
+            }
+            else
+            {
+                row = cur.textArray.Count - 1;
+                col = cur.textArray[row].text.Length;
+            }
+            PositionShowCursor();
+            editor.Focus();
         }
         private void CursorPageUp()
         {
@@ -1640,6 +1662,16 @@ namespace RepetierHost.view
         private void numericShowMaxLayer_ValueChanged(object sender, EventArgs e)
         {
             ShowMaxLayer = (int)numericShowMaxLayer.Value;
+        }
+
+        private void buttonGoFirstLayer_Click(object sender, EventArgs e)
+        {
+            goLayer(ShowMinLayer);
+        }
+
+        private void buttonGoLastLayer_Click(object sender, EventArgs e)
+        {
+            goLayer(ShowMaxLayer + 1);
         }
     }
 }

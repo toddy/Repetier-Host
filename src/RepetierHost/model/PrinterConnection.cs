@@ -978,6 +978,7 @@ namespace RepetierHost.model
         /// <param name="res"></param>
         public void analyzeResponse(string res)
         {
+            while (res.Length > 0 && res[0] < 32) res = res.Substring(1);
             res = res.Trim();
             int level = 0;
             if (logWriter != null)

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<translation revision="4" language="Français" languageInEnglish="French" author="contact@labsud.org">
-<t id="M_FILE" ver="1">Fichier</t>
+<translation revision="3" language="Français" languageInEnglish="French" author="contact@labsud.org">
+<t id="M_FILE" ver="2">Fichier</t>
 <t id="M_CONFIG" ver="1">Configuration</t>
 <t id="M_SLICER" ver="1">Trancheur</t>
 <t id="M_TEMPERATURE" ver="1">Température</t>
@@ -193,8 +193,8 @@ Vous pouvez ajouter des pauses dans votre code avec
 <t id="L_SHOW_COMPLETE_CODE" ver="1">Montre tout</t>
 <t id="L_SHOW_LAYER_RANGE" ver="1">Montre plage de couches</t>
 <t id="L_SHOW_SINGLE_LAYER" ver="1">Montre couche unique</t>
-<t id="L_FIRST_LAYER" ver="1">Première couche:</t>
-<t id="L_LAST_LAYER" ver="1">Dernière couche:</t>
+<t id="L_FIRST_LAYER" ver="1">Prem. couche:</t>
+<t id="L_LAST_LAYER" ver="1">Dern. couche:</t>
 <t id="L_REALLY_DELETE_PRINTER" ver="1">Voulez vous vraiment supprimer tous les réglages pour $1?</t>
 <t id="L_SECURITY_QUESTION" ver="1">Question de sécurité</t>
 <t id="L_ADD_PRINTING_TIME" ver="1">Majorer temps d'impr. de </t>
@@ -489,6 +489,5 @@ Ecrire changement dans l'EEPROM?</t>
 <t id="L_FILAMENT_NONE" ver="3">Aucun/Idem Extrudeur 1</t>
 <t id="L_REALLY_QUIT" ver="3">Impression non terminée. Sortir tout de même?</t>
 <t id="M_DONATE" ver="3">Donner ou Supporter</t>
-<t id="L_FAN" ver="4">Ventilateur</t>
 </translation>
 

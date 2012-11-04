@@ -24,6 +24,35 @@ using System.Globalization;
 namespace RepetierHost.model
 {
     /// <summary>
+    /// This is a compressed version of GCode to reduce the space needed.
+    /// It is only used to store a compact version for the printjob in ram.
+    /// </summary>
+    public class GCodeCompressed
+    {
+        static public System.Text.UTF8Encoding enc = new UTF8Encoding();
+        byte[] data;
+        public GCodeCompressed(GCode c)
+        {
+            int p = c.orig.IndexOf(';');
+            string tmp = (p >= 0 ? c.orig.Substring(0, p) : c.orig).Trim();
+            data = enc.GetBytes(tmp);
+        }
+        public GCodeCompressed(string c)
+        {
+            int p = c.IndexOf(';');
+            string tmp = (p >= 0 ? c.Substring(0, p - 1) : c);
+            data = enc.GetBytes(tmp);
+        }
+        public GCode getCode()
+        {
+            return new GCode(enc.GetString(data));
+        }
+        public string getCommand()
+        {
+            return enc.GetString(data);
+        }
+    }
+    /// <summary>
     /// Stores the complete data of a gcode command in an easy 
     /// accessible data structure. This structure can be converted
     /// into a binary or ascii representation to be send to a
@@ -40,12 +69,23 @@ namespace RepetierHost.model
         public bool comment = false;
         private ushort g = 0, m = 0;
         private byte t = 0;
-        private float x, y, z, e, f,ii,j;
+        private float x, y, z, e, f,ii,j,r;
         private int s;
         private int p;
         private String text = null;
         public String orig;
 
+        public GCode(GCodeCompressed gc)
+        {
+            Parse(gc.getCommand());
+        }
+        public GCode(string s)
+        {
+            Parse(s);
+        }
+        public GCode()
+        {
+        }
         public bool hasCode { get { return fields != 128; } }
         public bool hasText { get { return (fields & 32768) != 0; } }
         public String Text
@@ -132,6 +172,12 @@ namespace RepetierHost.model
             get { return j; }
             set { j = value; fields2 |= 2; ActivateV2OrForceAscii(); }
         }
+        public bool hasR { get { return (fields2 & 4) != 0; } }
+        public float R
+        {
+            get { return r; }
+            set { r = value; fields2 |= 4; ActivateV2OrForceAscii(); }
+        }
         public bool isV2 { get { return (fields & 4096) != 0; } }
         /// <summary>
         /// Converts a gcode line into a binary representation.
@@ -171,6 +217,7 @@ namespace RepetierHost.model
             if (hasP) bw.Write(p);
             if (hasI) bw.Write(ii);
             if (hasJ) bw.Write(j);
+            if (hasR) bw.Write(r);
             if (hasText)
             {
                 int i, len = text.Length;
@@ -282,6 +329,11 @@ namespace RepetierHost.model
                     s.Append(" J");
                     s.Append(j.ToString(format));
                 }
+                if (hasR)
+                {
+                    s.Append(" R");
+                    s.Append(r.ToString(format));
+                }
                 if (hasS)
                 {
                     s.Append(" S");
@@ -360,10 +412,13 @@ namespace RepetierHost.model
                     F = (float)d;
                     break;
                 case 'I':
-                    F = (float)d;
+                    I = (float)d;
                     break;
                 case 'J':
-                    F = (float)d;
+                    J = (float)d;
+                    break;
+                case 'R':
+                    R = (float)d;
                     break;
                 default:
                     forceAscii = true;
