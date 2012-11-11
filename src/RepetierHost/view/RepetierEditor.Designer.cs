@@ -51,24 +51,23 @@
             this.toolExtruder = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolPrintingTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolUpdating = new System.Windows.Forms.ToolStripStatusLabel();
+            this.timer = new System.Windows.Forms.Timer(this.components);
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.scrollRows = new System.Windows.Forms.VScrollBar();
             this.scrollColumns = new System.Windows.Forms.HScrollBar();
             this.tabHelpview = new System.Windows.Forms.TabControl();
-            this.tabPageHelp = new System.Windows.Forms.TabPage();
-            this.help = new System.Windows.Forms.RichTextBox();
             this.tabPageVisualization = new System.Windows.Forms.TabPage();
+            this.buttonGoLastLayer = new System.Windows.Forms.Button();
+            this.buttonGoFirstLayer = new System.Windows.Forms.Button();
             this.labelMaxLayer = new System.Windows.Forms.Label();
-            this.labelLastLayer = new System.Windows.Forms.Label();
-            this.labelFirstLayer = new System.Windows.Forms.Label();
             this.numericShowMaxLayer = new System.Windows.Forms.NumericUpDown();
             this.numericShowMinLayer = new System.Windows.Forms.NumericUpDown();
             this.radioShowLayerRange = new System.Windows.Forms.RadioButton();
             this.radioShowSingleLayer = new System.Windows.Forms.RadioButton();
             this.radioShowAll = new System.Windows.Forms.RadioButton();
-            this.timer = new System.Windows.Forms.Timer(this.components);
-            this.buttonGoFirstLayer = new System.Windows.Forms.Button();
-            this.buttonGoLastLayer = new System.Windows.Forms.Button();
+            this.tabPageHelp = new System.Windows.Forms.TabPage();
+            this.help = new System.Windows.Forms.RichTextBox();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.editor = new RepetierHost.view.DoubleBufferPanel();
             this.sliderShowMaxLayer = new MB.Controls.ColorSlider();
             this.sliderShowFirstLayer = new MB.Controls.ColorSlider();
@@ -78,10 +77,11 @@
             this.splitContainer.Panel2.SuspendLayout();
             this.splitContainer.SuspendLayout();
             this.tabHelpview.SuspendLayout();
-            this.tabPageHelp.SuspendLayout();
             this.tabPageVisualization.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericShowMaxLayer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericShowMinLayer)).BeginInit();
+            this.tabPageHelp.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -284,6 +284,12 @@
             this.toolUpdating.Spring = true;
             this.toolUpdating.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // timer
+            // 
+            this.timer.Enabled = true;
+            this.timer.Interval = 500;
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            // 
             // splitContainer
             // 
             this.splitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -333,14 +339,117 @@
             // 
             // tabHelpview
             // 
-            this.tabHelpview.Controls.Add(this.tabPageHelp);
             this.tabHelpview.Controls.Add(this.tabPageVisualization);
+            this.tabHelpview.Controls.Add(this.tabPageHelp);
             this.tabHelpview.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabHelpview.Location = new System.Drawing.Point(0, 0);
             this.tabHelpview.Name = "tabHelpview";
             this.tabHelpview.SelectedIndex = 0;
             this.tabHelpview.Size = new System.Drawing.Size(615, 121);
             this.tabHelpview.TabIndex = 1;
+            // 
+            // tabPageVisualization
+            // 
+            this.tabPageVisualization.Controls.Add(this.flowLayoutPanel1);
+            this.tabPageVisualization.Controls.Add(this.buttonGoLastLayer);
+            this.tabPageVisualization.Controls.Add(this.buttonGoFirstLayer);
+            this.tabPageVisualization.Controls.Add(this.labelMaxLayer);
+            this.tabPageVisualization.Controls.Add(this.numericShowMaxLayer);
+            this.tabPageVisualization.Controls.Add(this.numericShowMinLayer);
+            this.tabPageVisualization.Controls.Add(this.sliderShowMaxLayer);
+            this.tabPageVisualization.Controls.Add(this.sliderShowFirstLayer);
+            this.tabPageVisualization.Location = new System.Drawing.Point(4, 22);
+            this.tabPageVisualization.Name = "tabPageVisualization";
+            this.tabPageVisualization.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageVisualization.Size = new System.Drawing.Size(607, 95);
+            this.tabPageVisualization.TabIndex = 1;
+            this.tabPageVisualization.Text = "Visualization";
+            this.tabPageVisualization.UseVisualStyleBackColor = true;
+            // 
+            // buttonGoLastLayer
+            // 
+            this.buttonGoLastLayer.Location = new System.Drawing.Point(10, 65);
+            this.buttonGoLastLayer.Name = "buttonGoLastLayer";
+            this.buttonGoLastLayer.Size = new System.Drawing.Size(132, 23);
+            this.buttonGoLastLayer.TabIndex = 7;
+            this.buttonGoLastLayer.Text = "Last Layer";
+            this.buttonGoLastLayer.UseVisualStyleBackColor = true;
+            this.buttonGoLastLayer.Click += new System.EventHandler(this.buttonGoLastLayer_Click);
+            // 
+            // buttonGoFirstLayer
+            // 
+            this.buttonGoFirstLayer.Location = new System.Drawing.Point(10, 37);
+            this.buttonGoFirstLayer.Name = "buttonGoFirstLayer";
+            this.buttonGoFirstLayer.Size = new System.Drawing.Size(132, 23);
+            this.buttonGoFirstLayer.TabIndex = 7;
+            this.buttonGoFirstLayer.Text = "First Layer";
+            this.buttonGoFirstLayer.UseVisualStyleBackColor = true;
+            this.buttonGoFirstLayer.Click += new System.EventHandler(this.buttonGoFirstLayer_Click);
+            // 
+            // labelMaxLayer
+            // 
+            this.labelMaxLayer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelMaxLayer.AutoSize = true;
+            this.labelMaxLayer.Location = new System.Drawing.Point(572, 71);
+            this.labelMaxLayer.Name = "labelMaxLayer";
+            this.labelMaxLayer.Size = new System.Drawing.Size(10, 13);
+            this.labelMaxLayer.TabIndex = 6;
+            this.labelMaxLayer.Text = "-";
+            this.labelMaxLayer.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // numericShowMaxLayer
+            // 
+            this.numericShowMaxLayer.Location = new System.Drawing.Point(144, 66);
+            this.numericShowMaxLayer.Name = "numericShowMaxLayer";
+            this.numericShowMaxLayer.Size = new System.Drawing.Size(59, 20);
+            this.numericShowMaxLayer.TabIndex = 4;
+            this.numericShowMaxLayer.ValueChanged += new System.EventHandler(this.numericShowMaxLayer_ValueChanged);
+            // 
+            // numericShowMinLayer
+            // 
+            this.numericShowMinLayer.Location = new System.Drawing.Point(144, 40);
+            this.numericShowMinLayer.Name = "numericShowMinLayer";
+            this.numericShowMinLayer.Size = new System.Drawing.Size(59, 20);
+            this.numericShowMinLayer.TabIndex = 3;
+            this.numericShowMinLayer.ValueChanged += new System.EventHandler(this.numericShowMinLayer_ValueChanged);
+            // 
+            // radioShowLayerRange
+            // 
+            this.radioShowLayerRange.AutoSize = true;
+            this.radioShowLayerRange.Location = new System.Drawing.Point(247, 3);
+            this.radioShowLayerRange.Name = "radioShowLayerRange";
+            this.radioShowLayerRange.Size = new System.Drawing.Size(107, 17);
+            this.radioShowLayerRange.TabIndex = 2;
+            this.radioShowLayerRange.Tag = "2";
+            this.radioShowLayerRange.Text = "Show layer range";
+            this.radioShowLayerRange.UseVisualStyleBackColor = true;
+            this.radioShowLayerRange.Click += new System.EventHandler(this.radioShowMode_Click);
+            // 
+            // radioShowSingleLayer
+            // 
+            this.radioShowSingleLayer.AutoSize = true;
+            this.radioShowSingleLayer.Location = new System.Drawing.Point(134, 3);
+            this.radioShowSingleLayer.Name = "radioShowSingleLayer";
+            this.radioShowSingleLayer.Size = new System.Drawing.Size(107, 17);
+            this.radioShowSingleLayer.TabIndex = 1;
+            this.radioShowSingleLayer.Tag = "1";
+            this.radioShowSingleLayer.Text = "Show single layer";
+            this.radioShowSingleLayer.UseVisualStyleBackColor = true;
+            this.radioShowSingleLayer.Click += new System.EventHandler(this.radioShowMode_Click);
+            // 
+            // radioShowAll
+            // 
+            this.radioShowAll.AutoSize = true;
+            this.radioShowAll.Checked = true;
+            this.radioShowAll.Location = new System.Drawing.Point(3, 3);
+            this.radioShowAll.Name = "radioShowAll";
+            this.radioShowAll.Size = new System.Drawing.Size(125, 17);
+            this.radioShowAll.TabIndex = 0;
+            this.radioShowAll.TabStop = true;
+            this.radioShowAll.Tag = "0";
+            this.radioShowAll.Text = "Show complete code";
+            this.radioShowAll.UseVisualStyleBackColor = true;
+            this.radioShowAll.Click += new System.EventHandler(this.radioShowMode_Click);
             // 
             // tabPageHelp
             // 
@@ -365,136 +474,17 @@
             this.help.TabStop = false;
             this.help.Text = "";
             // 
-            // tabPageVisualization
+            // flowLayoutPanel1
             // 
-            this.tabPageVisualization.Controls.Add(this.buttonGoLastLayer);
-            this.tabPageVisualization.Controls.Add(this.buttonGoFirstLayer);
-            this.tabPageVisualization.Controls.Add(this.labelMaxLayer);
-            this.tabPageVisualization.Controls.Add(this.labelLastLayer);
-            this.tabPageVisualization.Controls.Add(this.labelFirstLayer);
-            this.tabPageVisualization.Controls.Add(this.numericShowMaxLayer);
-            this.tabPageVisualization.Controls.Add(this.numericShowMinLayer);
-            this.tabPageVisualization.Controls.Add(this.radioShowLayerRange);
-            this.tabPageVisualization.Controls.Add(this.radioShowSingleLayer);
-            this.tabPageVisualization.Controls.Add(this.radioShowAll);
-            this.tabPageVisualization.Controls.Add(this.sliderShowMaxLayer);
-            this.tabPageVisualization.Controls.Add(this.sliderShowFirstLayer);
-            this.tabPageVisualization.Location = new System.Drawing.Point(4, 22);
-            this.tabPageVisualization.Name = "tabPageVisualization";
-            this.tabPageVisualization.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageVisualization.Size = new System.Drawing.Size(607, 95);
-            this.tabPageVisualization.TabIndex = 1;
-            this.tabPageVisualization.Text = "Visualization";
-            this.tabPageVisualization.UseVisualStyleBackColor = true;
-            // 
-            // labelMaxLayer
-            // 
-            this.labelMaxLayer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelMaxLayer.AutoSize = true;
-            this.labelMaxLayer.Location = new System.Drawing.Point(584, 59);
-            this.labelMaxLayer.Name = "labelMaxLayer";
-            this.labelMaxLayer.Size = new System.Drawing.Size(10, 13);
-            this.labelMaxLayer.TabIndex = 6;
-            this.labelMaxLayer.Text = "-";
-            this.labelMaxLayer.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // labelLastLayer
-            // 
-            this.labelLastLayer.AutoSize = true;
-            this.labelLastLayer.Location = new System.Drawing.Point(139, 37);
-            this.labelLastLayer.Name = "labelLastLayer";
-            this.labelLastLayer.Size = new System.Drawing.Size(55, 13);
-            this.labelLastLayer.TabIndex = 5;
-            this.labelLastLayer.Text = "Last layer:";
-            // 
-            // labelFirstLayer
-            // 
-            this.labelFirstLayer.AutoSize = true;
-            this.labelFirstLayer.Location = new System.Drawing.Point(139, 11);
-            this.labelFirstLayer.Name = "labelFirstLayer";
-            this.labelFirstLayer.Size = new System.Drawing.Size(54, 13);
-            this.labelFirstLayer.TabIndex = 3;
-            this.labelFirstLayer.Text = "First layer:";
-            // 
-            // numericShowMaxLayer
-            // 
-            this.numericShowMaxLayer.Location = new System.Drawing.Point(220, 33);
-            this.numericShowMaxLayer.Name = "numericShowMaxLayer";
-            this.numericShowMaxLayer.Size = new System.Drawing.Size(59, 20);
-            this.numericShowMaxLayer.TabIndex = 4;
-            this.numericShowMaxLayer.ValueChanged += new System.EventHandler(this.numericShowMaxLayer_ValueChanged);
-            // 
-            // numericShowMinLayer
-            // 
-            this.numericShowMinLayer.Location = new System.Drawing.Point(220, 7);
-            this.numericShowMinLayer.Name = "numericShowMinLayer";
-            this.numericShowMinLayer.Size = new System.Drawing.Size(59, 20);
-            this.numericShowMinLayer.TabIndex = 3;
-            this.numericShowMinLayer.ValueChanged += new System.EventHandler(this.numericShowMinLayer_ValueChanged);
-            // 
-            // radioShowLayerRange
-            // 
-            this.radioShowLayerRange.AutoSize = true;
-            this.radioShowLayerRange.Location = new System.Drawing.Point(7, 55);
-            this.radioShowLayerRange.Name = "radioShowLayerRange";
-            this.radioShowLayerRange.Size = new System.Drawing.Size(107, 17);
-            this.radioShowLayerRange.TabIndex = 2;
-            this.radioShowLayerRange.Tag = "2";
-            this.radioShowLayerRange.Text = "Show layer range";
-            this.radioShowLayerRange.UseVisualStyleBackColor = true;
-            this.radioShowLayerRange.Click += new System.EventHandler(this.radioShowMode_Click);
-            // 
-            // radioShowSingleLayer
-            // 
-            this.radioShowSingleLayer.AutoSize = true;
-            this.radioShowSingleLayer.Location = new System.Drawing.Point(7, 31);
-            this.radioShowSingleLayer.Name = "radioShowSingleLayer";
-            this.radioShowSingleLayer.Size = new System.Drawing.Size(107, 17);
-            this.radioShowSingleLayer.TabIndex = 1;
-            this.radioShowSingleLayer.Tag = "1";
-            this.radioShowSingleLayer.Text = "Show single layer";
-            this.radioShowSingleLayer.UseVisualStyleBackColor = true;
-            this.radioShowSingleLayer.Click += new System.EventHandler(this.radioShowMode_Click);
-            // 
-            // radioShowAll
-            // 
-            this.radioShowAll.AutoSize = true;
-            this.radioShowAll.Checked = true;
-            this.radioShowAll.Location = new System.Drawing.Point(7, 7);
-            this.radioShowAll.Name = "radioShowAll";
-            this.radioShowAll.Size = new System.Drawing.Size(125, 17);
-            this.radioShowAll.TabIndex = 0;
-            this.radioShowAll.TabStop = true;
-            this.radioShowAll.Tag = "0";
-            this.radioShowAll.Text = "Show complete code";
-            this.radioShowAll.UseVisualStyleBackColor = true;
-            this.radioShowAll.Click += new System.EventHandler(this.radioShowMode_Click);
-            // 
-            // timer
-            // 
-            this.timer.Enabled = true;
-            this.timer.Interval = 500;
-            this.timer.Tick += new System.EventHandler(this.timer_Tick);
-            // 
-            // buttonGoFirstLayer
-            // 
-            this.buttonGoFirstLayer.Location = new System.Drawing.Point(142, 59);
-            this.buttonGoFirstLayer.Name = "buttonGoFirstLayer";
-            this.buttonGoFirstLayer.Size = new System.Drawing.Size(181, 23);
-            this.buttonGoFirstLayer.TabIndex = 7;
-            this.buttonGoFirstLayer.Text = "Go first layer";
-            this.buttonGoFirstLayer.UseVisualStyleBackColor = true;
-            this.buttonGoFirstLayer.Click += new System.EventHandler(this.buttonGoFirstLayer_Click);
-            // 
-            // buttonGoLastLayer
-            // 
-            this.buttonGoLastLayer.Location = new System.Drawing.Point(329, 59);
-            this.buttonGoLastLayer.Name = "buttonGoLastLayer";
-            this.buttonGoLastLayer.Size = new System.Drawing.Size(181, 23);
-            this.buttonGoLastLayer.TabIndex = 7;
-            this.buttonGoLastLayer.Text = "Go last layer";
-            this.buttonGoLastLayer.UseVisualStyleBackColor = true;
-            this.buttonGoLastLayer.Click += new System.EventHandler(this.buttonGoLastLayer_Click);
+            this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.flowLayoutPanel1.Controls.Add(this.radioShowAll);
+            this.flowLayoutPanel1.Controls.Add(this.radioShowSingleLayer);
+            this.flowLayoutPanel1.Controls.Add(this.radioShowLayerRange);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(607, 31);
+            this.flowLayoutPanel1.TabIndex = 8;
             // 
             // editor
             // 
@@ -526,12 +516,16 @@
             this.sliderShowMaxLayer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.sliderShowMaxLayer.BackColor = System.Drawing.Color.Transparent;
+            this.sliderShowMaxLayer.BarInnerColor = System.Drawing.Color.DimGray;
+            this.sliderShowMaxLayer.BarOuterColor = System.Drawing.Color.LightGray;
             this.sliderShowMaxLayer.BorderRoundRectSize = new System.Drawing.Size(8, 8);
             this.sliderShowMaxLayer.DrawFocusRectangle = false;
+            this.sliderShowMaxLayer.ElapsedInnerColor = System.Drawing.Color.DarkGray;
+            this.sliderShowMaxLayer.ElapsedOuterColor = System.Drawing.Color.LightGray;
             this.sliderShowMaxLayer.LargeChange = ((uint)(5u));
-            this.sliderShowMaxLayer.Location = new System.Drawing.Point(290, 31);
+            this.sliderShowMaxLayer.Location = new System.Drawing.Point(209, 64);
             this.sliderShowMaxLayer.Name = "sliderShowMaxLayer";
-            this.sliderShowMaxLayer.Size = new System.Drawing.Size(304, 22);
+            this.sliderShowMaxLayer.Size = new System.Drawing.Size(357, 22);
             this.sliderShowMaxLayer.SmallChange = ((uint)(1u));
             this.sliderShowMaxLayer.TabIndex = 6;
             this.sliderShowMaxLayer.Text = "colorSlider1";
@@ -543,12 +537,16 @@
             this.sliderShowFirstLayer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.sliderShowFirstLayer.BackColor = System.Drawing.Color.Transparent;
+            this.sliderShowFirstLayer.BarInnerColor = System.Drawing.Color.DimGray;
+            this.sliderShowFirstLayer.BarOuterColor = System.Drawing.Color.LightGray;
             this.sliderShowFirstLayer.BorderRoundRectSize = new System.Drawing.Size(8, 8);
             this.sliderShowFirstLayer.DrawFocusRectangle = false;
+            this.sliderShowFirstLayer.ElapsedInnerColor = System.Drawing.Color.DarkGray;
+            this.sliderShowFirstLayer.ElapsedOuterColor = System.Drawing.Color.LightGray;
             this.sliderShowFirstLayer.LargeChange = ((uint)(5u));
-            this.sliderShowFirstLayer.Location = new System.Drawing.Point(290, 7);
+            this.sliderShowFirstLayer.Location = new System.Drawing.Point(209, 40);
             this.sliderShowFirstLayer.Name = "sliderShowFirstLayer";
-            this.sliderShowFirstLayer.Size = new System.Drawing.Size(304, 22);
+            this.sliderShowFirstLayer.Size = new System.Drawing.Size(357, 22);
             this.sliderShowFirstLayer.SmallChange = ((uint)(1u));
             this.sliderShowFirstLayer.TabIndex = 5;
             this.sliderShowFirstLayer.Text = "colorSlider1";
@@ -573,11 +571,13 @@
             this.splitContainer.Panel2.ResumeLayout(false);
             this.splitContainer.ResumeLayout(false);
             this.tabHelpview.ResumeLayout(false);
-            this.tabPageHelp.ResumeLayout(false);
             this.tabPageVisualization.ResumeLayout(false);
             this.tabPageVisualization.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericShowMaxLayer)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericShowMinLayer)).EndInit();
+            this.tabPageHelp.ResumeLayout(false);
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -614,8 +614,6 @@
         private System.Windows.Forms.TabControl tabHelpview;
         private System.Windows.Forms.TabPage tabPageHelp;
         private System.Windows.Forms.TabPage tabPageVisualization;
-        private System.Windows.Forms.Label labelLastLayer;
-        private System.Windows.Forms.Label labelFirstLayer;
         private System.Windows.Forms.NumericUpDown numericShowMaxLayer;
         private System.Windows.Forms.NumericUpDown numericShowMinLayer;
         private System.Windows.Forms.RadioButton radioShowLayerRange;
@@ -627,5 +625,6 @@
         public System.Windows.Forms.ToolStripStatusLabel toolPrintingTime;
         private System.Windows.Forms.Button buttonGoLastLayer;
         private System.Windows.Forms.Button buttonGoFirstLayer;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
 }

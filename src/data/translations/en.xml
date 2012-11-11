@@ -497,7 +497,11 @@ Write Changes to EEPROM?</t>
 <t id="L_CREATE_FOLDER_INFO" ver="4">Enter folder name in 8.3 notation:</t>
 <t id="L_UPLOADING_TIME" ver="4">Uploading time: $1</t>
 <t id="L_FILAMENT_POS" ver="4">Fil: $1</t>
-<t id="L_GO_FIRST_LAYER" ver="4">Go First Layer</t>
-<t id="L_GO_LAST_LAYER" ver="4">Go Last Layer</t>
+<t id="L_TRAVEL_VISUALIZATION_DISABLED" ver="4">Travel visualization disabled</t>
+<t id="M_HIDE_TRAVEL" ver="4">Hide Travel</t>
+<t id="L_TRAVEL_VISUALIZATION_ENABLED" ver="4">Travel visualization enabled</t>
+<t id="M_SHOW_TRAVEL" ver="4">Show Travel</t>
+<t id="L_TRAVEL_MOVES:" ver="4">Travel Moves:</t>
+<t id="L_DISABLE_TRAVEL_MOVES_VIS">Disable Travel Move Visualization</t>
 </translation>
 

@@ -107,6 +107,8 @@ Immediate (slow)*/
             comboDrawMethod.Items[3] = Trans.T("L_DRAW_METHOD_IMMEDIATE");
             buttonOK.Text = Trans.T("B_OK");
             labelSelectionBox.Text = Trans.T("L_SELECTION_BOX");
+            labelTravelMoves.Text = Trans.T("L_TRAVEL_MOVES:");
+            checkDisableTravelMoves.Text = Trans.T("L_DISABLE_TRAVEL_MOVES_VIS");
         }
         public int filamentVisualization
         {
@@ -132,7 +134,7 @@ Immediate (slow)*/
         {
             get { return radioHeight.Checked; }
         }
-        private void FormToRegistry()
+        public void FormToRegistry()
         {
             try
             {
@@ -145,6 +147,7 @@ Immediate (slow)*/
                 threedKey.SetValue("filament2Color", filament2.BackColor.ToArgb());
                 threedKey.SetValue("filament3Color", filament3.BackColor.ToArgb());
                 threedKey.SetValue("hotFilamentColor", hotFilament.BackColor.ToArgb());
+                threedKey.SetValue("travelColor", travelMoves.BackColor.ToArgb());
                 threedKey.SetValue("selectedFilamentColor", selectedFilament.BackColor.ToArgb());
                 threedKey.SetValue("outsidePrintbedColor", outsidePrintbed.BackColor.ToArgb());
                 threedKey.SetValue("showEdges", showEdges.Checked ? 1 : 0);
@@ -152,6 +155,7 @@ Immediate (slow)*/
                 threedKey.SetValue("pulseOutside", pulseOutside.Checked ? 1 : 0);
                 threedKey.SetValue("showPrintbed", showPrintbed.Checked ? 1 : 0);
                 threedKey.SetValue("disableFilamentVisualization", checkDisableFilamentVisualization.Checked ? 1 : 0);
+                threedKey.SetValue("disableTravelVisualization", checkDisableTravelMoves.Checked ? 1 : 0);
                 // threedKey.SetValue("useVBOs", useVBOs ? 1 : 0);
                 threedKey.SetValue("drawMethod", comboDrawMethod.SelectedIndex);
                 threedKey.SetValue("layerHeight", textLayerHeight.Text);
@@ -204,6 +208,7 @@ Immediate (slow)*/
                 filament2.BackColor = Color.FromArgb((int)threedKey.GetValue("filament2Color", filament2.BackColor.ToArgb()));
                 filament3.BackColor = Color.FromArgb((int)threedKey.GetValue("filament3Color", filament3.BackColor.ToArgb()));
                 hotFilament.BackColor = Color.FromArgb((int)threedKey.GetValue("hotFilamentColor", hotFilament.BackColor.ToArgb()));
+                travelMoves.BackColor = Color.FromArgb((int)threedKey.GetValue("travelColor", travelMoves.BackColor.ToArgb()));
                 selectedFilament.BackColor = Color.FromArgb((int)threedKey.GetValue("selectedFilamentColor", selectedFilament.BackColor.ToArgb()));
                 outsidePrintbed.BackColor = Color.FromArgb((int)threedKey.GetValue("outsidePrintbedColor", outsidePrintbed.BackColor.ToArgb()));
                 showEdges.Checked = 0 != (int)threedKey.GetValue("showEdges", showEdges.Checked ? 1 : 0);
@@ -211,6 +216,7 @@ Immediate (slow)*/
                 pulseOutside.Checked = 0 != (int)threedKey.GetValue("pulseOutside", pulseOutside.Checked ? 1 : 0);
                 showPrintbed.Checked = 0 != (int)threedKey.GetValue("showPrintbed", showPrintbed.Checked ? 1 : 0);
                 checkDisableFilamentVisualization.Checked = 0 != (int)threedKey.GetValue("disableFilamentVisualization", checkDisableFilamentVisualization.Checked ? 1 : 0);
+                checkDisableTravelMoves.Checked = 0 != (int)threedKey.GetValue("disableTravelVisualization", checkDisableTravelMoves.Checked ? 1 : 0);
                 // useVBOs = 0 != (int)threedKey.GetValue("useVBOs", useVBOs.Checked ? 1 : 0);
                 comboDrawMethod.SelectedIndex = (int)threedKey.GetValue("drawMethod", 0);
                 textLayerHeight.Text = (string)threedKey.GetValue("layerHeight", textLayerHeight.Text);
@@ -423,5 +429,11 @@ Immediate (slow)*/
         public float[] Diffuse4() { return toGLColor(diffuse4.BackColor); }
         public float[] Ambient4() { return toGLColor(ambient4.BackColor); }
         public float[] Specular4() { return toGLColor(specular4.BackColor); }
+
+        public void checkDisableTravelMoves_CheckedChanged(object sender, EventArgs e)
+        {
+            Main.main.updateTravelMoves();
+            Main.main.Update3D();
+        }
     }
 }

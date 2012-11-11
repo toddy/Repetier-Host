@@ -143,6 +143,7 @@
             this.tabSlicer = new System.Windows.Forms.TabPage();
             this.tabGCode = new System.Windows.Forms.TabPage();
             this.tabPrint = new System.Windows.Forms.TabPage();
+            this.toolShowTravel = new System.Windows.Forms.ToolStripButton();
             this.slicerPanel = new RepetierHost.view.SlicerPanel();
             this.menu.SuspendLayout();
             this.status.SuspendLayout();
@@ -888,7 +889,8 @@
             this.toolShowLog,
             this.toolShowFilament,
             this.toolStripEmergencyButton,
-            this.toolPrinterSettings});
+            this.toolPrinterSettings,
+            this.toolShowTravel});
             this.toolStrip.Location = new System.Drawing.Point(0, 24);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Size = new System.Drawing.Size(1018, 54);
@@ -1159,6 +1161,16 @@
             this.tabPrint.Text = "Manual control";
             this.tabPrint.UseVisualStyleBackColor = true;
             // 
+            // toolShowTravel
+            // 
+            this.toolShowTravel.Image = ((System.Drawing.Image)(resources.GetObject("toolShowTravel.Image")));
+            this.toolShowTravel.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolShowTravel.Name = "toolShowTravel";
+            this.toolShowTravel.Size = new System.Drawing.Size(72, 51);
+            this.toolShowTravel.Text = "ShowTravel";
+            this.toolShowTravel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolShowTravel.Click += new System.EventHandler(this.toolShowTravel_Click);
+            // 
             // slicerPanel
             // 
             this.slicerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -1180,7 +1192,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menu;
             this.Name = "Main";
-            this.Text = "Repetier-Host V0.75beta";
+            this.Text = "Repetier-Host V0.80";
             this.Load += new System.EventHandler(this.Main_Load);
             this.SizeChanged += new System.EventHandler(this.Main_SizeChanged);
             this.Shown += new System.EventHandler(this.Main_Shown);
@@ -1323,6 +1335,7 @@
         public System.Windows.Forms.ToolStrip toolStrip;
         public System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem donateToolStripMenuItem;
+        public System.Windows.Forms.ToolStripButton toolShowTravel;
     }
 }
 

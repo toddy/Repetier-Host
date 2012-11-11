@@ -85,7 +85,9 @@
             this.pulseOutside = new System.Windows.Forms.CheckBox();
             this.showFaces = new System.Windows.Forms.CheckBox();
             this.groupColors = new System.Windows.Forms.GroupBox();
+            this.labelSelectionBox = new System.Windows.Forms.Label();
             this.labelObjectsOutsidePrintbed = new System.Windows.Forms.Label();
+            this.selectionBox = new System.Windows.Forms.Panel();
             this.outsidePrintbed = new System.Windows.Forms.Panel();
             this.tabFilament = new System.Windows.Forms.TabPage();
             this.groupVisualization = new System.Windows.Forms.GroupBox();
@@ -125,8 +127,9 @@
             this.specular3 = new System.Windows.Forms.Panel();
             this.specular4 = new System.Windows.Forms.Panel();
             this.diffuse4 = new System.Windows.Forms.Panel();
-            this.selectionBox = new System.Windows.Forms.Panel();
-            this.labelSelectionBox = new System.Windows.Forms.Label();
+            this.travelMoves = new System.Windows.Forms.Panel();
+            this.labelTravelMoves = new System.Windows.Forms.Label();
+            this.checkDisableTravelMoves = new System.Windows.Forms.CheckBox();
             this.groupColors2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -143,8 +146,10 @@
             // 
             // groupColors2
             // 
+            this.groupColors2.Controls.Add(this.labelTravelMoves);
             this.groupColors2.Controls.Add(this.labelSelectedFilament);
             this.groupColors2.Controls.Add(this.labelHotFilament);
+            this.groupColors2.Controls.Add(this.travelMoves);
             this.groupColors2.Controls.Add(this.selectedFilament);
             this.groupColors2.Controls.Add(this.hotFilament);
             this.groupColors2.Controls.Add(this.filament3);
@@ -499,7 +504,7 @@
             this.textWidthOverThickness.Name = "textWidthOverThickness";
             this.textWidthOverThickness.Size = new System.Drawing.Size(106, 20);
             this.textWidthOverThickness.TabIndex = 1;
-            this.textWidthOverThickness.Text = "1.8";
+            this.textWidthOverThickness.Text = "1.6";
             this.textWidthOverThickness.TextChanged += new System.EventHandler(this.textLayerHeight_TextChanged);
             this.textWidthOverThickness.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
             // 
@@ -509,7 +514,7 @@
             this.textLayerHeight.Name = "textLayerHeight";
             this.textLayerHeight.Size = new System.Drawing.Size(106, 20);
             this.textLayerHeight.TabIndex = 3;
-            this.textLayerHeight.Text = "0.38";
+            this.textLayerHeight.Text = "0.3";
             this.textLayerHeight.TextChanged += new System.EventHandler(this.textLayerHeight_TextChanged);
             this.textLayerHeight.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
             // 
@@ -715,6 +720,15 @@
             this.groupColors.TabStop = false;
             this.groupColors.Text = "Colors";
             // 
+            // labelSelectionBox
+            // 
+            this.labelSelectionBox.AutoSize = true;
+            this.labelSelectionBox.Location = new System.Drawing.Point(6, 136);
+            this.labelSelectionBox.Name = "labelSelectionBox";
+            this.labelSelectionBox.Size = new System.Drawing.Size(75, 13);
+            this.labelSelectionBox.TabIndex = 1;
+            this.labelSelectionBox.Text = "Selection Box:";
+            // 
             // labelObjectsOutsidePrintbed
             // 
             this.labelObjectsOutsidePrintbed.AutoSize = true;
@@ -723,6 +737,16 @@
             this.labelObjectsOutsidePrintbed.Size = new System.Drawing.Size(124, 13);
             this.labelObjectsOutsidePrintbed.TabIndex = 1;
             this.labelObjectsOutsidePrintbed.Text = "Objects outside printbed:";
+            // 
+            // selectionBox
+            // 
+            this.selectionBox.BackColor = System.Drawing.Color.DodgerBlue;
+            this.selectionBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.selectionBox.Location = new System.Drawing.Point(159, 133);
+            this.selectionBox.Name = "selectionBox";
+            this.selectionBox.Size = new System.Drawing.Size(111, 22);
+            this.selectionBox.TabIndex = 3;
+            this.selectionBox.Click += new System.EventHandler(this.lightcolor_Click);
             // 
             // outsidePrintbed
             // 
@@ -747,6 +771,7 @@
             // 
             // groupVisualization
             // 
+            this.groupVisualization.Controls.Add(this.checkDisableTravelMoves);
             this.groupVisualization.Controls.Add(this.checkDisableFilamentVisualization);
             this.groupVisualization.Controls.Add(this.label13);
             this.groupVisualization.Controls.Add(this.labelFilamentVisualization);
@@ -1187,24 +1212,35 @@
             this.diffuse4.TabIndex = 27;
             this.diffuse4.Click += new System.EventHandler(this.lightcolor_Click);
             // 
-            // selectionBox
+            // travelMoves
             // 
-            this.selectionBox.BackColor = System.Drawing.Color.DodgerBlue;
-            this.selectionBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.selectionBox.Location = new System.Drawing.Point(159, 133);
-            this.selectionBox.Name = "selectionBox";
-            this.selectionBox.Size = new System.Drawing.Size(111, 22);
-            this.selectionBox.TabIndex = 3;
-            this.selectionBox.Click += new System.EventHandler(this.lightcolor_Click);
+            this.travelMoves.BackColor = System.Drawing.Color.Aquamarine;
+            this.travelMoves.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.travelMoves.Location = new System.Drawing.Point(342, 82);
+            this.travelMoves.Name = "travelMoves";
+            this.travelMoves.Size = new System.Drawing.Size(111, 22);
+            this.travelMoves.TabIndex = 3;
+            this.travelMoves.Click += new System.EventHandler(this.filament_Click);
             // 
-            // labelSelectionBox
+            // labelTravelMoves
             // 
-            this.labelSelectionBox.AutoSize = true;
-            this.labelSelectionBox.Location = new System.Drawing.Point(6, 136);
-            this.labelSelectionBox.Name = "labelSelectionBox";
-            this.labelSelectionBox.Size = new System.Drawing.Size(75, 13);
-            this.labelSelectionBox.TabIndex = 1;
-            this.labelSelectionBox.Text = "Selection Box:";
+            this.labelTravelMoves.AutoSize = true;
+            this.labelTravelMoves.Location = new System.Drawing.Point(234, 85);
+            this.labelTravelMoves.Name = "labelTravelMoves";
+            this.labelTravelMoves.Size = new System.Drawing.Size(75, 13);
+            this.labelTravelMoves.TabIndex = 9;
+            this.labelTravelMoves.Text = "Travel Moves:";
+            // 
+            // checkDisableTravelMoves
+            // 
+            this.checkDisableTravelMoves.AutoSize = true;
+            this.checkDisableTravelMoves.Location = new System.Drawing.Point(225, 19);
+            this.checkDisableTravelMoves.Name = "checkDisableTravelMoves";
+            this.checkDisableTravelMoves.Size = new System.Drawing.Size(179, 17);
+            this.checkDisableTravelMoves.TabIndex = 14;
+            this.checkDisableTravelMoves.Text = "Disable travel move visualization";
+            this.checkDisableTravelMoves.UseVisualStyleBackColor = true;
+            this.checkDisableTravelMoves.CheckedChanged += new System.EventHandler(this.checkDisableTravelMoves_CheckedChanged);
             // 
             // ThreeDSettings
             // 
@@ -1344,5 +1380,8 @@
         public System.Windows.Forms.TextBox ydir3;
         private System.Windows.Forms.Label labelSelectionBox;
         public System.Windows.Forms.Panel selectionBox;
+        private System.Windows.Forms.Label labelTravelMoves;
+        public System.Windows.Forms.Panel travelMoves;
+        public System.Windows.Forms.CheckBox checkDisableTravelMoves;
     }
 }

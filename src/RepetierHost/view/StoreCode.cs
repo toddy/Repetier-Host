@@ -56,7 +56,7 @@ namespace RepetierHost.view
         }
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            Hide();
+            Close();
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 saveJob(saveFileDialog.FileName);
@@ -65,7 +65,8 @@ namespace RepetierHost.view
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            Hide();
+            Close();
+            //Hide();
         }
         private void writeArray(BinaryWriter file, List<GCodeShort> list, bool binary)
         {

@@ -1,10 +1,21 @@
-Version 0.76
+Version 0.80 11-11-2012
   New translation: Spanish by Mecano
   New translation: Portugues by Alexandre Dias
   New translation: French by contact@labsud.org
+  New translation: Chinese by T.S.Wang
   SD manager now supports directories.
+  SD manager can create directories (needs Repetier-Firmware 0.80 or higher)
   Support for Repetier-Protocol V2.
-  Ready for Rostock.  
+  Ready for Rostock.
+  Reduced RAM usage.
+  Show extruder usage in editor.
+  Jump to layer in editor.
+  Switch buttons now in blue/light blue for all with color vision defect.
+  Optional show travel moves.
+  Toggle between perspective and parallel projection.
+  In linux the "Save Job" function does not disable all buttons anymore.
+  Open connection resets Arduino for a clean start.
+  Emergency kill now also tries to reset the Arduino for faster stop.
 
 Version 0.74 29-09-2012
   Slic3r 0.9.3 now included.

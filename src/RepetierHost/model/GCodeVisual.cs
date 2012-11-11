@@ -38,6 +38,12 @@ namespace RepetierHost.model
         public int element; // posistion of the opengl element where visualization starts
         public static int toFileLine(int file, int line) { if (file < 0) return 0; return (file << 29) + line; }
     }
+    public class GCodeTravel
+    {
+        public Vector3 p1;
+        public Vector3 p2;
+        public int fline;
+    }
     public class GCodePath
     {
         public int pointsCount = 0;
@@ -407,6 +413,10 @@ namespace RepetierHost.model
     {
         static int MaxExtruder = 3;
         LinkedList<GCodePath>[] segments;
+        List<GCodeTravel> travelMoves = new List<GCodeTravel>();
+        int[] travelBuf = new int[2];
+        int travelMovesBuffered = 0;
+        bool hasTravelBuf = false;
         public GCodeAnalyzer ana = new GCodeAnalyzer(true);
         public GCode act = null;
         public float lastFilHeight = 999;
@@ -470,6 +480,11 @@ namespace RepetierHost.model
             }
             if (colbufSize > 0)
                 GL.DeleteBuffers(1, colbuf);
+            if (hasTravelBuf)
+                GL.DeleteBuffers(2, travelBuf);
+            travelMoves.Clear();
+            hasTravelBuf = false;
+            travelMovesBuffered = 0;
             colbufSize = 0;
         }
         public override void ReduceQuality()
@@ -599,6 +614,11 @@ namespace RepetierHost.model
             totalDist = 0;
             if (colbufSize > 0)
                 GL.DeleteBuffers(1, colbuf);
+            if (hasTravelBuf)
+                GL.DeleteBuffers(2, travelBuf);
+            hasTravelBuf = false;
+            travelMoves.Clear();
+            travelMovesBuffered = 0;
             colbufSize = 0;
             ResetQuality();
 
@@ -621,6 +641,18 @@ namespace RepetierHost.model
             bool isLastPos = locDist < 0.00001;
             if (!act.hasG || (act.G > 1 && act.G != 28)) return;
             int segpos = ana.activeExtruder;
+            if (ana.eChanged == false)
+            {
+                GCodeTravel travel = new GCodeTravel();
+                travel.fline = GCodePoint.toFileLine(fileid, actLine);
+                travel.p1.X = lastx;
+                travel.p1.Y = lasty;
+                travel.p1.Z = lastz;
+                travel.p2.X = x;
+                travel.p2.Y = y;
+                travel.p2.Z = z;
+                travelMoves.Add(travel);
+            }
             if (segpos < 0 || segpos >= MaxExtruder) segpos = 0;
             LinkedList<GCodePath> seg = segments[segpos];
             if (seg.Count == 0 || laste >= ana.e) // start new segment
@@ -665,6 +697,18 @@ namespace RepetierHost.model
             float locDist = (float)Math.Sqrt((x - lastx) * (x - lastx) + (y - lasty) * (y - lasty) + (z - lastz) * (z - lastz));
             bool isLastPos = locDist < 0.00001;
             int segpos = ana.activeExtruder;
+            if (ana.eChanged == false)
+            {
+                GCodeTravel travel = new GCodeTravel();
+                travel.fline = GCodePoint.toFileLine(fileid, actLine);
+                travel.p1.X = lastx;
+                travel.p1.Y = lasty;
+                travel.p1.Z = lastz;
+                travel.p2.X = x;
+                travel.p2.Y = y;
+                travel.p2.Z = z;
+                travelMoves.Add(travel);
+            }
             if (segpos < 0 || segpos >= MaxExtruder) segpos = 0;
             LinkedList<GCodePath> seg = segments[segpos];
             //if (!act.hasG || (act.G > 1 && act.G != 28)) return;
@@ -1169,7 +1213,131 @@ namespace RepetierHost.model
                 }
             }
         }
+        /** Draw stored travel moves */
+        public void drawMoves()
+        {
+            if (Main.threeDSettings.drawMethod != 2) return;
+            int l = travelMoves.Count;
+            if (!hasTravelBuf || travelMovesBuffered + 100 < l)
+            {
+                // Revill vbo
+                if (hasTravelBuf)
+                    GL.DeleteBuffers(2, travelBuf);
+                int len = 6 * l;
+                float[] pts = new float[len];
+                int[] idx = new int[2 * l];
+                int idxp = 0;
+                int p = 0;
+                int n = 0, ic = 0;
+                foreach (GCodeTravel t in travelMoves)
+                {
+                    idx[idxp++] = ic++;
+                    idx[idxp++] = ic++;
+                    pts[p++] = t.p1.X;
+                    pts[p++] = t.p1.Y;
+                    pts[p++] = t.p1.Z;
+                    pts[p++] = t.p2.X;
+                    pts[p++] = t.p2.Y;
+                    pts[p++] = t.p2.Z;
+                    n++;
+                }
+                // NSLog(@"Count %d n %d",l,n);
+                GL.GenBuffers(2, travelBuf);
+                GL.BindBuffer(BufferTarget.ArrayBuffer, travelBuf[0]);
+                GL.BufferData(BufferTarget.ArrayBuffer,(IntPtr)(sizeof(float)* len), pts,BufferUsageHint.StaticDraw);
+                GL.BindBuffer(BufferTarget.ElementArrayBuffer, travelBuf[1]);
+                GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(l * 2 * sizeof(int)), idx, BufferUsageHint.StaticDraw);
+                hasTravelBuf = true;
+                travelMovesBuffered = l;
+            }
+            float[] black = new float[4]{0,0,0,1};
+            float[] travel = new float[4];
+            Color col = Main.threeDSettings.travelMoves.BackColor;
+            travel[0] = (float)col.R / 255.0f;
+            travel[1] = (float)col.G / 255.0f;
+            travel[2] = (float)col.B / 255.0f;
+            travel[3] = 1;
+            GL.LineWidth(1f);
+            GL.Disable(EnableCap.LineSmooth);
+            // Set move color
+            GL.Material(MaterialFace.FrontAndBack,MaterialParameter.AmbientAndDiffuse, black);
+            GL.Material(MaterialFace.FrontAndBack,MaterialParameter.Specular,black);
+            GL.Material(MaterialFace.FrontAndBack,MaterialParameter.Emission,travel);
+            // Draw buffer
+            GL.EnableClientState(ArrayCap.VertexArray);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, travelBuf[0]);
+            GL.VertexPointer(3, VertexPointerType.Float, 0, 0);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, travelBuf[1]);
+            GL.DrawElements(BeginMode.Lines, travelMovesBuffered * 2, DrawElementsType.UnsignedInt, 0);
+            GL.DisableClientState(ArrayCap.VertexArray);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            // Draw new lines one by one
+            GL.Begin(BeginMode.Lines);
+            for (int i = travelMovesBuffered; i < l; i++)
+            {
+                GCodeTravel t = travelMoves[i];
+                GL.Vertex3(t.p1);
+                GL.Vertex3(t.p2);
+            }
+            GL.End();
+            GL.Material(MaterialFace.FrontAndBack,MaterialParameter.Emission,black);
+        }
+        public void drawMovesFromTo(int mstart, int mend)
+        {
+            if (Main.threeDSettings.drawMethod != 2) return;
+            float[] black = new float[4] { 0, 0, 0, 1 };
+            int l = travelMoves.Count;
+            // Check if inside mark area
+            int estart = 0;
+            int eend = l;
+            //GCodePoint *lastP = nil;
+            int startP = -1, endP = -1, p = 0;
+            foreach (GCodeTravel t in travelMoves)
+            {
+                if (startP < 0)
+                {
+                    if (t.fline >= mstart && t.fline <= mend)
+                        startP = p;
+                }
+                else
+                {
+                    if (t.fline > mend)
+                    {
+                        endP = p;
+                        break;
+                    }
+                }
+                //lastP = point;
+                if (endP >= 0) break;
+                p++;
+            }
+            if (startP == -1)
+            {
+                return;
+            }
+            estart = startP;
+            if (endP >= 0) eend = endP;
+            if (estart == eend)
+            {
+                return;
+            }
 
+            // Set move color
+            GL.Material(MaterialFace.FrontAndBack,MaterialParameter.AmbientAndDiffuse, black);
+            GL.Material(MaterialFace.FrontAndBack,MaterialParameter.Specular, black);
+            GL.Material(MaterialFace.FrontAndBack,MaterialParameter.Emission,defaultColor);
+            // Draw buffer
+            GL.Color4(defaultColor);
+            GL.EnableClientState(ArrayCap.VertexArray);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, travelBuf[0]);
+            GL.VertexPointer(3, VertexPointerType.Float, 0, 0);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, travelBuf[1]);
+            GL.DrawElements(BeginMode.Lines, 2 * (eend - estart), DrawElementsType.UnsignedInt,(sizeof(int) * estart * 2));
+            //glDrawElements(GL_LINES, travelMovesBuffered*2, GL_UNSIGNED_INT, 0);
+            GL.DisableClientState(ArrayCap.VertexArray);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            GL.Material(MaterialFace.FrontAndBack,MaterialParameter.Emission,black);
+        }
         public override void Paint()
         {
             changed = false;
@@ -1220,6 +1388,9 @@ namespace RepetierHost.model
                     drawSegment(path);
                 }
             }
+            if (!Main.threeDSettings.checkDisableTravelMoves.Checked)
+                drawMoves();
+
             if (showSelection)
             {
                 RepetierEditor ed = Main.main.editor;
@@ -1252,7 +1423,10 @@ namespace RepetierHost.model
                     {
                         drawSegmentMarked(path, selectionStart, selectionEnd);
                     }
-
+                if (!Main.threeDSettings.checkDisableTravelMoves.Checked)
+                {
+                    drawMovesFromTo(selectionStart, selectionEnd);
+                }
             }
             // timeStart = DateTime.Now.Ticks - timeStart;
             //  double time = (double)timeStart * 0.1;

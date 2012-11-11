@@ -678,9 +678,11 @@
             this.sliderFlowrate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.sliderFlowrate.BackColor = System.Drawing.Color.Transparent;
-            this.sliderFlowrate.BarInnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(115)))), ((int)(((byte)(115)))), ((int)(((byte)(115)))));
-            this.sliderFlowrate.BarOuterColor = System.Drawing.Color.FromArgb(((int)(((byte)(87)))), ((int)(((byte)(87)))), ((int)(((byte)(87)))));
+            this.sliderFlowrate.BarInnerColor = System.Drawing.Color.DimGray;
+            this.sliderFlowrate.BarOuterColor = System.Drawing.Color.LightGray;
             this.sliderFlowrate.BorderRoundRectSize = new System.Drawing.Size(8, 8);
+            this.sliderFlowrate.ElapsedInnerColor = System.Drawing.Color.DarkGray;
+            this.sliderFlowrate.ElapsedOuterColor = System.Drawing.Color.LightGray;
             this.sliderFlowrate.LargeChange = ((uint)(5u));
             this.sliderFlowrate.Location = new System.Drawing.Point(112, 46);
             this.sliderFlowrate.Maximum = 150;
@@ -699,9 +701,11 @@
             this.sliderSpeed.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.sliderSpeed.BackColor = System.Drawing.Color.Transparent;
-            this.sliderSpeed.BarInnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(115)))), ((int)(((byte)(115)))), ((int)(((byte)(115)))));
-            this.sliderSpeed.BarOuterColor = System.Drawing.Color.FromArgb(((int)(((byte)(87)))), ((int)(((byte)(87)))), ((int)(((byte)(87)))));
+            this.sliderSpeed.BarInnerColor = System.Drawing.Color.DimGray;
+            this.sliderSpeed.BarOuterColor = System.Drawing.Color.LightGray;
             this.sliderSpeed.BorderRoundRectSize = new System.Drawing.Size(8, 8);
+            this.sliderSpeed.ElapsedInnerColor = System.Drawing.Color.DarkGray;
+            this.sliderSpeed.ElapsedOuterColor = System.Drawing.Color.LightGray;
             this.sliderSpeed.LargeChange = ((uint)(5u));
             this.sliderSpeed.Location = new System.Drawing.Point(112, 15);
             this.sliderSpeed.Maximum = 300;
@@ -920,9 +924,11 @@
             // trackFanVoltage
             // 
             this.trackFanVoltage.BackColor = System.Drawing.Color.Transparent;
-            this.trackFanVoltage.BarInnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(115)))), ((int)(((byte)(115)))), ((int)(((byte)(115)))));
-            this.trackFanVoltage.BarOuterColor = System.Drawing.Color.FromArgb(((int)(((byte)(87)))), ((int)(((byte)(87)))), ((int)(((byte)(87)))));
+            this.trackFanVoltage.BarInnerColor = System.Drawing.Color.DimGray;
+            this.trackFanVoltage.BarOuterColor = System.Drawing.Color.LightGray;
             this.trackFanVoltage.BorderRoundRectSize = new System.Drawing.Size(8, 8);
+            this.trackFanVoltage.ElapsedInnerColor = System.Drawing.Color.DarkGray;
+            this.trackFanVoltage.ElapsedOuterColor = System.Drawing.Color.LightGray;
             this.trackFanVoltage.LargeChange = ((uint)(5u));
             this.trackFanVoltage.Location = new System.Drawing.Point(9, 48);
             this.trackFanVoltage.Maximum = 255;

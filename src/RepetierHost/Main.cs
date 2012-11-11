@@ -425,6 +425,8 @@ namespace RepetierHost
             toolStripSaveJob.ToolTipText = Trans.T("M_SAVE_JOB");
             openGCode.Title = Trans.T("L_IMPORT_G_CODE"); // Import G-Code
             saveJobDialog.Title = Trans.T("L_SAVE_G_CODE"); //Save G-Code
+            updateTravelMoves();
+            updateShowFilament();
             foreach (ToolStripMenuItem item in languageToolStripMenuItem.DropDownItems)
             {
                 item.Checked = item.Tag == trans.active;
@@ -1158,14 +1160,30 @@ namespace RepetierHost
             {
                 toolShowFilament.Image = imageList.Images[5];
                 toolShowFilament.ToolTipText = Trans.T("L_FILAMENT_VISUALIZATION_DISABLED"); // "Filament visualization disabled";
-                toolShowFilament.Text = Trans.T("M_SHOW_FILAMENT"); // "Show filament";
+                toolShowFilament.Text = Trans.T("M_HIDE_FILAMENT"); // "Show filament";
             }
             else
             {
                 toolShowFilament.Image = imageList.Images[4];
                 toolShowFilament.ToolTipText = Trans.T("L_FILAMENT_VISUALIZATION_ENABLED"); // "Filament visualization enabled";
-                toolShowFilament.Text = Trans.T("M_HIDE_FILAMENT"); // "Hide filament";
+                toolShowFilament.Text = Trans.T("M_SHOW_FILAMENT"); // "Hide filament";
             }
+        }
+        public void updateTravelMoves()
+        {
+            if (threeDSettings.checkDisableTravelMoves.Checked)
+            {
+                toolShowTravel.Image = imageList.Images[5];
+                toolShowTravel.ToolTipText = Trans.T("L_TRAVEL_VISUALIZATION_DISABLED"); // "Travel visualization disabled";
+                toolShowTravel.Text = Trans.T("M_HIDE_TRAVEL"); // "Hide Travel";
+            }
+            else
+            {
+                toolShowTravel.Image = imageList.Images[4];
+                toolShowTravel.ToolTipText = Trans.T("L_TRAVEL_VISUALIZATION_ENABLED"); // "Travel visualization enabled";
+                toolShowTravel.Text = Trans.T("M_SHOW_TRAVEL"); // "Show Travel";
+            }
+            toolShowTravel.Visible = threeDSettings.drawMethod == 2;
         }
         private void toolShowFilament_Click(object sender, EventArgs e)
         {
@@ -1178,6 +1196,9 @@ namespace RepetierHost
             if (!conn.connected) return;
             conn.injectManualCommandFirst("M112");
             conn.job.KillJob();
+            conn.serial.DtrEnable = false;
+            Thread.Sleep(50);
+            conn.serial.DtrEnable = true;
             conn.log(Trans.T("L_EMERGENCY_STOP_MSG"), false, 3);
             while (conn.hasInjectedMCommand(112))
             {
@@ -1366,6 +1387,12 @@ namespace RepetierHost
         private void donateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             openLink("http://www.repetier.com/donate-or-support/");
+        }
+
+        private void toolShowTravel_Click(object sender, EventArgs e)
+        {
+            threeDSettings.checkDisableTravelMoves.Checked = !threeDSettings.checkDisableTravelMoves.Checked;
+            threeDSettings.FormToRegistry();
         }
 
     }

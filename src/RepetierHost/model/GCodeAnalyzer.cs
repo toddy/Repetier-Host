@@ -56,6 +56,7 @@ namespace RepetierHost.model
         public float printerWidth, printerHeight, printerDepth;
         public int tempMonitor = 0;
         public double printingTime = 0;
+        public bool eChanged;
 
         public GCodeAnalyzer(bool privAnal)
         {
@@ -140,13 +141,14 @@ namespace RepetierHost.model
                 {
                     case 0:
                     case 1:
+                        eChanged = false;
                         if (code.hasF) f = code.F;
                         if (relative)
                         {
                             if (code.hasX) x += code.X;
                             if (code.hasY) y += code.Y;
                             if (code.hasZ) z += code.Z;
-                            if (code.hasE) e += code.E;
+                            if (code.hasE) { eChanged = code.E != 0; e += code.E; }
                         }
                         else
                         {
@@ -159,9 +161,12 @@ namespace RepetierHost.model
                             if (code.hasE)
                             {
                                 if (eRelative)
-                                    e += code.E;
+                                { eChanged = code.E != 0; e += code.E; }
                                 else
+                                {
+                                    eChanged = e != (eOffset + code.E);
                                     e = eOffset + code.E;
+                                }
                             }
                         }
                         if (x < Main.printerSettings.XMin) { x = Main.printerSettings.XMin; hasXHome = false; }
@@ -324,6 +329,7 @@ namespace RepetierHost.model
             {
                 case 1:
                     isG1Move = true;
+                    eChanged = false;
                     if (code.hasF) f = code.f;
                     if (relative)
                     {
@@ -347,7 +353,8 @@ namespace RepetierHost.model
                         }
                         if (code.hasE)
                         {
-                            e += code.e;
+                            eChanged = code.e != 0;
+                            e += code.e; 
                             if (e > emax)
                             {
                                 emax = e;
@@ -382,9 +389,12 @@ namespace RepetierHost.model
                         if (code.e != -99999)
                         {
                             if (eRelative)
-                                e += code.e;
+                            { eChanged = code.e != 0; e += code.e; }
                             else
+                            {
+                                eChanged = e != (eOffset + code.e);
                                 e = eOffset + code.e;
+                            }
                             if (e > emax)
                             {
                                 emax = e;

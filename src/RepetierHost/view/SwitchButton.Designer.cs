@@ -52,8 +52,10 @@
             // 
             this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "switch_off.png");
-            this.imageList1.Images.SetKeyName(1, "switch_on.png");
+            this.imageList1.Images.SetKeyName(0, "switch_off2.png");
+            this.imageList1.Images.SetKeyName(1, "switch_on2.png");
+            this.imageList1.Images.SetKeyName(2, "switch_off.png");
+            this.imageList1.Images.SetKeyName(3, "switch_on.png");
             // 
             // SwitchButton
             // 

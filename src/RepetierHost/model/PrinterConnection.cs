@@ -502,8 +502,10 @@ namespace RepetierHost.model
                                 }
                                 else
                                 {
-                                    if(gc.M!=117)
+                                    if (gc.M != 110)
                                         gc.N = ++lastline;
+                                    else 
+                                        lastline = gc.N;
                                     if (isVirtualActive)
                                     {
                                         if (!pingpong && receivedCount() + gc.orig.Length > receiveCacheSize) { --lastline; return false; } // printer cache full
@@ -566,8 +568,10 @@ namespace RepetierHost.model
                                 }
                                 else
                                 {
-                                    if (gc.M != 117)
+                                    if (gc.M != 110)
                                         gc.N = ++lastline;
+                                    else
+                                        lastline = gc.N;
                                     if (isVirtualActive)
                                     {
                                         string cmd = gc.getAscii(true, true);
@@ -704,7 +708,8 @@ namespace RepetierHost.model
                     serial.DataReceived += received;
                 serial.ErrorReceived += error;
                 serial.RtsEnable = false;
-                serial.DtrEnable = false;
+                //serial.DtrEnable = false;
+                serial.DtrEnable = true;
                 serial.Open();
               //  serial.DtrEnable = true;
              //   Thread.Sleep(400);

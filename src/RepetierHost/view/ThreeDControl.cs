@@ -151,8 +151,18 @@ namespace RepetierHost.view
                 float dy = view.viewCenter.Y - view.userPosition.Y;
                 float dz = view.viewCenter.Z - view.userPosition.Z;
                 float dist = (float)Math.Sqrt(dx * dx + dy * dy + dz * dz);
-                view.persp = Matrix4.CreatePerspectiveFieldOfView((float)(view.zoom * 30f * Math.PI / 180f),view.aspectRatio= (float)w / (float)h, view.nearDist = Math.Max(10, dist - 2f * ps.PrintAreaDepth),view.farDist = dist + 2 * ps.PrintAreaDepth);
-                view.nearHeight = 2.0f*(float)Math.Tan(view.zoom * 15f * Math.PI / 180f)*view.nearDist;
+                view.nearHeight = 2.0f * (float)Math.Tan(view.zoom * 15f * Math.PI / 180f) * view.nearDist;
+                view.aspectRatio = (float)w / (float)h;
+                view.nearDist = Math.Max(10, dist - 2f * ps.PrintAreaDepth);
+                view.farDist = dist + 2 * ps.PrintAreaDepth;
+                if (toolParallelProjection.Checked)
+                {
+                    view.persp = Matrix4.CreateOrthographic(4.0f*view.nearHeight * view.aspectRatio, 4.0f*view.nearHeight, view.nearDist, view.farDist);
+                }
+                else
+                {
+                    view.persp = Matrix4.CreatePerspectiveFieldOfView((float)(view.zoom * 30f * Math.PI / 180f), view.aspectRatio, view.nearDist, view.farDist);
+                }
                 GL.LoadMatrix(ref view.persp);
                 // GL.Ortho(0, w, 0, h, -1, 1); // Bottom-left corner pixel has coordinate (0, 0)
 
@@ -167,6 +177,7 @@ namespace RepetierHost.view
             {
                 if (!loaded) return;
                 // Check drawing method
+                int om = Main.threeDSettings.drawMethod;
                 switch (Main.threeDSettings.comboDrawMethod.SelectedIndex)
                 {
                     case 0: // Autodetect;
@@ -187,7 +198,8 @@ namespace RepetierHost.view
                         Main.threeDSettings.drawMethod = 0;
                         break;
                 }
-
+                if(om!=Main.threeDSettings.drawMethod)
+                    Main.main.updateTravelMoves();
                 fpsTimer.Reset();
                 fpsTimer.Start();
                 gl.MakeCurrent();
@@ -395,7 +407,7 @@ namespace RepetierHost.view
                     GL.End();
                 }
                 GL.Enable(EnableCap.CullFace);
-
+                GL.Disable(EnableCap.LineSmooth);
                 foreach (ThreeDModel model in view.models)
                 {
                     GL.PushMatrix();
@@ -644,12 +656,12 @@ namespace RepetierHost.view
             double norm_y = (double)window_y / (double)(Height / 2);
             int window_x = x - Width / 2;
             double norm_x = (double)window_x / (double)(Width / 2);
-            float fpy = (float)(view.nearHeight * 0.5 * norm_y);
-            float fpx = (float)(view.nearHeight * 0.5 * view.aspectRatio * norm_x);
+            float fpy = (float)(view.nearHeight * 0.5 * norm_y)*(toolParallelProjection.Checked ? 4f : 1f);
+            float fpx = (float)(view.nearHeight * 0.5 * view.aspectRatio * norm_x) * (toolParallelProjection.Checked ? 4f : 1f);
 
 
-            Vector4 frontPointN = new Vector4(0, 0, 0, 1);
-            Vector4 dirN = new Vector4(fpx, fpy, -view.nearDist, 0);
+            Vector4 frontPointN = (toolParallelProjection.Checked ? new Vector4(fpx, fpy, 0, 1) : new Vector4(0, 0, 0, 1));
+            Vector4 dirN = (toolParallelProjection.Checked ? new Vector4(0, 0, -view.nearDist, 0) : new Vector4(fpx, fpy, -view.nearDist, 0));
             Matrix4 rotx = Matrix4.CreateFromAxisAngle(new Vector3(1, 0, 0), (float)(view.rotX * Math.PI / 180.0));
             Matrix4 rotz = Matrix4.CreateFromAxisAngle(new Vector3(0, 0, 1), (float)(view.rotZ * Math.PI / 180.0));
             Matrix4 trans = Matrix4.CreateTranslation(-ps.BedLeft-ps.PrintAreaWidth * 0.5f,-ps.BedFront -ps.PrintAreaDepth * 0.5f, -0.5f * ps.PrintAreaHeight);
@@ -659,7 +671,8 @@ namespace RepetierHost.view
             ntrans = Matrix4.Mult(rotz, ntrans);
             ntrans = Matrix4.Mult(trans, ntrans);
             ntrans = Matrix4.Invert(ntrans);
-            Vector4 frontPoint = ntrans.Row3;
+            Vector4 frontPoint = (toolParallelProjection.Checked ? Vector4.Transform(frontPointN, ntrans) : ntrans.Row3);
+            //Vector4 frontPoint = (toolParallelProjection.Checked ? frontPointN : ntrans.Row3);
             Vector4 dirVec = Vector4.Transform(dirN, ntrans);
             pickLine = new Geom3DLine(new Geom3DVector(frontPoint.X / frontPoint.W, frontPoint.Y / frontPoint.W, frontPoint.Z / frontPoint.W),
                 new Geom3DVector(dirVec.X, dirVec.Y, dirVec.Z), true);
@@ -708,12 +721,12 @@ namespace RepetierHost.view
             double norm_y = (double)window_y/(double)(viewport[3]/2);
             int window_x = x - viewport[2]/2;
             double norm_x = (double)window_x/(double)(viewport[2]/2);
-            float fpy = (float)(view.nearHeight*0.5 * norm_y);
-            float fpx = (float)(view.nearHeight*0.5 * view.aspectRatio * norm_x);
+            float fpy = (float)(view.nearHeight * 0.5 * norm_y) * (toolParallelProjection.Checked ? 4f : 1f);
+            float fpx = (float)(view.nearHeight * 0.5 * view.aspectRatio * norm_x) * (toolParallelProjection.Checked ? 4f : 1f);
 
 
-            Vector4 frontPointN = new Vector4(0,0, 0, 1);
-            Vector4 dirN = new Vector4(fpx,fpy,-view.nearDist, 0);
+            Vector4 frontPointN = (toolParallelProjection.Checked ? new Vector4(fpx, fpy, 0, 1) : new Vector4(0, 0, 0, 1));
+            Vector4 dirN = (toolParallelProjection.Checked ? new Vector4(0, 0, -view.nearDist, 0) : new Vector4(fpx, fpy, -view.nearDist, 0));
             Matrix4 rotx = Matrix4.CreateFromAxisAngle(new Vector3(1, 0, 0), (float)(view.rotX*Math.PI/180.0));
             Matrix4 rotz = Matrix4.CreateFromAxisAngle(new Vector3(0, 0, 1), (float)(view.rotZ * Math.PI / 180.0));
             Matrix4 trans = Matrix4.CreateTranslation(-ps.BedLeft-ps.PrintAreaWidth * 0.5f,-ps.BedFront -ps.PrintAreaDepth * 0.5f, -0.5f * ps.PrintAreaHeight);
@@ -722,7 +735,7 @@ namespace RepetierHost.view
             ntrans = Matrix4.Mult(rotz,ntrans);
             ntrans = Matrix4.Mult(trans,ntrans );
             ntrans = Matrix4.Invert(ntrans);
-            Vector4 frontPoint = ntrans.Row3;
+            Vector4 frontPoint = (toolParallelProjection.Checked ? Vector4.Transform(frontPointN,ntrans) : ntrans.Row3);
             Vector4 dirVec = Vector4.Transform(dirN, ntrans);
             pickLine = new Geom3DLine(new Geom3DVector(frontPoint.X / frontPoint.W, frontPoint.Y / frontPoint.W, frontPoint.Z / frontPoint.W),
                 new Geom3DVector(dirVec.X , dirVec.Y , dirVec.Z ), true);
@@ -1132,6 +1145,12 @@ namespace RepetierHost.view
             {
                 Main.main.stlComposer1.listSTLObjects_KeyDown(sender, e);
             }
+        }
+
+        private void toolParallelProjection_Click(object sender, EventArgs e)
+        {
+            toolParallelProjection.Checked = !toolParallelProjection.Checked;
+            gl.Invalidate();
         }
     }
 }

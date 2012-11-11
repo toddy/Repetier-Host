@@ -40,8 +40,9 @@
             this.toolTopView = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripClear = new System.Windows.Forms.ToolStripButton();
-            this.gl = new RepetierHost.view.utils.RHOpenGL();
             this.timer = new System.Windows.Forms.Timer(this.components);
+            this.gl = new RepetierHost.view.utils.RHOpenGL();
+            this.toolParallelProjection = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,6 +60,7 @@
             this.toolResetView,
             this.toolTopView,
             this.toolStripSeparator1,
+            this.toolParallelProjection,
             this.toolStripClear});
             this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.VerticalStackWithOverflow;
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
@@ -154,6 +156,11 @@
             this.toolStripClear.Text = "Clear";
             this.toolStripClear.Click += new System.EventHandler(this.toolStripClear_Click);
             // 
+            // timer
+            // 
+            this.timer.Interval = 33;
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            // 
             // gl
             // 
             this.gl.BackColor = System.Drawing.Color.Black;
@@ -172,10 +179,16 @@
             this.gl.MouseEnter += new System.EventHandler(this.ThreeDControl_MouseEnter);
             this.gl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ThreeDControl_KeyDown);
             // 
-            // timer
+            // toolParallelProjection
             // 
-            this.timer.Interval = 33;
-            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            this.toolParallelProjection.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolParallelProjection.Image = ((System.Drawing.Image)(resources.GetObject("toolParallelProjection.Image")));
+            this.toolParallelProjection.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolParallelProjection.Name = "toolParallelProjection";
+            this.toolParallelProjection.Size = new System.Drawing.Size(34, 36);
+            this.toolParallelProjection.Text = "toolStripButton1";
+            this.toolParallelProjection.ToolTipText = "Use parallel projection";
+            this.toolParallelProjection.Click += new System.EventHandler(this.toolParallelProjection_Click);
             // 
             // ThreeDControl
             // 
@@ -208,5 +221,6 @@
         private System.Windows.Forms.ToolStripButton toolStripClear;
         public RepetierHost.view.utils.RHOpenGL gl;
         private System.Windows.Forms.ToolStripButton toolTopView;
+        public System.Windows.Forms.ToolStripButton toolParallelProjection;
     }
 }

@@ -478,7 +478,7 @@ namespace RepetierHost.model
                             int pos = i;
                             while (pos < orig.Length && char.IsWhiteSpace(orig[pos])) pos++;
                             int end = pos;
-                            while (end < orig.Length && !char.IsWhiteSpace(orig[end])) end++;
+                            while (end < orig.Length && (m==117 || !char.IsWhiteSpace(orig[end]))) end++;
                             Text = orig.Substring(pos, end - pos);
                             if (Text.Length > 16) ActivateV2OrForceAscii();
                             break;

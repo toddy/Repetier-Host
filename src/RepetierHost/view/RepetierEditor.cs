@@ -420,10 +420,8 @@ namespace RepetierHost.view
             radioShowAll.Text = Trans.T("L_SHOW_COMPLETE_CODE");
             radioShowLayerRange.Text = Trans.T("L_SHOW_LAYER_RANGE");
             radioShowSingleLayer.Text = Trans.T("L_SHOW_SINGLE_LAYER");
-            labelFirstLayer.Text = Trans.T("L_FIRST_LAYER");
-            labelLastLayer.Text = Trans.T("L_LAST_LAYER");
-            buttonGoFirstLayer.Text = Trans.T("L_GO_FIRST_LAYER");
-            buttonGoLastLayer.Text = Trans.T("L_GO_LAST_LAYER");
+            buttonGoFirstLayer.Text = Trans.T("L_FIRST_LAYER");
+            buttonGoLastLayer.Text = Trans.T("L_LAST_LAYER");
         }
         public int FileIndex
         {
