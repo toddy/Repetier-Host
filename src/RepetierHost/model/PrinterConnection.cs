@@ -444,6 +444,7 @@ namespace RepetierHost.model
             string printeraction = null;
             GCode historygc = null;
             GCode hostCommand = null;
+            bool lineInc = false;
             if (!garbageCleared) return false;
             try
             {
@@ -502,13 +503,16 @@ namespace RepetierHost.model
                                 }
                                 else
                                 {
-                                    if (gc.M != 110)
-                                        gc.N = ++lastline;
-                                    else 
+                                    if(gc.M==110)
                                         lastline = gc.N;
+                                    else if (gc.M != 117)
+                                    {
+                                        gc.N = ++lastline;
+                                        lineInc = true;
+                                    }
                                     if (isVirtualActive)
                                     {
-                                        if (!pingpong && receivedCount() + gc.orig.Length > receiveCacheSize) { --lastline; return false; } // printer cache full
+                                        if (!pingpong && receivedCount() + gc.orig.Length > receiveCacheSize) { if(lineInc) --lastline; return false; } // printer cache full
                                         if (pingpong) readyForNextSend = false;
                                         else { lock (nackLines) { nackLines.AddLast(gc.orig.Length); } }
                                         virtualPrinter.receiveLine(gc);
@@ -518,7 +522,7 @@ namespace RepetierHost.model
                                         if (binaryVersion == 0 || gc.forceAscii)
                                         {
                                             string cmd = gc.getAscii(true, true);
-                                            if (!pingpong && receivedCount() + cmd.Length + 2 > receiveCacheSize) { --lastline; return false; } // printer cache full
+                                            if (!pingpong && receivedCount() + cmd.Length + 2 > receiveCacheSize) { if(lineInc) --lastline; return false; } // printer cache full
                                             if (pingpong) readyForNextSend = false;
                                             else { lock (nackLines) { nackLines.AddLast(cmd.Length); } }
                                             serial.WriteLine(cmd);
@@ -527,7 +531,7 @@ namespace RepetierHost.model
                                         else
                                         {
                                             byte[] cmd = gc.getBinary(binaryVersion);
-                                            if (!pingpong && receivedCount() + cmd.Length > receiveCacheSize) { --lastline; return false; } // printer cache full
+                                            if (!pingpong && receivedCount() + cmd.Length > receiveCacheSize) { if(lineInc) --lastline; return false; } // printer cache full
                                             if (pingpong) readyForNextSend = false;
                                             else { lock (nackLines) { nackLines.AddLast(cmd.Length); } }
                                             serial.Write(cmd, 0, cmd.Length);
@@ -568,14 +572,17 @@ namespace RepetierHost.model
                                 }
                                 else
                                 {
-                                    if (gc.M != 110)
-                                        gc.N = ++lastline;
-                                    else
+                                    if (gc.M == 110)
                                         lastline = gc.N;
+                                    else if (gc.M != 117)
+                                    {
+                                        gc.N = ++lastline;
+                                        lineInc = true;
+                                    }
                                     if (isVirtualActive)
                                     {
                                         string cmd = gc.getAscii(true, true);
-                                        if (!pingpong && receivedCount() + cmd.Length /*gc.orig.Length*/ > receiveCacheSize) { --lastline; return false; } // printer cache full
+                                        if (!pingpong && receivedCount() + cmd.Length /*gc.orig.Length*/ > receiveCacheSize) { if(lineInc) --lastline; return false; } // printer cache full
                                         if (pingpong) readyForNextSend = false;
                                         else { lock (nackLines) { nackLines.AddLast(cmd.Length /*gc.orig.Length*/); } }
                                         virtualPrinter.receiveLine(gc);
@@ -587,7 +594,7 @@ namespace RepetierHost.model
                                         if (binaryVersion == 0 || gc.forceAscii)
                                         {
                                             string cmd = gc.getAscii(true, true);
-                                            if (!pingpong && receivedCount() + cmd.Length + 2 > receiveCacheSize) { --lastline; return false; } // printer cache full
+                                            if (!pingpong && receivedCount() + cmd.Length + 2 > receiveCacheSize) { if(lineInc) --lastline; return false; } // printer cache full
                                             if (pingpong) readyForNextSend = false;
                                             else { lock (nackLines) { nackLines.AddLast(cmd.Length + 2); } }
                                             serial.WriteLine(cmd);
@@ -596,7 +603,7 @@ namespace RepetierHost.model
                                         else
                                         {
                                             byte[] cmd = gc.getBinary(binaryVersion);
-                                            if (!pingpong && receivedCount() + cmd.Length > receiveCacheSize) { --lastline; return false; } // printer cache full
+                                            if (!pingpong && receivedCount() + cmd.Length > receiveCacheSize) { if(lineInc) --lastline; return false; } // printer cache full
                                             if (pingpong) readyForNextSend = false;
                                             else { lock (nackLines) { nackLines.AddLast(cmd.Length); } }
                                             serial.Write(cmd, 0, cmd.Length);

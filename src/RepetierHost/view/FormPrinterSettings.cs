@@ -504,7 +504,7 @@ namespace RepetierHost.view
                 switch (zhomemode)
                 {
                     case 0: return 0;
-                    case 1: return Height;
+                    case 1: return PrintAreaHeight;
                     case 2: return 0;
                 }
                 return 0;

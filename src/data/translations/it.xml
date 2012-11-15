@@ -86,11 +86,11 @@
 <t id="L_SAVE_G_CODE" ver="1">Salva G-Code</t>
 <t id="L_ERROR" ver="1">Errore</t>
 <t id="L_PAUSE_MSG" ver="1">Premi OK per continuare.
-Tu puoi mettere pausa al tuo codice con
-@pause del testo come questo.</t>
+Puoi mettere pausa al tuo codice con
+@pause o del testo come questo.</t>
 <t id="L_UPDATING..." ver="1">Aggiornamento ...</t>
 <t id="L_SLICE_WITH" ver="1">Slice con $1</t>
-<t id="L_EMERGENCY_STOP_MSG" ver="1">Arresto di emergenza.Potrebbe essere necessario ripristinare la stampante per un riavvio!</t>
+<t id="L_EMERGENCY_STOP_MSG" ver="1">Arresto di emergenza.Potrebbe essere necessario ripristinare la stampante con un riavvio!</t>
 <t id="L_TRANSLATION:" ver="1">Traslazione</t>
 <t id="L_SCALE:" ver="1">Scala</t>
 <t id="L_ROTATE:" ver="1">Ruota</t>
@@ -201,7 +201,8 @@ Tu puoi mettere pausa al tuo codice con
 <t id="L_BAUD_RATE" ver="1">Baud rate:</t>
 <t id="L_CACHE_SIZE_HINT" ver="1">From Arduino 1 on the receiving cache was reduced from 127 to 63 bytes!</t>
 <t id="L_CHECK_EVERY_X" ver="1">Controlla ogni $1 secondi.</t>
-<t id="L_CONNECTION_INFO" ver="1">Le impostazioni della stampante corrispondono sempre alla stampante selezionata in alto. Queste sono memorizzate con ogni OK o applica. Per creare una nuova stampante, basta inserire un nuovo nome e premere il pulsante Applica. La nuova stampante inizia con le ultime impostazioni selezionate.</t>
+<t id="L_CONNECTION_INFO" ver="1">Le impostazioni della stampante corrispondono sempre alla stampante selezionata in alto. Queste sono memorizzate con ogni OK o applica. Per creare una nuova stampante, basta inserire un nuovo ù
+nome della stampante e premere il pulsante Applica. La nuova stampante inizia con le ultime impostazioni selezionate.</t>
 <t id="L_DEFAULT_EXTRUDER_TEMPERATURE" ver="1">Default temperatura estrusore:</t>
 <t id="L_DEFAULT_HEATED_BED_TEMPERATURE" ver="1">Default temperatura piatto riscaldato:</t>
 <t id="L_DUMP_AREA_DEPTH" ver="1">Area "scarto" profondita':</t>
@@ -459,10 +460,10 @@ Scrivere i cambiamenti sul EEPROM?</t>
 <t id="L_FEEDRATE:" ver="1">Feedrate:</t>
 <t id="L_FLOWRATE:" ver="1">Flowrate:</t>
 <t id="L_UPDATE_NO_CONNECTION" ver="1">Impossibile ottenere una connessione al server di aggiornamento!</t>
-<t id="L_MOVE_CAMERA" ver="1">Muovi camera</t>
+<t id="L_MOVE_CAMERA" ver="1">Muovi Camera</t>
 <t id="L_MOVE_OBJECT" ver="1">Muovi oggetto</t>
 <t id="L_MOVE_VIEWPOINT" ver="1">Muovi punto di visuale</t>
-<t id="L_RESET_VIEW" ver="1">Resetta visuale</t>
+<t id="L_RESET_VIEW" ver="1">Resetta Visuale</t>
 <t id="L_ROTATE" ver="1">Ruota</t>
 <t id="L_TOP_VIEW" ver="1">Vista dall'alto</t>
 <t id="T_ZOOM_VIEW" ver="1">Zoom</t>
@@ -485,9 +486,15 @@ Scrivere i cambiamenti sul EEPROM?</t>
 <t id="L_HOME_Z:" ver="4">Home Z:</t>
 <t id="L_MIN" ver="4">Min</t>
 <t id="L_MAX" ver="4">Max</t>
-<t id="L_PAUSED_FIRMWARE" ver="4">La tua stampante ha richiesto una pausa.</t>
+<t id="L_PAUSED_FIRMWARE" ver="4">La stampante richiede una pausa.</t>
 <t id="L_CREATE_FOLDER" ver="4">Crea una nuova cartella</t>
 <t id="L_CREATE_FOLDER_INFO" ver="4">Inserire nome cartella in notazione: 8.3</t>
 <t id="L_UPLOADING_TIME" ver="4">Aggiornamento tempo: $1</t>
 <t id="L_FILAMENT_POS" ver="4">Filamento: $1</t>
+<t id="L_TRAVEL_VISUALIZATION_DISABLED" ver="4">Visualizzione percorso disabilatata</t>
+<t id="M_HIDE_TRAVEL" ver="4">Nascondi percorso</t>
+<t id="L_TRAVEL_VISUALIZATION_ENABLED" ver="4">Visualizzazione percorso abilitata</t>
+<t id="M_SHOW_TRAVEL" ver="4">Mostra percorso</t>
+<t id="L_TRAVEL_MOVES:" ver="4">Percorso senza estrusione:</t>
+<t id="L_DISABLE_TRAVEL_MOVES_VIS">Disabilita visualizzazione percorso</t>
 </translation>

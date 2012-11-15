@@ -382,6 +382,9 @@ namespace RepetierHost.model
                     if (d > 255) ActivateV2OrForceAscii();
                     M = (ushort)d;
                     break;
+                case 'N':
+                    N = (int)d;
+                    break;
                 case 'T':
                     if (d > 255) forceAscii = true;
                     T = (byte)d;
