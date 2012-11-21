@@ -9,12 +9,16 @@ namespace RepetierHost.model
 {
     class VirtualPrinter
     {
-        float bedTemp = 20, extruderTemp = 20,extruderOut=0;
+        float bedTemp = 20;
+        float[] extruderTemp = new float[3];
+        float[] extruderOut= new float[3];
         GCodeAnalyzer ana;
         LinkedList<string> output;
         Thread writeThread = null;
         int cnt = 0;
         int baudrate;
+        int numExtruder = 3;
+        int activeExtruder = 0;
         volatile int bytesin = 0;
 
         private void WriteThread()
@@ -36,7 +40,7 @@ namespace RepetierHost.model
             }
         }
 
-        void timer_Tick(object sender, EventArgs e)
+        void timer_Tick(object sender, EventArgs e2)
         {
             string res = null;
             if (baudrate >= 250000) bytesin = 0;
@@ -63,21 +67,25 @@ namespace RepetierHost.model
             {
                 cnt = 0;
                 bedTemp = bedTemp + Math.Sign(ana.bedTemp - bedTemp) * 2;
-                extruderTemp = extruderTemp + Math.Sign(ana.extruderTemp - extruderTemp) * 4;
                 if (ana.bedTemp > 20 && bedTemp > ana.bedTemp) bedTemp = ana.bedTemp;
-                if (ana.extruderTemp > 20 && extruderTemp > ana.extruderTemp) extruderTemp = ana.extruderTemp;
                 if (bedTemp < 20) bedTemp = 20;
-                if (extruderTemp < 20) extruderTemp = 20;
-                extruderOut = (float)((ana.extruderTemp - 20.0) * 255.0 / 350 * (1.0 + 0.05 * Math.Sin((DateTime.Now.Ticks/10000 % 9000) * 0.000897)));
-                if (extruderOut < 0) extruderOut = 0;
-                if (extruderOut > 255) extruderOut = 255;
- 
+                for (int e = 0; e < numExtruder; e++)
+                {
+                    extruderTemp[e] = extruderTemp[e] + Math.Sign(ana.getTemperature(e) - extruderTemp[e]) * 4;
+                    if (ana.getTemperature(e) > 20 && extruderTemp[e] > ana.getTemperature(e)) extruderTemp[e] = ana.getTemperature(e);
+                    if (extruderTemp[e] < 20) extruderTemp[e] = 20;
+                    extruderOut[e] = (float)((ana.getTemperature(e) - 20.0) * 255.0 / 350 * (1.0 + 0.05 * Math.Sin((DateTime.Now.Ticks / 10000 % 9000) * 0.000897)));
+                    if (extruderOut[e] < 0) extruderOut[e] = 0;
+                    if (extruderOut[e] > 255) extruderOut[e] = 255;
+                }
             }
         }
         public VirtualPrinter()
         {
             ana = new GCodeAnalyzer(true);
             output = new LinkedList<string>();
+            extruderTemp[0] = extruderTemp[1] = extruderTemp[2] = 0;
+            extruderOut[0] = extruderOut[1] = extruderOut[2] = 0;
         }
 
         public void open()
@@ -106,7 +114,10 @@ namespace RepetierHost.model
                             //output.AddLast("FIRMWARE_NAME:Marlin FIRMWARE_URL:https://github.com/repetier/Repetier-Firmware/ PROTOCOL_VERSION:1.0 MACHINE_TYPE:Mendel EXTRUDER_COUNT:1 REPETIER_PROTOCOL:1");
                             break;
                         case 105: // Print Temperatures
-                            output.AddLast("T:" + extruderTemp.ToString("0") + " B:" + bedTemp.ToString("0")+" @:"+extruderOut.ToString("0"));
+                            output.AddLast("T:" + extruderTemp[activeExtruder].ToString("0") + " B:" + bedTemp.ToString("0.00")+" @:"+extruderOut[activeExtruder].ToString("0")+
+                                " T0:"+extruderTemp[0].ToString("0.00")+" @0:"+extruderOut[0].ToString("0")+
+                                " T1:"+extruderTemp[1].ToString("0.00")+" @1:"+extruderOut[1].ToString("0")+
+                                " T2:"+extruderTemp[2].ToString("0.00")+" @2:"+extruderOut[2].ToString("0"));
                             break;
                         case 205: // EEPROM Settings
                             output.AddLast("EPR:2 75 76800 Baudrate");
@@ -145,6 +156,11 @@ namespace RepetierHost.model
                             output.AddLast("EPR:2 189 40 Temp. stabilize time [s]");
                             break;
                     }
+                else if (code.hasT)
+                {
+                    if (code.T >= 0 && code.T < numExtruder)
+                        activeExtruder = code.T;
+                }
                 output.AddLast("ok");
             }
         }

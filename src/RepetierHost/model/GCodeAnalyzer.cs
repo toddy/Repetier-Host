@@ -33,7 +33,8 @@ namespace RepetierHost.model
         public event OnPosChangeFast eventPosChangedFast;
         public event OnAnalyzerChange eventChange;
         public int activeExtruder = 0;
-        public float extruderTemp = 0;
+        //public float extruderTemp = 0;
+        public Dictionary<int,float> extruderTemp = new Dictionary<int,float>();  
         public bool uploading = false;
         public float bedTemp = 0;
         public float x = 0, y = 0, z = 0, e = 0, emax = 0,f=1000;
@@ -61,8 +62,19 @@ namespace RepetierHost.model
         public GCodeAnalyzer(bool privAnal)
         {
             privateAnalyzer = privAnal;
-            extruderTemp = 0;
+            foreach(int k in extruderTemp.Keys)
+                extruderTemp[k] = 0;
             bedTemp = 0;
+        }
+        public float getTemperature(int extr) {
+            if(!extruderTemp.ContainsKey(extr))
+                extruderTemp.Add(extr,0.0f);
+            return extruderTemp[extr];
+        }
+        public void setTemperature(int extr,float t) {
+            if(!extruderTemp.ContainsKey(extr))
+                extruderTemp.Add(extr,t);
+            else extruderTemp[extr] = t;
         }
         public void fireChanged()
         {
@@ -81,7 +93,11 @@ namespace RepetierHost.model
             relative = false;
             eRelative = false;
             activeExtruder = 0;
-            extruderTemp = 0;
+            List<int> keys = new List<int>();
+            foreach (int k in extruderTemp.Keys)
+                keys.Add(k);
+            foreach(int k in keys)
+                extruderTemp[k] = 0;
             bedTemp = 0;
             fanOn = false;
             powerOn = true;
@@ -281,7 +297,11 @@ namespace RepetierHost.model
                         break;
                     case 104:
                     case 109:
-                        if (code.hasS) extruderTemp = code.S;
+                        {
+                            int idx = activeExtruder;
+                            if (code.hasT) idx = code.T;
+                            if (code.hasS) setTemperature(idx,code.S);
+                        }
                         fireChanged();
                         break;
                     case 106:

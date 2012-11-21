@@ -103,12 +103,13 @@ namespace RepetierHost.view
             TimeSpan t = (DateTime.UtcNow - new DateTime(1970, 1, 1));
             long timestamp = (long)t.TotalSeconds;
             long diff = timestamp - statusSet;
+            float etemp = ann.getTemperature(ann.activeExtruder);
             if (Main.conn.connected == false)
             {
                 if (status != PrinterStatus.disconnected)
                     Status = PrinterStatus.disconnected;
             }
-            else if (ann.extruderTemp > 15 && ann.extruderTemp - con.extruderTemp > 5)
+            else if (etemp > 15 && etemp - con.getTemperature(-1) > 5)
                 Status = PrinterStatus.heatingExtruder;
             else if (ann.bedTemp > 15 && ann.bedTemp - con.bedTemp > 5 && con.bedTemp > 15) // only if has bed
                 Status = PrinterStatus.heatingBed;
@@ -185,8 +186,8 @@ namespace RepetierHost.view
         {
             labelExtruderTemp.Text = extruder.ToString("0.00") + "°C /";
             labelPrintbedTemp.Text = printbed.ToString("0.00") + "°C /";
-            string tr = Trans.T("L_EXTRUDER:")+" " + con.extruderTemp.ToString("0.00");
-            if (switchExtruderHeatOn.On) tr += "/" + ann.extruderTemp.ToString() + "°C";
+            string tr = Trans.T("L_EXTRUDER:")+" " + con.getTemperature(-1).ToString("0.00");
+            if (switchExtruderHeatOn.On) tr += "/" + ann.getTemperature(-1).ToString() + "°C";
             else tr += "°C/" + Trans.T("L_OFF");
             if (con.bedTemp > 0)
             {
@@ -198,13 +199,13 @@ namespace RepetierHost.view
         }
         public void analyzerChange() {
             createCommands = false;
-            if (ann.extruderTemp > 0)
-                numericUpDownExtruder.Value = (int)ann.extruderTemp;
+            if (ann.getTemperature(-1) > 0)
+                numericUpDownExtruder.Value = (int)ann.getTemperature(-1);
             //    textExtruderSetTemp.Text = ann.extruderTemp.ToString();
             if (ann.bedTemp > 0)
                 numericPrintBed.Value = (int)ann.bedTemp;
             //    textPrintbedTemp.Text = ann.bedTemp.ToString();
-            switchExtruderHeatOn.On = ann.extruderTemp > 0;
+            switchExtruderHeatOn.On = ann.getTemperature(-1) > 0;
             switchFanOn.On = ann.fanOn;
             trackFanVoltage.Value = ann.fanVoltage;
             switchBedHeat.On = ann.bedTemp > 0;
@@ -212,7 +213,7 @@ namespace RepetierHost.view
             sliderSpeed.Value = con.speedMultiply;
             numericUpDownSpeed.Value = con.speedMultiply;
             //labelSpeed.Text = sliderSpeed.Value.ToString() + "%";
-            tempUpdate(con.extruderTemp, con.bedTemp);
+            tempUpdate(con.getTemperature(-1), con.bedTemp);
             createCommands = true;
         }
         private void coordUpdate(GCode code,float x,float y,float z) {

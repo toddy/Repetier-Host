@@ -129,6 +129,7 @@
             this.toolShowFilament = new System.Windows.Forms.ToolStripButton();
             this.toolStripEmergencyButton = new System.Windows.Forms.ToolStripButton();
             this.toolPrinterSettings = new System.Windows.Forms.ToolStripButton();
+            this.toolShowTravel = new System.Windows.Forms.ToolStripButton();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.openGCode = new System.Windows.Forms.OpenFileDialog();
             this.saveJobDialog = new System.Windows.Forms.SaveFileDialog();
@@ -141,10 +142,9 @@
             this.tab = new System.Windows.Forms.TabControl();
             this.tabModel = new System.Windows.Forms.TabPage();
             this.tabSlicer = new System.Windows.Forms.TabPage();
+            this.slicerPanel = new RepetierHost.view.SlicerPanel();
             this.tabGCode = new System.Windows.Forms.TabPage();
             this.tabPrint = new System.Windows.Forms.TabPage();
-            this.toolShowTravel = new System.Windows.Forms.ToolStripButton();
-            this.slicerPanel = new RepetierHost.view.SlicerPanel();
             this.menu.SuspendLayout();
             this.status.SuspendLayout();
             this.toolStrip.SuspendLayout();
@@ -1009,6 +1009,16 @@
             this.toolPrinterSettings.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolPrinterSettings.Click += new System.EventHandler(this.printerSettingsToolStripMenuItem_Click);
             // 
+            // toolShowTravel
+            // 
+            this.toolShowTravel.Image = ((System.Drawing.Image)(resources.GetObject("toolShowTravel.Image")));
+            this.toolShowTravel.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolShowTravel.Name = "toolShowTravel";
+            this.toolShowTravel.Size = new System.Drawing.Size(72, 51);
+            this.toolShowTravel.Text = "ShowTravel";
+            this.toolShowTravel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolShowTravel.Click += new System.EventHandler(this.toolShowTravel_Click);
+            // 
             // imageList
             // 
             this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
@@ -1138,6 +1148,14 @@
             this.tabSlicer.Text = "Slicer";
             this.tabSlicer.UseVisualStyleBackColor = true;
             // 
+            // slicerPanel
+            // 
+            this.slicerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.slicerPanel.Location = new System.Drawing.Point(0, 0);
+            this.slicerPanel.Name = "slicerPanel";
+            this.slicerPanel.Size = new System.Drawing.Size(467, 304);
+            this.slicerPanel.TabIndex = 0;
+            // 
             // tabGCode
             // 
             this.tabGCode.AutoScroll = true;
@@ -1161,24 +1179,6 @@
             this.tabPrint.Text = "Manual control";
             this.tabPrint.UseVisualStyleBackColor = true;
             // 
-            // toolShowTravel
-            // 
-            this.toolShowTravel.Image = ((System.Drawing.Image)(resources.GetObject("toolShowTravel.Image")));
-            this.toolShowTravel.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolShowTravel.Name = "toolShowTravel";
-            this.toolShowTravel.Size = new System.Drawing.Size(72, 51);
-            this.toolShowTravel.Text = "ShowTravel";
-            this.toolShowTravel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.toolShowTravel.Click += new System.EventHandler(this.toolShowTravel_Click);
-            // 
-            // slicerPanel
-            // 
-            this.slicerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.slicerPanel.Location = new System.Drawing.Point(0, 0);
-            this.slicerPanel.Name = "slicerPanel";
-            this.slicerPanel.Size = new System.Drawing.Size(467, 304);
-            this.slicerPanel.TabIndex = 0;
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1192,7 +1192,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menu;
             this.Name = "Main";
-            this.Text = "Repetier-Host V0.80";
+            this.Text = "Repetier-Host V0.81";
             this.Load += new System.EventHandler(this.Main_Load);
             this.SizeChanged += new System.EventHandler(this.Main_SizeChanged);
             this.Shown += new System.EventHandler(this.Main_Shown);

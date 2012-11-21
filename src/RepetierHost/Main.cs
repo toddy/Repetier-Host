@@ -1197,8 +1197,12 @@ namespace RepetierHost
             conn.injectManualCommandFirst("M112");
             conn.job.KillJob();
             conn.serial.DtrEnable = false;
-            Thread.Sleep(50);
+            //conn.serial.RtsEnable = true;
+            Thread.Sleep(200);
+            //conn.serial.RtsEnable = false;
             conn.serial.DtrEnable = true;
+            Thread.Sleep(200);
+            conn.serial.DtrEnable = false;
             conn.log(Trans.T("L_EMERGENCY_STOP_MSG"), false, 3);
             while (conn.hasInjectedMCommand(112))
             {
@@ -1394,6 +1398,12 @@ namespace RepetierHost
             threeDSettings.checkDisableTravelMoves.Checked = !threeDSettings.checkDisableTravelMoves.Checked;
             threeDSettings.FormToRegistry();
         }
+
+        private void slicerPanel_Load(object sender, EventArgs e)
+        {
+
+        }
+
 
     }
 }

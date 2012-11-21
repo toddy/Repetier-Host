@@ -100,9 +100,10 @@ namespace RepetierHost.model
         public string firmware_url = "";
         public string protocol = "";
         public int numberExtruder = 1;
-        public float extruderTemp;
+        public Dictionary<int,float> extruderTemp = new Dictionary<int,float>();
+        public bool multiTempRead = false; // true if M105 sends temperatures for all extruder
         public float bedTemp;
-        public int extruderOutput = -1;
+        public Dictionary<int,int> extruderOutput = new Dictionary<int,int>();
         public float x, y, z, e;
         public bool paused = false;
         public bool logM105 = false;
@@ -715,12 +716,12 @@ namespace RepetierHost.model
                     serial.DataReceived += received;
                 serial.ErrorReceived += error;
                 serial.RtsEnable = false;
-                //serial.DtrEnable = false;
-                serial.DtrEnable = true;
+                serial.DtrEnable = false;
                 serial.Open();
-              //  serial.DtrEnable = true;
-             //   Thread.Sleep(400);
-             //   serial.DtrEnable = false;
+                serial.DtrEnable = true;
+                Thread.Sleep(200);
+                serial.DtrEnable = false;
+
                 // If we didn't restart the connection we need to eat
                 // all unread data on this port.
                 serial.DiscardInBuffer();
@@ -983,6 +984,34 @@ namespace RepetierHost.model
         {
             Main.conn.pause(Trans.T("L_PAUSED_FIRMWARE"));
         };
+        public float getTemperature(int extr)
+        {
+            if (extr < 0) extr = analyzer.activeExtruder;
+            if (!extruderTemp.ContainsKey(extr))
+                extruderTemp.Add(extr, 0.0f);
+            return extruderTemp[extr];
+        }
+        public void setTemperature(int extr, float t)
+        {
+            if (extr < 0) extr = analyzer.activeExtruder;
+            if (!extruderTemp.ContainsKey(extr))
+                extruderTemp.Add(extr, t);
+            else extruderTemp[extr] = t;
+        }
+        public float getOutput(int extr)
+        {
+            if (extr < 0) extr = analyzer.activeExtruder;
+            if (!extruderOutput.ContainsKey(extr))
+                extruderOutput.Add(extr, -1);
+            return extruderOutput[extr];
+        }
+        public void setOutput(int extr, int o)
+        {
+            if (extr < 0) extr = analyzer.activeExtruder;
+            if (!extruderOutput.ContainsKey(extr))
+                extruderOutput.Add(extr, o);
+            else extruderOutput[extr] = o;
+        }
         /// <summary>
         /// Analyzes a response from the printer.
         /// Updates data and sends events according to the data.
@@ -1095,14 +1124,16 @@ namespace RepetierHost.model
             }
             if ((h = extract(res, "TargetExtr0:")) != null)
             {
-                if (analyzer.activeExtruder == 0)
-                    float.TryParse(h,NumberStyles.Float,GCode.format,out analyzer.extruderTemp);
+                float et;
+                float.TryParse(h, NumberStyles.Float, GCode.format, out et);
+                analyzer.setTemperature(0, et);
                 analyzer.fireChanged();
             }
             if ((h = extract(res, "TargetExtr1:")) != null)
             {
-                if (analyzer.activeExtruder == 1)
-                    float.TryParse(h, NumberStyles.Float, GCode.format, out analyzer.extruderTemp);
+                float et;
+                float.TryParse(h, NumberStyles.Float, GCode.format, out et);
+                analyzer.setTemperature(1, et);
                 analyzer.fireChanged();
             }
             if ((h = extract(res, "TargetBed:")) != null)
@@ -1120,17 +1151,45 @@ namespace RepetierHost.model
                 Main.main.Invoke(firmwareRequestedPause);
             }
             bool tempChange = false;
-            h = extract(res, "T:");
+            h = extract(res, "T0:");
             if (h != null)
             {
+                multiTempRead = true;
+                int n = 0;
                 level = -1; // dont log, we see result in status
                 //if (h.IndexOf('.') > 0) h = h.Substring(0, h.IndexOf('.'));
-                float.TryParse(h, NumberStyles.Float, GCode.format, out extruderTemp);
-                tempChange = true;
-                extruderOutput = -1;
-                h = extract(res, "@:");
-                int.TryParse(h, out extruderOutput);
-                if (isMarlin) extruderOutput *= 2;
+                do
+                {
+                    float et;
+                    float.TryParse(h, NumberStyles.Float, GCode.format, out et);
+                    tempChange = true;
+                    setTemperature(n, et);
+                    h = extract(res, "@"+n+":");
+                    int eo = -1;
+                    int.TryParse(h, out eo);
+                    if (isMarlin) eo *= 2;
+                    setOutput(n, eo);
+                    n++;
+                    h = extract(res, "T" + n + ":");
+                } while (h != null);
+            }
+            else
+            {
+                h = extract(res, "T:");
+                if (h != null)
+                {
+                    level = -1; // dont log, we see result in status
+                    //if (h.IndexOf('.') > 0) h = h.Substring(0, h.IndexOf('.'));
+                    float et;
+                    float.TryParse(h, NumberStyles.Float, GCode.format, out et);
+                    setTemperature(-1, et);
+                    tempChange = true;
+                    int eo = -1;
+                    h = extract(res, "@:");
+                    int.TryParse(h, out eo);
+                    if (isMarlin) eo *= 2;
+                    setOutput(-1, eo);
+                }
             }
             h = extract(res, "B:");
             if (h != null)
@@ -1177,7 +1236,7 @@ namespace RepetierHost.model
                     }
                     if (eventTempHistory != null)
                     {
-                        TemperatureEntry te = new TemperatureEntry(analyzer.tempMonitor, temp, output, analyzer.bedTemp, analyzer.extruderTemp);
+                        TemperatureEntry te = new TemperatureEntry(analyzer.tempMonitor, temp, output, analyzer.bedTemp, analyzer.getTemperature(-1));
                         Main.main.Invoke(eventTempHistory, te);
                     }
                 }
@@ -1208,13 +1267,13 @@ namespace RepetierHost.model
             }
             if (tempChange && eventTempChange != null)
             {
-                Main.main.Invoke(eventTempChange, extruderTemp, bedTemp);
+                Main.main.Invoke(eventTempChange, getTemperature(-1), bedTemp);
             }
             if (tempChange && eventTempHistory != null)
             {
-                TemperatureEntry te = new TemperatureEntry(extruderTemp, bedTemp, analyzer.bedTemp, analyzer.extruderTemp);
-                if (extruderOutput >= 0)
-                    te.output = extruderOutput;
+                TemperatureEntry te = new TemperatureEntry(getTemperature(-1), bedTemp, analyzer.bedTemp, analyzer.getTemperature(-1));
+                if (getOutput(-1) >= 0)
+                    te.output = getOutput(-1);
                 Main.main.Invoke(eventTempHistory, te);
             }
             if (res.StartsWith(" ")) level = 3;

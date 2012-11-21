@@ -56,6 +56,8 @@ namespace RepetierHost.view
             labelSlic3rExtruder1.Text = Trans.T1("L_EXTRUDER_X:", "1");
             labelSlic3rExtruder2.Text = Trans.T1("L_EXTRUDER_X:", "2");
             labelSlic3rExtruder3.Text = Trans.T1("L_EXTRUDER_X:", "3");
+            if(Main.slicer!=null)
+                buttonStartSlicing.Text = Trans.T1("L_SLICE_WITH", Main.slicer.SlicerName);
         }
         private string noINI(string ini)
         {

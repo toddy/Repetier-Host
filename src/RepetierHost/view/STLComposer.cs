@@ -73,6 +73,8 @@ namespace RepetierHost.view
             buttonCopyObjects.Text = Trans.T("B_COPY_OBJECTS");
             buttonCenter.Text = Trans.T("B_CENTER_OBJECT");
             checkScaleAll.Text = Trans.T("L_LOCK_ASPECT_RATIO");
+            if(Main.slicer!=null)
+                buttonSlice.Text = Trans.T1("L_SLICE_WITH", Main.slicer.SlicerName);
         }
         public void Update3D()
         {
