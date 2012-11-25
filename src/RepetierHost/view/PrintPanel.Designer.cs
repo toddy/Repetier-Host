@@ -51,7 +51,6 @@
             this.labelExtruderSpeed = new System.Windows.Forms.Label();
             this.buttonExtrude = new System.Windows.Forms.Button();
             this.labelExtruderTemp = new System.Windows.Forms.Label();
-            this.labelTemp = new System.Windows.Forms.Label();
             this.groupPrintbed = new System.Windows.Forms.GroupBox();
             this.numericPrintBed = new System.Windows.Forms.NumericUpDown();
             this.labelPrintbedTemp = new System.Windows.Forms.Label();
@@ -75,6 +74,7 @@
             this.labelFlowrate = new System.Windows.Forms.Label();
             this.labelFeedrate = new System.Windows.Forms.Label();
             this.numericUpDownFlow = new System.Windows.Forms.NumericUpDown();
+            this.comboExtruder = new System.Windows.Forms.ComboBox();
             this.sliderFlowrate = new MB.Controls.ColorSlider();
             this.sliderSpeed = new MB.Controls.ColorSlider();
             this.switchEcho = new RepetierHost.view.SwitchButton();
@@ -238,6 +238,7 @@
             // 
             // groupExtruder
             // 
+            this.groupExtruder.Controls.Add(this.comboExtruder);
             this.groupExtruder.Controls.Add(this.textRetractAmount);
             this.groupExtruder.Controls.Add(this.textExtrudeAmount);
             this.groupExtruder.Controls.Add(this.textExtrudeSpeed);
@@ -249,7 +250,6 @@
             this.groupExtruder.Controls.Add(this.buttonExtrude);
             this.groupExtruder.Controls.Add(this.labelExtruderTemp);
             this.groupExtruder.Controls.Add(this.switchExtruderHeatOn);
-            this.groupExtruder.Controls.Add(this.labelTemp);
             this.groupExtruder.Location = new System.Drawing.Point(7, 451);
             this.groupExtruder.Name = "groupExtruder";
             this.groupExtruder.Size = new System.Drawing.Size(240, 171);
@@ -259,7 +259,7 @@
             // 
             // textRetractAmount
             // 
-            this.textRetractAmount.Location = new System.Drawing.Point(118, 138);
+            this.textRetractAmount.Location = new System.Drawing.Point(118, 134);
             this.textRetractAmount.Maximum = new decimal(new int[] {
             500,
             0,
@@ -282,7 +282,7 @@
             // 
             // textExtrudeAmount
             // 
-            this.textExtrudeAmount.Location = new System.Drawing.Point(118, 111);
+            this.textExtrudeAmount.Location = new System.Drawing.Point(118, 107);
             this.textExtrudeAmount.Maximum = new decimal(new int[] {
             500,
             0,
@@ -305,7 +305,7 @@
             // 
             // textExtrudeSpeed
             // 
-            this.textExtrudeSpeed.Location = new System.Drawing.Point(119, 85);
+            this.textExtrudeSpeed.Location = new System.Drawing.Point(119, 81);
             this.textExtrudeSpeed.Maximum = new decimal(new int[] {
             5000,
             0,
@@ -328,7 +328,7 @@
             // 
             // numericUpDownExtruder
             // 
-            this.numericUpDownExtruder.Location = new System.Drawing.Point(136, 49);
+            this.numericUpDownExtruder.Location = new System.Drawing.Point(174, 50);
             this.numericUpDownExtruder.Maximum = new decimal(new int[] {
             400,
             0,
@@ -347,7 +347,7 @@
             // labelRetract
             // 
             this.labelRetract.AutoSize = true;
-            this.labelRetract.Location = new System.Drawing.Point(10, 140);
+            this.labelRetract.Location = new System.Drawing.Point(10, 136);
             this.labelRetract.Name = "labelRetract";
             this.labelRetract.Size = new System.Drawing.Size(67, 13);
             this.labelRetract.TabIndex = 12;
@@ -356,7 +356,7 @@
             // labelExtrude
             // 
             this.labelExtrude.AutoSize = true;
-            this.labelExtrude.Location = new System.Drawing.Point(10, 113);
+            this.labelExtrude.Location = new System.Drawing.Point(10, 109);
             this.labelExtrude.Name = "labelExtrude";
             this.labelExtrude.Size = new System.Drawing.Size(68, 13);
             this.labelExtrude.TabIndex = 11;
@@ -365,7 +365,7 @@
             // buttonRetract
             // 
             this.buttonRetract.Image = ((System.Drawing.Image)(resources.GetObject("buttonRetract.Image")));
-            this.buttonRetract.Location = new System.Drawing.Point(178, 137);
+            this.buttonRetract.Location = new System.Drawing.Point(178, 133);
             this.buttonRetract.Name = "buttonRetract";
             this.buttonRetract.Size = new System.Drawing.Size(50, 23);
             this.buttonRetract.TabIndex = 6;
@@ -375,7 +375,7 @@
             // labelExtruderSpeed
             // 
             this.labelExtruderSpeed.AutoSize = true;
-            this.labelExtruderSpeed.Location = new System.Drawing.Point(9, 88);
+            this.labelExtruderSpeed.Location = new System.Drawing.Point(9, 84);
             this.labelExtruderSpeed.Name = "labelExtruderSpeed";
             this.labelExtruderSpeed.Size = new System.Drawing.Size(84, 13);
             this.labelExtruderSpeed.TabIndex = 10;
@@ -384,7 +384,7 @@
             // buttonExtrude
             // 
             this.buttonExtrude.Image = ((System.Drawing.Image)(resources.GetObject("buttonExtrude.Image")));
-            this.buttonExtrude.Location = new System.Drawing.Point(180, 108);
+            this.buttonExtrude.Location = new System.Drawing.Point(180, 104);
             this.buttonExtrude.Name = "buttonExtrude";
             this.buttonExtrude.Size = new System.Drawing.Size(48, 23);
             this.buttonExtrude.TabIndex = 4;
@@ -394,20 +394,11 @@
             // labelExtruderTemp
             // 
             this.labelExtruderTemp.AutoSize = true;
-            this.labelExtruderTemp.Location = new System.Drawing.Point(70, 51);
+            this.labelExtruderTemp.Location = new System.Drawing.Point(108, 52);
             this.labelExtruderTemp.Name = "labelExtruderTemp";
             this.labelExtruderTemp.Size = new System.Drawing.Size(44, 13);
             this.labelExtruderTemp.TabIndex = 2;
             this.labelExtruderTemp.Text = "200°C /";
-            // 
-            // labelTemp
-            // 
-            this.labelTemp.AutoSize = true;
-            this.labelTemp.Location = new System.Drawing.Point(10, 51);
-            this.labelTemp.Name = "labelTemp";
-            this.labelTemp.Size = new System.Drawing.Size(37, 13);
-            this.labelTemp.TabIndex = 0;
-            this.labelTemp.Text = "Temp.";
             // 
             // groupPrintbed
             // 
@@ -610,7 +601,7 @@
             this.groupDebugOptions.Controls.Add(this.switchErrors);
             this.groupDebugOptions.Controls.Add(this.switchDryRun);
             this.groupDebugOptions.Controls.Add(this.buttonSimulateOK);
-            this.groupDebugOptions.Location = new System.Drawing.Point(8, 628);
+            this.groupDebugOptions.Location = new System.Drawing.Point(8, 624);
             this.groupDebugOptions.Name = "groupDebugOptions";
             this.groupDebugOptions.Size = new System.Drawing.Size(442, 50);
             this.groupDebugOptions.TabIndex = 54;
@@ -672,6 +663,19 @@
             0,
             0});
             this.numericUpDownFlow.ValueChanged += new System.EventHandler(this.sliderSlowrate_ValueChanged);
+            // 
+            // comboExtruder
+            // 
+            this.comboExtruder.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboExtruder.FormattingEnabled = true;
+            this.comboExtruder.Items.AddRange(new object[] {
+            "Extruder 1",
+            "Extruder 2"});
+            this.comboExtruder.Location = new System.Drawing.Point(13, 49);
+            this.comboExtruder.Name = "comboExtruder";
+            this.comboExtruder.Size = new System.Drawing.Size(89, 21);
+            this.comboExtruder.TabIndex = 14;
+            this.comboExtruder.SelectedIndexChanged += new System.EventHandler(this.comboExtruder_SelectedIndexChanged);
             // 
             // sliderFlowrate
             // 
@@ -1040,7 +1044,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.switchPower);
             this.Name = "PrintPanel";
-            this.Size = new System.Drawing.Size(453, 697);
+            this.Size = new System.Drawing.Size(453, 681);
             this.groupExtruder.ResumeLayout(false);
             this.groupExtruder.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.textRetractAmount)).EndInit();
@@ -1087,7 +1091,6 @@
         private System.Windows.Forms.GroupBox groupBox_Fan;
         private System.Windows.Forms.Label labelExtruderTemp;
         private SwitchButton switchExtruderHeatOn;
-        private System.Windows.Forms.Label labelTemp;
         private System.Windows.Forms.Button buttonExtrude;
         private System.Windows.Forms.Label labelPrintbedTemp;
         private SwitchButton switchBedHeat;
@@ -1129,5 +1132,6 @@
         private System.Windows.Forms.Label labelFeedrate;
         private System.Windows.Forms.NumericUpDown numericUpDownFlow;
         private MB.Controls.ColorSlider sliderFlowrate;
+        private System.Windows.Forms.ComboBox comboExtruder;
     }
 }

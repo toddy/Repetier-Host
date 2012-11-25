@@ -1,3 +1,9 @@
+Version 0.82 24-11-2012
+  Slic3r 0.9.7 now included
+  New translation: Czech by Josef Průša
+  New translation: Russian by Eugenco
+  Better support for multiple extruder
+    
 Version 0.80 11-11-2012
   New translation: Spanish by Mecano
   New translation: Portugues by Alexandre Dias

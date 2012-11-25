@@ -137,6 +137,8 @@ namespace RepetierHost.model
         public int speedMultiply = 100;
         public int flowMultiply = 100;
         public bool boostUpload = false;
+        public int numExtruder = 1;
+        public double ignoreFedbackUntil = 0;
 
         public PrinterConnection()
         {
@@ -170,6 +172,15 @@ namespace RepetierHost.model
             {
                 logWriter.Close();
             }
+        }
+        public void ignoreFeedback() {
+            TimeSpan ts = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0));
+            ignoreFedbackUntil = ts.TotalSeconds+0.5;
+        }
+        public bool shouldIgnoreFeedback()
+        {
+            TimeSpan ts = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0));
+            return ignoreFedbackUntil > ts.TotalSeconds;
         }
         public bool hasInjectedMCommand(int code)
         {
@@ -719,8 +730,8 @@ namespace RepetierHost.model
                 serial.DtrEnable = false;
                 serial.Open();
                 serial.DtrEnable = true;
-                Thread.Sleep(200);
-                serial.DtrEnable = false;
+                //Thread.Sleep(200);
+                //serial.DtrEnable = false;
 
                 // If we didn't restart the connection we need to eat
                 // all unread data on this port.
@@ -1022,6 +1033,7 @@ namespace RepetierHost.model
             while (res.Length > 0 && res[0] < 32) res = res.Substring(1);
             res = res.Trim();
             int level = 0;
+            bool ignoreFB = shouldIgnoreFeedback();
             if (logWriter != null)
             {
                 DateTime time = DateTime.Now;
@@ -1108,19 +1120,22 @@ namespace RepetierHost.model
                 float.TryParse(h, NumberStyles.Float, GCode.format, out e);
                 analyzer.e = e;
             }
-            if ((h = extract(res, "SpeedMultiply:")) != null)
+            if (!ignoreFB)
             {
-                int.TryParse(h,out speedMultiply);
-                if (speedMultiply < 25) speedMultiply = 25;
-                if (speedMultiply > 300) speedMultiply = 300;
-                analyzer.fireChanged();
-            }
-            if ((h = extract(res, "FlowMultiply:")) != null)
-            {
-                int.TryParse(h, out flowMultiply);
-                if (flowMultiply < 50) flowMultiply = 50;
-                if (flowMultiply > 150) flowMultiply = 150;
-                analyzer.fireChanged();
+                if ((h = extract(res, "SpeedMultiply:")) != null)
+                {
+                    int.TryParse(h, out speedMultiply);
+                    if (speedMultiply < 25) speedMultiply = 25;
+                    if (speedMultiply > 300) speedMultiply = 300;
+                    analyzer.fireChanged();
+                }
+                if ((h = extract(res, "FlowMultiply:")) != null)
+                {
+                    int.TryParse(h, out flowMultiply);
+                    if (flowMultiply < 50) flowMultiply = 50;
+                    if (flowMultiply > 150) flowMultiply = 150;
+                    analyzer.fireChanged();
+                }
             }
             if ((h = extract(res, "TargetExtr0:")) != null)
             {

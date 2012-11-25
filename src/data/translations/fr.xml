@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<translation revision="3" language="Français" languageInEnglish="French" author="contact@labsud.org">
+<translation revision="4" language="Français" languageInEnglish="French" author="contact@labsud.org">
 <t id="M_FILE" ver="2">Fichier</t>
 <t id="M_CONFIG" ver="1">Configuration</t>
 <t id="M_SLICER" ver="1">Trancheur</t>
@@ -78,7 +78,7 @@
 <t id="M_SD_CARD" ver="1">Carte SD</t>
 <t id="M_TOGGLE_LOG" ver="1">Visibilité Log</t>
 <t id="M_SHOW_FILAMENT" ver="1">Afficher Filament</t>
-<t id="M_HIDE_FILAMENT" ver="1">Cacher Filament</t>
+<t id="M_HIDE_FILAMENT" ver="1">Cacher   Filament</t>
 <t id="L_FILAMENT_VISUALIZATION_DISABLED" ver="1">Affichage du Filament désactivé</t>
 <t id="L_FILAMENT_VISUALIZATION_ENABLED" ver="1">Affichage du Filament activé</t>
 <t id="L_LOAD_FILE" ver="1">Charger fichier</t>
@@ -110,8 +110,8 @@ Vous pouvez ajouter des pauses dans votre code avec
 <t id="B_CONFIGURE_SLIC3R" ver="1">Configurer</t>
 <t id="B_ACTIVE" ver="1">Actif</t>
 <t id="L_FILAMENT_SETTINGS" ver="1">Réglages du Filament:</t>
-<t id="L_PRINTER_SETTINGS" ver="1">Réglages de l'imprimante:</t>
-<t id="L_PRINT_SETTINGS" ver="1">Réglages de l'impression :</t>
+<t id="L_PRINTER_SETTINGS" ver="1">Réglages imprimante:</t>
+<t id="L_PRINT_SETTINGS" ver="1">Réglages impression :</t>
 <t id="L_PROFILE" ver="1">Profil:</t>
 <t id="B_SEND" ver="1">Envoyer</t>
 <t id="B_SIMULATE_OK" ver="1">OK</t>
@@ -322,18 +322,18 @@ dans le visualiseur de log. Le stockage des logs n'est actf qu'après le redéma
 <t id="L_EXTRUDER_X:" ver="1">Extrudeur $1:</t>
 <t id="L_FACES" ver="1">Faces:</t>
 <t id="L_FILAMENT_VISUALIZATION_INFO" ver="1">
-La forme du filament est calculée soit par les hauteur de la couche et sa largeur au regard de
-l'épaisseur, ou du diamètre du filament et de la largeur au regard de l'épaisseur et des valeurs
-de E dans le G-code. La deuxième version donne de meilleurs résultats lors de changements de 
-hauteur de couche, qui peut se produire dans les versions plus récentes Skeinforge.</t>
+La forme du filament est calculée soit par les hauteur de la couche et sa largeur au 
+regard de l'épaisseur, ou du diamètre du filament et de la largeur au regard de l'épaiss.
+et des valeurs de E dans le G-code. La deuxième version donne de meilleurs résultats 
+lors de chang. de hauteur de couche, supportées dans les dern. versions de Skeinforge.</t>
 <t id="L_FILAMENT_VISUALIZATION" ver="1">Visualisation du Filament:</t>
 <t id="L_HOT_FILAMENT" ver="1">Filament chaud:</t>
 <t id="L_HOT_FILAMENT_LENGTH" ver="1">Longueur filament chaud:</t>
 <t id="L_LIGHT_X" ver="1">Eclairage $1</t>
 <t id="L_OBJECTS_OUTSIDE_PRINTBED" ver="1">Objets en dehors du lit:</t>
-<t id="L_PRINTER_BASE" ver="1">Base de l'imprimante:</t>
+<t id="L_PRINTER_BASE" ver="1">Lit imprimante:</t>
 <t id="L_SELECTED_FACES" ver="1">Faces Sélectionnées:</t>
-<t id="L_SELECTED_FILAMENT" ver="1">Filament Sélectionné:</t>
+<t id="L_SELECTED_FILAMENT" ver="1">Fil. Sélectionné:</t>
 <t id="L_SPECULAR_COLOR" ver="1">Coul. Spéculaire:</t>
 <t id="L_WIDTH_OVER_THICKNESS" ver="1">Facteur de largeur/épaisseur:</t>
 <t id="L_X_DIRECTION" ver="1">Direction X:</t>
@@ -489,5 +489,22 @@ Ecrire changement dans l'EEPROM?</t>
 <t id="L_FILAMENT_NONE" ver="3">Aucun/Idem Extrudeur 1</t>
 <t id="L_REALLY_QUIT" ver="3">Impression non terminée. Sortir tout de même?</t>
 <t id="M_DONATE" ver="3">Donner ou Supporter</t>
+<t id="L_FAN" ver="4">Ventilateur</t>
+<t id="L_HOME_X:" ver="4">Origine X:</t>
+<t id="L_HOME_Y:" ver="4">Origine Y:</t>
+<t id="L_HOME_Z:" ver="4">Origine Z:</t>
+<t id="L_MIN" ver="4">Min</t>
+<t id="L_MAX" ver="4">Max</t>
+<t id="L_PAUSED_FIRMWARE" ver="4">Votre imprimante a demandé une pause.</t>
+<t id="L_CREATE_FOLDER" ver="4">Créer un nouveau dossier</t>
+<t id="L_CREATE_FOLDER_INFO" ver="4">Entrez le nom du dossier en notation 8.3:</t>
+<t id="L_UPLOADING_TIME" ver="4">Temps d'envoi: $1</t>
+<t id="L_FILAMENT_POS" ver="4">Fil: $1</t>
+<t id="L_TRAVEL_VISUALIZATION_DISABLED" ver="4">Visualisation des déplacements rapides désactivée</t>
+<t id="M_HIDE_TRAVEL" ver="4">Cacher   déplacements</t>
+<t id="L_TRAVEL_VISUALIZATION_ENABLED" ver="4">Visualisation des déplacements rapides activée</t>
+<t id="M_SHOW_TRAVEL" ver="4">Afficher déplacements</t>
+<t id="L_TRAVEL_MOVES:" ver="4">Déplacements:</t>
+<t id="L_DISABLE_TRAVEL_MOVES_VIS" ver="4">Désactiver visu. des déplacements rapides</t>
 </translation>
 

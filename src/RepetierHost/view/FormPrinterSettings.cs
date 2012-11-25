@@ -154,6 +154,7 @@ namespace RepetierHost.view
             comboHomeY.Items[1] = Trans.T("L_MAX");
             comboHomeZ.Items[0] = Trans.T("L_MIN");
             comboHomeZ.Items[1] = Trans.T("L_MAX");
+            labelNumberOfExtruder.Text = Trans.T("L_NUMBER_OF_EXTRUDER:");
         }
         public void save(string printername)
         {
@@ -201,6 +202,7 @@ namespace RepetierHost.view
             p.SetValue("printerYMin", textPrinterYMin.Text);
             p.SetValue("printerBedLeft", textBedLeft.Text);
             p.SetValue("printerBedFront", textBedFront.Text);
+            p.SetValue("numExtruder", (int)numericNumExtruder.Value);
         }
         public void load(string printername)
         {
@@ -253,6 +255,7 @@ namespace RepetierHost.view
             textPrinterYMin.Text = (string)p.GetValue("printerYMin", "0");
             textBedLeft.Text = (string)p.GetValue("printerBedLeft", "0");
             textBedFront.Text = (string)p.GetValue("printerBedFront", "0");
+            numericNumExtruder.Value = (int)p.GetValue("numExtruder", 1);
         }
         public void UpdateDimensions()
         {
@@ -307,12 +310,14 @@ namespace RepetierHost.view
             con.logM105 = logM105Checkbox.Checked;
             con.runFilterEverySlice = checkRunFilterEverySlice.Checked;
             con.filterCommand = textFilterPath.Text;
+            con.numberExtruder = con.numExtruder = (int)numericNumExtruder.Value;
             float.TryParse(textAddPrintingTime.Text, out con.addPrintingTime);
             int.TryParse(textReceiveCacheSize.Text, out con.receiveCacheSize);
             if (Main.main.printPanel != null)
             {
                 Main.main.printPanel.numericUpDownExtruder.Value = int.Parse(textDefaultExtruderTemp.Text);
                 Main.main.printPanel.numericPrintBed.Value = int.Parse(textDefaultHeatedBedTemp.Text);
+                Main.main.printPanel.refillExtruder();
             }
             if (eventPrinterChanged != null)
                 eventPrinterChanged(currentPrinterKey,pnchanged);
@@ -355,6 +360,7 @@ namespace RepetierHost.view
             checkRunFilterEverySlice.Checked = con.runFilterEverySlice;
             logM105Checkbox.Checked = con.logM105;
             textAddPrintingTime.Text = con.addPrintingTime.ToString(GCode.format);
+            numericNumExtruder.Value = con.numExtruder;
             if (Main.main.printPanel != null)
             {
                 textDefaultExtruderTemp.Text = Main.main.printPanel.numericUpDownExtruder.Value.ToString("0");

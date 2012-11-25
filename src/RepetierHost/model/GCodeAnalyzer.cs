@@ -67,12 +67,14 @@ namespace RepetierHost.model
             bedTemp = 0;
         }
         public float getTemperature(int extr) {
+            if (extr < 0) extr = activeExtruder;
             if(!extruderTemp.ContainsKey(extr))
                 extruderTemp.Add(extr,0.0f);
             return extruderTemp[extr];
         }
         public void setTemperature(int extr,float t) {
-            if(!extruderTemp.ContainsKey(extr))
+            if (extr < 0) extr = activeExtruder;
+            if (!extruderTemp.ContainsKey(extr))
                 extruderTemp.Add(extr,t);
             else extruderTemp[extr] = t;
         }
@@ -340,6 +342,7 @@ namespace RepetierHost.model
             else if (code.hasT)
             {
                 activeExtruder = code.T;
+                fireChanged();
             }
         }
         public void analyzeShort(GCodeShort code)

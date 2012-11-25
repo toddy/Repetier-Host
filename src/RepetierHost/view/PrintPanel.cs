@@ -62,6 +62,7 @@ namespace RepetierHost.view
             if (Custom.GetBool("noPowerControlButton", false))
                 switchPower.Visible = false;
             timer.Start();
+            comboExtruder.SelectedIndex = 0;
             if (Main.main != null)
             {
                 translate();
@@ -92,11 +93,24 @@ namespace RepetierHost.view
             labelExtrude.Text = Trans.T("L_EXTRUDE_MM");
             labelExtruderSpeed.Text = Trans.T("L_EXTRUDER_SPEED_MM_MIN");
             labelRetract.Text = Trans.T("L_RETRACT_MM");
-            labelTemp.Text = labelTemp2.Text = Trans.T("L_TEMP");
+            //labelTemp.Text = labelTemp2.Text = Trans.T("L_TEMP");
             labelFeedrate.Text = Trans.T("L_FEEDRATE:");
             labelFlowrate.Text = Trans.T("L_FLOWRATE:");
             groupDebugOptions.Text = Trans.T("L_DEBUG_OPTIONS");
             Status = status;
+            refillExtruder();
+        }
+        public void refillExtruder()
+        {
+            int se = comboExtruder.SelectedIndex;
+            createCommands = false;
+            comboExtruder.Items.Clear();
+            for (int i = 1; i <= con.numExtruder; i++)
+            {
+                comboExtruder.Items.Add(Trans.T1("L_EXTRUDER_X",i.ToString()));
+            }
+            comboExtruder.SelectedIndex = se;
+            createCommands = true;
         }
         public void updateStatus()
         {
@@ -186,12 +200,27 @@ namespace RepetierHost.view
         {
             labelExtruderTemp.Text = extruder.ToString("0.00") + "°C /";
             labelPrintbedTemp.Text = printbed.ToString("0.00") + "°C /";
-            string tr = Trans.T("L_EXTRUDER:")+" " + con.getTemperature(-1).ToString("0.00");
-            if (switchExtruderHeatOn.On) tr += "/" + ann.getTemperature(-1).ToString() + "°C";
-            else tr += "°C/" + Trans.T("L_OFF");
+            string tr = "";
+            if (con.extruderTemp.Count == 1)
+            {
+                tr += Trans.T("L_EXTRUDER:")+" " + con.getTemperature(-1).ToString("0.00");
+                if (switchExtruderHeatOn.On) tr += "/" + ann.getTemperature(-1).ToString() + "°C";
+                else tr += "°C/" + Trans.T("L_OFF");
+                tr += " ";
+            }
+            else
+            {
+                foreach (int extr in con.extruderTemp.Keys)
+                {
+                    tr += Trans.T1("L_EXTRUDER_X",(extr+1).ToString()) + ": " + con.getTemperature(extr).ToString("0.00");
+                    if (ann.getTemperature(extr)>=20) tr += "/" + ann.getTemperature(extr).ToString() + "°C";
+                    else tr += "°C/" + Trans.T("L_OFF");
+                    tr += " ";
+                }
+            }
             if (con.bedTemp > 0)
             {
-                tr += " "+Trans.T("L_BED:")+" " + con.bedTemp.ToString("0.00");
+                tr += Trans.T("L_BED:")+" " + con.bedTemp.ToString("0.00");
                 if (ann.bedTemp > 0) tr += "/" + ann.bedTemp.ToString() + "°C ";
                 else tr += "°C/"+Trans.T("L_OFF");
             }
@@ -214,6 +243,8 @@ namespace RepetierHost.view
             numericUpDownSpeed.Value = con.speedMultiply;
             //labelSpeed.Text = sliderSpeed.Value.ToString() + "%";
             tempUpdate(con.getTemperature(-1), con.bedTemp);
+            if(ann.activeExtruder>=0 && ann.activeExtruder<comboExtruder.Items.Count)
+                comboExtruder.SelectedIndex = ann.activeExtruder;
             createCommands = true;
         }
         private void coordUpdate(GCode code,float x,float y,float z) {
@@ -734,8 +765,11 @@ namespace RepetierHost.view
                     sliderSpeed.Value = con.speedMultiply;
                 }
             }
-            if(oldcon != con.speedMultiply && con.connected && (con.isMarlin || con.isRepetier))
-                con.injectManualCommand("M220 S"+sliderSpeed.Value.ToString());
+            if (oldcon != con.speedMultiply && con.connected && (con.isMarlin || con.isRepetier))
+            {
+                con.ignoreFeedback();
+                con.injectManualCommand("M220 S" + sliderSpeed.Value.ToString());
+            }
         }
 
         private void numericUpDownExtruder_ValueChanged(object sender, EventArgs e)
@@ -843,8 +877,17 @@ namespace RepetierHost.view
                 }
             }
             if (oldcon != con.flowMultiply && con.connected && (con.isMarlin || con.isRepetier))
+            {
+                con.ignoreFeedback();
                 con.injectManualCommand("M221 S" + sliderFlowrate.Value.ToString());
+            }
 
+        }
+
+        private void comboExtruder_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!createCommands) return;
+            con.injectManualCommand("T" + comboExtruder.SelectedIndex);
         }
 
      }

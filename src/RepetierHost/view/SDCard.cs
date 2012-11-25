@@ -152,6 +152,7 @@ namespace RepetierHost.view
             toolStopPrint.ToolTipText = Trans.T("L_STOP_UPLOAD");
             toolMount.ToolTipText = Trans.T("L_MOUNT_SD_CARD");
             toolUnmount.ToolTipText = Trans.T("L_UNMOUNT_SD_CARD");
+            toolNewFolder.ToolTipText = Trans.T("L_NEW_FOLDER");
         }
         public void RefreshFilenames()
         {

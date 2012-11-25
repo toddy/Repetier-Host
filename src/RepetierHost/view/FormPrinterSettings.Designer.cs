@@ -84,6 +84,12 @@
             this.textTravelFeedrate = new System.Windows.Forms.TextBox();
             this.labelTravelFeedRate = new System.Windows.Forms.Label();
             this.tabPageShape = new System.Windows.Forms.TabPage();
+            this.comboHomeZ = new System.Windows.Forms.ComboBox();
+            this.labelHomeZ = new System.Windows.Forms.Label();
+            this.comboHomeY = new System.Windows.Forms.ComboBox();
+            this.labelHomeY = new System.Windows.Forms.Label();
+            this.comboHomeX = new System.Windows.Forms.ComboBox();
+            this.labelHomeX = new System.Windows.Forms.Label();
             this.labelShapeInfo = new System.Windows.Forms.Label();
             this.labelBedFront = new System.Windows.Forms.Label();
             this.labelBedLeft = new System.Windows.Forms.Label();
@@ -130,12 +136,8 @@
             this.buttonAbort = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this.labelHomeX = new System.Windows.Forms.Label();
-            this.comboHomeX = new System.Windows.Forms.ComboBox();
-            this.labelHomeY = new System.Windows.Forms.Label();
-            this.comboHomeY = new System.Windows.Forms.ComboBox();
-            this.labelHomeZ = new System.Windows.Forms.Label();
-            this.comboHomeZ = new System.Windows.Forms.ComboBox();
+            this.labelNumberOfExtruder = new System.Windows.Forms.Label();
+            this.numericNumExtruder = new System.Windows.Forms.NumericUpDown();
             this.panelPrinterSelect.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPageConnection.SuspendLayout();
@@ -146,6 +148,7 @@
             this.groupBoxPostSliceFilter.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericNumExtruder)).BeginInit();
             this.SuspendLayout();
             // 
             // panelPrinterSelect
@@ -394,6 +397,8 @@
             // tabPagePrinter
             // 
             this.tabPagePrinter.BackColor = System.Drawing.Color.Transparent;
+            this.tabPagePrinter.Controls.Add(this.numericNumExtruder);
+            this.tabPagePrinter.Controls.Add(this.labelNumberOfExtruder);
             this.tabPagePrinter.Controls.Add(this.label42);
             this.tabPagePrinter.Controls.Add(this.textAddPrintingTime);
             this.tabPagePrinter.Controls.Add(this.labelAddPrintingTime);
@@ -436,7 +441,7 @@
             // label42
             // 
             this.label42.AutoSize = true;
-            this.label42.Location = new System.Drawing.Point(233, 304);
+            this.label42.Location = new System.Drawing.Point(233, 332);
             this.label42.Name = "label42";
             this.label42.Size = new System.Drawing.Size(21, 13);
             this.label42.TabIndex = 28;
@@ -444,7 +449,7 @@
             // 
             // textAddPrintingTime
             // 
-            this.textAddPrintingTime.Location = new System.Drawing.Point(152, 305);
+            this.textAddPrintingTime.Location = new System.Drawing.Point(152, 333);
             this.textAddPrintingTime.Name = "textAddPrintingTime";
             this.textAddPrintingTime.Size = new System.Drawing.Size(54, 20);
             this.textAddPrintingTime.TabIndex = 27;
@@ -454,7 +459,7 @@
             // labelAddPrintingTime
             // 
             this.labelAddPrintingTime.AutoSize = true;
-            this.labelAddPrintingTime.Location = new System.Drawing.Point(13, 305);
+            this.labelAddPrintingTime.Location = new System.Drawing.Point(13, 333);
             this.labelAddPrintingTime.Name = "labelAddPrintingTime";
             this.labelAddPrintingTime.Size = new System.Drawing.Size(132, 13);
             this.labelAddPrintingTime.TabIndex = 26;
@@ -465,7 +470,7 @@
             this.logM105Checkbox.AutoSize = true;
             this.logM105Checkbox.Checked = true;
             this.logM105Checkbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.logM105Checkbox.Location = new System.Drawing.Point(16, 127);
+            this.logM105Checkbox.Location = new System.Drawing.Point(16, 155);
             this.logM105Checkbox.Name = "logM105Checkbox";
             this.logM105Checkbox.Size = new System.Drawing.Size(179, 17);
             this.logM105Checkbox.TabIndex = 25;
@@ -529,7 +534,7 @@
             // label33
             // 
             this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(422, 187);
+            this.label33.Location = new System.Drawing.Point(422, 215);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(29, 13);
             this.label33.TabIndex = 18;
@@ -537,7 +542,7 @@
             // 
             // textDisposeZ
             // 
-            this.textDisposeZ.Location = new System.Drawing.Point(346, 185);
+            this.textDisposeZ.Location = new System.Drawing.Point(346, 213);
             this.textDisposeZ.Name = "textDisposeZ";
             this.textDisposeZ.Size = new System.Drawing.Size(55, 20);
             this.textDisposeZ.TabIndex = 7;
@@ -547,7 +552,7 @@
             // labelZMin
             // 
             this.labelZMin.AutoSize = true;
-            this.labelZMin.Location = new System.Drawing.Point(300, 187);
+            this.labelZMin.Location = new System.Drawing.Point(300, 215);
             this.labelZMin.Name = "labelZMin";
             this.labelZMin.Size = new System.Drawing.Size(37, 13);
             this.labelZMin.TabIndex = 16;
@@ -556,7 +561,7 @@
             // checkDisableMotors
             // 
             this.checkDisableMotors.AutoSize = true;
-            this.checkDisableMotors.Location = new System.Drawing.Point(16, 281);
+            this.checkDisableMotors.Location = new System.Drawing.Point(16, 309);
             this.checkDisableMotors.Name = "checkDisableMotors";
             this.checkDisableMotors.Size = new System.Drawing.Size(170, 17);
             this.checkDisableMotors.TabIndex = 10;
@@ -566,7 +571,7 @@
             // checkDisbaleHeatedBedAfterJob
             // 
             this.checkDisbaleHeatedBedAfterJob.AutoSize = true;
-            this.checkDisbaleHeatedBedAfterJob.Location = new System.Drawing.Point(16, 258);
+            this.checkDisbaleHeatedBedAfterJob.Location = new System.Drawing.Point(16, 286);
             this.checkDisbaleHeatedBedAfterJob.Name = "checkDisbaleHeatedBedAfterJob";
             this.checkDisbaleHeatedBedAfterJob.Size = new System.Drawing.Size(193, 17);
             this.checkDisbaleHeatedBedAfterJob.TabIndex = 10;
@@ -578,7 +583,7 @@
             this.checkDisableExtruderAfterJob.AutoSize = true;
             this.checkDisableExtruderAfterJob.Checked = true;
             this.checkDisableExtruderAfterJob.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkDisableExtruderAfterJob.Location = new System.Drawing.Point(16, 234);
+            this.checkDisableExtruderAfterJob.Location = new System.Drawing.Point(16, 262);
             this.checkDisableExtruderAfterJob.Name = "checkDisableExtruderAfterJob";
             this.checkDisableExtruderAfterJob.Size = new System.Drawing.Size(177, 17);
             this.checkDisableExtruderAfterJob.TabIndex = 9;
@@ -590,7 +595,7 @@
             this.checkGoDisposeAfterJob.AutoSize = true;
             this.checkGoDisposeAfterJob.Checked = true;
             this.checkGoDisposeAfterJob.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkGoDisposeAfterJob.Location = new System.Drawing.Point(16, 211);
+            this.checkGoDisposeAfterJob.Location = new System.Drawing.Point(16, 239);
             this.checkGoDisposeAfterJob.Name = "checkGoDisposeAfterJob";
             this.checkGoDisposeAfterJob.Size = new System.Drawing.Size(190, 17);
             this.checkGoDisposeAfterJob.TabIndex = 8;
@@ -600,7 +605,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(208, 185);
+            this.label15.Location = new System.Drawing.Point(208, 213);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(17, 13);
             this.label15.TabIndex = 15;
@@ -608,7 +613,7 @@
             // 
             // textDisposeY
             // 
-            this.textDisposeY.Location = new System.Drawing.Point(233, 185);
+            this.textDisposeY.Location = new System.Drawing.Point(233, 213);
             this.textDisposeY.Name = "textDisposeY";
             this.textDisposeY.Size = new System.Drawing.Size(61, 20);
             this.textDisposeY.TabIndex = 6;
@@ -617,7 +622,7 @@
             // 
             // textDisposeX
             // 
-            this.textDisposeX.Location = new System.Drawing.Point(138, 185);
+            this.textDisposeX.Location = new System.Drawing.Point(138, 213);
             this.textDisposeX.Name = "textDisposeX";
             this.textDisposeX.Size = new System.Drawing.Size(64, 20);
             this.textDisposeX.TabIndex = 5;
@@ -627,7 +632,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(113, 185);
+            this.label14.Location = new System.Drawing.Point(113, 213);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(17, 13);
             this.label14.TabIndex = 12;
@@ -636,7 +641,7 @@
             // labelParkPosition
             // 
             this.labelParkPosition.AutoSize = true;
-            this.labelParkPosition.Location = new System.Drawing.Point(13, 185);
+            this.labelParkPosition.Location = new System.Drawing.Point(13, 213);
             this.labelParkPosition.Name = "labelParkPosition";
             this.labelParkPosition.Size = new System.Drawing.Size(71, 13);
             this.labelParkPosition.TabIndex = 11;
@@ -645,7 +650,7 @@
             // labelCheckEveryX
             // 
             this.labelCheckEveryX.AutoSize = true;
-            this.labelCheckEveryX.Location = new System.Drawing.Point(13, 149);
+            this.labelCheckEveryX.Location = new System.Drawing.Point(13, 177);
             this.labelCheckEveryX.Name = "labelCheckEveryX";
             this.labelCheckEveryX.Size = new System.Drawing.Size(118, 13);
             this.labelCheckEveryX.TabIndex = 8;
@@ -654,7 +659,7 @@
             // trackTempPeriod
             // 
             this.trackTempPeriod.BackColor = System.Drawing.Color.White;
-            this.trackTempPeriod.Location = new System.Drawing.Point(200, 135);
+            this.trackTempPeriod.Location = new System.Drawing.Point(200, 163);
             this.trackTempPeriod.Maximum = 60;
             this.trackTempPeriod.Minimum = 1;
             this.trackTempPeriod.Name = "trackTempPeriod";
@@ -669,7 +674,7 @@
             this.checkTemp.AutoSize = true;
             this.checkTemp.Checked = true;
             this.checkTemp.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkTemp.Location = new System.Drawing.Point(16, 106);
+            this.checkTemp.Location = new System.Drawing.Point(16, 134);
             this.checkTemp.Name = "checkTemp";
             this.checkTemp.Size = new System.Drawing.Size(199, 17);
             this.checkTemp.TabIndex = 2;
@@ -780,6 +785,75 @@
             this.tabPageShape.TabIndex = 2;
             this.tabPageShape.Text = "Printer shape";
             this.tabPageShape.UseVisualStyleBackColor = true;
+            // 
+            // comboHomeZ
+            // 
+            this.comboHomeZ.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboHomeZ.FormattingEnabled = true;
+            this.comboHomeZ.Items.AddRange(new object[] {
+            "Min",
+            "Max",
+            "0"});
+            this.comboHomeZ.Location = new System.Drawing.Point(378, 66);
+            this.comboHomeZ.Name = "comboHomeZ";
+            this.comboHomeZ.Size = new System.Drawing.Size(76, 21);
+            this.comboHomeZ.TabIndex = 17;
+            this.comboHomeZ.SelectedIndexChanged += new System.EventHandler(this.comboHomeZ_SelectedIndexChanged);
+            // 
+            // labelHomeZ
+            // 
+            this.labelHomeZ.AutoSize = true;
+            this.labelHomeZ.Location = new System.Drawing.Point(307, 69);
+            this.labelHomeZ.Name = "labelHomeZ";
+            this.labelHomeZ.Size = new System.Drawing.Size(48, 13);
+            this.labelHomeZ.TabIndex = 16;
+            this.labelHomeZ.Text = "Home Z:";
+            // 
+            // comboHomeY
+            // 
+            this.comboHomeY.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboHomeY.FormattingEnabled = true;
+            this.comboHomeY.Items.AddRange(new object[] {
+            "Min",
+            "Max",
+            "0"});
+            this.comboHomeY.Location = new System.Drawing.Point(378, 39);
+            this.comboHomeY.Name = "comboHomeY";
+            this.comboHomeY.Size = new System.Drawing.Size(76, 21);
+            this.comboHomeY.TabIndex = 17;
+            this.comboHomeY.SelectedIndexChanged += new System.EventHandler(this.comboHomeY_SelectedIndexChanged);
+            // 
+            // labelHomeY
+            // 
+            this.labelHomeY.AutoSize = true;
+            this.labelHomeY.Location = new System.Drawing.Point(307, 42);
+            this.labelHomeY.Name = "labelHomeY";
+            this.labelHomeY.Size = new System.Drawing.Size(48, 13);
+            this.labelHomeY.TabIndex = 16;
+            this.labelHomeY.Text = "Home Y:";
+            // 
+            // comboHomeX
+            // 
+            this.comboHomeX.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboHomeX.FormattingEnabled = true;
+            this.comboHomeX.Items.AddRange(new object[] {
+            "Min",
+            "Max",
+            "0"});
+            this.comboHomeX.Location = new System.Drawing.Point(378, 12);
+            this.comboHomeX.Name = "comboHomeX";
+            this.comboHomeX.Size = new System.Drawing.Size(76, 21);
+            this.comboHomeX.TabIndex = 17;
+            this.comboHomeX.SelectedIndexChanged += new System.EventHandler(this.comboHomeX_SelectedIndexChanged);
+            // 
+            // labelHomeX
+            // 
+            this.labelHomeX.AutoSize = true;
+            this.labelHomeX.Location = new System.Drawing.Point(307, 15);
+            this.labelHomeX.Name = "labelHomeX";
+            this.labelHomeX.Size = new System.Drawing.Size(48, 13);
+            this.labelHomeX.TabIndex = 16;
+            this.labelHomeX.Text = "Home X:";
             // 
             // labelShapeInfo
             // 
@@ -1203,74 +1277,31 @@
             // 
             this.errorProvider.ContainerControl = this;
             // 
-            // labelHomeX
+            // labelNumberOfExtruder
             // 
-            this.labelHomeX.AutoSize = true;
-            this.labelHomeX.Location = new System.Drawing.Point(307, 15);
-            this.labelHomeX.Name = "labelHomeX";
-            this.labelHomeX.Size = new System.Drawing.Size(48, 13);
-            this.labelHomeX.TabIndex = 16;
-            this.labelHomeX.Text = "Home X:";
+            this.labelNumberOfExtruder.AutoSize = true;
+            this.labelNumberOfExtruder.Location = new System.Drawing.Point(13, 110);
+            this.labelNumberOfExtruder.Name = "labelNumberOfExtruder";
+            this.labelNumberOfExtruder.Size = new System.Drawing.Size(101, 13);
+            this.labelNumberOfExtruder.TabIndex = 29;
+            this.labelNumberOfExtruder.Text = "Number of Extruder:";
             // 
-            // comboHomeX
+            // numericNumExtruder
             // 
-            this.comboHomeX.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboHomeX.FormattingEnabled = true;
-            this.comboHomeX.Items.AddRange(new object[] {
-            "Min",
-            "Max",
-            "0"});
-            this.comboHomeX.Location = new System.Drawing.Point(378, 12);
-            this.comboHomeX.Name = "comboHomeX";
-            this.comboHomeX.Size = new System.Drawing.Size(76, 21);
-            this.comboHomeX.TabIndex = 17;
-            this.comboHomeX.SelectedIndexChanged += new System.EventHandler(this.comboHomeX_SelectedIndexChanged);
-            // 
-            // labelHomeY
-            // 
-            this.labelHomeY.AutoSize = true;
-            this.labelHomeY.Location = new System.Drawing.Point(307, 42);
-            this.labelHomeY.Name = "labelHomeY";
-            this.labelHomeY.Size = new System.Drawing.Size(48, 13);
-            this.labelHomeY.TabIndex = 16;
-            this.labelHomeY.Text = "Home Y:";
-            // 
-            // comboHomeY
-            // 
-            this.comboHomeY.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboHomeY.FormattingEnabled = true;
-            this.comboHomeY.Items.AddRange(new object[] {
-            "Min",
-            "Max",
-            "0"});
-            this.comboHomeY.Location = new System.Drawing.Point(378, 39);
-            this.comboHomeY.Name = "comboHomeY";
-            this.comboHomeY.Size = new System.Drawing.Size(76, 21);
-            this.comboHomeY.TabIndex = 17;
-            this.comboHomeY.SelectedIndexChanged += new System.EventHandler(this.comboHomeY_SelectedIndexChanged);
-            // 
-            // labelHomeZ
-            // 
-            this.labelHomeZ.AutoSize = true;
-            this.labelHomeZ.Location = new System.Drawing.Point(307, 69);
-            this.labelHomeZ.Name = "labelHomeZ";
-            this.labelHomeZ.Size = new System.Drawing.Size(48, 13);
-            this.labelHomeZ.TabIndex = 16;
-            this.labelHomeZ.Text = "Home Z:";
-            // 
-            // comboHomeZ
-            // 
-            this.comboHomeZ.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboHomeZ.FormattingEnabled = true;
-            this.comboHomeZ.Items.AddRange(new object[] {
-            "Min",
-            "Max",
-            "0"});
-            this.comboHomeZ.Location = new System.Drawing.Point(378, 66);
-            this.comboHomeZ.Name = "comboHomeZ";
-            this.comboHomeZ.Size = new System.Drawing.Size(76, 21);
-            this.comboHomeZ.TabIndex = 17;
-            this.comboHomeZ.SelectedIndexChanged += new System.EventHandler(this.comboHomeZ_SelectedIndexChanged);
+            this.numericNumExtruder.Location = new System.Drawing.Point(199, 110);
+            this.numericNumExtruder.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericNumExtruder.Name = "numericNumExtruder";
+            this.numericNumExtruder.Size = new System.Drawing.Size(106, 20);
+            this.numericNumExtruder.TabIndex = 30;
+            this.numericNumExtruder.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // FormPrinterSettings
             // 
@@ -1308,6 +1339,7 @@
             this.groupBoxPostSliceFilter.PerformLayout();
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericNumExtruder)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1420,5 +1452,7 @@
         private System.Windows.Forms.Label labelHomeZ;
         private System.Windows.Forms.ComboBox comboHomeY;
         private System.Windows.Forms.Label labelHomeY;
+        private System.Windows.Forms.NumericUpDown numericNumExtruder;
+        private System.Windows.Forms.Label labelNumberOfExtruder;
     }
 }
