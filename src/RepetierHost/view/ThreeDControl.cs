@@ -73,6 +73,7 @@ namespace RepetierHost.view
             toolTopView.ToolTipText = Trans.T("L_TOP_VIEW");
             toolZoom.ToolTipText = Trans.T("T_ZOOM_VIEW");
             toolStripClear.ToolTipText = Trans.T("T_CLEAR_OBJECTS");
+            toolParallelProjection.ToolTipText = Trans.T("L_USE_PARALLEL_PROJECTION");
         }
         public void SetView(ThreeDView view)
         {

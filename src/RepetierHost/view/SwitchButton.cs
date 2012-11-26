@@ -1,4 +1,4 @@
-﻿/*
+/*
    Copyright 2011 repetier repetierdev@gmail.com
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,12 +22,14 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using RepetierHost.view.utils;
 
 namespace RepetierHost.view
 {
     public delegate void SwitchEventHandler(SwitchButton button);
     public partial class SwitchButton : UserControl
     {
+        static public int imageOffset = 0;
         string textOn="On";
         string textOff="Off";
         bool on=false;
@@ -35,7 +37,9 @@ namespace RepetierHost.view
         public event SwitchEventHandler OnChange;
         public SwitchButton()
         {
+            // SwitchButton.imageOffset = RegMemory.GetInt("onOffImageOffset",0);
             InitializeComponent();
+            button.ImageIndex = (on ? 1 + imageOffset : imageOffset);
         }
         public override bool AutoSize
         {
@@ -92,7 +96,7 @@ namespace RepetierHost.view
             set {
                 if (on == value) return;
                 on = value; button.Text = on ? textOn : textOff;
-                button.ImageIndex = on ? 1 : 0;
+                button.ImageIndex = on ? 1 + imageOffset : imageOffset;
                 if (OnChange != null)
                     OnChange(this);
             }

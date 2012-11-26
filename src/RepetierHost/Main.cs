@@ -176,7 +176,7 @@ namespace RepetierHost
             }*/
             main = this;
             trans = new Trans(Application.StartupPath + Path.DirectorySeparatorChar + "data" + Path.DirectorySeparatorChar + "translations");
-
+            SwitchButton.imageOffset = RegMemory.GetInt("onOffImageOffset", 0);
             generator = new GCodeGenerator();
             globalSettings = new GlobalSettings();
             conn = new PrinterConnection();

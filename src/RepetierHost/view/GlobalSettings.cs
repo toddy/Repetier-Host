@@ -55,6 +55,7 @@ namespace RepetierHost.view
             labelWorkdir.Text = Trans.T("L_WORKDIR:");
             buttonSearchWorkdir.Text = Trans.T("B_BROWSE");
             folderBrowser.Description = Trans.T("L_SELECT_WORKING_DIRECTORY"); // Select working directory
+            checkRedGreenSwitch.Text = Trans.T("L_USE_RED_GREEN_SWITCH");
         }
         public bool WorkdirOK()
         {
@@ -73,6 +74,7 @@ namespace RepetierHost.view
             repetierKey.SetValue("logEnabled", LogEnabled ? 1 : 0);
             repetierKey.SetValue("disableQualityReduction", DisableQualityReduction ? 1 : 0);
             repetierKey.SetValue("reduceToolbarSize", ReduceToolbarSize ? 1 : 0);
+            RegMemory.SetInt("onOffImageOffset", checkRedGreenSwitch.Checked ? 2 : 0);
         }
         public void RegToForm()
         {
@@ -80,6 +82,7 @@ namespace RepetierHost.view
             checkLogfile.Checked = 1== (int) repetierKey.GetValue("logEnabled", LogEnabled ? 1 : 0);
             checkDisableQualityReduction.Checked = 1 == (int)repetierKey.GetValue("disableQualityReduction", DisableQualityReduction ? 1 : 0);
             checkReduceToolbarSize.Checked = 1 == (int)repetierKey.GetValue("reduceToolbarSize", ReduceToolbarSize ? 1 : 0);
+            checkRedGreenSwitch.Checked = 2 == RegMemory.GetInt("onOffImageOffset", 0);
         }
         public string Workdir
         {

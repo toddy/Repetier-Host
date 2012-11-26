@@ -505,5 +505,7 @@ Write Changes to EEPROM?</t>
 <t id="L_DISABLE_TRAVEL_MOVES_VIS" ver="4">Disable Travel Move Visualization</t>
 <t id="L_NUMBER_OF_EXTRUDER:" ver="5">Number of Extruder:</t>
 <t id="L_NEW_FOLDER" ver="5">New Folder</t>
+<t id="L_USE_PARALLEL_PROJECTION" ver="5">Use parallel projection</t>
+<t id="L_USE_RED_GREEN_SWITCH" ver="5">Use red/green switch buttons (requires restart)</t>
 </translation>
 

@@ -1,8 +1,10 @@
-Version 0.82 24-11-2012
+Version 0.82b 26-11-2012
   Slic3r 0.9.7 now included
   New translation: Czech by Josef Průša
   New translation: Russian by Eugenco
-  Better support for multiple extruder
+  Better support for multiple extruder.
+  Fixed translation issues.
+  Switch button design selectable.
     
 Version 0.80 11-11-2012
   New translation: Spanish by Mecano

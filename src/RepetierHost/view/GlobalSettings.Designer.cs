@@ -42,6 +42,7 @@
             this.groupBehaviour = new System.Windows.Forms.GroupBox();
             this.checkDisableQualityReduction = new System.Windows.Forms.CheckBox();
             this.groupGUI = new System.Windows.Forms.GroupBox();
+            this.checkRedGreenSwitch = new System.Windows.Forms.CheckBox();
             this.checkReduceToolbarSize = new System.Windows.Forms.CheckBox();
             this.groupFilesAndDirectories.SuspendLayout();
             this.groupBehaviour.SuspendLayout();
@@ -120,7 +121,7 @@
             // 
             // buttonOK
             // 
-            this.buttonOK.Location = new System.Drawing.Point(365, 314);
+            this.buttonOK.Location = new System.Drawing.Point(365, 326);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(80, 22);
             this.buttonOK.TabIndex = 0;
@@ -130,7 +131,7 @@
             // 
             // buttonAbort
             // 
-            this.buttonAbort.Location = new System.Drawing.Point(451, 314);
+            this.buttonAbort.Location = new System.Drawing.Point(451, 326);
             this.buttonAbort.Name = "buttonAbort";
             this.buttonAbort.Size = new System.Drawing.Size(80, 22);
             this.buttonAbort.TabIndex = 1;
@@ -165,13 +166,24 @@
             // 
             // groupGUI
             // 
+            this.groupGUI.Controls.Add(this.checkRedGreenSwitch);
             this.groupGUI.Controls.Add(this.checkReduceToolbarSize);
             this.groupGUI.Location = new System.Drawing.Point(13, 233);
             this.groupGUI.Name = "groupGUI";
-            this.groupGUI.Size = new System.Drawing.Size(519, 61);
+            this.groupGUI.Size = new System.Drawing.Size(519, 77);
             this.groupGUI.TabIndex = 3;
             this.groupGUI.TabStop = false;
             this.groupGUI.Text = "GUI";
+            // 
+            // checkRedGreenSwitch
+            // 
+            this.checkRedGreenSwitch.AutoSize = true;
+            this.checkRedGreenSwitch.Location = new System.Drawing.Point(13, 44);
+            this.checkRedGreenSwitch.Name = "checkRedGreenSwitch";
+            this.checkRedGreenSwitch.Size = new System.Drawing.Size(244, 17);
+            this.checkRedGreenSwitch.TabIndex = 1;
+            this.checkRedGreenSwitch.Text = "Use red/green switch buttons (requires restart)";
+            this.checkRedGreenSwitch.UseVisualStyleBackColor = true;
             // 
             // checkReduceToolbarSize
             // 
@@ -229,6 +241,7 @@
         private System.Windows.Forms.CheckBox checkDisableQualityReduction;
         private System.Windows.Forms.GroupBox groupGUI;
         private System.Windows.Forms.CheckBox checkReduceToolbarSize;
+        private System.Windows.Forms.CheckBox checkRedGreenSwitch;
 
     }
 }

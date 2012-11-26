@@ -496,5 +496,7 @@ Mögliche Gründe:
 <t id="L_DISABLE_TRAVEL_MOVES_VIS">Schalte Bewegungsdarstellung aus</t>
 <t id="L_NUMBER_OF_EXTRUDER:" ver="5">Anzahl Extruder:</t>
 <t id="L_NEW_FOLDER" ver="5">Neues Verzeichnis</t>
+<t id="L_USE_PARALLEL_PROJECTION" ver="5">Verwende parallele Projektion</t>
+<t id="L_USE_RED_GREEN_SWITCH" ver="5">Verwende rot/grüne Schalter (Neustart erforderlich)</t>
 </translation>
 
