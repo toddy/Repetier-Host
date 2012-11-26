@@ -36,6 +36,7 @@
             // 
             // button
             // 
+            this.button.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.button.Dock = System.Windows.Forms.DockStyle.Fill;
             this.button.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button.ImageIndex = 0;
@@ -47,6 +48,7 @@
             this.button.Text = "button1";
             this.button.UseVisualStyleBackColor = true;
             this.button.Click += new System.EventHandler(this.button_Click);
+            this.button.SizeChanged += new System.EventHandler(this.button_SizeChanged);
             // 
             // imageList1
             // 
@@ -61,7 +63,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.Controls.Add(this.button);
+            this.MinimumSize = new System.Drawing.Size(100, 23);
             this.Name = "SwitchButton";
             this.Size = new System.Drawing.Size(100, 23);
             this.ResumeLayout(false);

@@ -51,6 +51,15 @@ namespace RepetierHost.view
             {
                 base.AutoSize = value;
                 button.AutoSize = value;
+                if (value)
+                {
+                    button.Dock = DockStyle.None;
+                }
+                else
+                {
+                    button.Dock = DockStyle.Fill;
+                }
+                updSize();
             }
         }
         public FlatStyle ButtonFlatStyle
@@ -82,13 +91,13 @@ namespace RepetierHost.view
         public string TextOff
         {
             get { return textOff; }
-            set { textOff = value; if (!on) button.Text = textOff; }
+            set { textOff = value; if (!on) button.Text = textOff; updSize(); }
         }
         [Description("Text if button is on")]
         public string TextOn
         {
             get { return textOn; }
-            set { textOn = value; if (on) button.Text = textOn; }
+            set { textOn = value; if (on) button.Text = textOn; updSize(); }
         }
         public bool On
         {
@@ -110,6 +119,17 @@ namespace RepetierHost.view
         {
             get { return button.Enabled; }
             set { button.Enabled = value; }
+        }
+        private void updSize()
+        {
+            if (button.AutoSize)
+            {
+                this.MinimumSize = this.Size = button.Size;
+                //Console.WriteLine("NS" + button.Size.Width + " Text:" + button.Text);
+            }
+        }
+        private void button_SizeChanged(object sender, EventArgs e)
+        {
         }
     }
 }
