@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<translation revision="2" language="Nederlands" languageInEnglish="Nederlands" author="M3chTroniC">
+<translation revision="3" language="Nederlands" languageInEnglish="Dutch" author="M3chTroniC">
    <t id="M_FILE" ver="1">Bestand</t>
    <t id="M_CONFIG" ver="1">Configuratie</t>
    <t id="M_SLICER" ver="1">Slicer</t>
@@ -23,10 +23,10 @@
    <t id="M_AUTOSCROLL_TEMPERATURE_VIEW" ver="1">Autoscroll Temperatuur venster</t>
    <t id="M_TIMEPERIOD" ver="1">Periode</t>
    <t id="M_TEMPERATURE_ZOOM" ver="1">
-      Tijdsinterval
+      Tijd interval
    </t>
    <t id="M_BUILD_AVERAGE_OVER" ver="1">
-      Bouwgemiddelde Over ...
+      Weergave Over ...
    </t>
    <t id="M_30_SECONDS" ver="1">
       30 Seconden
@@ -161,7 +161,7 @@
       G-Code Bewerken
    </t>
    <t id="TAB_MANUAL_CONTROL" ver="1">
-      Handmatige besturing
+      Handmatige Besturing
    </t>
    <t id="M_EMERGENCY_STOP" ver="1">
       Noodstop
@@ -412,7 +412,7 @@
       Printen...ETA $1
    </t>
    <t id="L_LAYER_X/Y" ver="1">
-      Laag $1/$2
+      ; Laag $1/$2
    </t>
    <t id="L_ERROR_SENDING_DATA:" ver="1">
       Fout in versturen data:
@@ -1041,7 +1041,7 @@
    </t>
    <t id="L_SAVE_DIRECT_INFO" ver="1">Deze bewaar functie is bedoeld G-code bestanden te genereren die vanaf een SD kaart kunnen draaien. Om die reden worden alle start en eind-codes samengevoegd met de reguliere code zodat het lijkt of de totale code direct door de Host is verstuurd. Alle commentaar en host-codes worden verwijderd!. Als je alleen je gegenereerde G-code in wil bewaren, kies dan het bewaren-icoon in de G-code bewerkings tab.</t>
    <t id="L_SAVE_AS_BINARY" ver="1">
-      Opslaan in Binary Formaat (voor Repetier-Firmware)
+      Opslaan in Binair Formaat (voor Repetier-Firmware)
    </t>
    <t id="B_SAVE" ver="1">
       Opslaan
@@ -1050,7 +1050,7 @@
       SD Card Beheer
    </t>
    <t id="L_FILENAME" ver="1">
-      Bestansnaam
+      Bestandsnaam
    </t>
    <t id="L_SIZE" ver="1">
       Grootte
