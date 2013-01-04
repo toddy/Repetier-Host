@@ -52,6 +52,8 @@
             this.comboPort = new System.Windows.Forms.ComboBox();
             this.labelPort = new System.Windows.Forms.Label();
             this.tabPagePrinter = new System.Windows.Forms.TabPage();
+            this.numericNumExtruder = new System.Windows.Forms.NumericUpDown();
+            this.labelNumberOfExtruder = new System.Windows.Forms.Label();
             this.label42 = new System.Windows.Forms.Label();
             this.textAddPrintingTime = new System.Windows.Forms.TextBox();
             this.labelAddPrintingTime = new System.Windows.Forms.Label();
@@ -136,19 +138,17 @@
             this.buttonAbort = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this.labelNumberOfExtruder = new System.Windows.Forms.Label();
-            this.numericNumExtruder = new System.Windows.Forms.NumericUpDown();
             this.panelPrinterSelect.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPageConnection.SuspendLayout();
             this.tabPagePrinter.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericNumExtruder)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackTempPeriod)).BeginInit();
             this.tabPageShape.SuspendLayout();
             this.tabAdvanced.SuspendLayout();
             this.groupBoxPostSliceFilter.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericNumExtruder)).BeginInit();
             this.SuspendLayout();
             // 
             // panelPrinterSelect
@@ -362,7 +362,12 @@
             "128000",
             "230400",
             "250000",
-            "256000"});
+            "256000",
+            "460800",
+            "500000",
+            "921600",
+            "1000000",
+            "1500000"});
             this.comboBaud.Location = new System.Drawing.Point(138, 34);
             this.comboBaud.Name = "comboBaud";
             this.comboBaud.Size = new System.Drawing.Size(129, 21);
@@ -437,6 +442,32 @@
             this.tabPagePrinter.TabIndex = 1;
             this.tabPagePrinter.Text = "Printer";
             this.tabPagePrinter.UseVisualStyleBackColor = true;
+            // 
+            // numericNumExtruder
+            // 
+            this.numericNumExtruder.Location = new System.Drawing.Point(199, 110);
+            this.numericNumExtruder.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericNumExtruder.Name = "numericNumExtruder";
+            this.numericNumExtruder.Size = new System.Drawing.Size(106, 20);
+            this.numericNumExtruder.TabIndex = 30;
+            this.numericNumExtruder.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // labelNumberOfExtruder
+            // 
+            this.labelNumberOfExtruder.AutoSize = true;
+            this.labelNumberOfExtruder.Location = new System.Drawing.Point(13, 110);
+            this.labelNumberOfExtruder.Name = "labelNumberOfExtruder";
+            this.labelNumberOfExtruder.Size = new System.Drawing.Size(101, 13);
+            this.labelNumberOfExtruder.TabIndex = 29;
+            this.labelNumberOfExtruder.Text = "Number of Extruder:";
             // 
             // label42
             // 
@@ -1277,32 +1308,6 @@
             // 
             this.errorProvider.ContainerControl = this;
             // 
-            // labelNumberOfExtruder
-            // 
-            this.labelNumberOfExtruder.AutoSize = true;
-            this.labelNumberOfExtruder.Location = new System.Drawing.Point(13, 110);
-            this.labelNumberOfExtruder.Name = "labelNumberOfExtruder";
-            this.labelNumberOfExtruder.Size = new System.Drawing.Size(101, 13);
-            this.labelNumberOfExtruder.TabIndex = 29;
-            this.labelNumberOfExtruder.Text = "Number of Extruder:";
-            // 
-            // numericNumExtruder
-            // 
-            this.numericNumExtruder.Location = new System.Drawing.Point(199, 110);
-            this.numericNumExtruder.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericNumExtruder.Name = "numericNumExtruder";
-            this.numericNumExtruder.Size = new System.Drawing.Size(106, 20);
-            this.numericNumExtruder.TabIndex = 30;
-            this.numericNumExtruder.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
             // FormPrinterSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1331,6 +1336,7 @@
             this.tabPageConnection.PerformLayout();
             this.tabPagePrinter.ResumeLayout(false);
             this.tabPagePrinter.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericNumExtruder)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackTempPeriod)).EndInit();
             this.tabPageShape.ResumeLayout(false);
             this.tabPageShape.PerformLayout();
@@ -1339,7 +1345,6 @@
             this.groupBoxPostSliceFilter.PerformLayout();
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericNumExtruder)).EndInit();
             this.ResumeLayout(false);
 
         }

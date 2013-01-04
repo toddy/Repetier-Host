@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<translation revision="3" language="中文" languageInEnglish="Chinese" author="tswang@gmail.com">
+<translation revision="5" language="中文" languageInEnglish="Chinese" author="tswang@gmail.com">
 <t id="M_FILE" ver="1">文件</t>
 <t id="M_CONFIG" ver="1">配置</t>
 <t id="M_SLICER" ver="1">代码生成器</t>
@@ -88,10 +88,11 @@
 <t id="L_PAUSE_MSG" ver="1">按 OK 继续.
 你可以在代码中增加暂停命令
 @pause 示例文本</t>
+<t id="L_DISCONNECTED" ver="1">断开连接</t>
 <t id="L_UPDATING..." ver="1">更新 ...</t>
 <t id="L_SLICE_WITH" ver="1">生成代码用 $1</t>
 <t id="L_EMERGENCY_STOP_MSG" ver="1">发送紧急停止到打印机. 可能需要重启打印机重新开始!</t>
-<t id="L_TRANSLATION:" ver="1">翻译</t>
+<t id="L_TRANSLATION:" ver="1">平移</t>
 <t id="L_SCALE:" ver="1">缩放</t>
 <t id="L_ROTATE:" ver="1">旋转</t>
 <t id="L_STL_OBJECTS" ver="1">STL 物体</t>
@@ -135,7 +136,6 @@
 <t id="L_EXTRUDER_SPEED_MM_MIN" ver="1">速度 [mm/min]</t>
 <t id="L_RETRACT_MM" ver="1">回退 [mm]</t>
 <t id="L_TEMP" ver="1">温度.</t>
-<t id="L_DISCONNECTED" ver="1">断开</t>
 <t id="L_CONNECTED" ver="1">连接</t>
 <t id="L_HEATING_BED" ver="1">加热床</t>
 <t id="L_HEATING_EXTRUDER" ver="1">正在加热挤出头</t>
@@ -479,4 +479,25 @@
 <t id="L_FILAMENT_NONE" ver="3">无/与挤出头1相同</t>
 <t id="L_REALLY_QUIT" ver="3">打印还在进行中. 确定要退出?</t>
 <t id="M_DONATE" ver="3">捐赠或支持</t>
+<t id="L_FAN" ver="4">风扇</t>
+<t id="L_HOME_X:" ver="4">初始位 X:</t>
+<t id="L_HOME_Y:" ver="4">初始位 Y:</t>
+<t id="L_HOME_Z:" ver="4">初始位 Z:</t>
+<t id="L_MIN" ver="4">最小</t>
+<t id="L_MAX" ver="4">最大</t>
+<t id="L_PAUSED_FIRMWARE" ver="4">打印机需要暂停</t>
+<t id="L_CREATE_FOLDER" ver="4">创建新文件夹</t>
+<t id="L_CREATE_FOLDER_INFO" ver="4">输入新文件夹名按照8.3格式:</t>
+<t id="L_UPLOADING_TIME" ver="4">上传时间: $1</t>
+<t id="L_FILAMENT_POS" ver="4">材料: $1</t>
+<t id="L_TRAVEL_VISUALIZATION_DISABLED" ver="4">禁止轨迹可视化</t>
+<t id="M_HIDE_TRAVEL" ver="4">隐藏轨迹</t>
+<t id="L_TRAVEL_VISUALIZATION_ENABLED" ver="4">允许轨迹可视化</t>
+<t id="M_SHOW_TRAVEL" ver="4">显示轨迹</t>
+<t id="L_TRAVEL_MOVES:" ver="4">轨迹移动:</t>
+<t id="L_DISABLE_TRAVEL_MOVES_VIS" ver="4">禁止轨迹移动可视化</t>
+<t id="L_NUMBER_OF_EXTRUDER:" ver="5">挤出头数目:</t>
+<t id="L_NEW_FOLDER" ver="5">新文件夹</t>
+<t id="L_USE_PARALLEL_PROJECTION" ver="5">使用平行投影</t>
+<t id="L_USE_RED_GREEN_SWITCH" ver="5">使用 红/绿 开关按钮 (需要重启软件)</t>
 </translation>

@@ -241,6 +241,8 @@ namespace RepetierHost.view
             switchPower.On = ann.powerOn;
             sliderSpeed.Value = con.speedMultiply;
             numericUpDownSpeed.Value = con.speedMultiply;
+            sliderFlowrate.Value = con.flowMultiply;
+            numericUpDownFlow.Value = con.flowMultiply;
             //labelSpeed.Text = sliderSpeed.Value.ToString() + "%";
             tempUpdate(con.getTemperature(-1), con.bedTemp);
             if(ann.activeExtruder>=0 && ann.activeExtruder<comboExtruder.Items.Count)
@@ -855,7 +857,7 @@ namespace RepetierHost.view
 
         }
 
-        private void sliderSlowrate_ValueChanged(object sender, EventArgs e)
+        private void sliderFlowrate_ValueChanged(object sender, EventArgs e)
         {
             if (!createCommands) return;
             //labelSpeed.Text = sliderSpeed.Value.ToString() + "%";
