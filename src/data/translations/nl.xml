@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<translation revision="3" language="Nederlands" languageInEnglish="Dutch" author="M3chTroniC">
+<translation revision="5" language="Nederlands" languageInEnglish="Dutch" author="M3chTroniC">
    <t id="M_FILE" ver="1">Bestand</t>
    <t id="M_CONFIG" ver="1">Configuratie</t>
    <t id="M_SLICER" ver="1">Slicer</t>
@@ -1168,7 +1168,7 @@
       Thuis verplaatsing:
    </t>
    <t id="L_M_MAX_ACCELERATION" ver="1">
-      Maximum Acceleratie [mm/sÂ²]:
+      Maximum Acceleratie [mm/sÃ‚Â²]:
    </t>
    <t id="L_M_MAX_FEEDRATE" ver="1">
       Maximum snelheden [mm/s]:
@@ -1293,4 +1293,36 @@
    </t>
    <t id="T_CLEAR_OBJECTS" ver="1">Wissen</t>
    <t id="L_DEBUG_OPTIONS" ver="2">Debug opties</t>
+<t id="L_X_MIN:" ver="3">X Min</t>
+<t id="L_X_MAX:" ver="3">X Max</t>
+<t id="L_Y_MIN:" ver="3">Y Min</t>
+<t id="L_Y_MAX:" ver="3">Y Max</t>
+<t id="L_BED_LEFT:" ver="3">Bed Links:</t>
+<t id="L_BED_FRONT:" ver="3">Bed Voorzijde:</t>
+<t id="L_SHAPE_INFO" ver="3">De min and max waarden definieeren de mogelijke extruder coordinaten. Deze coordinaten kunnen negatief zijn en buiten het printbed liggen. Bed links/voor definieeren de coordinaten waar het printbed zelf begint. Door de min/max waarden te wijzigen kan je zelfs het midden van het print bed aangeven, mits de firmware dit ondersteund.</t>
+<t id="L_SELECTION_BOX" ver="3">Selectie Box:</t>
+<t id="L_FILAMENT_NONE" ver="3">Geen/Gelijk aan Extruder 1</t>
+<t id="L_REALLY_QUIT" ver="3">Printen niet klaar. Toch stoppen?</t>
+<t id="M_DONATE" ver="3">Donaties of Ondersteuning</t>
+<t id="L_FAN" ver="4">Ventilator</t>
+<t id="L_HOME_X:" ver="4">Home X:</t>
+<t id="L_HOME_Y:" ver="4">Home Y:</t>
+<t id="L_HOME_Z:" ver="4">Home Z:</t>
+<t id="L_MIN" ver="4">Min</t>
+<t id="L_MAX" ver="4">Max</t>
+<t id="L_PAUSED_FIRMWARE" ver="4">Uw printer vraagt een pause.</t>
+<t id="L_CREATE_FOLDER" ver="4">Nieuwe Map maken</t>
+<t id="L_CREATE_FOLDER_INFO" ver="4">Geef map naam in 8.3 notatie:</t>
+<t id="L_UPLOADING_TIME" ver="4">Upload tijd: $1</t>
+<t id="L_FILAMENT_POS" ver="4">Fil: $1</t>
+<t id="L_TRAVEL_VISUALIZATION_DISABLED" ver="4">Verplaatsing visualisatie uit</t>
+<t id="M_HIDE_TRAVEL" ver="4">Verberg verplaatsing</t>
+<t id="L_TRAVEL_VISUALIZATION_ENABLED" ver="4"> Verplaatsing visualisatie aan</t>
+<t id="M_SHOW_TRAVEL" ver="4">Toon verplaatsing</t>
+<t id="L_TRAVEL_MOVES:" ver="4">Verplaatsingstap:</t>
+<t id="L_DISABLE_TRAVEL_MOVES_VIS" ver="4">Verplaatsingstap visualisatie uit</t>
+<t id="L_NUMBER_OF_EXTRUDER:" ver="5">Aantal Extruders:</t>
+<t id="L_NEW_FOLDER" ver="5">Nieuwe Map</t>
+<t id="L_USE_PARALLEL_PROJECTION" ver="5">Parallelle projectie</t>
+<t id="L_USE_RED_GREEN_SWITCH" ver="5">Gebruik rood/groen keuze knoppen (herstart nodig)</t>
 </translation>
