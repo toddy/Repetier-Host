@@ -194,29 +194,34 @@ namespace RepetierHost.view
                 comboSlic3rFilamentSettings.Enabled = false;
             }
             // Skeinforge selection
-            string skeinProfFolder = b.SkeinforgeProfileDir + Path.DirectorySeparatorChar + "extrusion";
-            di = new DirectoryInfo(skeinProfFolder);
-            if (di.Exists)
+            string skeinProfFolder = Main.main.skeinforge.findSkeinforgeProfiles();
+            if (skeinProfFolder != null)
             {
-                DirectoryInfo[] rgFiles = di.GetDirectories();
-                comboSkeinProfile.Items.Clear();
-                foreach (DirectoryInfo fi in rgFiles)
+                skeinProfFolder = Path.Combine(skeinProfFolder, "extrusion");
+                di = new DirectoryInfo(skeinProfFolder);
+                if (di.Exists)
                 {
-                    comboSkeinProfile.Items.Add(fi.Name);
+                    DirectoryInfo[] rgFiles = di.GetDirectories();
+                    comboSkeinProfile.Items.Clear();
+                    foreach (DirectoryInfo fi in rgFiles)
+                    {
+                        comboSkeinProfile.Items.Add(fi.Name);
+                    }
+                    comboSkeinProfile.Enabled = true;
+                    if (b.SkeinforgeProfile.Length > 0)
+                        comboSkeinProfile.SelectedItem = b.SkeinforgeProfile;
+                    if (comboSkeinProfile.SelectedIndex < 0 && rgFiles.Count() > 0)
+                    {
+                        b.SkeinforgeProfile = rgFiles[0].Name;
+                        comboSkeinProfile.SelectedIndex = 0;
+                    }
                 }
-                comboSkeinProfile.Enabled = true;
-                if (b.SkeinforgeProfile.Length > 0)
-                    comboSkeinProfile.SelectedItem = b.SkeinforgeProfile;
-                if (comboSkeinProfile.SelectedIndex<0 && rgFiles.Count() > 0)
+                else
                 {
-                    b.SkeinforgeProfile = rgFiles[0].Name;
-                    comboSkeinProfile.SelectedIndex = 0;
+                    comboSkeinProfile.Enabled = false;
                 }
             }
-            else
-            {
-                comboSkeinProfile.Enabled = false;
-            }
+            else comboSkeinProfile.Enabled = false;
 
 
             if (Main.slicer.ActiveSlicer == Slicer.SlicerID.Slic3r)

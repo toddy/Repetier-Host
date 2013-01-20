@@ -138,6 +138,7 @@
             this.buttonAbort = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.buttonRefreshPorts = new System.Windows.Forms.Button();
             this.panelPrinterSelect.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPageConnection.SuspendLayout();
@@ -197,6 +198,7 @@
             // tabPageConnection
             // 
             this.tabPageConnection.BackColor = System.Drawing.Color.Transparent;
+            this.tabPageConnection.Controls.Add(this.buttonRefreshPorts);
             this.tabPageConnection.Controls.Add(this.labelCacheSizeHint);
             this.tabPageConnection.Controls.Add(this.checkPingPong);
             this.tabPageConnection.Controls.Add(this.labelReceiveCacheSize);
@@ -1308,6 +1310,16 @@
             // 
             this.errorProvider.ContainerControl = this;
             // 
+            // buttonRefreshPorts
+            // 
+            this.buttonRefreshPorts.Location = new System.Drawing.Point(292, 7);
+            this.buttonRefreshPorts.Name = "buttonRefreshPorts";
+            this.buttonRefreshPorts.Size = new System.Drawing.Size(149, 23);
+            this.buttonRefreshPorts.TabIndex = 16;
+            this.buttonRefreshPorts.Text = "Refresh Ports";
+            this.buttonRefreshPorts.UseVisualStyleBackColor = true;
+            this.buttonRefreshPorts.Click += new System.EventHandler(this.buttonRefreshPorts_Click);
+            // 
             // FormPrinterSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1327,7 +1339,6 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Printer settings";
             this.TopMost = true;
-            this.Shown += new System.EventHandler(this.FormPrinterSettings_Shown);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormPrinterSettings_FormClosing);
             this.panelPrinterSelect.ResumeLayout(false);
             this.panelPrinterSelect.PerformLayout();
@@ -1459,5 +1470,6 @@
         private System.Windows.Forms.Label labelHomeY;
         private System.Windows.Forms.NumericUpDown numericNumExtruder;
         private System.Windows.Forms.Label labelNumberOfExtruder;
+        private System.Windows.Forms.Button buttonRefreshPorts;
     }
 }

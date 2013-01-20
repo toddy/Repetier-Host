@@ -253,7 +253,7 @@ namespace RepetierHost.view
                 }
                 if (pAvgBed != null && pAvgBed.Count > 1)
                 {
-                    g.DrawLines(new Pen(hist.avgBedColor, (float)hist.avgBedWidth), pTarBed.ToArray());
+                    g.DrawLines(new Pen(hist.avgBedColor, (float)hist.avgBedWidth), pAvgBed.ToArray());
                 }
                 if (pBed != null && pBed.Count > 1)
                 {

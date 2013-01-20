@@ -155,6 +155,7 @@ namespace RepetierHost.view
             comboHomeZ.Items[0] = Trans.T("L_MIN");
             comboHomeZ.Items[1] = Trans.T("L_MAX");
             labelNumberOfExtruder.Text = Trans.T("L_NUMBER_OF_EXTRUDER:");
+            buttonRefreshPorts.Text = Trans.T("B_REFRESH_PORTS");
         }
         public void save(string printername)
         {
@@ -386,7 +387,7 @@ namespace RepetierHost.view
             Main.main.UpdateConnections();
         }
 
-        private void FormPrinterSettings_Shown(object sender, EventArgs e)
+        public void UpdatePorts()
         {
             comboPort.Items.Clear();
             comboPort.Items.Add("Virtual Printer");
@@ -530,6 +531,11 @@ namespace RepetierHost.view
         private void comboHomeZ_SelectedIndexChanged(object sender, EventArgs e)
         {
             zhomemode = comboHomeZ.SelectedIndex;
+        }
+
+        private void buttonRefreshPorts_Click(object sender, EventArgs e)
+        {
+            UpdatePorts();
         }
     }
 }

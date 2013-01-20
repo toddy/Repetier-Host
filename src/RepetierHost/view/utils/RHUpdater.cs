@@ -16,8 +16,8 @@ namespace RepetierHost.view.utils
 {
     public partial class RHUpdater : Form
     {
-        public static string currentVersion = "0.82";
-        public static int buildVersion = 55;
+        public static string currentVersion = "0.83";
+        public static int buildVersion = 56;
         public static string newestVersion = "";
         public static int newestBuildVersion = 0;
         public static string updateText = "";

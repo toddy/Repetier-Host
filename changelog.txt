@@ -1,3 +1,14 @@
+Version 0.83 20-01-2013
+  Slic3r 0.9.8 included
+  New translation: Latvian from www.ajmotion.lv
+  Searches slic3r also in PATH environment.
+  Search python/pypy in PATH if not defined.
+  Show printer name in status bar if connected.
+  Switch ETA between duration/end time if clicked in status bar.
+  Fixed some multi-extruder issues.
+  Recheck port list on every call of printer settings.
+  Some small bug fixes.
+  
 Version 0.82b 26-11-2012
   Slic3r 0.9.7 now included
   New translation: Czech by Josef Průša

@@ -128,7 +128,8 @@ namespace RepetierHost.view
                 PrinterConnection con = Main.conn;
                 if (con.afterJobDisableExtruder)
                 {
-                    writeString(file, "M104 S0", binary);
+                    for (int i = 0; i < Main.conn.numberExtruder; i++)
+                        writeString(file, "M104 S0 T"+i.ToString(), binary);
                 }
                 if (con.afterJobDisablePrintbed)
                     writeString(file, "M140 S0", binary);

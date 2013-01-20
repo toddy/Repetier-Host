@@ -275,7 +275,10 @@ namespace RepetierHost
             tempView.Dock = DockStyle.Fill;
             tabPageTemp.Controls.Add(tempView);
             if (IsMono)
+            {
                 showWorkdirectoryToolStripMenuItem.Visible = false;
+                toolStrip.Height = 56;
+            }
             new SoundConfig();
             stlComposer1.buttonSlice.Text = Trans.T1("L_SLICE_WITH", slicer.SlicerName);
 
@@ -733,6 +736,7 @@ namespace RepetierHost
         private void printerSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             printerSettings.Show(this);
+            printerSettings.UpdatePorts();
             FormToFront(printerSettings);
         }
 
@@ -1402,6 +1406,11 @@ namespace RepetierHost
         private void slicerPanel_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void toolAction_Click(object sender, EventArgs e)
+        {
+            conn.job.etaModeNormal = !conn.job.etaModeNormal;
         }
 
 

@@ -29,6 +29,7 @@ namespace RepetierHost.model
             public int line;
             public long time;
         }
+        public bool etaModeNormal = true;
         public bool dataComplete = false;
         public int totalLines;
         public int linesSend;
@@ -109,7 +110,8 @@ namespace RepetierHost.model
             con.GetInjectLock();
             if (con.afterJobDisableExtruder)
             {
-                con.injectManualCommand("M104 S0");
+                for(int i=0;i<Main.conn.numberExtruder;i++) 
+                    con.injectManualCommand("M104 S0 T"+i.ToString());
             }
             if(con.afterJobDisablePrintbed) 
                 con.injectManualCommand("M140 S0");
@@ -262,19 +264,29 @@ namespace RepetierHost.model
                         else
                             ticks = (DateTime.Now.Ticks - jobStarted.Ticks) / 10000 * (totalLines - linesSend) / linesSend; // Milliseconds
                     }*/
-                    ticks = (long)(1000.0 * (computedPrintingTime - Main.conn.analyzer.printingTime) * (1.0 + 0.01 * Main.conn.addPrintingTime)*100.0/(float)Main.conn.speedMultiply);
-                    long hours = ticks / 3600000;
-                    ticks -= 3600000 * hours;
-                    long min = ticks / 60000;
-                    ticks -= 60000 * min;
-                    long sec = ticks / 1000;
-                    StringBuilder s = new StringBuilder();
-                    if (hours > 0)
-                        s.Append(Trans.T1("L_TIME_H:", hours.ToString())); //"h:");
-                    if (min > 0)
-                        s.Append(Trans.T1("L_TIME_M:", min.ToString()));
-                    s.Append(Trans.T1("L_TIME_S", sec.ToString()));
-                    return s.ToString();
+                    if (etaModeNormal)
+                    {
+                        ticks = (long)(1000.0 * (computedPrintingTime - Main.conn.analyzer.printingTime) * (1.0 + 0.01 * Main.conn.addPrintingTime) * 100.0 / (float)Main.conn.speedMultiply);
+                        long hours = ticks / 3600000;
+                        ticks -= 3600000 * hours;
+                        long min = ticks / 60000;
+                        ticks -= 60000 * min;
+                        long sec = ticks / 1000;
+                        StringBuilder s = new StringBuilder();
+                        if (hours > 0)
+                            s.Append(Trans.T1("L_TIME_H:", hours.ToString())); //"h:");
+                        if (min > 0)
+                            s.Append(Trans.T1("L_TIME_M:", min.ToString()));
+                        s.Append(Trans.T1("L_TIME_S", sec.ToString()));
+                        return s.ToString();
+                    }
+                    else
+                    {
+                        DateTime dt = DateTime.Now;
+                        dt = dt.AddSeconds(computedPrintingTime - Main.conn.analyzer.printingTime);
+                        //dt.ToLocalTime();
+                        return dt.ToLongTimeString();
+                    }
                 }
                 catch
                 {

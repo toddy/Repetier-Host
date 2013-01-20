@@ -371,7 +371,8 @@ namespace RepetierHost.view
                     PrinterConnection con = Main.conn;
                     if (con.afterJobDisableExtruder)
                     {
-                        job.PushData("M104 S0");
+                        for (int i = 0; i < Main.conn.numberExtruder; i++)
+                            job.PushData("M104 S0 T"+i.ToString());
                     }
                     if (con.afterJobDisablePrintbed)
                         job.PushData("M140 S0");

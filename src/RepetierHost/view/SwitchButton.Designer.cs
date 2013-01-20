@@ -65,7 +65,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.Controls.Add(this.button);
-            this.MinimumSize = new System.Drawing.Size(100, 23);
+            this.MinimumSize = new System.Drawing.Size(90, 23);
             this.Name = "SwitchButton";
             this.Size = new System.Drawing.Size(100, 23);
             this.ResumeLayout(false);

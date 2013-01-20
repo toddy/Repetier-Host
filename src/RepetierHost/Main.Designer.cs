@@ -142,9 +142,9 @@
             this.tab = new System.Windows.Forms.TabControl();
             this.tabModel = new System.Windows.Forms.TabPage();
             this.tabSlicer = new System.Windows.Forms.TabPage();
-            this.slicerPanel = new RepetierHost.view.SlicerPanel();
             this.tabGCode = new System.Windows.Forms.TabPage();
             this.tabPrint = new System.Windows.Forms.TabPage();
+            this.slicerPanel = new RepetierHost.view.SlicerPanel();
             this.menu.SuspendLayout();
             this.status.SuspendLayout();
             this.toolStrip.SuspendLayout();
@@ -849,6 +849,7 @@
             // toolTempReading
             // 
             this.toolTempReading.BackColor = System.Drawing.Color.Transparent;
+            this.toolTempReading.Margin = new System.Windows.Forms.Padding(0, 3, 8, 2);
             this.toolTempReading.Name = "toolTempReading";
             this.toolTempReading.Size = new System.Drawing.Size(12, 17);
             this.toolTempReading.Text = "-";
@@ -859,6 +860,7 @@
             this.toolAction.Name = "toolAction";
             this.toolAction.Size = new System.Drawing.Size(26, 17);
             this.toolAction.Text = "Idle";
+            this.toolAction.Click += new System.EventHandler(this.toolAction_Click);
             // 
             // toolProgress
             // 
@@ -1148,14 +1150,6 @@
             this.tabSlicer.Text = "Slicer";
             this.tabSlicer.UseVisualStyleBackColor = true;
             // 
-            // slicerPanel
-            // 
-            this.slicerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.slicerPanel.Location = new System.Drawing.Point(0, 0);
-            this.slicerPanel.Name = "slicerPanel";
-            this.slicerPanel.Size = new System.Drawing.Size(467, 304);
-            this.slicerPanel.TabIndex = 0;
-            // 
             // tabGCode
             // 
             this.tabGCode.AutoScroll = true;
@@ -1179,6 +1173,14 @@
             this.tabPrint.Text = "Manual control";
             this.tabPrint.UseVisualStyleBackColor = true;
             // 
+            // slicerPanel
+            // 
+            this.slicerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.slicerPanel.Location = new System.Drawing.Point(0, 0);
+            this.slicerPanel.Name = "slicerPanel";
+            this.slicerPanel.Size = new System.Drawing.Size(467, 304);
+            this.slicerPanel.TabIndex = 0;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1192,7 +1194,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menu;
             this.Name = "Main";
-            this.Text = "Repetier-Host V0.82b";
+            this.Text = "Repetier-Host V0.83";
             this.Load += new System.EventHandler(this.Main_Load);
             this.SizeChanged += new System.EventHandler(this.Main_SizeChanged);
             this.Shown += new System.EventHandler(this.Main_Shown);

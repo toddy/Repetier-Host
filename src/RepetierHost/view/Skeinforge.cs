@@ -105,13 +105,25 @@ namespace RepetierHost.view
             {
                 return;
             }
+            string python = findPythonw();
+            if (python == null)
+            {
+                MessageBox.Show(Trans.T("L_PYTHON_NOT_FOUND"), Trans.T("L_ERROR"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            string sk = findSkeinforge();
+            if (sk == null)
+            {
+                MessageBox.Show(Trans.T("L_SKEINFORGE_NOT_FOUND"), Trans.T("L_ERROR"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             procSkein = new Process();
             try
             {
                 procSkein.EnableRaisingEvents = true;
                 procSkein.Exited += new EventHandler(SkeinExited);
-                procSkein.StartInfo.FileName = Main.IsMono ? textPython.Text : wrapQuotes(textPython.Text);
-                procSkein.StartInfo.Arguments = wrapQuotes(textSkeinforge.Text);
+                procSkein.StartInfo.FileName = Main.IsMono ? python : wrapQuotes(python);
+                procSkein.StartInfo.Arguments = wrapQuotes(sk);
                 procSkein.StartInfo.WorkingDirectory = textWorkingDirectory.Text;
                 procSkein.StartInfo.UseShellExecute = false;
                 procSkein.StartInfo.RedirectStandardOutput = true;
@@ -138,12 +150,91 @@ namespace RepetierHost.view
                 RestoreConfigs();
             }
         }
+        public string findSkeinforgeProfiles()
+        {
+            if (Directory.Exists(textProfilesDir.Text))
+                return textProfilesDir.Text;
+            string test = ((Environment.OSVersion.Platform == PlatformID.Unix ||
+                   Environment.OSVersion.Platform == PlatformID.MacOSX)
+    ? Environment.GetEnvironmentVariable("HOME")
+    : Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%")) + Path.DirectorySeparatorChar + ".skeinforge"+Path.DirectorySeparatorChar+"profiles";
+            if (Directory.Exists(test)) return test;
+            return null;
+        }
+        public string findPypy()
+        {
+            if (File.Exists(textPypy.Text)) // use preconfigured
+                return textPypy.Text;
+            string[] possibleNames = { "pypy.exe", "pypy"};
+            if (textPypy.Text.Length > 1)
+            {
+                if(File.Exists(textPypy.Text))
+                    return textPypy.Text;
+            }
+            // Search in PATH environment var
+            foreach (string test in (Environment.GetEnvironmentVariable("PATH") ?? "").Split(Path.PathSeparator))
+            {
+                string path = test.Trim();
+                foreach (string exname in possibleNames) // Search bundled version
+                {
+                    if (!String.IsNullOrEmpty(path) && File.Exists(Path.Combine(path, exname)))
+                        return Path.GetFullPath(Path.Combine(path, exname));
+                }
+            }
+            string[] possibleNames2 = { "python.exe", "python2","python"};
+            foreach (string test in (Environment.GetEnvironmentVariable("PATH") ?? "").Split(Path.PathSeparator))
+            {
+                string path = test.Trim();
+                foreach (string exname in possibleNames2) // Search bundled version
+                {
+                    if (!String.IsNullOrEmpty(path) && File.Exists(Path.Combine(path, exname)))
+                        return Path.GetFullPath(Path.Combine(path, exname));
+                }
+            }
+
+            return null;
+        }
+        public string findPythonw()
+        {
+            if (File.Exists(textPython.Text)) // use preconfigured
+                return textPython.Text;
+            string[] possibleNames = { "pythonw.exe", "python2","python" };
+            if (textPypy.Text.Length > 1)
+            {
+                if (File.Exists(textPypy.Text))
+                    return textPypy.Text;
+            }
+            // Search in PATH environment var
+            foreach (string test in (Environment.GetEnvironmentVariable("PATH") ?? "").Split(Path.PathSeparator))
+            {
+                string path = test.Trim();
+                foreach (string exname in possibleNames) // Search bundled version
+                {
+                    if (!String.IsNullOrEmpty(path) && File.Exists(Path.Combine(path, exname)))
+                        return Path.GetFullPath(Path.Combine(path, exname));
+                }
+            }
+            return null;
+        }
+        public string findCraft()
+        {
+            if(textSkeinforgeCraft.Text.Length>1 && File.Exists(textSkeinforgeCraft.Text)) return textSkeinforgeCraft.Text;
+            if (File.Exists("/usr/lib/python2.7/site-packages/skeinforge/skeinforge_application/skeinforge_utilities/skeinforge_craft.py"))
+                return "/usr/lib/python2.7/site-packages/skeinforge/skeinforge_application/skeinforge_utilities/skeinforge_craft.py";
+            return null;
+        }
+        public string findSkeinforge()
+        {
+            if (textSkeinforge.Text.Length > 1 && File.Exists(textSkeinforge.Text)) return textSkeinforge.Text;
+            if (File.Exists("/usr/lib/python2.7/site-packages/skeinforge/skeinforge_application/skeinforge.py"))
+                return "/usr/lib/python2.7/site-packages/skeinforge/skeinforge_application/skeinforge.py";
+            return null;
+        }
         public string PyPy
         {
             get
             {
-                if (textPypy.Text.Length > 1) return textPypy.Text;
-                return textPython.Text;
+                return findPypy();
             }
         }
         public void RunSlice(string file, string profile)
@@ -153,12 +244,30 @@ namespace RepetierHost.view
                 MessageBox.Show(Trans.T("L_SKEIN_STILL_RUNNING") /*"Last slice job still running. Slicing of new job is canceled."*/,Trans.T("L_ERROR"), MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            profileConfig = new SkeinConfig(BasicConfiguration.basicConf.SkeinforgeProfileDir + Path.DirectorySeparatorChar + "skeinforge_profile.csv");
-            extrusionConfig = new SkeinConfig(BasicConfiguration.basicConf.SkeinforgeProfileDir + Path.DirectorySeparatorChar + "extrusion.csv");
-            exportConfig = new SkeinConfig(BasicConfiguration.basicConf.SkeinforgeProfileDir + Path.DirectorySeparatorChar + "extrusion" +
-                Path.DirectorySeparatorChar + profile + Path.DirectorySeparatorChar + "export.csv");
-            multiplyConfig = new SkeinConfig(BasicConfiguration.basicConf.SkeinforgeProfileDir + Path.DirectorySeparatorChar + "extrusion" +
-                Path.DirectorySeparatorChar + profile + Path.DirectorySeparatorChar + "multiply.csv");
+            string py = PyPy;
+            if (py == null)
+            {
+                MessageBox.Show(Trans.T("L_PYPY_NOT_FOUND"), Trans.T("L_ERROR"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            string craft = findCraft();
+            if (craft == null)
+            {
+                MessageBox.Show(Trans.T("L_SKEINCRAFT_NOT_FOUND"), Trans.T("L_ERROR"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            string profdir = findSkeinforgeProfiles();
+            if (profdir == null)
+            {
+                MessageBox.Show(Trans.T("L_SKEINCRAFT_PROFILES_NOT_FOUND"), Trans.T("L_ERROR"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            profileConfig = new SkeinConfig(Path.Combine(profdir,"skeinforge_profile.csv"));
+            extrusionConfig = new SkeinConfig(Path.Combine(profdir,"extrusion.csv"));
+            exportConfig = new SkeinConfig(Path.Combine(profdir,"extrusion" +
+                Path.DirectorySeparatorChar + profile + Path.DirectorySeparatorChar + "export.csv"));
+            multiplyConfig = new SkeinConfig(Path.Combine(profdir,"extrusion" +
+                Path.DirectorySeparatorChar + profile + Path.DirectorySeparatorChar + "multiply.csv"));
             // Set profile to extrusion
             /* cutting	False
 extrusion	True
@@ -200,8 +309,8 @@ winding	False
                 procConvert.EnableRaisingEvents = true;
                 procConvert.Exited += new EventHandler(ConversionExited);
 
-                procConvert.StartInfo.FileName = Main.IsMono ? PyPy : wrapQuotes(PyPy);
-                procConvert.StartInfo.Arguments = wrapQuotes(textSkeinforgeCraft.Text) + " " + wrapQuotes(file);
+                procConvert.StartInfo.FileName = Main.IsMono ? py : wrapQuotes(py);
+                procConvert.StartInfo.Arguments = wrapQuotes(craft) + " " + wrapQuotes(file);
                 procConvert.StartInfo.UseShellExecute = false;
                 procConvert.StartInfo.WorkingDirectory = textWorkingDirectory.Text;
                 procConvert.StartInfo.RedirectStandardOutput = true;

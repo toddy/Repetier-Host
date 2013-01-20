@@ -632,7 +632,7 @@ namespace RepetierHost.model
                                 lastCommandSend = DateTime.Now.Ticks;
                                 printeraction = Trans.T1("L_PRINTING..ETA", job.ETA); //"Printing...ETA " + job.ETA;
                                 if (job.maxLayer > 0)
-                                    printeraction += Trans.T2("L_LAYER_X/Y", analyzer.layer.ToString(), job.maxLayer.ToString()); // Layer " + analyzer.layer + "/" + job.maxLayer;
+                                    printeraction += " "+Trans.T2("L_LAYER_X/Y", analyzer.layer.ToString(), job.maxLayer.ToString()); // Layer " + analyzer.layer + "/" + job.maxLayer;
                                 logprogress = job.PercentDone;
                             }
                             analyzer.Analyze(gc);
@@ -708,7 +708,7 @@ namespace RepetierHost.model
                     gc.Parse("M105");
                     virtualPrinter.receiveLine(gc);
                     if (eventConnectionChange != null)
-                        eventConnectionChange(Trans.T("L_CONNECTED"));
+                        eventConnectionChange(Trans.T("L_CONNECTED")+":"+printerName);
                     Main.main.Invoke(Main.main.UpdateJobButtons);
                     return;
                 }

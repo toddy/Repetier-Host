@@ -670,17 +670,45 @@ namespace RepetierHost.view
                 Main.conn.log(e.ToString(), false, 2);
             }
         }*/
-
-        public void RunSliceNew(string file, float centerx, float centery)
+        public string findSlic3rExecutable()
+        {
+            if (File.Exists(BasicConfiguration.basicConf.Slic3rExecutable)) // use preconfigured
+                return BasicConfiguration.basicConf.Slic3rExecutable;
+            string[] possibleNames = { "slic3r.exe", "slic3r", "slic3r.pl" };
+            string basedir = (string)Main.main.repetierKey.GetValue("installPath", "");
+            string exe;
+            foreach (string exname in possibleNames) // Search bundled version
+            {
+                exe = basedir + Path.DirectorySeparatorChar + "Slic3r" + Path.DirectorySeparatorChar + exname;
+                if (File.Exists(exe)) return exe;
+            }
+            // Search in PATH environment var
+            foreach (string test in (Environment.GetEnvironmentVariable("PATH") ?? "").Split(Path.PathSeparator)) {
+                string path = test.Trim();
+                foreach (string exname in possibleNames) // Search bundled version
+                {
+                    if (!String.IsNullOrEmpty(path) && File.Exists(Path.Combine(path, exname)))
+                        return Path.GetFullPath(Path.Combine(path, exname));
+                }
+            }
+            return null;
+        }
+        public bool RunSliceNew(string file, float centerx, float centery)
         {
             if (procConvert != null)
             {
-                MessageBox.Show("Last slice job still running. Slicing of new job is canceled.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                MessageBox.Show(Trans.T("L_LAST_SLICE_RUNNING"), Trans.T("L_ERROR"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            string exe = findSlic3rExecutable();
+            if (exe == null)
+            {
+                MessageBox.Show(Trans.T("L_SLIC3R_NOT_FOUND"), Trans.T("L_ERROR"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
             FormPrinterSettings ps = Main.printerSettings;
             SlicingInfo.Start("Slic3r");
-            SlicingInfo.SetAction("Analyzing STL file ...");
+            SlicingInfo.SetAction(Trans.T("L_ANALYSING_STL"));
             try
             {
                 STL stl = new STL();
@@ -698,9 +726,9 @@ namespace RepetierHost.view
             {
                 Main.conn.log(e.ToString(), false, 2);
                 SlicingInfo.Stop();
-                return;
+                return false;
             }
-            SlicingInfo.SetAction("Slicing STL file ...");
+            SlicingInfo.SetAction(Trans.T("L_SLICING_STL"));
             string dir = Main.globalSettings.Workdir;
             string config = dir + Path.DirectorySeparatorChar + "slic3r.ini";
             string cdir = Main.main.slicerPanel.slic3rDirectory;
@@ -726,15 +754,14 @@ namespace RepetierHost.view
             try
             {
                 string basedir = (string)Main.main.repetierKey.GetValue("installPath", "");
-                string exname = "slic3r.exe";
+                /*string exname = "slic3r.exe";
                 if (Environment.OSVersion.Platform == PlatformID.Unix)
                     exname = "slic3r.pl";
                 if (Main.IsMac)
                     exname = "MacOS" + Path.DirectorySeparatorChar + "slic3r";
                 string exe = basedir + Path.DirectorySeparatorChar + "Slic3r" + Path.DirectorySeparatorChar + exname;
                 if (File.Exists(BasicConfiguration.basicConf.Slic3rExecutable))
-                    exe = BasicConfiguration.basicConf.Slic3rExecutable;
-
+                    exe = BasicConfiguration.basicConf.Slic3rExecutable;*/
                 slicefile = file;
                 string target = StlToGCode(file);
                 if (File.Exists(target))
@@ -769,6 +796,7 @@ namespace RepetierHost.view
             {
                 Main.conn.log(e.ToString(), false, 2);
             }
+            return true;
         }
         
         public string StlToGCode(string stl)

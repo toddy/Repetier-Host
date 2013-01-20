@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<translation revision="5" language="Deutsch" languageInEnglish="German" author="Repetier">
+<translation revision="6" language="Deutsch" languageInEnglish="German" author="Repetier">
 <t id="M_FILE" ver="1">Datei</t>
 <t id="M_CONFIG" ver="1">Konfiguration</t>
 <t id="M_SLICER" ver="1">Slicer</t>
@@ -409,7 +409,7 @@ Mögliche Gründe:
 <t id="L_SELECT_WAV_FILE_TO_PLAY" ver="1">Wähle WAV Datei zum abspielen</t>
 <t id="W_SLIC3R_SETUP" ver="1">Slic3r Konfiguration</t>
 <t id="L_SLIC3R_SETUP" ver="1">Slic3r Konfiguration</t>
-<t id="L_SLIC3R_BLANK_BUNDLE" ver="1">Leer lassen um enthaltene Version zu verwenden.</t>
+<t id="L_SLIC3R_BLANK_BUNDLE" ver="1">Leer lassen um enthaltene oder System Version zu verwenden.</t>
 <t id="L_SLIC3R_CONFIG_DIR" ver="1">Slic3r Konfigurationsverzeichnis</t>
 <t id="L_SLIC3R_EXECUTABLE" ver="1">Slic3r Ausführbare Datei</t>
 <t id="L_SLIC3R_INFO" ver="1">Mit diesen Einstellungen können sie unterschiedliche Slic3r Versionen nutzen. Sie können neue Version unter http://www.slic3r.org beziehen. Die Mindestversion ist 0.9.0. Lassen Sie alle Felder leer, um die enthaltene Version zu verwenden.</t>
@@ -498,5 +498,14 @@ Mögliche Gründe:
 <t id="L_NEW_FOLDER" ver="5">Neues Verzeichnis</t>
 <t id="L_USE_PARALLEL_PROJECTION" ver="5">Verwende parallele Projektion</t>
 <t id="L_USE_RED_GREEN_SWITCH" ver="5">Verwende rot/grüne Schalter (Neustart erforderlich)</t>
+<t id="L_LAST_SLICE_RUNNING" ver="6">Letzer Slice-Job läuft noch. Neuer Auftrag wurde abgebrochen.</t>
+<t id="L_SLIC3R_NOT_FOUND" ver="6">Slic3r nicht gefunden.</t>
+<t id="L_ANALYSING_STL" ver="6">Analysiere STL Datei ...</t>
+<t id="L_PYPY_NOT_FOUND" ver="6">Pypy oder Python Interpreter nicht gefunden.</t>
+<t id="L_SKEINCRAFT_NOT_FOUND" ver="6">Skeinforge craft nicht gefunden.</t>
+<t id="L_PYTHON_NOT_FOUND" ver="6">Python Interpreter nicht gefunden.</t>
+<t id="L_SKEINFORGE_NOT_FOUND" ver="6">Skeinforge nicht gefunden.</t>
+<t id="L_SKEINCRAFT_PROFILES_NOT_FOUND" ver="6">Skeinforge/SFACT profiles Verzeichnis nicht gefunden.</t>
+<t id="B_REFRESH_PORTS" ver="6">Ports aktualisieren</t>
 </translation>
 
