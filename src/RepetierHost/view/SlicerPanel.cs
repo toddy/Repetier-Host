@@ -39,6 +39,15 @@ namespace RepetierHost.view
             {
                 Main.main.languageChanged += translate;
                 translate();
+                if (Custom.GetBool("reverseSlicerOrder", false))
+                {
+                    Controls.Remove(panelSlic3rPos);
+                    Controls.Remove(panelTop);
+                    Controls.Remove(panelSkeinforgePos);
+                    Controls.Add(panelSlic3rPos);
+                    Controls.Add(panelSkeinforgePos);
+                    Controls.Add(panelTop);
+                }
             }
         }
         void translate() {
@@ -237,7 +246,7 @@ namespace RepetierHost.view
                 //buttonStartSlicing.Text = "Slice with Skeinforge\r\n\r\nProfile = " + b.SkeinforgeProfile;
             }
             buttonStartSlicing.Text = Trans.T1("L_SLICE_WITH", Main.slicer.SlicerName);
-            if (BasicConfiguration.basicConf.SkeinforgeProfileDir.IndexOf("sfact") >= 0)
+            if (BasicConfiguration.basicConf.SkeinforgeProfileDir.ToLower().IndexOf("sfact") >= 0)
                 groupSkeinforge.Text = "SFACT";
             else groupSkeinforge.Text = "Skeinforge";
             updating = false;

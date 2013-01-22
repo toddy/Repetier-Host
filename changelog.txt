@@ -1,6 +1,7 @@
-Version 0.83 20-01-2013
+Version 0.83 22-01-2013
   Slic3r 0.9.8 included
   New translation: Latvian from www.ajmotion.lv
+  Rostock shape (circular)
   Searches slic3r also in PATH environment.
   Search python/pypy in PATH if not defined.
   Show printer name in status bar if connected.

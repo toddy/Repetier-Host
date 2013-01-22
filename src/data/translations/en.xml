@@ -516,5 +516,10 @@ Write Changes to EEPROM?</t>
 <t id="L_SKEINFORGE_NOT_FOUND" ver="6">Skeinforge not found.</t>
 <t id="L_SKEINCRAFT_PROFILES_NOT_FOUND" ver="6">Skeinforge/SFACT profiles directory not found.</t>
 <t id="B_REFRESH_PORTS" ver="6">Ports aktualisieren</t>
+<t id="L_ROS_PRINTABLE_HEIGHT:" ver="6">Printable Height:</t>
+<t id="L_ROS_PRINTABLE_RADIUS:" ver="6">Printable Radius:</t>
+<t id="L_CARTESIAN_PRINTER" ver="6">Classic Printer</t>
+<t id="L_CARTESIAN_PRINTER_DUMP" ver="6">Classic Printer (with dump area)</t>
+<t id="L_ROSTOCK_CIRCLE" ver="6">Rostock Printer (circular print shape)</t>
 </translation>
 

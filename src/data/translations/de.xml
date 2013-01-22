@@ -507,5 +507,10 @@ Mögliche Gründe:
 <t id="L_SKEINFORGE_NOT_FOUND" ver="6">Skeinforge nicht gefunden.</t>
 <t id="L_SKEINCRAFT_PROFILES_NOT_FOUND" ver="6">Skeinforge/SFACT profiles Verzeichnis nicht gefunden.</t>
 <t id="B_REFRESH_PORTS" ver="6">Ports aktualisieren</t>
+<t id="L_ROS_PRINTABLE_HEIGHT:" ver="6">Druckbare Höhe:</t>
+<t id="L_ROS_PRINTABLE_RADIUS:" ver="6">Druckbarer Radius:</t>
+<t id="L_CARTESIAN_PRINTER" ver="6">Klassischer Drucker</t>
+<t id="L_CARTESIAN_PRINTER_DUMP" ver="6">Klassischer Drucker (mit Abladeplatz)</t>
+<t id="L_ROSTOCK_CIRCLE" ver="6">Rostock Drucker (runder Druckbereich)</t>
 </translation>
 

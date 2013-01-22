@@ -170,8 +170,14 @@ namespace RepetierHost.view
         {
             FormPrinterSettings ps = Main.printerSettings;
             stl.UpdateBoundingBox();
-            if (stl.xMin < ps.BedLeft || stl.yMin < ps.BedFront || stl.zMin < -0.001 || stl.xMax > ps.BedLeft+Main.printerSettings.PrintAreaWidth ||
-                stl.yMax > ps.BedFront+Main.printerSettings.PrintAreaDepth || stl.zMax > Main.printerSettings.PrintAreaHeight)
+            if (!ps.PointInside(stl.xMin, stl.yMin, stl.zMin) ||
+                !ps.PointInside(stl.xMax, stl.yMin, stl.zMin) ||
+                !ps.PointInside(stl.xMin, stl.yMax, stl.zMin) ||
+                !ps.PointInside(stl.xMax, stl.yMax, stl.zMin) ||
+                !ps.PointInside(stl.xMin, stl.yMin, stl.zMax) ||
+                !ps.PointInside(stl.xMax, stl.yMin, stl.zMax) ||
+                !ps.PointInside(stl.xMin, stl.yMax, stl.zMax) ||
+                !ps.PointInside(stl.xMax, stl.yMax, stl.zMax))
             {
                 stl.outside = true;
                 if (Main.threeDSettings.pulseOutside.Checked && !stl.hasAnimationWithName("pulse"))
@@ -481,7 +487,7 @@ namespace RepetierHost.view
             float maxW = ps.PrintAreaWidth;
             float maxH = ps.PrintAreaDepth;
             float xOff = ps.BedLeft, yOff = ps.BedFront;
-            if (ps.HasDumpArea)
+            if (ps.printerType==1)
             {
                 if (ps.DumpAreaFront <= 0)
                 {

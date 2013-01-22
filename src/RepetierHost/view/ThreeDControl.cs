@@ -332,78 +332,118 @@ namespace RepetierHost.view
                     }
                     GL.End();
                     GL.Begin(BeginMode.Lines);
-                    // Print cube
-                    GL.Vertex3(ps.BedLeft, ps.BedFront, 0);
-                    GL.Vertex3(ps.BedLeft, ps.BedFront, ps.PrintAreaHeight);
-                    GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront, 0);
-                    GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront, ps.PrintAreaHeight);
-                    GL.Vertex3(ps.BedLeft, ps.BedFront+ps.PrintAreaDepth, 0);
-                    GL.Vertex3(ps.BedLeft, ps.BedFront+ps.PrintAreaDepth, ps.PrintAreaHeight);
-                    GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront+ps.PrintAreaDepth, 0);
-                    GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront+ps.PrintAreaDepth, ps.PrintAreaHeight);
-                    GL.Vertex3(ps.BedLeft, ps.BedFront, ps.PrintAreaHeight);
-                    GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront, ps.PrintAreaHeight);
-                    GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront, ps.PrintAreaHeight);
-                    GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront+ps.PrintAreaDepth, ps.PrintAreaHeight);
-                    GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront+ps.PrintAreaDepth, ps.PrintAreaHeight);
-                    GL.Vertex3(ps.BedLeft, ps.BedFront+ps.PrintAreaDepth, ps.PrintAreaHeight);
-                    GL.Vertex3(ps.BedLeft, ps.BedFront+ps.PrintAreaDepth, ps.PrintAreaHeight);
-                    GL.Vertex3(ps.BedLeft, ps.BedFront, ps.PrintAreaHeight);
-                    if (ps.HasDumpArea)
+                    if (ps.printerType < 2)
                     {
-                        if (dy1 != 0)
+                        // Print cube
+                        GL.Vertex3(ps.BedLeft, ps.BedFront, 0);
+                        GL.Vertex3(ps.BedLeft, ps.BedFront, ps.PrintAreaHeight);
+                        GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront, 0);
+                        GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront, ps.PrintAreaHeight);
+                        GL.Vertex3(ps.BedLeft, ps.BedFront + ps.PrintAreaDepth, 0);
+                        GL.Vertex3(ps.BedLeft, ps.BedFront + ps.PrintAreaDepth, ps.PrintAreaHeight);
+                        GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront + ps.PrintAreaDepth, 0);
+                        GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront + ps.PrintAreaDepth, ps.PrintAreaHeight);
+                        GL.Vertex3(ps.BedLeft, ps.BedFront, ps.PrintAreaHeight);
+                        GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront, ps.PrintAreaHeight);
+                        GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront, ps.PrintAreaHeight);
+                        GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront + ps.PrintAreaDepth, ps.PrintAreaHeight);
+                        GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront + ps.PrintAreaDepth, ps.PrintAreaHeight);
+                        GL.Vertex3(ps.BedLeft, ps.BedFront + ps.PrintAreaDepth, ps.PrintAreaHeight);
+                        GL.Vertex3(ps.BedLeft, ps.BedFront + ps.PrintAreaDepth, ps.PrintAreaHeight);
+                        GL.Vertex3(ps.BedLeft, ps.BedFront, ps.PrintAreaHeight);
+                        if (ps.printerType == 1)
                         {
-                            GL.Vertex3(ps.BedLeft + dx1, ps.BedFront+dy1, 0);
-                            GL.Vertex3(ps.BedLeft + dx2, ps.BedFront+dy1, 0);
+                            if (dy1 != 0)
+                            {
+                                GL.Vertex3(ps.BedLeft + dx1, ps.BedFront + dy1, 0);
+                                GL.Vertex3(ps.BedLeft + dx2, ps.BedFront + dy1, 0);
+                            }
+                            GL.Vertex3(ps.BedLeft + dx2, ps.BedFront + dy1, 0);
+                            GL.Vertex3(ps.BedLeft + dx2, ps.BedFront + dy2, 0);
+                            GL.Vertex3(ps.BedLeft + dx2, ps.BedFront + dy2, 0);
+                            GL.Vertex3(ps.BedLeft + dx1, ps.BedFront + dy2, 0);
+                            GL.Vertex3(ps.BedLeft + dx1, ps.BedFront + dy2, 0);
+                            GL.Vertex3(ps.BedLeft + dx1, ps.BedFront + dy1, 0);
                         }
-                        GL.Vertex3(ps.BedLeft + dx2, ps.BedFront+dy1, 0);
-                        GL.Vertex3(ps.BedLeft + dx2, ps.BedFront+dy2, 0);
-                        GL.Vertex3(ps.BedLeft + dx2, ps.BedFront+dy2, 0);
-                        GL.Vertex3(ps.BedLeft + dx1, ps.BedFront+dy2, 0);
-                        GL.Vertex3(ps.BedLeft + dx1, ps.BedFront+dy2, 0);
-                        GL.Vertex3(ps.BedLeft + dx1, ps.BedFront+dy1, 0);
+                        float dx = 10; // ps.PrintAreaWidth / 20f;
+                        float dy = 10; // ps.PrintAreaDepth / 20f;
+                        float x, y;
+                        for (i = 0; i < 200; i++)
+                        {
+                            x = (float)i * dx;
+                            if (x >= ps.PrintAreaWidth)
+                                x = ps.PrintAreaWidth;
+                            if (ps.printerType==1 && x >= dx1 && x <= dx2)
+                            {
+                                GL.Vertex3(ps.BedLeft + x, ps.BedFront, 0);
+                                GL.Vertex3(ps.BedLeft + x, ps.BedFront + dy1, 0);
+                                GL.Vertex3(ps.BedLeft + x, ps.BedFront + dy2, 0);
+                                GL.Vertex3(ps.BedLeft + x, ps.BedFront + ps.PrintAreaDepth, 0);
+                            }
+                            else
+                            {
+                                GL.Vertex3(ps.BedLeft + x, ps.BedFront, 0);
+                                GL.Vertex3(ps.BedLeft + x, ps.BedFront + ps.PrintAreaDepth, 0);
+                            }
+                            if (x >= ps.PrintAreaWidth) break;
+                        }
+                        for (i = 0; i < 200; i++)
+                        {
+                            y = (float)i * dy;
+                            if (y > ps.PrintAreaDepth)
+                                y = ps.PrintAreaDepth;
+                            if (ps.printerType==1 && y >= dy1 && y <= dy2)
+                            {
+                                GL.Vertex3(ps.BedLeft, ps.BedFront + y, 0);
+                                GL.Vertex3(ps.BedLeft + dx1, ps.BedFront + y, 0);
+                                GL.Vertex3(ps.BedLeft + dx2, ps.BedFront + y, 0);
+                                GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront + y, 0);
+                            }
+                            else
+                            {
+                                GL.Vertex3(ps.BedLeft, ps.BedFront + y, 0);
+                                GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront + y, 0);
+                            }
+                            if (y >= ps.PrintAreaDepth)
+                                break;
+                        }
                     }
-                    float dx = 10; // ps.PrintAreaWidth / 20f;
-                    float dy = 10; // ps.PrintAreaDepth / 20f;
-                    float x, y;
-                    for (i = 0; i < 200; i++)
+                    else if(ps.printerType == 2) // Cylinder shape
                     {
-                        x = (float)i * dx;
-                        if (x >= ps.PrintAreaWidth) 
-                            x=ps.PrintAreaWidth;
-                        if (ps.HasDumpArea && x >= dx1 && x <= dx2)
+                        int ncirc = 32;
+                        int vertexevery = 4;
+                        delta = (float)(Math.PI * 2 / ncirc);
+                        float alpha = 0;
+                        for (i = 0; i < ncirc; i++)
                         {
-                            GL.Vertex3(ps.BedLeft + x, ps.BedFront, 0);
-                            GL.Vertex3(ps.BedLeft + x, ps.BedFront+dy1, 0);
-                            GL.Vertex3(ps.BedLeft + x, ps.BedFront+dy2, 0);
-                            GL.Vertex3(ps.BedLeft + x, ps.BedFront+ps.PrintAreaDepth, 0);
+                            float alpha2 = (float)(alpha + delta);
+                            float x1 = (float)(ps.rostockRadius * Math.Sin(alpha));
+                            float y1 = (float)(ps.rostockRadius * Math.Cos(alpha));
+                            float x2 = (float)(ps.rostockRadius * Math.Sin(alpha2));
+                            float y2 = (float)(ps.rostockRadius * Math.Cos(alpha2));
+                            GL.Vertex3(x1, y1, 0);
+                            GL.Vertex3(x2, y2, 0);
+                            GL.Vertex3(x1, y1, ps.rostockHeight);
+                            GL.Vertex3(x2, y2, ps.rostockHeight);
+                            if ((i % vertexevery) == 0)
+                            {
+                                GL.Vertex3(x1, y1, 0);
+                                GL.Vertex3(x1, y1, ps.rostockHeight);
+                            }
+                            alpha = alpha2;
                         }
-                        else
+                        delta = 10;
+                        float x = (float)(Math.Floor(ps.rostockRadius / delta) * delta);
+                        while (x > -ps.rostockRadius)
                         {
-                            GL.Vertex3(ps.BedLeft + x, ps.BedFront, 0);
-                            GL.Vertex3(ps.BedLeft + x, ps.BedFront+ps.PrintAreaDepth, 0);
+                            alpha = (float)Math.Acos(x / ps.rostockRadius);
+                            float y = (float)(ps.rostockRadius * Math.Sin(alpha));
+                            GL.Vertex3(x, -y, 0);
+                            GL.Vertex3(x, y, 0);
+                            GL.Vertex3(y, x, 0);
+                            GL.Vertex3(-y, x, 0);
+                            x -= (float)delta;
                         }
-                        if (x >= ps.PrintAreaWidth) break;
-                    }
-                    for (i = 0; i < 200; i++)
-                    {
-                        y = (float)i * dy;
-                        if (y > ps.PrintAreaDepth)
-                            y = ps.PrintAreaDepth;
-                        if (ps.HasDumpArea && y >= dy1 && y <= dy2)
-                        {
-                            GL.Vertex3(ps.BedLeft, ps.BedFront+y, 0);
-                            GL.Vertex3(ps.BedLeft + dx1, ps.BedFront+y, 0);
-                            GL.Vertex3(ps.BedLeft + dx2, ps.BedFront+y, 0);
-                            GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront+y, 0);
-                        }
-                        else
-                        {
-                            GL.Vertex3(ps.BedLeft, ps.BedFront+y, 0);
-                            GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront+y, 0);
-                        }
-                        if (y >= ps.PrintAreaDepth) 
-                            break;
                     }
                     GL.End();
                 }
@@ -504,49 +544,78 @@ namespace RepetierHost.view
                     GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Emission, transblack);
                     GL.PushMatrix();
                     GL.Translate(0, 0, -0.04);
-                    GL.Begin(BeginMode.Quads);
-                    GL.Normal3(0, 0, 1);
-
-                    if (ps.HasDumpArea)
+                    if (ps.printerType < 2)
                     {
-                        if (dy1 > 0)
+                        GL.Begin(BeginMode.Quads);
+                        GL.Normal3(0, 0, 1);
+
+                        if (ps.printerType==1)
+                        {
+                            if (dy1 > 0)
+                            {
+                                GL.Vertex3(ps.BedLeft, ps.BedFront, 0);
+                                GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront, 0);
+                                GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront + dy1, 0);
+                                GL.Vertex3(ps.BedLeft, ps.BedFront + dy1, 0);
+                            }
+                            if (dy2 < ps.PrintAreaDepth)
+                            {
+                                GL.Vertex3(ps.BedLeft, ps.BedFront + dy2, 0);
+                                GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront + dy2, 0);
+                                GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront + ps.PrintAreaDepth, 0);
+                                GL.Vertex3(ps.BedLeft, ps.BedFront + ps.PrintAreaDepth, 0);
+                            }
+                            if (dx1 > 0)
+                            {
+                                GL.Vertex3(ps.BedLeft, ps.BedFront + dy1, 0);
+                                GL.Vertex3(ps.BedLeft + dx1, ps.BedFront + dy1, 0);
+                                GL.Vertex3(ps.BedLeft + dx1, ps.BedFront + dy2, 0);
+                                GL.Vertex3(ps.BedLeft, ps.BedFront + dy2, 0);
+                            }
+                            if (dx2 < ps.PrintAreaWidth)
+                            {
+                                GL.Vertex3(ps.BedLeft + dx2, ps.BedFront + dy1, 0);
+                                GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront + dy1, 0);
+                                GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront + dy2, 0);
+                                GL.Vertex3(ps.BedLeft + dx2, ps.BedFront + dy2, 0);
+                            }
+                        }
+                        else
                         {
                             GL.Vertex3(ps.BedLeft, ps.BedFront, 0);
                             GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront, 0);
-                            GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront+dy1, 0);
-                            GL.Vertex3(ps.BedLeft, ps.BedFront+dy1, 0);
+                            GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront + ps.PrintAreaDepth, 0);
+                            GL.Vertex3(ps.BedLeft + 0, ps.BedFront + ps.PrintAreaDepth, 0);
                         }
-                        if (dy2 < ps.PrintAreaDepth)
-                        {
-                            GL.Vertex3(ps.BedLeft, ps.BedFront+dy2, 0);
-                            GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront+dy2, 0);
-                            GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront+ps.PrintAreaDepth, 0);
-                            GL.Vertex3(ps.BedLeft, ps.BedFront+ps.PrintAreaDepth, 0);
-                        }
-                        if (dx1 > 0)
-                        {
-                            GL.Vertex3(ps.BedLeft, ps.BedFront+dy1, 0);
-                            GL.Vertex3(ps.BedLeft + dx1, ps.BedFront+dy1, 0);
-                            GL.Vertex3(ps.BedLeft + dx1, ps.BedFront+dy2, 0);
-                            GL.Vertex3(ps.BedLeft, ps.BedFront+dy2, 0);
-                        }
-                        if (dx2 < ps.PrintAreaWidth)
-                        {
-                            GL.Vertex3(ps.BedLeft + dx2, ps.BedFront+dy1, 0);
-                            GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront+dy1, 0);
-                            GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront+dy2, 0);
-                            GL.Vertex3(ps.BedLeft + dx2, ps.BedFront+dy2, 0);
-                        }
-                    }
-                    else
-                    {
-                        GL.Vertex3(ps.BedLeft, ps.BedFront, 0);
-                        GL.Vertex3(ps.BedLeft+ps.PrintAreaWidth, ps.BedFront, 0);
-                        GL.Vertex3(ps.BedLeft+ps.PrintAreaWidth, ps.BedFront + ps.PrintAreaDepth, 0);
-                        GL.Vertex3(ps.BedLeft+0, ps.BedFront + ps.PrintAreaDepth, 0);
-                    }
 
-                    GL.End();
+                        GL.End();
+                    }
+                    else if (ps.printerType == 2)
+                    {
+                        int ncirc = 32;
+                        float delta = (float)(Math.PI * 2 / ncirc);
+                        float alpha = 0;
+                        GL.Begin(BeginMode.Quads);
+                        GL.Normal3(0, 0, 1);
+                        for (int i = 0; i < ncirc/4; i++)
+                        {
+                            float alpha2 = (float)(alpha + delta);
+                            float x1 = (float)(ps.rostockRadius * Math.Sin(alpha));
+                            float y1 = (float)(ps.rostockRadius * Math.Cos(alpha));
+                            float x2 = (float)(ps.rostockRadius * Math.Sin(alpha2));
+                            float y2 = (float)(ps.rostockRadius * Math.Cos(alpha2));
+                            GL.Vertex3(x1, y1, 0);
+                            GL.Vertex3(x2, y2, 0);
+                            GL.Vertex3(-x2, y2, 0);
+                            GL.Vertex3(-x1, y1, 0);
+                            GL.Vertex3(x1, -y1, 0);
+                            GL.Vertex3(x2, -y2, 0);
+                            GL.Vertex3(-x2, -y2, 0);
+                            GL.Vertex3(-x1, -y1, 0);
+                            alpha = alpha2;
+                        }
+                        GL.End();
+                    }
                     GL.PopMatrix();
                     GL.Disable(EnableCap.Blend);
 

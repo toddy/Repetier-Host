@@ -43,11 +43,15 @@ namespace RepetierHost.view
         public float PrintAreaDepth;
         public float PrintAreaHeight;
         public float XMin, XMax, YMin, YMax, BedLeft, BedFront;
-        public bool HasDumpArea;
+        //public bool HasDumpArea;
         public float DumpAreaLeft;
         public float DumpAreaFront;
         public float DumpAreaWidth;
         public float DumpAreaDepth;
+        public int printerType;
+        public float rostockHeight;
+        public float rostockRadius;
+
         int xhomeMode = 0, yhomeMode = 0, zhomemode = 0;
         public FormPrinterSettings()
         {
@@ -71,7 +75,7 @@ namespace RepetierHost.view
                 labelStopbits.Visible = false;
                 labelParity.Visible = false;
             }
-            if (Custom.GetBool("noDisposeArea", false))
+           /* if (Custom.GetBool("noDisposeArea", false))
             {
                 labelDumpAreaDepth.Visible = false;
                 labelDumpAreaFront.Visible = false;
@@ -86,7 +90,7 @@ namespace RepetierHost.view
                 textDumpAreaFront.Visible = false;
                 textDumpAreaLeft.Visible = false;
                 textDumpAreaWidth.Visible = false;
-            }
+            }*/
             Main.main.languageChanged += translate;
             translate();
         }
@@ -121,7 +125,7 @@ namespace RepetierHost.view
             checkDisableMotors.Text = Trans.T("L_DISABLE_MOTORS");
             checkDisbaleHeatedBedAfterJob.Text = Trans.T("L_DISABLE_HEATED_BED_AFTER_JOB");
             checkGoDisposeAfterJob.Text = Trans.T("L_GO_PARK_POSITION");
-            checkHasDumpArea.Text = Trans.T("L_HAS_DUMP_AREA");
+            //checkHasDumpArea.Text = Trans.T("L_HAS_DUMP_AREA");
             checkPingPong.Text = Trans.T("L_PING_PONG_MODE");
             checkRunFilterEverySlice.Text = Trans.T("L_RUN_FILTER_EVERY_SLICE");
             labelCheckEveryX.Text = Trans.T1("L_CHECK_EVERY_X", trackTempPeriod.Value.ToString());
@@ -156,6 +160,11 @@ namespace RepetierHost.view
             comboHomeZ.Items[1] = Trans.T("L_MAX");
             labelNumberOfExtruder.Text = Trans.T("L_NUMBER_OF_EXTRUDER:");
             buttonRefreshPorts.Text = Trans.T("B_REFRESH_PORTS");
+            labelRosPrintableHeight.Text = Trans.T("L_ROS_PRINTABLE_HEIGHT:");
+            labelRosPrintableRadius.Text = Trans.T("L_ROS_PRINTABLE_RADIUS:");
+            comboBoxPrinterType.Items[0] = Trans.T("L_CARTESIAN_PRINTER");
+            comboBoxPrinterType.Items[1] = Trans.T("L_CARTESIAN_PRINTER_DUMP");
+            comboBoxPrinterType.Items[2] = Trans.T("L_ROSTOCK_CIRCLE");
         }
         public void save(string printername)
         {
@@ -183,7 +192,7 @@ namespace RepetierHost.view
             p.SetValue("printAreaWidth", textPrintAreaWidth.Text);
             p.SetValue("printAreaDepth", textPrintAreaDepth.Text);
             p.SetValue("printAreaHeight", textPrintAreaHeight.Text);
-            p.SetValue("hasDumpArea", checkHasDumpArea.Checked ? 1 : 0);
+            //p.SetValue("hasDumpArea", checkHasDumpArea.Checked ? 1 : 0);
             p.SetValue("dumpAreaLeft", textDumpAreaLeft.Text);
             p.SetValue("dumpAreaFront", textDumpAreaFront.Text);
             p.SetValue("dumpAreaWidth", textDumpAreaWidth.Text);
@@ -204,6 +213,9 @@ namespace RepetierHost.view
             p.SetValue("printerBedLeft", textBedLeft.Text);
             p.SetValue("printerBedFront", textBedFront.Text);
             p.SetValue("numExtruder", (int)numericNumExtruder.Value);
+            p.SetValue("printerType", comboBoxPrinterType.SelectedIndex);
+            p.SetValue("rostockHeight", textBoxRostockHeight.Text);
+            p.SetValue("rostockRadius", textBoxRostockRadius.Text);
         }
         public void load(string printername)
         {
@@ -233,7 +245,7 @@ namespace RepetierHost.view
             textPrintAreaWidth.Text = (string)p.GetValue("printAreaWidth", textPrintAreaWidth.Text);
             textPrintAreaDepth.Text = (string)p.GetValue("printAreaDepth", textPrintAreaDepth.Text);
             textPrintAreaHeight.Text = (string)p.GetValue("printAreaHeight", textPrintAreaHeight.Text);
-            checkHasDumpArea.Checked = 1==(int)p.GetValue("hasDumpArea", checkHasDumpArea.Checked ? 1 : 0);
+            bool hasDump = 1==(int)p.GetValue("hasDumpArea", 0);
             textDumpAreaLeft.Text = (string)p.GetValue("dumpAreaLeft", textDumpAreaLeft.Text);
             textDumpAreaFront.Text = (string)p.GetValue("dumpAreaFront", textDumpAreaFront.Text);
             textDumpAreaWidth.Text = (string)p.GetValue("dumpAreaWidth", textDumpAreaWidth.Text);
@@ -257,9 +269,13 @@ namespace RepetierHost.view
             textBedLeft.Text = (string)p.GetValue("printerBedLeft", "0");
             textBedFront.Text = (string)p.GetValue("printerBedFront", "0");
             numericNumExtruder.Value = (int)p.GetValue("numExtruder", 1);
+            comboBoxPrinterType.SelectedIndex = (int)p.GetValue("printerType", hasDump ? 1 : 0);
+            textBoxRostockHeight.Text = (string)p.GetValue("rostockHeight", textBoxRostockHeight.Text);
+            textBoxRostockRadius.Text = (string)p.GetValue("rostockRadius", textBoxRostockRadius.Text);
         }
         public void UpdateDimensions()
         {
+            printerType = comboBoxPrinterType.SelectedIndex;
             float.TryParse(textPrintAreaWidth.Text, NumberStyles.Float, GCode.format, out PrintAreaWidth);
             float.TryParse(textPrintAreaHeight.Text, NumberStyles.Float, GCode.format, out PrintAreaHeight);
             float.TryParse(textPrintAreaDepth.Text, NumberStyles.Float, GCode.format, out PrintAreaDepth);
@@ -273,7 +289,33 @@ namespace RepetierHost.view
             float.TryParse(textPrinterYMax.Text, NumberStyles.Float, GCode.format, out YMax);
             float.TryParse(textBedLeft.Text, NumberStyles.Float, GCode.format, out BedLeft);
             float.TryParse(textBedFront.Text, NumberStyles.Float, GCode.format, out BedFront);
-            HasDumpArea = checkHasDumpArea.Checked;
+            float.TryParse(textBoxRostockHeight.Text, NumberStyles.Float, GCode.format, out rostockHeight);
+            float.TryParse(textBoxRostockRadius.Text, NumberStyles.Float, GCode.format, out rostockRadius);
+            //HasDumpArea = printerType == 1;
+            if (printerType == 2)
+            {
+                PrintAreaHeight = rostockHeight;
+                PrintAreaWidth = PrintAreaDepth = 2 * rostockRadius;
+                BedFront = BedLeft = -rostockRadius;
+                XMin = YMin = -rostockRadius;
+                XMax = YMax = rostockRadius;
+
+            }
+        }
+        public bool PointInside(float x, float y, float z)
+        {
+            if (z < 0 || z > PrintAreaHeight) return false;
+            if (printerType < 2)
+            {
+                if (x < BedLeft || x > BedLeft + PrintAreaWidth) return false;
+                if (y < BedFront || y > BedFront + PrintAreaDepth) return false;
+            }
+            else
+            {
+                float d = (float)Math.Sqrt(x * x + y * y);
+                return d <= rostockRadius;
+            }
+            return true;
         }
         public void formToCon()
         {
@@ -536,6 +578,14 @@ namespace RepetierHost.view
         private void buttonRefreshPorts_Click(object sender, EventArgs e)
         {
             UpdatePorts();
+        }
+
+        private void comboBoxPrinterType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int idx = comboBoxPrinterType.SelectedIndex;
+            panelRostock.Visible = idx == 2;
+            panelDumpArea.Visible = idx == 1;
+            panelTotalArea.Visible = idx != 2;
         }
     }
 }
