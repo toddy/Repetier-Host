@@ -1364,7 +1364,7 @@ namespace RepetierHost.model
             string zextra = "";
             GetInjectLock();
             injectManualCommand("G1 X" + dx.ToString(GCode.format) + " Y" + dy.ToString(GCode.format) + " F" + travelFeedRate.ToString(GCode.format));
-            if (analyzer.hasZHome && analyzer.z - analyzer.zOffset < disposeZ && disposeZ > 0 && disposeZ < Main.printerSettings.PrintAreaHeight)
+            if (analyzer.hasZHome && analyzer.z + analyzer.zOffset < disposeZ && disposeZ > 0 && disposeZ < Main.printerSettings.PrintAreaHeight)
             {
                 float dz = disposeZ - analyzer.zOffset - (analyzer.relative ? analyzer.z : 0);
                 zextra = "G1 Z" + dz.ToString(GCode.format) + " F" + maxZFeedRate.ToString(GCode.format);

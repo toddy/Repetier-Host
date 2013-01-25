@@ -42,6 +42,7 @@
             this.buttonOK = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
             this.groupSlic3rSetup.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -167,6 +168,10 @@
             // 
             this.openFileDialog.Title = "Slic3r setup";
             // 
+            // folderBrowser
+            // 
+            this.folderBrowser.RootFolder = System.Environment.SpecialFolder.ApplicationData;
+            // 
             // Slic3rSetup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -201,5 +206,6 @@
         private System.Windows.Forms.Label labelSlic3rExecutable;
         private System.Windows.Forms.Button buttonBrowseExecutable;
         private System.Windows.Forms.TextBox textExecutable;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowser;
     }
 }

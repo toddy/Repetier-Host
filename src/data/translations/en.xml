@@ -102,7 +102,7 @@ You can add pauses in your code with
 <t id="B_AUTOPOSITION" ver="1">Autoposition</t>
 <t id="B_DROP_OBJECT" ver="1">Drop Object</t>
 <t id="B_COPY_OBJECTS" ver="1">Copy Object(s)</t>
-<t id="B_CENTER_OBJECT" ver="1">Center Objekt</t>
+<t id="B_CENTER_OBJECT" ver="1">Center Object</t>
 <t id="L_LOCK_ASPECT_RATIO" ver="1">Lock Aspect Ratio</t>
 <t id="B_KILL_SLICING_PROCESS" ver="1">Kill Slicing</t>
 <t id="B_SETUP_SKEINFORGE" ver="1">Setup</t>
@@ -515,7 +515,7 @@ Write Changes to EEPROM?</t>
 <t id="L_PYTHON_NOT_FOUND" ver="6">Python interpreter not found.</t>
 <t id="L_SKEINFORGE_NOT_FOUND" ver="6">Skeinforge not found.</t>
 <t id="L_SKEINCRAFT_PROFILES_NOT_FOUND" ver="6">Skeinforge/SFACT profiles directory not found.</t>
-<t id="B_REFRESH_PORTS" ver="6">Ports aktualisieren</t>
+<t id="B_REFRESH_PORTS" ver="6">Refresh Ports</t>
 <t id="L_ROS_PRINTABLE_HEIGHT:" ver="6">Printable Height:</t>
 <t id="L_ROS_PRINTABLE_RADIUS:" ver="6">Printable Radius:</t>
 <t id="L_CARTESIAN_PRINTER" ver="6">Classic Printer</t>

@@ -88,8 +88,8 @@ namespace RepetierHost.view
 
         private void buttonBrowseConfigDir_Click(object sender, EventArgs e)
         {
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-                textSlic3rConfigDir.Text = openFileDialog.FileName;
+            if (folderBrowser.ShowDialog() == DialogResult.OK)
+                textSlic3rConfigDir.Text = folderBrowser.SelectedPath;
         }
 
         private void buttonBrowseExecutable_Click(object sender, EventArgs e)

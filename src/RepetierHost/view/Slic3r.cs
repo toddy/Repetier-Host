@@ -301,7 +301,13 @@ namespace RepetierHost.view
             procSlic3r = new Process();
             try
             {
-                string basedir = (string)Main.main.repetierKey.GetValue("installPath", "");
+                string exe = findSlic3rExecutable();
+                if (exe == null)
+                {
+                    MessageBox.Show(Trans.T("L_SLIC3R_NOT_FOUND"), Trans.T("L_ERROR"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                /*string basedir = (string)Main.main.repetierKey.GetValue("installPath", "");
                 string exname = "slic3r.exe";
                 if (Environment.OSVersion.Platform == PlatformID.Unix)
                     exname = "bin" + Path.DirectorySeparatorChar + "slic3r";
@@ -310,7 +316,7 @@ namespace RepetierHost.view
                 string exe = basedir + Path.DirectorySeparatorChar + "Slic3r" + Path.DirectorySeparatorChar + exname;
                 if (File.Exists(BasicConfiguration.basicConf.ExternalSlic3rPath))
                     exe = BasicConfiguration.basicConf.ExternalSlic3rPath;
-
+                */
                 StringBuilder sb = new StringBuilder();
                 if (File.Exists(BasicConfiguration.basicConf.ExternalSlic3rIniFile))
                 {
@@ -345,7 +351,13 @@ namespace RepetierHost.view
             procSlic3r = new Process();
             try
             {
-                string basedir = (string)Main.main.repetierKey.GetValue("installPath", "");
+                string exe = findSlic3rExecutable();
+                if (exe == null)
+                {
+                    MessageBox.Show(Trans.T("L_SLIC3R_NOT_FOUND"), Trans.T("L_ERROR"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+              /*  string basedir = (string)Main.main.repetierKey.GetValue("installPath", "");
                 string exname = "slic3r.exe";
                 if (Environment.OSVersion.Platform == PlatformID.Unix)
                     exname = "slic3r.pl";
@@ -354,7 +366,7 @@ namespace RepetierHost.view
                 string exe = basedir + Path.DirectorySeparatorChar + "Slic3r" + Path.DirectorySeparatorChar + exname;
                 if (File.Exists(BasicConfiguration.basicConf.Slic3rExecutable))
                     exe = BasicConfiguration.basicConf.Slic3rExecutable;
-
+                */
                 StringBuilder sb = new StringBuilder();
                 procSlic3r.EnableRaisingEvents = true;
                 procSlic3r.Exited += new EventHandler(Slic3rExited);
