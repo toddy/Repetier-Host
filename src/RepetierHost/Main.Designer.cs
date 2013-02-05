@@ -1037,7 +1037,7 @@
             // openGCode
             // 
             this.openGCode.DefaultExt = "gcode";
-            this.openGCode.Filter = "GCode/STL-Files|*.gcode;*.stl;*.STL|All files|*.*";
+            this.openGCode.Filter = "GCode/STL-Files|*.gcode;*.gco;*.stl;*.STL|All files|*.*";
             this.openGCode.Title = "Import G-Code";
             // 
             // saveJobDialog
@@ -1175,6 +1175,7 @@
             // 
             // slicerPanel
             // 
+            this.slicerPanel.AutoScroll = true;
             this.slicerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.slicerPanel.Location = new System.Drawing.Point(0, 0);
             this.slicerPanel.Name = "slicerPanel";

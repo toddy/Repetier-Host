@@ -510,11 +510,11 @@
             // 
             this.buttonStopMotor.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonShadow;
             this.buttonStopMotor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonStopMotor.Location = new System.Drawing.Point(246, 330);
+            this.buttonStopMotor.Location = new System.Drawing.Point(211, 330);
             this.buttonStopMotor.Name = "buttonStopMotor";
-            this.buttonStopMotor.Size = new System.Drawing.Size(84, 23);
+            this.buttonStopMotor.Size = new System.Drawing.Size(119, 23);
             this.buttonStopMotor.TabIndex = 7;
-            this.buttonStopMotor.Text = "Stop motor";
+            this.buttonStopMotor.Text = "Turn motor off";
             this.buttonStopMotor.UseVisualStyleBackColor = true;
             this.buttonStopMotor.Click += new System.EventHandler(this.buttonStopMotor_Click);
             // 

@@ -109,6 +109,7 @@ Immediate (slow)*/
             labelSelectionBox.Text = Trans.T("L_SELECTION_BOX");
             labelTravelMoves.Text = Trans.T("L_TRAVEL_MOVES:");
             checkDisableTravelMoves.Text = Trans.T("L_DISABLE_TRAVEL_MOVES_VIS");
+            checkCorrectNormals.Text = Trans.T("L_CORRECT_NORMALS");
         }
         public int filamentVisualization
         {
@@ -156,6 +157,7 @@ Immediate (slow)*/
                 threedKey.SetValue("showPrintbed", showPrintbed.Checked ? 1 : 0);
                 threedKey.SetValue("disableFilamentVisualization", checkDisableFilamentVisualization.Checked ? 1 : 0);
                 threedKey.SetValue("disableTravelVisualization", checkDisableTravelMoves.Checked ? 1 : 0);
+                threedKey.SetValue("correctNormals", checkCorrectNormals.Checked ? 1 : 0);
                 // threedKey.SetValue("useVBOs", useVBOs ? 1 : 0);
                 threedKey.SetValue("drawMethod", comboDrawMethod.SelectedIndex);
                 threedKey.SetValue("layerHeight", textLayerHeight.Text);
@@ -222,6 +224,7 @@ Immediate (slow)*/
                 textLayerHeight.Text = (string)threedKey.GetValue("layerHeight", textLayerHeight.Text);
                 textDiameter.Text = (string)threedKey.GetValue("filamentDiameter", textDiameter.Text);
                 radioHeight.Checked = 0 != (int)threedKey.GetValue("useLayerHeight", radioHeight.Checked ? 1 : 0);
+                checkCorrectNormals.Checked = 0 != (int)threedKey.GetValue("correctNormals", checkCorrectNormals.Checked ? 1 : 0);
                 radioDiameter.Checked = !radioHeight.Checked;
                 textWidthOverThickness.Text = (string)threedKey.GetValue("widthOverHeight", textWidthOverThickness.Text);
                 textHotFilamentLength.Text = (string)threedKey.GetValue("hotFilamentLength", textHotFilamentLength.Text);
@@ -251,6 +254,7 @@ Immediate (slow)*/
                 xdir4.Text = (string)threedKey.GetValue("light4X", xdir4.Text);
                 ydir4.Text = (string)threedKey.GetValue("light4Y", ydir4.Text);
                 zdir4.Text = (string)threedKey.GetValue("light4Z", zdir4.Text);
+                GCodePath.correctNorms = checkCorrectNormals.Checked;
             }
             catch { }
         }
@@ -433,6 +437,12 @@ Immediate (slow)*/
         public void checkDisableTravelMoves_CheckedChanged(object sender, EventArgs e)
         {
             Main.main.updateTravelMoves();
+            Main.main.Update3D();
+        }
+
+        private void checkCorrectNormals_CheckedChanged(object sender, EventArgs e)
+        {
+            GCodePath.correctNorms = checkCorrectNormals.Checked;
             Main.main.Update3D();
         }
     }

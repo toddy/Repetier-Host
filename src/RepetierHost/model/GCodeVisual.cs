@@ -46,6 +46,7 @@ namespace RepetierHost.model
     }
     public class GCodePath
     {
+        public static bool correctNorms = true; // Draw correct normals
         public int pointsCount = 0;
         public int drawMethod = -1;
         public float[] positions = null;
@@ -203,8 +204,8 @@ namespace RepetierHost.model
             int n = nv * (method == 0 ? 1 : 2) * (pointsCount - pointsLists.Count);
             //if (method != 0) positions = new float[n * 3]; else positions = new float[3 * pointsCount];
             //if (method != 0) normals = new float[n * 3]; else normals = null;
-            if (method != 0) positions = new float[pointsCount * nv * 3]; else positions = new float[3 * pointsCount];
-            if (method != 0) normals = new float[pointsCount * nv * 3]; else normals = null;
+            if (method != 0) positions = new float[pointsCount * nv * 3 * (correctNorms ? 2 : 1)]; else positions = new float[3 * pointsCount];
+            if (method != 0) normals = new float[pointsCount * nv * 3 * (correctNorms ? 2 : 1)]; else normals = null;
             if (method != 0) elements = new int[(pointsCount - pointsLists.Count) * nv * 4 + pointsLists.Count * (nv - 2) * 4]; else elements = new int[n * 2];
             int pos = 0;
             int npos = 0;
@@ -215,9 +216,15 @@ namespace RepetierHost.model
                 float[] dir = new float[3];
                 float[] dirs = new float[3];
                 float[] diru = new float[3];
+                float[] actdirs = new float[3];
+                float[] actdiru = new float[3];
                 float[] norm = new float[3];
                 float[] lastdir = new float[3];
                 float[] actdir = new float[3];
+                diru[0] = diru[1] = 0;
+                diru[2] = 1;
+                actdiru[0] = actdiru[1] = 0;
+                actdiru[2] = 1;
                 float laste = 0;
                 float dh = 0.5f * h;
                 float dw = 0.5f * w;
@@ -289,8 +296,8 @@ namespace RepetierHost.model
                         GCodeVisual.normalize(ref dir);
                         double vacos = dir[0] * lastdir[0] + dir[1] * lastdir[1] + dir[2] * lastdir[2];
                         if (vacos > 1) vacos = 1;
-                        if (vacos < 0.1)
-                            vacos = 0.1;
+                        if (vacos < 0.7)
+                            vacos = 0.7;
                         float zoomw = (float)vacos; // Math.Cos(Math.Acos(vacos));
                         lastdir[0] = actdir[0];
                         lastdir[1] = actdir[1];
@@ -298,29 +305,90 @@ namespace RepetierHost.model
                         dirs[0] = -dir[1];
                         dirs[1] = dir[0];
                         dirs[2] = dir[2];
-                        diru[0] = diru[1] = 0;
-                        diru[2] = 1;
+                        actdirs[0] = -actdir[1];
+                        actdirs[1] = actdir[0];
+                        actdirs[2] = actdir[2];
                         alpha = 0;
                         float c, s;
-                        int b = vpos / 3 - nv;
+                        int b = vpos / 3 - nv*(correctNorms ? 2 : 1);
                         for (i = 0; i < nv; i++)
                         {
                             c = (float)Math.Cos(alpha) * dh;
                             s = (float)Math.Sin(alpha) * dw / zoomw;
-                            norm[0] = (float)(s * dirs[0] + c * diru[0]);
-                            norm[1] = (float)(s * dirs[1] + c * diru[1]);
-                            norm[2] = (float)(s * dirs[2] + c * diru[2]);
+                            if (correctNorms)
+                            {
+                                float s2 = (float)Math.Sin(alpha) * dw;
+                                norm[0] = (float)(s2 * actdirs[0] + c * actdiru[0]);
+                                norm[1] = (float)(s2 * actdirs[1] + c * actdiru[1]);
+                                norm[2] = (float)(s2 * actdirs[2] + c * actdiru[2]);
+                            }
+                            else
+                            {
+                                norm[0] = (float)(s * dirs[0] + c * diru[0]);
+                                norm[1] = (float)(s * dirs[1] + c * diru[1]);
+                                norm[2] = (float)(s * dirs[2] + c * diru[2]);
+                            }
                             GCodeVisual.normalize(ref norm);
                             if (!first)
                             {
-                                elements[pos++] = b + (i + 1) % nv;//2
-                                elements[pos++] = b + i;//1
-                                elements[pos++] = b + i + nv;//4
-                                elements[pos++] = b + (i + 1) % nv + nv;//3
+                                if (correctNorms)
+                                {
+                                    elements[pos++] = b + 2*((i + 1) % nv)+1;
+                                    elements[pos++] = b + 2*i+1;
+                                    elements[pos++] = b + 2*(i + nv);
+                                    elements[pos++] = b + 2*((i + 1) % nv + nv);
+                                }
+                                else
+                                {
+                                    elements[pos++] = b + (i + 1) % nv;
+                                    elements[pos++] = b + i;
+                                    elements[pos++] = b + i + nv;
+                                    elements[pos++] = b + (i + 1) % nv + nv;
+                                }
                             }
-                            normals[npos++] = norm[0];
-                            normals[npos++] = norm[1];
-                            normals[npos++] = norm[2];
+                            if (correctNorms)
+                            {
+                                if (first || ptNode == null)
+                                {
+                                    if (first)
+                                    {
+                                        normals[npos++] = -actdir[0];
+                                        normals[npos++] = -actdir[1];
+                                        normals[npos++] = -actdir[2];
+                                    }
+                                    else
+                                    {
+                                        normals[npos++] = norm[0];
+                                        normals[npos++] = norm[1];
+                                        normals[npos++] = norm[2];
+                                    }
+                                    positions[vpos++] = v.X + s * dirs[0] + c * diru[0];
+                                    positions[vpos++] = v.Y + s * dirs[1] + c * diru[1];
+                                    positions[vpos++] = v.Z - dh + s * dirs[2] + c * diru[2];
+                                }
+                                else
+                                {
+                                    normals[npos] = normals[npos - 6 * nv+3];
+                                    normals[npos + 1] = normals[npos - 6 * nv +4];
+                                    normals[npos + 2] = normals[npos - 6 * nv +5];
+                                    npos += 3;
+                                    positions[vpos++] = v.X + s * dirs[0] + c * diru[0];
+                                    positions[vpos++] = v.Y + s * dirs[1] + c * diru[1];
+                                    positions[vpos++] = v.Z - dh + s * dirs[2] + c * diru[2];
+                                }
+                            }
+                            if (correctNorms && ptNode == null)
+                            {
+                                normals[npos++] = actdir[0];
+                                normals[npos++] = actdir[1];
+                                normals[npos++] = actdir[2];
+                            }
+                            else
+                            {
+                                normals[npos++] = norm[0];
+                                normals[npos++] = norm[1];
+                                normals[npos++] = norm[2];
+                            }
                             positions[vpos++] = v.X + s * dirs[0] + c * diru[0];
                             positions[vpos++] = v.Y + s * dirs[1] + c * diru[1];
                             positions[vpos++] = v.Z - dh + s * dirs[2] + c * diru[2];
@@ -328,23 +396,43 @@ namespace RepetierHost.model
                         }
                         if (first || ptNode == null) // Draw cap
                         {
-                            b = vpos / 3 - nv;
+                            b = vpos / 3 - nv * (correctNorms ? 2 : 1);
                             int nn = (nv - 2) / 2;
                             for (i = 0; i < nn; i++)
                             {
-                                if (first)
+                                if (correctNorms)
                                 {
-                                    elements[pos++] = b + i;
-                                    elements[pos++] = b + i + 1;
-                                    elements[pos++] = b + nv - i - 2;
-                                    elements[pos++] = b + nv - i - 1;
+                                    if (first)
+                                    {
+                                        elements[pos++] = b + 2*i;
+                                        elements[pos++] = b + 2*i + 2;
+                                        elements[pos++] = b + 2*nv - 2*i - 4;
+                                        elements[pos++] = b + 2*nv - 2*i - 2;
+                                    }
+                                    else
+                                    {
+                                        elements[pos++] = b + 2*(nv -i -1)+1;
+                                        elements[pos++] = b + 2*(nv - i -2)+1;
+                                        elements[pos++] = b + 2*i + 3;
+                                        elements[pos++] = b + 2*i+1;
+                                    }
                                 }
                                 else
                                 {
-                                    elements[pos++] = b + nv - i - 1;
-                                    elements[pos++] = b + nv - i - 2;
-                                    elements[pos++] = b + i + 1;
-                                    elements[pos++] = b + i;
+                                    if (first)
+                                    {
+                                        elements[pos++] = b + i;
+                                        elements[pos++] = b + i + 1;
+                                        elements[pos++] = b + nv - i - 2;
+                                        elements[pos++] = b + nv - i - 1;
+                                    }
+                                    else
+                                    {
+                                        elements[pos++] = b + nv - i - 1;
+                                        elements[pos++] = b + nv - i - 2;
+                                        elements[pos++] = b + i + 1;
+                                        elements[pos++] = b + i;
+                                    }
                                 }
                             }
                         }
@@ -423,6 +511,7 @@ namespace RepetierHost.model
         public float lastFilWidth = 999;
         public float lastFilDiameter = 999;
         public bool lastFilUseHeight = true;
+        public bool lastCorrectNormals = true;
         public float laste = -999;
         public float hotFilamentLength = 1000;
         public float minHotDist = 0;
@@ -834,10 +923,11 @@ namespace RepetierHost.model
                 if (liveView && path.lastDist > minHotDist)
                 {
                     GL.EnableClientState(ArrayCap.ColorArray);
-                    cp = new float[path.positions.Length];
+                    cp = new float[path.positions.Length*(GCodePath.correctNorms ? 2 : 1)];
                     int nv = 8 * (method - 1);
                     if (method == 1) nv = 4;
                     if (method == 0) nv = 1;
+                    if (GCodePath.correctNorms) nv *= 2;
                     int p = 0;
                     foreach (LinkedList<GCodePoint> points in path.pointsLists)
                     {
@@ -903,10 +993,11 @@ namespace RepetierHost.model
                     if (liveView && path.lastDist > minHotDist)
                     {
                         GL.EnableClientState(ArrayCap.ColorArray);
-                        cp = new float[path.positions.Length];
+                        cp = new float[path.positions.Length * (GCodePath.correctNorms ? 2 : 1)];
                         int nv = 8 * (method - 1);
                         if (method == 1) nv = 4;
                         if (method == 0) nv = 1;
+                        if (GCodePath.correctNorms) nv *= 2;
                         int p = 0;
                         foreach (LinkedList<GCodePoint> points in path.pointsLists)
                         {
@@ -987,6 +1078,8 @@ namespace RepetierHost.model
                             float dh = 0.5f * h;
                             float dw = 0.5f * w;
                             if (path.pointsCount < 2) return;
+                            diru[0] = diru[1] = 0;
+                            diru[2] = 1;
                             GL.Begin(BeginMode.Quads);
                             bool first = true;
                             Vector3 last = new Vector3();
@@ -1022,8 +1115,6 @@ namespace RepetierHost.model
                                     dirs[0] = -dir[1];
                                     dirs[1] = dir[0];
                                     dirs[2] = dir[2];
-                                    diru[0] = diru[1] = 0;
-                                    diru[2] = 1;
                                     alpha = 0;
                                     float c = (float)Math.Cos(alpha) * dh;
                                     float s = (float)Math.Sin(alpha) * dw;
@@ -1368,11 +1459,12 @@ namespace RepetierHost.model
             w = h * wfac;
             fixedH = Main.threeDSettings.useLayerHeight;
             dfac = (float)(Math.PI * Main.threeDSettings.filamentDiameter * Main.threeDSettings.filamentDiameter * 0.25 / wfac);
-            recompute = lastFilHeight != h || lastFilWidth != w || fixedH != lastFilUseHeight || dfac != lastFilDiameter;
+            recompute = lastFilHeight != h || lastFilWidth != w || fixedH != lastFilUseHeight || dfac != lastFilDiameter || lastCorrectNormals!=GCodePath.correctNorms;
             lastFilHeight = h;
             lastFilWidth = w;
             lastFilDiameter = dfac;
             lastFilUseHeight = fixedH;
+            lastCorrectNormals = GCodePath.correctNorms;
             for (int i = 0; i < MaxExtruder; i++)
             {
                 if (i == 1) col = Main.threeDSettings.filament2.BackColor;

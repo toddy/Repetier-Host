@@ -304,7 +304,7 @@ namespace RepetierHost.view
         }
         public bool PointInside(float x, float y, float z)
         {
-            if (z < 0 || z > PrintAreaHeight) return false;
+            if (z < -0.001 || z > PrintAreaHeight) return false;
             if (printerType < 2)
             {
                 if (x < BedLeft || x > BedLeft + PrintAreaWidth) return false;

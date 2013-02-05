@@ -159,6 +159,8 @@ namespace RepetierHost.model
                 {
                     case 0:
                     case 1:
+                    case 2: // Simplification to get at least some of part of the move
+                    case 3:
                         eChanged = false;
                         if (code.hasF) f = code.F;
                         if (relative)
@@ -351,6 +353,8 @@ namespace RepetierHost.model
             switch (code.compressedCommand)
             {
                 case 1:
+                case 2:
+                case 3:
                     isG1Move = true;
                     eChanged = false;
                     if (code.hasF) f = code.f;

@@ -312,6 +312,7 @@ namespace RepetierHost
             translate();
             toolAction.Text = Trans.T("L_IDLE");
             toolConnection.Text = Trans.T("L_DISCONNECTED");
+            updateTravelMoves();
         }
         public void translate()
         {
@@ -1175,6 +1176,7 @@ namespace RepetierHost
         }
         public void updateTravelMoves()
         {
+            if (threeDSettings == null) return;
             if (threeDSettings.checkDisableTravelMoves.Checked)
             {
                 toolShowTravel.Image = imageList.Images[5];

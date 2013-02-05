@@ -115,7 +115,7 @@ Du kannst Pausen in deinem Code einfügen mit:
 <t id="L_PROFILE" ver="1">Profile:</t>
 <t id="B_SEND" ver="1">Senden</t>
 <t id="B_SIMULATE_OK" ver="1">OK</t>
-<t id="B_STOP_MOTOR" ver="1">Stoppe Motor</t>
+<t id="B_STOP_MOTOR" ver="1">Motor ausschalten</t>
 <t id="B_PARK" ver="1">Parken</t>
 <t id="B_RETRACT" ver="1">Einfahren</t>
 <t id="B_EXTRUDE" ver="1">Extrudieren</t>
@@ -512,5 +512,6 @@ Mögliche Gründe:
 <t id="L_CARTESIAN_PRINTER" ver="6">Klassischer Drucker</t>
 <t id="L_CARTESIAN_PRINTER_DUMP" ver="6">Klassischer Drucker (mit Abladeplatz)</t>
 <t id="L_ROSTOCK_CIRCLE" ver="6">Rostock Drucker (runder Druckbereich)</t>
+<t id="L_CORRECT_NORMALS" ver="7">Korrekte Normalen nutzen (sieht besser aus, benötigt mehr Speicher)</t>
 </translation>
 

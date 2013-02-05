@@ -1,3 +1,8 @@
+Version 0.84
+  Added japanese translation by Hajime Ashida.
+  Fixed error marking elements outside even if inside.
+  Improved filament visualization.
+
 Version 0.83 22-01-2013
   Slic3r 0.9.8 included
   New translation: Latvian from www.ajmotion.lv

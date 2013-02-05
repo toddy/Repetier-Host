@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<translation revision="6" language="English" languageInEnglish="English" author="Repetier">
+<translation revision="7" language="English" languageInEnglish="English" author="Repetier">
 <t id="M_FILE" ver="1">File</t>
 <t id="M_CONFIG" ver="1">Config</t>
 <t id="M_SLICER" ver="1">Slicer</t>
@@ -116,7 +116,7 @@ You can add pauses in your code with
 <t id="L_PROFILE" ver="1">Profile:</t>
 <t id="B_SEND" ver="1">Send</t>
 <t id="B_SIMULATE_OK" ver="1">OK</t>
-<t id="B_STOP_MOTOR" ver="1">Stop Motor</t>
+<t id="B_STOP_MOTOR" ver="1">Turn Motor Off</t>
 <t id="B_PARK" ver="1">Park</t>
 <t id="B_RETRACT" ver="1">Retract</t>
 <t id="B_EXTRUDE" ver="1">Extrude</t>
@@ -521,5 +521,6 @@ Write Changes to EEPROM?</t>
 <t id="L_CARTESIAN_PRINTER" ver="6">Classic Printer</t>
 <t id="L_CARTESIAN_PRINTER_DUMP" ver="6">Classic Printer (with dump area)</t>
 <t id="L_ROSTOCK_CIRCLE" ver="6">Rostock Printer (circular print shape)</t>
+<t id="L_CORRECT_NORMALS" ver="7">Use correct normals (looks better, needs more memory)</t>
 </translation>
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<translation revision="5" language="Italiano" languageInEnglish="Italian" author="S. Camerino;info.dtxrobotics@gmail.com">
+<translation revision="6" language="Italiano" languageInEnglish="Italian" author="S. Camerino;info.dtxrobotics@gmail.com">
 <t id="M_FILE" ver="1">File</t>
 <t id="M_CONFIG" ver="1">Configurazione</t>
 <t id="M_SLICER" ver="1">Slicer</t>
@@ -500,4 +500,19 @@ Scrivere i cambiamenti in EEPROM?</t>
 <t id="L_NUMBER_OF_EXTRUDER:" ver="5">Numero di estrusori:</t>
 <t id="L_NEW_FOLDER" ver="5">Nuova cartella</t>
 <t id="L_USE_PARALLEL_PROJECTION" ver="5">Utilizza proiezione parallela</t>
+<t id="L_USE_RED_GREEN_SWITCH" ver="5">Usa bottoni rosso/verde (richiede riavvio)</t>
+<t id="L_SLIC3R_NOT_FOUND" ver="6">Slic3r non e' stato trovato.</t>
+<t id="L_ANALYSING_STL" ver="6">Analisi del file STL ...</t>
+<t id="L_SLICING_STL" ver="6">Slicing STL file in corso...</t>
+<t id="L_PYPY_NOT_FOUND" ver="6">L'interprete Pypy o Python non e' stato trovato.</t>
+<t id="L_SKEINCRAFT_NOT_FOUND" ver="6">Skeinforge craft non e' stato trovato.</t>
+<t id="L_PYTHON_NOT_FOUND" ver="6">Interprete Python non trovato.</t>
+<t id="L_SKEINFORGE_NOT_FOUND" ver="6">Skeinforge non e' stato trovato.</t>
+<t id="L_SKEINCRAFT_PROFILES_NOT_FOUND" ver="6">La cartella profili Skeinforge/SFACT non e' stata trovata.</t>
+<t id="B_REFRESH_PORTS" ver="6">Aggiorna Porte</t>
+<t id="L_ROS_PRINTABLE_HEIGHT:" ver="6">Altezza di stampa:</t>
+<t id="L_ROS_PRINTABLE_RADIUS:" ver="6">Raggio di stampa:</t>
+<t id="L_CARTESIAN_PRINTER" ver="6">Stampante classica</t>
+<t id="L_CARTESIAN_PRINTER_DUMP" ver="6">Stampante classica (con area di scarto)</t>
+<t id="L_ROSTOCK_CIRCLE" ver="6">Stampante Rostock (stampa forma circolare)</t>
 </translation>

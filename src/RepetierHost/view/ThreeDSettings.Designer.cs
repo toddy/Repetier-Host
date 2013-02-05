@@ -32,18 +32,19 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ThreeDSettings));
             this.colorDialog = new System.Windows.Forms.ColorDialog();
             this.groupColors2 = new System.Windows.Forms.GroupBox();
-            this.labelTravelMoves = new System.Windows.Forms.Label();
-            this.labelSelectedFilament = new System.Windows.Forms.Label();
-            this.labelHotFilament = new System.Windows.Forms.Label();
-            this.travelMoves = new System.Windows.Forms.Panel();
-            this.selectedFilament = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.hotFilament = new System.Windows.Forms.Panel();
-            this.filament3 = new System.Windows.Forms.Panel();
             this.labelExtruder3 = new System.Windows.Forms.Label();
-            this.filament2 = new System.Windows.Forms.Panel();
+            this.filament3 = new System.Windows.Forms.Panel();
             this.labelExtruder2 = new System.Windows.Forms.Label();
-            this.filament = new System.Windows.Forms.Panel();
+            this.labelTravelMoves = new System.Windows.Forms.Label();
             this.labelExtruder1 = new System.Windows.Forms.Label();
+            this.selectedFilament = new System.Windows.Forms.Panel();
+            this.filament2 = new System.Windows.Forms.Panel();
+            this.labelSelectedFilament = new System.Windows.Forms.Label();
+            this.travelMoves = new System.Windows.Forms.Panel();
+            this.filament = new System.Windows.Forms.Panel();
+            this.labelHotFilament = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.textHotFilamentLength = new System.Windows.Forms.TextBox();
             this.labelHotFilamentLength = new System.Windows.Forms.Label();
@@ -130,8 +131,9 @@
             this.specular3 = new System.Windows.Forms.Panel();
             this.specular4 = new System.Windows.Forms.Panel();
             this.diffuse4 = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.checkCorrectNormals = new System.Windows.Forms.CheckBox();
             this.groupColors2.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabGeneral.SuspendLayout();
@@ -143,7 +145,6 @@
             this.groupVisualization.SuspendLayout();
             this.tabLights.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupColors2
@@ -156,60 +157,35 @@
             this.groupColors2.TabStop = false;
             this.groupColors2.Text = "Colors";
             // 
-            // labelTravelMoves
+            // tableLayoutPanel2
             // 
-            this.labelTravelMoves.AutoSize = true;
-            this.labelTravelMoves.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelTravelMoves.Location = new System.Drawing.Point(184, 54);
-            this.labelTravelMoves.Name = "labelTravelMoves";
-            this.labelTravelMoves.Size = new System.Drawing.Size(91, 30);
-            this.labelTravelMoves.TabIndex = 9;
-            this.labelTravelMoves.Text = "Travel Moves:";
-            this.labelTravelMoves.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // labelSelectedFilament
-            // 
-            this.labelSelectedFilament.AutoSize = true;
-            this.labelSelectedFilament.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelSelectedFilament.Location = new System.Drawing.Point(184, 27);
-            this.labelSelectedFilament.Name = "labelSelectedFilament";
-            this.labelSelectedFilament.Size = new System.Drawing.Size(91, 27);
-            this.labelSelectedFilament.TabIndex = 9;
-            this.labelSelectedFilament.Text = "Selected filament:";
-            this.labelSelectedFilament.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // labelHotFilament
-            // 
-            this.labelHotFilament.AutoSize = true;
-            this.labelHotFilament.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelHotFilament.Location = new System.Drawing.Point(184, 0);
-            this.labelHotFilament.Name = "labelHotFilament";
-            this.labelHotFilament.Size = new System.Drawing.Size(91, 27);
-            this.labelHotFilament.TabIndex = 9;
-            this.labelHotFilament.Text = "Hot filament:";
-            this.labelHotFilament.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // travelMoves
-            // 
-            this.travelMoves.BackColor = System.Drawing.Color.Aquamarine;
-            this.travelMoves.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.travelMoves.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.travelMoves.Location = new System.Drawing.Point(281, 57);
-            this.travelMoves.Name = "travelMoves";
-            this.travelMoves.Size = new System.Drawing.Size(111, 24);
-            this.travelMoves.TabIndex = 3;
-            this.travelMoves.Click += new System.EventHandler(this.filament_Click);
-            // 
-            // selectedFilament
-            // 
-            this.selectedFilament.BackColor = System.Drawing.Color.Yellow;
-            this.selectedFilament.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.selectedFilament.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.selectedFilament.Location = new System.Drawing.Point(281, 30);
-            this.selectedFilament.Name = "selectedFilament";
-            this.selectedFilament.Size = new System.Drawing.Size(111, 21);
-            this.selectedFilament.TabIndex = 3;
-            this.selectedFilament.Click += new System.EventHandler(this.filament_Click);
+            this.tableLayoutPanel2.AutoSize = true;
+            this.tableLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tableLayoutPanel2.ColumnCount = 4;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 117F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 117F));
+            this.tableLayoutPanel2.Controls.Add(this.hotFilament, 3, 0);
+            this.tableLayoutPanel2.Controls.Add(this.labelExtruder3, 0, 2);
+            this.tableLayoutPanel2.Controls.Add(this.filament3, 1, 2);
+            this.tableLayoutPanel2.Controls.Add(this.labelExtruder2, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.labelTravelMoves, 2, 2);
+            this.tableLayoutPanel2.Controls.Add(this.labelExtruder1, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.selectedFilament, 3, 1);
+            this.tableLayoutPanel2.Controls.Add(this.filament2, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.labelSelectedFilament, 2, 1);
+            this.tableLayoutPanel2.Controls.Add(this.travelMoves, 3, 2);
+            this.tableLayoutPanel2.Controls.Add(this.filament, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.labelHotFilament, 2, 0);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 19);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 3;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(395, 90);
+            this.tableLayoutPanel2.TabIndex = 10;
             // 
             // hotFilament
             // 
@@ -218,53 +194,108 @@
             this.hotFilament.Dock = System.Windows.Forms.DockStyle.Fill;
             this.hotFilament.Location = new System.Drawing.Point(281, 3);
             this.hotFilament.Name = "hotFilament";
-            this.hotFilament.Size = new System.Drawing.Size(111, 21);
+            this.hotFilament.Size = new System.Drawing.Size(111, 24);
             this.hotFilament.TabIndex = 1;
             this.hotFilament.Click += new System.EventHandler(this.hotFilament_Click);
-            // 
-            // filament3
-            // 
-            this.filament3.BackColor = System.Drawing.Color.Chocolate;
-            this.filament3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.filament3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.filament3.Location = new System.Drawing.Point(67, 57);
-            this.filament3.Name = "filament3";
-            this.filament3.Size = new System.Drawing.Size(111, 24);
-            this.filament3.TabIndex = 4;
-            this.filament3.Click += new System.EventHandler(this.filament_Click);
             // 
             // labelExtruder3
             // 
             this.labelExtruder3.AutoSize = true;
             this.labelExtruder3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelExtruder3.Location = new System.Drawing.Point(3, 54);
+            this.labelExtruder3.Location = new System.Drawing.Point(3, 60);
             this.labelExtruder3.Name = "labelExtruder3";
             this.labelExtruder3.Size = new System.Drawing.Size(58, 30);
             this.labelExtruder3.TabIndex = 3;
             this.labelExtruder3.Text = "Extruder 3:";
             this.labelExtruder3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // filament2
+            // filament3
             // 
-            this.filament2.BackColor = System.Drawing.Color.Teal;
-            this.filament2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.filament2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.filament2.Location = new System.Drawing.Point(67, 30);
-            this.filament2.Name = "filament2";
-            this.filament2.Size = new System.Drawing.Size(111, 21);
-            this.filament2.TabIndex = 2;
-            this.filament2.Click += new System.EventHandler(this.filament_Click);
+            this.filament3.BackColor = System.Drawing.Color.Chocolate;
+            this.filament3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.filament3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.filament3.Location = new System.Drawing.Point(67, 63);
+            this.filament3.Name = "filament3";
+            this.filament3.Size = new System.Drawing.Size(111, 24);
+            this.filament3.TabIndex = 4;
+            this.filament3.Click += new System.EventHandler(this.filament_Click);
             // 
             // labelExtruder2
             // 
             this.labelExtruder2.AutoSize = true;
             this.labelExtruder2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelExtruder2.Location = new System.Drawing.Point(3, 27);
+            this.labelExtruder2.Location = new System.Drawing.Point(3, 30);
             this.labelExtruder2.Name = "labelExtruder2";
-            this.labelExtruder2.Size = new System.Drawing.Size(58, 27);
+            this.labelExtruder2.Size = new System.Drawing.Size(58, 30);
             this.labelExtruder2.TabIndex = 3;
             this.labelExtruder2.Text = "Extruder 2:";
             this.labelExtruder2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // labelTravelMoves
+            // 
+            this.labelTravelMoves.AutoSize = true;
+            this.labelTravelMoves.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelTravelMoves.Location = new System.Drawing.Point(184, 60);
+            this.labelTravelMoves.Name = "labelTravelMoves";
+            this.labelTravelMoves.Size = new System.Drawing.Size(91, 30);
+            this.labelTravelMoves.TabIndex = 9;
+            this.labelTravelMoves.Text = "Travel Moves:";
+            this.labelTravelMoves.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // labelExtruder1
+            // 
+            this.labelExtruder1.AutoSize = true;
+            this.labelExtruder1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelExtruder1.Location = new System.Drawing.Point(3, 0);
+            this.labelExtruder1.Name = "labelExtruder1";
+            this.labelExtruder1.Size = new System.Drawing.Size(58, 30);
+            this.labelExtruder1.TabIndex = 3;
+            this.labelExtruder1.Text = "Extruder 1:";
+            this.labelExtruder1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // selectedFilament
+            // 
+            this.selectedFilament.BackColor = System.Drawing.Color.Yellow;
+            this.selectedFilament.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.selectedFilament.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.selectedFilament.Location = new System.Drawing.Point(281, 33);
+            this.selectedFilament.Name = "selectedFilament";
+            this.selectedFilament.Size = new System.Drawing.Size(111, 24);
+            this.selectedFilament.TabIndex = 3;
+            this.selectedFilament.Click += new System.EventHandler(this.filament_Click);
+            // 
+            // filament2
+            // 
+            this.filament2.BackColor = System.Drawing.Color.Teal;
+            this.filament2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.filament2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.filament2.Location = new System.Drawing.Point(67, 33);
+            this.filament2.Name = "filament2";
+            this.filament2.Size = new System.Drawing.Size(111, 24);
+            this.filament2.TabIndex = 2;
+            this.filament2.Click += new System.EventHandler(this.filament_Click);
+            // 
+            // labelSelectedFilament
+            // 
+            this.labelSelectedFilament.AutoSize = true;
+            this.labelSelectedFilament.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelSelectedFilament.Location = new System.Drawing.Point(184, 30);
+            this.labelSelectedFilament.Name = "labelSelectedFilament";
+            this.labelSelectedFilament.Size = new System.Drawing.Size(91, 30);
+            this.labelSelectedFilament.TabIndex = 9;
+            this.labelSelectedFilament.Text = "Selected filament:";
+            this.labelSelectedFilament.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // travelMoves
+            // 
+            this.travelMoves.BackColor = System.Drawing.Color.Aquamarine;
+            this.travelMoves.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.travelMoves.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.travelMoves.Location = new System.Drawing.Point(281, 63);
+            this.travelMoves.Name = "travelMoves";
+            this.travelMoves.Size = new System.Drawing.Size(111, 24);
+            this.travelMoves.TabIndex = 3;
+            this.travelMoves.Click += new System.EventHandler(this.filament_Click);
             // 
             // filament
             // 
@@ -273,25 +304,25 @@
             this.filament.Dock = System.Windows.Forms.DockStyle.Fill;
             this.filament.Location = new System.Drawing.Point(67, 3);
             this.filament.Name = "filament";
-            this.filament.Size = new System.Drawing.Size(111, 21);
+            this.filament.Size = new System.Drawing.Size(111, 24);
             this.filament.TabIndex = 0;
             this.filament.Click += new System.EventHandler(this.filament_Click);
             // 
-            // labelExtruder1
+            // labelHotFilament
             // 
-            this.labelExtruder1.AutoSize = true;
-            this.labelExtruder1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelExtruder1.Location = new System.Drawing.Point(3, 0);
-            this.labelExtruder1.Name = "labelExtruder1";
-            this.labelExtruder1.Size = new System.Drawing.Size(58, 27);
-            this.labelExtruder1.TabIndex = 3;
-            this.labelExtruder1.Text = "Extruder 1:";
-            this.labelExtruder1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelHotFilament.AutoSize = true;
+            this.labelHotFilament.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelHotFilament.Location = new System.Drawing.Point(184, 0);
+            this.labelHotFilament.Name = "labelHotFilament";
+            this.labelHotFilament.Size = new System.Drawing.Size(91, 30);
+            this.labelHotFilament.TabIndex = 9;
+            this.labelHotFilament.Text = "Hot filament:";
+            this.labelHotFilament.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(222, 199);
+            this.label13.Location = new System.Drawing.Point(222, 230);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(29, 13);
             this.label13.TabIndex = 8;
@@ -299,7 +330,7 @@
             // 
             // textHotFilamentLength
             // 
-            this.textHotFilamentLength.Location = new System.Drawing.Point(133, 196);
+            this.textHotFilamentLength.Location = new System.Drawing.Point(133, 227);
             this.textHotFilamentLength.Name = "textHotFilamentLength";
             this.textHotFilamentLength.Size = new System.Drawing.Size(81, 20);
             this.textHotFilamentLength.TabIndex = 6;
@@ -309,7 +340,7 @@
             // labelHotFilamentLength
             // 
             this.labelHotFilamentLength.AutoSize = true;
-            this.labelHotFilamentLength.Location = new System.Drawing.Point(6, 199);
+            this.labelHotFilamentLength.Location = new System.Drawing.Point(6, 230);
             this.labelHotFilamentLength.Name = "labelHotFilamentLength";
             this.labelHotFilamentLength.Size = new System.Drawing.Size(98, 13);
             this.labelHotFilamentLength.TabIndex = 6;
@@ -413,7 +444,7 @@
             // buttonOK
             // 
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonOK.Location = new System.Drawing.Point(422, 450);
+            this.buttonOK.Location = new System.Drawing.Point(422, 463);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(80, 22);
             this.buttonOK.TabIndex = 0;
@@ -469,7 +500,7 @@
             // 
             // labelFilamentVisInfo
             // 
-            this.labelFilamentVisInfo.Location = new System.Drawing.Point(6, 138);
+            this.labelFilamentVisInfo.Location = new System.Drawing.Point(6, 169);
             this.labelFilamentVisInfo.Name = "labelFilamentVisInfo";
             this.labelFilamentVisInfo.Size = new System.Drawing.Size(461, 55);
             this.labelFilamentVisInfo.TabIndex = 13;
@@ -478,7 +509,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(291, 122);
+            this.label10.Location = new System.Drawing.Point(291, 153);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(29, 13);
             this.label10.TabIndex = 12;
@@ -487,7 +518,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(291, 99);
+            this.label8.Location = new System.Drawing.Point(291, 130);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(29, 13);
             this.label8.TabIndex = 12;
@@ -495,7 +526,7 @@
             // 
             // textDiameter
             // 
-            this.textDiameter.Location = new System.Drawing.Point(160, 120);
+            this.textDiameter.Location = new System.Drawing.Point(160, 151);
             this.textDiameter.Name = "textDiameter";
             this.textDiameter.Size = new System.Drawing.Size(106, 20);
             this.textDiameter.TabIndex = 5;
@@ -506,7 +537,7 @@
             // radioDiameter
             // 
             this.radioDiameter.AutoSize = true;
-            this.radioDiameter.Location = new System.Drawing.Point(6, 118);
+            this.radioDiameter.Location = new System.Drawing.Point(6, 149);
             this.radioDiameter.Name = "radioDiameter";
             this.radioDiameter.Size = new System.Drawing.Size(110, 17);
             this.radioDiameter.TabIndex = 4;
@@ -517,7 +548,7 @@
             // 
             this.radioHeight.AutoSize = true;
             this.radioHeight.Checked = true;
-            this.radioHeight.Location = new System.Drawing.Point(6, 96);
+            this.radioHeight.Location = new System.Drawing.Point(6, 127);
             this.radioHeight.Name = "radioHeight";
             this.radioHeight.Size = new System.Drawing.Size(86, 17);
             this.radioHeight.TabIndex = 2;
@@ -528,7 +559,7 @@
             // 
             // textWidthOverThickness
             // 
-            this.textWidthOverThickness.Location = new System.Drawing.Point(160, 67);
+            this.textWidthOverThickness.Location = new System.Drawing.Point(160, 98);
             this.textWidthOverThickness.Name = "textWidthOverThickness";
             this.textWidthOverThickness.Size = new System.Drawing.Size(106, 20);
             this.textWidthOverThickness.TabIndex = 1;
@@ -538,7 +569,7 @@
             // 
             // textLayerHeight
             // 
-            this.textLayerHeight.Location = new System.Drawing.Point(160, 93);
+            this.textLayerHeight.Location = new System.Drawing.Point(160, 124);
             this.textLayerHeight.Name = "textLayerHeight";
             this.textLayerHeight.Size = new System.Drawing.Size(106, 20);
             this.textLayerHeight.TabIndex = 3;
@@ -549,7 +580,7 @@
             // labelWidthOverThickness
             // 
             this.labelWidthOverThickness.AutoSize = true;
-            this.labelWidthOverThickness.Location = new System.Drawing.Point(3, 70);
+            this.labelWidthOverThickness.Location = new System.Drawing.Point(3, 101);
             this.labelWidthOverThickness.Name = "labelWidthOverThickness";
             this.labelWidthOverThickness.Size = new System.Drawing.Size(110, 13);
             this.labelWidthOverThickness.TabIndex = 5;
@@ -558,7 +589,7 @@
             // labelFilamentVisualization
             // 
             this.labelFilamentVisualization.AutoSize = true;
-            this.labelFilamentVisualization.Location = new System.Drawing.Point(3, 39);
+            this.labelFilamentVisualization.Location = new System.Drawing.Point(3, 70);
             this.labelFilamentVisualization.Name = "labelFilamentVisualization";
             this.labelFilamentVisualization.Size = new System.Drawing.Size(109, 13);
             this.labelFilamentVisualization.TabIndex = 3;
@@ -573,7 +604,7 @@
             "Medium",
             "Fine",
             "Ultra fine"});
-            this.comboFilamentVisualization.Location = new System.Drawing.Point(159, 39);
+            this.comboFilamentVisualization.Location = new System.Drawing.Point(159, 70);
             this.comboFilamentVisualization.Name = "comboFilamentVisualization";
             this.comboFilamentVisualization.Size = new System.Drawing.Size(129, 21);
             this.comboFilamentVisualization.TabIndex = 0;
@@ -653,7 +684,7 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(494, 390);
+            this.tabControl1.Size = new System.Drawing.Size(494, 409);
             this.tabControl1.TabIndex = 0;
             // 
             // tabGeneral
@@ -792,13 +823,14 @@
             this.tabFilament.Controls.Add(this.groupColors2);
             this.tabFilament.Location = new System.Drawing.Point(4, 22);
             this.tabFilament.Name = "tabFilament";
-            this.tabFilament.Size = new System.Drawing.Size(486, 364);
+            this.tabFilament.Size = new System.Drawing.Size(486, 383);
             this.tabFilament.TabIndex = 2;
             this.tabFilament.Text = "Filament";
             this.tabFilament.UseVisualStyleBackColor = true;
             // 
             // groupVisualization
             // 
+            this.groupVisualization.Controls.Add(this.checkCorrectNormals);
             this.groupVisualization.Controls.Add(this.checkDisableTravelMoves);
             this.groupVisualization.Controls.Add(this.checkDisableFilamentVisualization);
             this.groupVisualization.Controls.Add(this.label13);
@@ -817,7 +849,7 @@
             this.groupVisualization.Controls.Add(this.radioHeight);
             this.groupVisualization.Location = new System.Drawing.Point(3, 124);
             this.groupVisualization.Name = "groupVisualization";
-            this.groupVisualization.Size = new System.Drawing.Size(475, 224);
+            this.groupVisualization.Size = new System.Drawing.Size(475, 256);
             this.groupVisualization.TabIndex = 0;
             this.groupVisualization.TabStop = false;
             this.groupVisualization.Text = "Visualization";
@@ -1251,41 +1283,24 @@
             this.diffuse4.TabIndex = 27;
             this.diffuse4.Click += new System.EventHandler(this.lightcolor_Click);
             // 
-            // tableLayoutPanel2
+            // checkCorrectNormals
             // 
-            this.tableLayoutPanel2.AutoSize = true;
-            this.tableLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanel2.ColumnCount = 4;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 117F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 117F));
-            this.tableLayoutPanel2.Controls.Add(this.hotFilament, 3, 0);
-            this.tableLayoutPanel2.Controls.Add(this.labelExtruder3, 0, 2);
-            this.tableLayoutPanel2.Controls.Add(this.filament3, 1, 2);
-            this.tableLayoutPanel2.Controls.Add(this.labelExtruder2, 0, 1);
-            this.tableLayoutPanel2.Controls.Add(this.labelTravelMoves, 2, 2);
-            this.tableLayoutPanel2.Controls.Add(this.labelExtruder1, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.selectedFilament, 3, 1);
-            this.tableLayoutPanel2.Controls.Add(this.filament2, 1, 1);
-            this.tableLayoutPanel2.Controls.Add(this.labelSelectedFilament, 2, 1);
-            this.tableLayoutPanel2.Controls.Add(this.travelMoves, 3, 2);
-            this.tableLayoutPanel2.Controls.Add(this.filament, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.labelHotFilament, 2, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 19);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 3;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(395, 84);
-            this.tableLayoutPanel2.TabIndex = 10;
+            this.checkCorrectNormals.AutoSize = true;
+            this.checkCorrectNormals.Checked = true;
+            this.checkCorrectNormals.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkCorrectNormals.Location = new System.Drawing.Point(6, 42);
+            this.checkCorrectNormals.Name = "checkCorrectNormals";
+            this.checkCorrectNormals.Size = new System.Drawing.Size(223, 17);
+            this.checkCorrectNormals.TabIndex = 15;
+            this.checkCorrectNormals.Text = "Use correct normals (needs more memory)";
+            this.checkCorrectNormals.UseVisualStyleBackColor = true;
+            this.checkCorrectNormals.CheckedChanged += new System.EventHandler(this.checkCorrectNormals_CheckedChanged);
             // 
             // ThreeDSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(517, 503);
+            this.ClientSize = new System.Drawing.Size(517, 516);
             this.ControlBox = false;
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.buttonOK);
@@ -1299,6 +1314,8 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ThreeDSettings_FormClosing);
             this.groupColors2.ResumeLayout(false);
             this.groupColors2.PerformLayout();
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabGeneral.ResumeLayout(false);
@@ -1316,8 +1333,6 @@
             this.tabLights.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            this.tableLayoutPanel2.ResumeLayout(false);
-            this.tableLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1425,5 +1440,6 @@
         public System.Windows.Forms.Panel travelMoves;
         public System.Windows.Forms.CheckBox checkDisableTravelMoves;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.CheckBox checkCorrectNormals;
     }
 }

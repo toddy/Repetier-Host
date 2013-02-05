@@ -92,11 +92,11 @@ namespace RepetierHost.view
                     }
                     else
                     {
-                        cdir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                        cdir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)+ Path.DirectorySeparatorChar + "Slic3r";
                     }
                 }
                 //Console.WriteLine("App dir:" + cdir);
-                return cdir + Path.DirectorySeparatorChar + "Slic3r";
+                return cdir; // +Path.DirectorySeparatorChar + "Slic3r";
             }
         }
         public MethodInvoker UpdateSelectionInvoker = delegate

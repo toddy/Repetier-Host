@@ -192,7 +192,7 @@ namespace RepetierHost.view
                 }
             }
 
-            return null;
+            return findPythonw();
         }
         public string findPythonw()
         {
