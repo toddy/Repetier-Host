@@ -321,6 +321,7 @@ namespace RepetierHost.view
         Brush commentBrush = Brushes.OliveDrab;
         Brush paramTypeBrush = Brushes.Maroon;
         Brush linesBgColor = Brushes.CadetBlue;
+        Brush linesBgAltColor = Brushes.DarkCyan;
         Brush linesTextColor = Brushes.White;
         Brush backBrush = Brushes.White;
         Brush evenBackBrush = Brushes.Linen;
@@ -653,8 +654,9 @@ namespace RepetierHost.view
             PositionShowCursor(true, false);
             Changed();
         }
-        private void DrawRow(Graphics g, int line, string text, float x, float y)
+        private void DrawRow(Graphics g, int line, GCodeShort code, float x, float y)
         {
+            string text = code.text;
             float s1 = 0, s2 = 0;
             g.FillRectangle(((line & 1)==0?backBrush:evenBackBrush), linesWidth, y, editor.Width - linesWidth, fontHeight);
             string ln = line.ToString();
@@ -735,8 +737,11 @@ namespace RepetierHost.view
                     ac++;
                 }
             }
-            g.FillRectangle(linesBgColor, 0, y, linesWidth, fontHeight);
-            g.DrawString(ln, drawFont, linesTextColor, linesWidth-3 - fontWidth * ln.Length, y);
+            if((code.layer & 1)==0)
+                g.FillRectangle(linesBgColor, 0, y, linesWidth, fontHeight);
+            else
+                g.FillRectangle(linesBgAltColor, 0, y, linesWidth, fontHeight);
+            g.DrawString(ln, drawFont, linesTextColor, linesWidth - 3 - fontWidth * ln.Length, y);
             PositionCursor();
         }
         private void CreateCursor()
@@ -786,7 +791,7 @@ namespace RepetierHost.view
                 rmax = lines.Count - topRow;
             for (r = 0; r < rmax; r++)
             {
-                DrawRow(g, topRow + r + 1, lines[topRow + r].text, -fontWidth*topCol, r * fontHeight);
+                DrawRow(g, topRow + r + 1, lines[topRow + r], -fontWidth*topCol, r * fontHeight);
             }
             if (Main.IsMono && blink && editor.Focused && _col>=topCol && _row>=topRow && _row<=topRow+rowsVisible)
             {

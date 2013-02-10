@@ -151,6 +151,7 @@ namespace RepetierHost.model
                         tri.p1 = new Vector3(r.ReadSingle(), r.ReadSingle(), r.ReadSingle());
                         tri.p2 = new Vector3(r.ReadSingle(), r.ReadSingle(), r.ReadSingle());
                         tri.p3 = new Vector3(r.ReadSingle(), r.ReadSingle(), r.ReadSingle());
+                        tri.normal = Vector3.Normalize(tri.normal);
                         list.AddLast(tri);
                         r.ReadUInt16();
                     }
@@ -420,6 +421,7 @@ namespace RepetierHost.model
                 outer = text.IndexOf("outer loop", normal);
                 STLTriangle tri = new STLTriangle();
                 tri.normal = extractVector(text.Substring(normal, outer - normal));
+                tri.normal = Vector3.Normalize(tri.normal);
                 outer += 10;
                 vertex = text.IndexOf("vertex", outer) + 6;
                 vertex2 = text.IndexOf("vertex", vertex);

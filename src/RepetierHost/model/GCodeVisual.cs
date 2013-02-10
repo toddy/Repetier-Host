@@ -296,8 +296,8 @@ namespace RepetierHost.model
                         GCodeVisual.normalize(ref dir);
                         double vacos = dir[0] * lastdir[0] + dir[1] * lastdir[1] + dir[2] * lastdir[2];
                         if (vacos > 1) vacos = 1;
-                        if (vacos < 0.7)
-                            vacos = 0.7;
+                        if (vacos < 0.3)
+                            vacos = 0.3;
                         float zoomw = (float)vacos; // Math.Cos(Math.Acos(vacos));
                         lastdir[0] = actdir[0];
                         lastdir[1] = actdir[1];
@@ -923,11 +923,11 @@ namespace RepetierHost.model
                 if (liveView && path.lastDist > minHotDist)
                 {
                     GL.EnableClientState(ArrayCap.ColorArray);
-                    cp = new float[path.positions.Length*(GCodePath.correctNorms ? 2 : 1)];
+                    cp = new float[path.positions.Length];
                     int nv = 8 * (method - 1);
                     if (method == 1) nv = 4;
-                    if (method == 0) nv = 1;
                     if (GCodePath.correctNorms) nv *= 2;
+                    if (method == 0) nv = 1;
                     int p = 0;
                     foreach (LinkedList<GCodePoint> points in path.pointsLists)
                     {
@@ -993,11 +993,11 @@ namespace RepetierHost.model
                     if (liveView && path.lastDist > minHotDist)
                     {
                         GL.EnableClientState(ArrayCap.ColorArray);
-                        cp = new float[path.positions.Length * (GCodePath.correctNorms ? 2 : 1)];
+                        cp = new float[path.positions.Length];
                         int nv = 8 * (method - 1);
                         if (method == 1) nv = 4;
-                        if (method == 0) nv = 1;
                         if (GCodePath.correctNorms) nv *= 2;
+                        if (method == 0) nv = 1;
                         int p = 0;
                         foreach (LinkedList<GCodePoint> points in path.pointsLists)
                         {

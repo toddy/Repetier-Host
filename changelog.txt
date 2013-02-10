@@ -1,7 +1,12 @@
-Version 0.84
+Version 0.84 09-02-2013
   Added japanese translation by Hajime Ashida.
   Fixed error marking elements outside even if inside.
   Improved filament visualization.
+  Update printer shape when selecting printer over connect button.
+  Disable slic3r filament settings for non existent extruder.
+  Layer start is now at the z move starting a new layer.
+  Highlight line numbers depending on layer number even/odd.
+  Fixed bug not storing all 3d settings in registry.
 
 Version 0.83 22-01-2013
   Slic3r 0.9.8 included

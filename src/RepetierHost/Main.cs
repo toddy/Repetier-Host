@@ -515,6 +515,9 @@ namespace RepetierHost
             ToolStripMenuItem clickedItem = (ToolStripMenuItem)sender;
             printerSettings.load(clickedItem.Text);
             printerSettings.formToCon();
+            slicerPanel.UpdateSelection();
+            printerSettings.UpdateDimensions();
+            Update3D();
             conn.open();
         }
         public void PrinterChanged(RegistryKey pkey, bool printerChanged)

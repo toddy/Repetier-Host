@@ -447,7 +447,10 @@ namespace RepetierHost.view
                     }
                     GL.End();
                 }
-                GL.Enable(EnableCap.CullFace);
+                if (Main.main.tab.SelectedIndex > 1)
+                    GL.Enable(EnableCap.CullFace);
+                else
+                    GL.Disable(EnableCap.CullFace);
                 GL.Disable(EnableCap.LineSmooth);
                 foreach (ThreeDModel model in view.models)
                 {

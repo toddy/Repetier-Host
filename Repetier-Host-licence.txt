@@ -1,6 +1,7 @@
 Repetier-Host software
 
-   Copyright 2011 repetier
+   Copyright 2011-2013 Hot-World GmbH & Co. KG
+   Written by Dipl.-Ing. Roland Littwin aka. Repetier
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

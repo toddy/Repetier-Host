@@ -34,12 +34,13 @@ namespace RepetierHost.model
         public event OnAnalyzerChange eventChange;
         public int activeExtruder = 0;
         //public float extruderTemp = 0;
-        public Dictionary<int,float> extruderTemp = new Dictionary<int,float>();  
+        public Dictionary<int, float> extruderTemp = new Dictionary<int, float>();
+        public LinkedList<GCodeShort> unchangedLayer = new LinkedList<GCodeShort>();
         public bool uploading = false;
         public float bedTemp = 0;
-        public float x = 0, y = 0, z = 0, e = 0, emax = 0,f=1000;
-        public float lastX=0, lastY=0, lastZ=0, lastE=0;
-        public float xOffset = 0, yOffset = 0, zOffset = 0, eOffset = 0,lastZPrint = 0;
+        public float x = 0, y = 0, z = 0, e = 0, emax = 0, f = 1000;
+        public float lastX = 0, lastY = 0, lastZ = 0, lastE = 0;
+        public float xOffset = 0, yOffset = 0, zOffset = 0, eOffset = 0, lastZPrint = 0, layerZ = 0;
         public bool fanOn = false;
         public int fanVoltage = 0;
         public bool powerOn = true;
@@ -51,7 +52,7 @@ namespace RepetierHost.model
         public bool privateAnalyzer = false;
         public int maxDrawMethod = 2;
         public bool drawing = true;
-        public int layer = 0;
+        public int layer = 0, lastlayer = 0;
         public bool isG1Move = false;
         public int speedMultiply = 100;
         public float printerWidth, printerHeight, printerDepth;
@@ -62,20 +63,22 @@ namespace RepetierHost.model
         public GCodeAnalyzer(bool privAnal)
         {
             privateAnalyzer = privAnal;
-            foreach(int k in extruderTemp.Keys)
+            foreach (int k in extruderTemp.Keys)
                 extruderTemp[k] = 0;
             bedTemp = 0;
         }
-        public float getTemperature(int extr) {
-            if (extr < 0) extr = activeExtruder;
-            if(!extruderTemp.ContainsKey(extr))
-                extruderTemp.Add(extr,0.0f);
-            return extruderTemp[extr];
-        }
-        public void setTemperature(int extr,float t) {
+        public float getTemperature(int extr)
+        {
             if (extr < 0) extr = activeExtruder;
             if (!extruderTemp.ContainsKey(extr))
-                extruderTemp.Add(extr,t);
+                extruderTemp.Add(extr, 0.0f);
+            return extruderTemp[extr];
+        }
+        public void setTemperature(int extr, float t)
+        {
+            if (extr < 0) extr = activeExtruder;
+            if (!extruderTemp.ContainsKey(extr))
+                extruderTemp.Add(extr, t);
             else extruderTemp[extr] = t;
         }
         public void fireChanged()
@@ -98,7 +101,7 @@ namespace RepetierHost.model
             List<int> keys = new List<int>();
             foreach (int k in extruderTemp.Keys)
                 keys.Add(k);
-            foreach(int k in keys)
+            foreach (int k in keys)
                 extruderTemp[k] = 0;
             bedTemp = 0;
             fanOn = false;
@@ -108,6 +111,8 @@ namespace RepetierHost.model
             drawing = true;
             lastline = 0;
             layer = 0;
+            lastlayer = 0;
+            layerZ = 0;
             x = y = z = e = emax = lastZPrint = 0;
             xOffset = yOffset = zOffset = eOffset = 0;
             lastX = 0; lastY = 0; lastZ = 0; lastE = 0;
@@ -119,12 +124,15 @@ namespace RepetierHost.model
                 Main.main.jobVisual.ResetQuality();
             fireChanged();
         }
-        public void StartJob() {
+        public void StartJob()
+        {
             layer = 0;
             lastZPrint = 0;
             printingTime = 0;
             lastX = 0; lastY = 0; lastZ = 0; lastE = 0;
             eOffset = 0; emax = 0; e = 0;
+            lastlayer = 0;
+            layerZ = 0;
             drawing = true;
             uploading = false;
             if (!privateAnalyzer)
@@ -176,7 +184,7 @@ namespace RepetierHost.model
                             if (code.hasY) y = yOffset + code.Y;
                             if (code.hasZ)
                             {
-                                 z = zOffset + code.Z; 
+                                z = zOffset + code.Z;
                             }
                             if (code.hasE)
                             {
@@ -205,7 +213,7 @@ namespace RepetierHost.model
                                 if (!privateAnalyzer && Main.conn.job.hasData() && Main.conn.job.maxLayer >= 0)
                                 {
                                     //PrinterConnection.logInfo("Printing layer " + layer.ToString() + " of " + Main.conn.job.maxLayer.ToString());
-                                    PrinterConnection.logInfo(Trans.T2("L_PRINTING_LAYER_X_OF_Y",layer.ToString(), Main.conn.job.maxLayer.ToString()));
+                                    PrinterConnection.logInfo(Trans.T2("L_PRINTING_LAYER_X_OF_Y", layer.ToString(), Main.conn.job.maxLayer.ToString()));
                                 }
                             }
                         }
@@ -223,6 +231,7 @@ namespace RepetierHost.model
                             printingTime += Math.Sqrt(dx * dx + dy * dy + dz * dz) * 60.0f / f;
                         }
                         else printingTime += de * 60.0f / f;
+                        if (z != lastZ) unchangedLayer.Clear();
                         lastX = x;
                         lastY = y;
                         lastZ = z;
@@ -304,7 +313,7 @@ namespace RepetierHost.model
                         {
                             int idx = activeExtruder;
                             if (code.hasT) idx = code.T;
-                            if (code.hasS) setTemperature(idx,code.S);
+                            if (code.hasS) setTemperature(idx, code.S);
                         }
                         fireChanged();
                         break;
@@ -332,11 +341,11 @@ namespace RepetierHost.model
                         fireChanged();
                         break;
                     case 203: // Temp monitor
-                        if(code.hasS)
+                        if (code.hasS)
                             tempMonitor = code.S;
                         break;
                     case 220:
-                        if(code.hasS)
+                        if (code.hasS)
                             speedMultiply = code.S;
                         break;
                 }
@@ -381,7 +390,7 @@ namespace RepetierHost.model
                         if (code.hasE)
                         {
                             eChanged = code.e != 0;
-                            e += code.e; 
+                            e += code.e;
                             if (e > emax)
                             {
                                 emax = e;
@@ -433,7 +442,7 @@ namespace RepetierHost.model
                             }
                         }
                     }
-                    if(eventPosChangedFast!=null)
+                    if (eventPosChangedFast != null)
                         eventPosChangedFast(x, y, z, e);
                     float dx = Math.Abs(x - lastX);
                     float dy = Math.Abs(y - lastY);
@@ -506,6 +515,18 @@ namespace RepetierHost.model
                     activeExtruder = code.tool;
                     break;
             }
+            if (layer != lastlayer)
+            {
+                foreach (GCodeShort c in unchangedLayer)
+                {
+                    c.layer = layer;
+                }
+                unchangedLayer.Clear();
+                layerZ = z;
+                lastlayer = layer;
+            }
+            else if (z != layerZ)
+                unchangedLayer.AddLast(code);
             code.layer = layer;
             code.tool = activeExtruder;
             code.emax = emax;
