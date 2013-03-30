@@ -109,7 +109,8 @@ namespace RepetierHost.view
             {
                 comboExtruder.Items.Add(Trans.T1("L_EXTRUDER_X",i.ToString()));
             }
-            comboExtruder.SelectedIndex = se;
+            if(se<comboExtruder.Items.Count)
+                comboExtruder.SelectedIndex = se;
             createCommands = true;
         }
         public void updateStatus()

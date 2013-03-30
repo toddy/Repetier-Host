@@ -158,6 +158,10 @@ Immediate (slow)*/
                 threedKey.SetValue("disableFilamentVisualization", checkDisableFilamentVisualization.Checked ? 1 : 0);
                 threedKey.SetValue("disableTravelVisualization", checkDisableTravelMoves.Checked ? 1 : 0);
                 threedKey.SetValue("correctNormals", checkCorrectNormals.Checked ? 1 : 0);
+                threedKey.SetValue("enableLight1", enableLight1.Checked ? 1 : 0);
+                threedKey.SetValue("enableLight2", enableLight2.Checked ? 1 : 0);
+                threedKey.SetValue("enableLight3", enableLight3.Checked ? 1 : 0);
+                threedKey.SetValue("enableLight4", enableLight4.Checked ? 1 : 0);
                 // threedKey.SetValue("useVBOs", useVBOs ? 1 : 0);
                 threedKey.SetValue("drawMethod", comboDrawMethod.SelectedIndex);
                 threedKey.SetValue("layerHeight", textLayerHeight.Text);
@@ -219,6 +223,11 @@ Immediate (slow)*/
                 showPrintbed.Checked = 0 != (int)threedKey.GetValue("showPrintbed", showPrintbed.Checked ? 1 : 0);
                 checkDisableFilamentVisualization.Checked = 0 != (int)threedKey.GetValue("disableFilamentVisualization", checkDisableFilamentVisualization.Checked ? 1 : 0);
                 checkDisableTravelMoves.Checked = 0 != (int)threedKey.GetValue("disableTravelVisualization", checkDisableTravelMoves.Checked ? 1 : 0);
+                enableLight1.Checked = 0 != (int)threedKey.GetValue("enableLight1", enableLight1.Checked ? 1 : 0);
+                enableLight2.Checked = 0 != (int)threedKey.GetValue("enableLight2", enableLight2.Checked ? 1 : 0);
+                enableLight3.Checked = 0 != (int)threedKey.GetValue("enableLight3", enableLight3.Checked ? 1 : 0);
+                enableLight4.Checked = 0 != (int)threedKey.GetValue("enableLight4", enableLight4.Checked ? 1 : 0);
+
                 // useVBOs = 0 != (int)threedKey.GetValue("useVBOs", useVBOs.Checked ? 1 : 0);
                 comboDrawMethod.SelectedIndex = (int)threedKey.GetValue("drawMethod", 0);
                 textLayerHeight.Text = (string)threedKey.GetValue("layerHeight", textLayerHeight.Text);

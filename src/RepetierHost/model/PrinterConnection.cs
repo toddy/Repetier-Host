@@ -100,10 +100,10 @@ namespace RepetierHost.model
         public string firmware_url = "";
         public string protocol = "";
         public int numberExtruder = 1;
-        public Dictionary<int,float> extruderTemp = new Dictionary<int,float>();
+        public Dictionary<int, float> extruderTemp = new Dictionary<int, float>();
         public bool multiTempRead = false; // true if M105 sends temperatures for all extruder
         public float bedTemp;
-        public Dictionary<int,int> extruderOutput = new Dictionary<int,int>();
+        public Dictionary<int, int> extruderOutput = new Dictionary<int, int>();
         public float x, y, z, e;
         public bool paused = false;
         public bool logM105 = false;
@@ -173,9 +173,10 @@ namespace RepetierHost.model
                 logWriter.Close();
             }
         }
-        public void ignoreFeedback() {
+        public void ignoreFeedback()
+        {
             TimeSpan ts = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0));
-            ignoreFedbackUntil = ts.TotalSeconds+0.5;
+            ignoreFedbackUntil = ts.TotalSeconds + 0.5;
         }
         public bool shouldIgnoreFeedback()
         {
@@ -245,7 +246,7 @@ namespace RepetierHost.model
             {
                 // force response, even if we
                 // get a resend request
-                log(Trans.T1("L_RESET_OUTPUT",read), false, 2); // "Reset output. After some wait, I got only " + read
+                log(Trans.T1("L_RESET_OUTPUT", read), false, 2); // "Reset output. After some wait, I got only " + read
                 read = "";
                 if (pingpong)
                     readyForNextSend = true;
@@ -515,7 +516,7 @@ namespace RepetierHost.model
                                 }
                                 else
                                 {
-                                    if(gc.M==110)
+                                    if (gc.M == 110)
                                         lastline = gc.N;
                                     else if (gc.M != 117)
                                     {
@@ -524,7 +525,7 @@ namespace RepetierHost.model
                                     }
                                     if (isVirtualActive)
                                     {
-                                        if (!pingpong && receivedCount() + gc.orig.Length > receiveCacheSize) { if(lineInc) --lastline; return false; } // printer cache full
+                                        if (!pingpong && receivedCount() + gc.orig.Length > receiveCacheSize) { if (lineInc) --lastline; return false; } // printer cache full
                                         if (pingpong) readyForNextSend = false;
                                         else { lock (nackLines) { nackLines.AddLast(gc.orig.Length); } }
                                         virtualPrinter.receiveLine(gc);
@@ -534,7 +535,7 @@ namespace RepetierHost.model
                                         if (binaryVersion == 0 || gc.forceAscii)
                                         {
                                             string cmd = gc.getAscii(true, true);
-                                            if (!pingpong && receivedCount() + cmd.Length + 2 > receiveCacheSize) { if(lineInc) --lastline; return false; } // printer cache full
+                                            if (!pingpong && receivedCount() + cmd.Length + 2 > receiveCacheSize) { if (lineInc) --lastline; return false; } // printer cache full
                                             if (pingpong) readyForNextSend = false;
                                             else { lock (nackLines) { nackLines.AddLast(cmd.Length); } }
                                             serial.WriteLine(cmd);
@@ -543,7 +544,7 @@ namespace RepetierHost.model
                                         else
                                         {
                                             byte[] cmd = gc.getBinary(binaryVersion);
-                                            if (!pingpong && receivedCount() + cmd.Length > receiveCacheSize) { if(lineInc) --lastline; return false; } // printer cache full
+                                            if (!pingpong && receivedCount() + cmd.Length > receiveCacheSize) { if (lineInc) --lastline; return false; } // printer cache full
                                             if (pingpong) readyForNextSend = false;
                                             else { lock (nackLines) { nackLines.AddLast(cmd.Length); } }
                                             serial.Write(cmd, 0, cmd.Length);
@@ -594,7 +595,7 @@ namespace RepetierHost.model
                                     if (isVirtualActive)
                                     {
                                         string cmd = gc.getAscii(true, true);
-                                        if (!pingpong && receivedCount() + cmd.Length /*gc.orig.Length*/ > receiveCacheSize) { if(lineInc) --lastline; return false; } // printer cache full
+                                        if (!pingpong && receivedCount() + cmd.Length /*gc.orig.Length*/ > receiveCacheSize) { if (lineInc) --lastline; return false; } // printer cache full
                                         if (pingpong) readyForNextSend = false;
                                         else { lock (nackLines) { nackLines.AddLast(cmd.Length /*gc.orig.Length*/); } }
                                         virtualPrinter.receiveLine(gc);
@@ -602,11 +603,11 @@ namespace RepetierHost.model
                                     }
                                     else
                                     {
-                                       // bool forceReady = job.exclusive && boostUpload;
+                                        // bool forceReady = job.exclusive && boostUpload;
                                         if (binaryVersion == 0 || gc.forceAscii)
                                         {
                                             string cmd = gc.getAscii(true, true);
-                                            if (!pingpong && receivedCount() + cmd.Length + 2 > receiveCacheSize) { if(lineInc) --lastline; return false; } // printer cache full
+                                            if (!pingpong && receivedCount() + cmd.Length + 2 > receiveCacheSize) { if (lineInc) --lastline; return false; } // printer cache full
                                             if (pingpong) readyForNextSend = false;
                                             else { lock (nackLines) { nackLines.AddLast(cmd.Length + 2); } }
                                             serial.WriteLine(cmd);
@@ -615,7 +616,7 @@ namespace RepetierHost.model
                                         else
                                         {
                                             byte[] cmd = gc.getBinary(binaryVersion);
-                                            if (!pingpong && receivedCount() + cmd.Length > receiveCacheSize) { if(lineInc) --lastline; return false; } // printer cache full
+                                            if (!pingpong && receivedCount() + cmd.Length > receiveCacheSize) { if (lineInc) --lastline; return false; } // printer cache full
                                             if (pingpong) readyForNextSend = false;
                                             else { lock (nackLines) { nackLines.AddLast(cmd.Length); } }
                                             serial.Write(cmd, 0, cmd.Length);
@@ -632,7 +633,7 @@ namespace RepetierHost.model
                                 lastCommandSend = DateTime.Now.Ticks;
                                 printeraction = Trans.T1("L_PRINTING..ETA", job.ETA); //"Printing...ETA " + job.ETA;
                                 if (job.maxLayer > 0)
-                                    printeraction += " "+Trans.T2("L_LAYER_X/Y", analyzer.layer.ToString(), job.maxLayer.ToString()); // Layer " + analyzer.layer + "/" + job.maxLayer;
+                                    printeraction += " " + Trans.T2("L_LAYER_X/Y", analyzer.layer.ToString(), job.maxLayer.ToString()); // Layer " + analyzer.layer + "/" + job.maxLayer;
                                 logprogress = job.PercentDone;
                             }
                             analyzer.Analyze(gc);
@@ -708,7 +709,7 @@ namespace RepetierHost.model
                     gc.Parse("M105");
                     virtualPrinter.receiveLine(gc);
                     if (eventConnectionChange != null)
-                        eventConnectionChange(Trans.T("L_CONNECTED")+":"+printerName);
+                        eventConnectionChange(Trans.T("L_CONNECTED") + ":" + printerName);
                     Main.main.Invoke(Main.main.UpdateJobButtons);
                     return;
                 }
@@ -730,8 +731,8 @@ namespace RepetierHost.model
                 serial.DtrEnable = false;
                 serial.Open();
                 serial.DtrEnable = true;
-                //Thread.Sleep(200);
-                //serial.DtrEnable = false;
+                Thread.Sleep(200);
+                serial.DtrEnable = false;
 
                 // If we didn't restart the connection we need to eat
                 // all unread data on this port.
@@ -757,6 +758,7 @@ namespace RepetierHost.model
                 GetInjectLock();
                 injectManualCommand("N0 M110"); // Make sure we tal about the same linenumbers
                 injectManualCommand("M115"); // Check firmware
+                injectManualCommand("T" + Main.main.printPanel.comboExtruder.SelectedIndex);
                 injectManualCommand("M105"); // Read temperature
                 ReturnInjectLock();
                 if (eventConnectionChange != null)
@@ -773,8 +775,29 @@ namespace RepetierHost.model
             }
         }
 
-        public void close()
+        public bool close()
         {
+            if (serial == null && !isVirtualActive) return true;
+            // Test if we should warn about heaters still on.
+            bool heateron = false;
+            if (analyzer.bedTemp > 0 && bedTemp > 0) heateron = true;
+            foreach (int extr in extruderTemp.Keys)
+            {
+                if (analyzer.getTemperature(extr) >= 20) heateron = true;
+            }
+            if (heateron)
+            {
+                DialogResult heatres = MessageBox.Show(Trans.T("L_HEATERS_ON_QUEST"), Trans.T("L_WARNING"), MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+                if (heatres == DialogResult.Cancel) return false;
+                if (heatres == DialogResult.Yes)
+                {
+                    for (int i = 0; i < Main.conn.numberExtruder; i++)
+                        injectManualCommand("M104 S0 T" + i.ToString());
+                    if (bedTemp > 0)
+                        injectManualCommand("M140 S0");
+                    return false;
+                }
+            }
             if (writeThread != null)
             {
                 writeThread.Abort();
@@ -798,9 +821,9 @@ namespace RepetierHost.model
                     catch { } // Closing the app can cause an exception, if event comes after Main handle is destroyed
                 firePrinterAction(Trans.T("L_IDLE"));
                 Main.main.Invoke(Main.main.UpdateJobButtons);
-                return;
+                return true;
             }
-            if (serial == null) return;
+
             if (job.mode == 1)
                 job.KillJob();
             Application.DoEvents();
@@ -814,8 +837,11 @@ namespace RepetierHost.model
             // {
             try
             {
-                serial.Close();
-                serial.Dispose();
+                if (serial != null)
+                {
+                    serial.Close();
+                    serial.Dispose();
+                }
             }
             catch (Exception) { }
             serial = null;
@@ -833,6 +859,7 @@ namespace RepetierHost.model
                 catch { } // Closing the app can cause an exception, if event comes after Main handle is destroyed
             firePrinterAction(Trans.T("L_IDLE"));
             Main.main.Invoke(Main.main.UpdateJobButtons);
+            return true;
         }
 
         public void firePrinterAction(string s)
@@ -934,6 +961,7 @@ namespace RepetierHost.model
         /// <param name="command">GCode command</param>
         public void injectManualCommand(string command)
         {
+            if (!connected) return;
             GCode gc = new GCode();
             gc.Parse(command);
             if (gc.comment) return;
@@ -1056,7 +1084,7 @@ namespace RepetierHost.model
                 {
                     isRepetier = true;
                 }
-                if (h.IndexOf("Marlin") >= 0) isMarlin = true;                
+                if (h.IndexOf("Marlin") >= 0) isMarlin = true;
                 if (isMarlin || isRepetier) // Activate special menus and function
                 {
                     Main.main.Invoke(Main.main.UpdateEEPROM);
@@ -1179,7 +1207,7 @@ namespace RepetierHost.model
                     float.TryParse(h, NumberStyles.Float, GCode.format, out et);
                     tempChange = true;
                     setTemperature(n, et);
-                    h = extract(res, "@"+n+":");
+                    h = extract(res, "@" + n + ":");
                     int eo = -1;
                     int.TryParse(h, out eo);
                     if (isMarlin) eo *= 2;
@@ -1352,6 +1380,7 @@ namespace RepetierHost.model
                 if (pos < 0) return null;
             } while (pos > 0 && source[pos - 1] != ' ');
             int start = pos + ident.Length;
+            while (start < source.Length && source[start] == ' ') start++;
             int end = start;
             while (end < source.Length && source[end] != ' ') end++;
             return source.Substring(start, end - start);

@@ -34,6 +34,7 @@ namespace RepetierHost.view
     public delegate void PrinterChanged(RegistryKey printerKey,bool printerChanged);
     public partial class FormPrinterSettings : Form
     {
+        public static FormPrinterSettings ps = null;
         public event PrinterChanged eventPrinterChanged;
         public RegistryKey repetierKey;
         public RegistryKey printerKey;
@@ -51,10 +52,12 @@ namespace RepetierHost.view
         public int printerType;
         public float rostockHeight;
         public float rostockRadius;
+        public float cncZTop;
 
         int xhomeMode = 0, yhomeMode = 0, zhomemode = 0;
         public FormPrinterSettings()
         {
+            ps = this;
             InitializeComponent();
             RegMemory.RestoreWindowPos("printerSettingsWindow", this);
             repetierKey = Custom.BaseKey; // Registry.CurrentUser.CreateSubKey("SOFTWARE\\Repetier");
@@ -165,6 +168,8 @@ namespace RepetierHost.view
             comboBoxPrinterType.Items[0] = Trans.T("L_CARTESIAN_PRINTER");
             comboBoxPrinterType.Items[1] = Trans.T("L_CARTESIAN_PRINTER_DUMP");
             comboBoxPrinterType.Items[2] = Trans.T("L_ROSTOCK_CIRCLE");
+            comboBoxPrinterType.Items[3] = Trans.T("L_CNC_ROUTER");
+
         }
         public void save(string printername)
         {
@@ -216,6 +221,7 @@ namespace RepetierHost.view
             p.SetValue("printerType", comboBoxPrinterType.SelectedIndex);
             p.SetValue("rostockHeight", textBoxRostockHeight.Text);
             p.SetValue("rostockRadius", textBoxRostockRadius.Text);
+            p.SetValue("cncZTop", textCNCZTop.Text);
         }
         public void load(string printername)
         {
@@ -272,6 +278,7 @@ namespace RepetierHost.view
             comboBoxPrinterType.SelectedIndex = (int)p.GetValue("printerType", hasDump ? 1 : 0);
             textBoxRostockHeight.Text = (string)p.GetValue("rostockHeight", textBoxRostockHeight.Text);
             textBoxRostockRadius.Text = (string)p.GetValue("rostockRadius", textBoxRostockRadius.Text);
+            textCNCZTop.Text = (string)p.GetValue("cncZTop", textCNCZTop.Text);
         }
         public void UpdateDimensions()
         {
@@ -291,6 +298,7 @@ namespace RepetierHost.view
             float.TryParse(textBedFront.Text, NumberStyles.Float, GCode.format, out BedFront);
             float.TryParse(textBoxRostockHeight.Text, NumberStyles.Float, GCode.format, out rostockHeight);
             float.TryParse(textBoxRostockRadius.Text, NumberStyles.Float, GCode.format, out rostockRadius);
+            float.TryParse(textCNCZTop.Text, NumberStyles.Float, GCode.format, out cncZTop);
             //HasDumpArea = printerType == 1;
             if (printerType == 2)
             {
@@ -419,6 +427,8 @@ namespace RepetierHost.view
             Main.main.slicerPanel.UpdateSelection();
             Main.main.Update3D();
             Main.main.UpdateConnections();
+            if (Main.main != null && Main.main.editor != null)
+                Main.main.editor.Changed();
         }
 
         private void buttonAbort_Click(object sender, EventArgs e)
@@ -469,7 +479,10 @@ namespace RepetierHost.view
             if (comboPrinter.SelectedIndex < 0) return;
             load(comboPrinter.Text);
             formToCon();
+            UpdateDimensions(); 
             repetierKey.SetValue("currentPrinter", comboPrinter.Text);
+            if (Main.main != null && Main.main.editor != null)
+                Main.main.editor.Changed();
         }
 
         private void buttonDelete_Click(object sender, EventArgs e)
@@ -587,6 +600,7 @@ namespace RepetierHost.view
             panelRostock.Visible = idx == 2;
             panelDumpArea.Visible = idx == 1;
             panelTotalArea.Visible = idx != 2;
+            panelCNC.Visible = idx == 3;
         }
     }
 }

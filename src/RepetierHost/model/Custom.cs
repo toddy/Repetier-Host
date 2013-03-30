@@ -69,6 +69,14 @@ namespace RepetierHost.model
             if (val == "0" || val == "no" || val == "false") return false;
             return def;
         }
+        public static int GetInteger(string name, int def)
+        {
+            if (!dic.ContainsKey(name)) return def;
+            string val = dic[name];
+            int ival = def;
+            int.TryParse(val, out ival);
+            return ival;
+        }
         public static string GetString(string name, string def)
         {
             if (!dic.ContainsKey(name)) return def;

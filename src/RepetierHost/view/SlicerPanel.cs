@@ -48,6 +48,12 @@ namespace RepetierHost.view
                     Controls.Add(panelSkeinforgePos);
                     Controls.Add(panelTop);
                 }
+                if (Custom.GetBool("removeSkeinforge", false))
+                {
+                    groupSkeinforge.Visible = false;
+                    switchSlic3rActive.On = true;
+                    switchSlic3rActive.Visible = false;
+                }
             }
         }
         void translate() {
@@ -293,7 +299,7 @@ namespace RepetierHost.view
         
         private void switchSlic3rActive_OnChange(SwitchButton button)
         {
-            if (updating) return;
+            if (updating || Main.slicer==null) return;
                 Main.slicer.ActiveSlicer = Slicer.SlicerID.Slic3r;
         }
 

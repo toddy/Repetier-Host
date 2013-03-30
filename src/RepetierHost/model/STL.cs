@@ -398,6 +398,27 @@ namespace RepetierHost.model
             }
             GL.Disable(EnableCap.Normalize);
         }
+        private bool AssertVector3NotNaN(Vector3 v)
+        {
+            if (float.IsNaN(v.X) || float.IsNaN(v.Y) || float.IsNaN(v.Z))
+            {
+                Main.conn.log("NaN value in STL file import", false, 2);
+                return false;
+            }
+            if (float.IsInfinity(v.X) || float.IsInfinity(v.Y) || float.IsInfinity(v.Z))
+            {
+                Main.conn.log("Infinity value in STL file import", false, 2);
+                return false;
+            }
+            return true;
+        }
+        private bool AssertMinDistance(Vector3 a, Vector3 b)
+        {
+            double dx = a.X - b.X;
+            double dy = a.Y - b.Y;
+            double dz = a.Z - b.Z;
+            return dx * dx + dy * dy + dz * dz > 1e-8;
+        }
         /// <summary>
         /// solid
         ///  facet normal -1.000000 -0.000000 -0.000000
@@ -433,7 +454,11 @@ namespace RepetierHost.model
                 vertex2 = text.IndexOf("endloop", vertex);
                 tri.p3 = extractVector(text.Substring(vertex, vertex2 - vertex));
                 lastP = pend + 8;
-                list.AddLast(tri);
+                if (AssertVector3NotNaN(tri.normal) && AssertVector3NotNaN(tri.p1) && AssertVector3NotNaN(tri.p2) && AssertVector3NotNaN(tri.p3))
+                {
+                    if(AssertMinDistance(tri.p1,tri.p2) && AssertMinDistance(tri.p1,tri.p3) && AssertMinDistance(tri.p2,tri.p3))
+                        list.AddLast(tri);
+                }
             }
         }
         private Vector3 extractVector(string s)

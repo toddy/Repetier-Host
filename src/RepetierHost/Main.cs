@@ -175,6 +175,7 @@ namespace RepetierHost
                 lastcom = s;
             }*/
             main = this;
+            SplashScreen.run();
             trans = new Trans(Application.StartupPath + Path.DirectorySeparatorChar + "data" + Path.DirectorySeparatorChar + "translations");
             SwitchButton.imageOffset = RegMemory.GetInt("onOffImageOffset", 0);
             generator = new GCodeGenerator();
@@ -310,9 +311,39 @@ namespace RepetierHost
             }
             languageChanged += translate;
             translate();
+            if (Custom.GetBool("removeSkeinforge", false))
+            {
+                Main.slicer.ActiveSlicer = Slicer.SlicerID.Slic3r;
+            }
+            if(Custom.GetBool("extraSupportButton",false)) {
+                supportToolStripMenuItem.Text = Custom.GetString("extraSupportText","Support");
+            } else supportToolStripMenuItem.Visible = false;
+            string supportImage = Custom.GetString("extraSupportToolbarImage", "");
+            if (supportImage.Length > 0 && File.Exists(Application.StartupPath + Path.DirectorySeparatorChar + supportImage))
+            {
+                toolStripButtonSupport.Image = Image.FromFile(Application.StartupPath + Path.DirectorySeparatorChar + Custom.GetString("extraSupportToolbarImage", ""));
+                toolStripButtonSupport.Text = Custom.GetString("extraSupportText", "Support");
+            }
+            else
+            {
+                toolStripButtonSupport.Visible = false;
+            }
             toolAction.Text = Trans.T("L_IDLE");
             toolConnection.Text = Trans.T("L_DISCONNECTED");
             updateTravelMoves();
+            this.AllowDrop = true;
+            this.DragEnter += new DragEventHandler(Form1_DragEnter);
+            this.DragDrop += new DragEventHandler(Form1_DragDrop);
+        }
+        void Form1_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.Copy;
+        }
+
+        void Form1_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            foreach (string file in files) LoadGCodeOrSTL(file);
         }
         public void translate()
         {
@@ -779,7 +810,11 @@ namespace RepetierHost
                     return;
                 }
             }
-            conn.close();
+            if (!conn.close())
+            {
+                e.Cancel = true;
+                return;
+            }
             RegMemory.StoreWindowPos("mainWindow", this, true, true);
             RegMemory.SetInt("logSplitterDistance", splitLog.SplitterDistance);
             RegMemory.SetInt("infoEditSplitterDistance", splitInfoEdit.SplitterDistance);
@@ -1142,7 +1177,13 @@ namespace RepetierHost
         {
             if (!globalSettings.WorkdirOK())
                 globalSettings.Show();
-
+            if (Custom.GetBool("showGCodeExample", false) && RegMemory.GetBool("gcodeExampleShown", false) == false)
+            {
+                string file = Application.StartupPath + Path.DirectorySeparatorChar + Custom.GetString("GCodeExample", "");
+                if (File.Exists(file))
+                    LoadGCodeOrSTL(file);
+                RegMemory.SetBool("gcodeExampleShown", true);
+            }
         }
         public void executeHostCommand(GCode code)
         {
@@ -1160,6 +1201,12 @@ namespace RepetierHost
             else if (com.Equals("@sound"))
             {
                 SoundConfig.PlaySoundCommand(false);
+            }
+            else if (com.Equals("@execute"))
+            {
+                CommandExecutioner ce = new CommandExecutioner();
+                ce.setExeArgs(code.getHostParameter());
+                ce.run();
             }
         }
         public void updateShowFilament()
@@ -1416,6 +1463,11 @@ namespace RepetierHost
         private void toolAction_Click(object sender, EventArgs e)
         {
             conn.job.etaModeNormal = !conn.job.etaModeNormal;
+        }
+
+        private void supportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openLink(Custom.GetString("extraSupportURL", "http://www.repetier.com"));
         }
 
 

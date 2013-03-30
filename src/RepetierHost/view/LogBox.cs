@@ -82,7 +82,7 @@ namespace RepetierHost.view
         }
         public void Clear()
         {
-            topRow = _row = 0;
+            topRow = _row = selRow = 0;
             lines.Clear();
         }
         public void Add(LogLine l)
@@ -289,6 +289,8 @@ namespace RepetierHost.view
                 rend = row;
             }
             int i;
+            rend = Math.Min(rend, lines.Count - 1);
+            rstart = Math.Min(rstart, lines.Count - 1);
             StringBuilder sb = new StringBuilder();
             for (i = rstart; i <= rend; i++)
             {

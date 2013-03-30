@@ -112,6 +112,7 @@
             this.aboutRepetierHostToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.donateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.supportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.status = new System.Windows.Forms.StatusStrip();
             this.toolConnection = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTempReading = new System.Windows.Forms.ToolStripStatusLabel();
@@ -128,6 +129,7 @@
             this.toolShowLog = new System.Windows.Forms.ToolStripButton();
             this.toolShowFilament = new System.Windows.Forms.ToolStripButton();
             this.toolStripEmergencyButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonSupport = new System.Windows.Forms.ToolStripButton();
             this.toolPrinterSettings = new System.Windows.Forms.ToolStripButton();
             this.toolShowTravel = new System.Windows.Forms.ToolStripButton();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
@@ -720,7 +722,8 @@
             this.toolStripMenuItem1,
             this.aboutRepetierHostToolStripMenuItem,
             this.donateToolStripMenuItem,
-            this.checkForUpdatesToolStripMenuItem});
+            this.checkForUpdatesToolStripMenuItem,
+            this.supportToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "&Help";
@@ -824,6 +827,13 @@
             this.checkForUpdatesToolStripMenuItem.Text = "Check for updates";
             this.checkForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.checkForUpdatesToolStripMenuItem_Click);
             // 
+            // supportToolStripMenuItem
+            // 
+            this.supportToolStripMenuItem.Name = "supportToolStripMenuItem";
+            this.supportToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.supportToolStripMenuItem.Text = "Support";
+            this.supportToolStripMenuItem.Click += new System.EventHandler(this.supportToolStripMenuItem_Click);
+            // 
             // status
             // 
             this.status.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -891,6 +901,7 @@
             this.toolShowLog,
             this.toolShowFilament,
             this.toolStripEmergencyButton,
+            this.toolStripButtonSupport,
             this.toolPrinterSettings,
             this.toolShowTravel});
             this.toolStrip.Location = new System.Drawing.Point(0, 24);
@@ -999,6 +1010,18 @@
             this.toolStripEmergencyButton.Text = "Emergency stop";
             this.toolStripEmergencyButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolStripEmergencyButton.Click += new System.EventHandler(this.toolStripEmergencyButton_Click);
+            // 
+            // toolStripButtonSupport
+            // 
+            this.toolStripButtonSupport.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripButtonSupport.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonSupport.Image")));
+            this.toolStripButtonSupport.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonSupport.Name = "toolStripButtonSupport";
+            this.toolStripButtonSupport.Size = new System.Drawing.Size(53, 51);
+            this.toolStripButtonSupport.Text = "Support";
+            this.toolStripButtonSupport.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.toolStripButtonSupport.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripButtonSupport.Click += new System.EventHandler(this.supportToolStripMenuItem_Click);
             // 
             // toolPrinterSettings
             // 
@@ -1339,6 +1362,8 @@
         public System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem donateToolStripMenuItem;
         public System.Windows.Forms.ToolStripButton toolShowTravel;
+        private System.Windows.Forms.ToolStripMenuItem supportToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton toolStripButtonSupport;
     }
 }
 

@@ -151,6 +151,10 @@
             this.buttonAbort = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.panelCNC = new System.Windows.Forms.Panel();
+            this.labelCNCHeight = new System.Windows.Forms.Label();
+            this.textCNCZTop = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.panelPrinterSelect.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPageConnection.SuspendLayout();
@@ -167,6 +171,7 @@
             this.groupBoxPostSliceFilter.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
+            this.panelCNC.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelPrinterSelect
@@ -809,6 +814,7 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.panelCNC);
             this.panel2.Controls.Add(this.panelRostock);
             this.panel2.Controls.Add(this.panelDumpArea);
             this.panel2.Controls.Add(this.panelTotalArea);
@@ -1265,7 +1271,8 @@
             this.comboBoxPrinterType.Items.AddRange(new object[] {
             "Cartesian Printer",
             "Cartesian Printer with Dump Area",
-            "Rostock Circular Print Area"});
+            "Rostock Circular Print Area",
+            "CNC Router"});
             this.comboBoxPrinterType.Location = new System.Drawing.Point(112, 4);
             this.comboBoxPrinterType.Name = "comboBoxPrinterType";
             this.comboBoxPrinterType.Size = new System.Drawing.Size(233, 21);
@@ -1456,6 +1463,44 @@
             // 
             this.errorProvider.ContainerControl = this;
             // 
+            // panelCNC
+            // 
+            this.panelCNC.Controls.Add(this.labelCNCHeight);
+            this.panelCNC.Controls.Add(this.textCNCZTop);
+            this.panelCNC.Controls.Add(this.label1);
+            this.panelCNC.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelCNC.Location = new System.Drawing.Point(0, 447);
+            this.panelCNC.Name = "panelCNC";
+            this.panelCNC.Size = new System.Drawing.Size(460, 100);
+            this.panelCNC.TabIndex = 23;
+            // 
+            // labelCNCHeight
+            // 
+            this.labelCNCHeight.AutoSize = true;
+            this.labelCNCHeight.Location = new System.Drawing.Point(9, 7);
+            this.labelCNCHeight.Name = "labelCNCHeight";
+            this.labelCNCHeight.Size = new System.Drawing.Size(106, 13);
+            this.labelCNCHeight.TabIndex = 0;
+            this.labelCNCHeight.Text = "Object z top position:";
+            // 
+            // textCNCZTop
+            // 
+            this.textCNCZTop.Location = new System.Drawing.Point(137, 4);
+            this.textCNCZTop.Name = "textCNCZTop";
+            this.textCNCZTop.Size = new System.Drawing.Size(106, 20);
+            this.textCNCZTop.TabIndex = 1;
+            this.textCNCZTop.Text = "0";
+            this.textCNCZTop.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(271, 6);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(23, 13);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "mm";
+            // 
             // FormPrinterSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1500,6 +1545,8 @@
             this.groupBoxPostSliceFilter.PerformLayout();
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
+            this.panelCNC.ResumeLayout(false);
+            this.panelCNC.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1627,5 +1674,9 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBoxRostockHeight;
         private System.Windows.Forms.TextBox textBoxRostockRadius;
+        private System.Windows.Forms.Panel panelCNC;
+        private System.Windows.Forms.Label labelCNCHeight;
+        private System.Windows.Forms.TextBox textCNCZTop;
+        private System.Windows.Forms.Label label1;
     }
 }

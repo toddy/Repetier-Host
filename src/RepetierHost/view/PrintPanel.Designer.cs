@@ -1148,6 +1148,6 @@
         private System.Windows.Forms.Label labelFeedrate;
         private System.Windows.Forms.NumericUpDown numericUpDownFlow;
         private MB.Controls.ColorSlider sliderFlowrate;
-        private System.Windows.Forms.ComboBox comboExtruder;
+        public System.Windows.Forms.ComboBox comboExtruder;
     }
 }

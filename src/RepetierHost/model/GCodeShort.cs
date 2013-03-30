@@ -72,7 +72,17 @@ namespace RepetierHost.model
         public bool hasZ { get { return z != -99999; } }
         public bool hasE { get { return e != -99999; } }
         public bool hasF { get { return f != -99999; } }
-
+        public float getValueFor(string key, float def)
+        {
+            int p = text.IndexOf(key);
+            if (p < 0) return def;
+            p++;
+            int e = text.IndexOf(' ', p);
+            if(e<0) e = text.Length;
+            float d = def;
+            float.TryParse(text.Substring(p,e-p), NumberStyles.Float, GCode.format, out d);
+            return d;
+        }
         /**
         Command values:
          0 = unimportant command
@@ -141,13 +151,18 @@ namespace RepetierHost.model
         private void parse()
         {
             int l = text.Length, i;
+            if (text.StartsWith(";@"))
+            {
+                compressedCommand = 12; // Host command
+                return;
+            }
             int mode = 0; // 0 = search code, 1 = search value
             char code = ';';
             int p1 = 0;
             for (i = 0; i < l; i++)
             {
                 char c = text[i];
-                if (i == 0 && c == '@')
+                if (i ==0 && c == '@')
                 {
                     compressedCommand = 12; // Host command
                     return;

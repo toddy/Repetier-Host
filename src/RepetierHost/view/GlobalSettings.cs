@@ -56,6 +56,8 @@ namespace RepetierHost.view
             buttonSearchWorkdir.Text = Trans.T("B_BROWSE");
             folderBrowser.Description = Trans.T("L_SELECT_WORKING_DIRECTORY"); // Select working directory
             checkRedGreenSwitch.Text = Trans.T("L_USE_RED_GREEN_SWITCH");
+            buttonAbort.Text = Trans.T("B_CANCEL");
+            buttonOK.Text = Trans.T("B_OK");
         }
         public bool WorkdirOK()
         {

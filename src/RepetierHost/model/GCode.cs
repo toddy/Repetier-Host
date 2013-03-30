@@ -432,7 +432,8 @@ namespace RepetierHost.model
         {
             int p = orig.IndexOf(' ');
             if (p < 0) return orig;
-            return orig.Substring(0, p);
+            int off = (orig.StartsWith(";")?1:0);
+            return orig.Substring(off, p-off);
         }
         public string getHostParameter()
         {
@@ -444,7 +445,7 @@ namespace RepetierHost.model
         {
             hostCommand = false;
             orig = line.Trim();
-            if (orig.StartsWith("@"))
+            if (orig.StartsWith("@") || orig.StartsWith(";@"))
             {
                 hostCommand = true;
                 return;

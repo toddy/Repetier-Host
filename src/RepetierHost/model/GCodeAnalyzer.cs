@@ -167,8 +167,6 @@ namespace RepetierHost.model
                 {
                     case 0:
                     case 1:
-                    case 2: // Simplification to get at least some of part of the move
-                    case 3:
                         eChanged = false;
                         if (code.hasF) f = code.F;
                         if (relative)
@@ -199,7 +197,7 @@ namespace RepetierHost.model
                         }
                         if (x < Main.printerSettings.XMin) { x = Main.printerSettings.XMin; hasXHome = false; }
                         if (y < Main.printerSettings.YMin) { y = Main.printerSettings.YMin; hasYHome = false; }
-                        if (z < 0) { z = 0; hasZHome = false; }
+                        if (z < 0 && FormPrinterSettings.ps.printerType!=3) { z = 0; hasZHome = false; }
                         if (x > Main.printerSettings.XMax) { hasXHome = false; }
                         if (y > Main.printerSettings.YMax) { hasYHome = false; }
                         if (z > printerHeight) { hasZHome = false; }
@@ -236,6 +234,194 @@ namespace RepetierHost.model
                         lastY = y;
                         lastZ = z;
                         lastE = e;
+                        break;
+                    case 2:
+                    case 3:
+                        {
+                            isG1Move = true;
+                            eChanged = false;
+                            if (code.hasF) f = code.F;
+                            if (relative)
+                            {
+                                if (code.hasX)
+                                {
+                                    x += code.X;
+                                }
+                                if (code.hasY)
+                                {
+                                    y += code.Y;
+                                }
+                                if (code.hasZ)
+                                {
+                                    z += code.Z;
+                                }
+                                if (code.hasE)
+                                {
+                                    eChanged = code.E != 0;
+                                    e += code.E;
+                                }
+                            }
+                            else
+                            {
+                                if (code.hasX)
+                                {
+                                    x = xOffset + code.X;
+                                }
+                                if (code.hasY)
+                                {
+                                    y = yOffset + code.Y;
+                                }
+                                if (code.hasZ)
+                                {
+                                    z = zOffset + code.Z;
+                                    //if (z < 0) { z = 0; hasZHome = NO; }
+                                    //if (z > printerHeight) { hasZHome = NO; }
+                                }
+                                if (code.hasE )
+                                {
+                                    if (eRelative)
+                                    { eChanged = code.E != 0; e += code.E; }
+                                    else
+                                    {
+                                        eChanged = e != (eOffset + code.E);
+                                        e = eOffset + code.E;
+                                    }
+                                }
+                            }
+
+                            float[] offset = new float[] { code.I, code.J};
+                            /* if(unit_inches) {
+                               offset[0]*=25.4;
+                               offset[1]*=25.4;
+                             }*/
+                            float[] position = new float[] { lastX, lastY };
+                            float[] target = new float[] { x, y };
+                            float r = code.R;
+                            if (r > 0)
+                            {
+                                /* 
+                                  We need to calculate the center of the circle that has the designated radius and passes
+                                  through both the current position and the target position. This method calculates the following
+                                  set of equations where [x,y] is the vector from current to target position, d == magnitude of 
+                                  that vector, h == hypotenuse of the triangle formed by the radius of the circle, the distance to
+                                  the center of the travel vector. A vector perpendicular to the travel vector [-y,x] is scaled to the 
+                                  length of h [-y/d*h, x/d*h] and added to the center of the travel vector [x/2,y/2] to form the new point 
+                                  [i,j] at [x/2-y/d*h, y/2+x/d*h] which will be the center of our arc.
+          
+                                  d^2 == x^2 + y^2
+                                  h^2 == r^2 - (d/2)^2
+                                  i == x/2 - y/d*h
+                                  j == y/2 + x/d*h
+          
+                                                                                       O <- [i,j]
+                                                                                    -  |
+                                                                          r      -     |
+                                                                              -        |
+                                                                           -           | h
+                                                                        -              |
+                                                          [0,0] ->  C -----------------+--------------- T  <- [x,y]
+                                                                    | <------ d/2 ---->|
+                    
+                                  C - Current position
+                                  T - Target position
+                                  O - center of circle that pass through both C and T
+                                  d - distance from C to T
+                                  r - designated radius
+                                  h - distance from center of CT to O
+          
+                                  Expanding the equations:
+
+                                  d -> sqrt(x^2 + y^2)
+                                  h -> sqrt(4 * r^2 - x^2 - y^2)/2
+                                  i -> (x - (y * sqrt(4 * r^2 - x^2 - y^2)) / sqrt(x^2 + y^2)) / 2 
+                                  j -> (y + (x * sqrt(4 * r^2 - x^2 - y^2)) / sqrt(x^2 + y^2)) / 2
+         
+                                  Which can be written:
+          
+                                  i -> (x - (y * sqrt(4 * r^2 - x^2 - y^2))/sqrt(x^2 + y^2))/2
+                                  j -> (y + (x * sqrt(4 * r^2 - x^2 - y^2))/sqrt(x^2 + y^2))/2
+          
+                                  Which we for size and speed reasons optimize to:
+
+                                  h_x2_div_d = sqrt(4 * r^2 - x^2 - y^2)/sqrt(x^2 + y^2)
+                                  i = (x - (y * h_x2_div_d))/2
+                                  j = (y + (x * h_x2_div_d))/2
+          
+                                */
+                                //if(unit_inches) r*=25.4;
+                                // Calculate the change in position along each selected axis
+                                float cx = target[0] - position[0];
+                                float cy = target[1] - position[1];
+
+                                float h_x2_div_d = -(float)Math.Sqrt(4 * r * r - cx * cx - cy * cy) / (float)Math.Sqrt(cx * cx + cy * cy); // == -(h * 2 / d)
+                                // If r is smaller than d, the arc is now traversing the complex plane beyond the reach of any
+                                // real CNC, and thus - for practical reasons - we will terminate promptly:
+                                // if(isnan(h_x2_div_d)) { OUT_P_LN("error: Invalid arc"); break; }
+                                // Invert the sign of h_x2_div_d if the circle is counter clockwise (see sketch below)
+                                if (code.G == 3) { h_x2_div_d = -h_x2_div_d; }
+
+                                /* The counter clockwise circle lies to the left of the target direction. When offset is positive,
+                                   the left hand circle will be generated - when it is negative the right hand circle is generated.
+           
+           
+                                                                                 T  <-- Target position
+                                                         
+                                                                                 ^ 
+                                      Clockwise circles with this center         |          Clockwise circles with this center will have
+                                      will have > 180 deg of angular travel      |          < 180 deg of angular travel, which is a good thing!
+                                                                       \         |          /   
+                          center of arc when h_x2_div_d is positive ->  x <----- | -----> x <- center of arc when h_x2_div_d is negative
+                                                                                 |
+                                                                                 |
+                                                         
+                                                                                 C  <-- Current position                                 */
+
+
+                                // Negative R is g-code-alese for "I want a circle with more than 180 degrees of travel" (go figure!), 
+                                // even though it is advised against ever generating such circles in a single line of g-code. By 
+                                // inverting the sign of h_x2_div_d the center of the circles is placed on the opposite side of the line of
+                                // travel and thus we get the unadvisably long arcs as prescribed.
+                                if (r < 0)
+                                {
+                                    h_x2_div_d = -h_x2_div_d;
+                                    r = -r; // Finished with r. Set to positive for mc_arc
+                                }
+                                // Complete the operation by calculating the actual center of the arc
+                                offset[0] = 0.5f * (cx - (cy * h_x2_div_d));
+                                offset[1] = 0.5f * (cy + (cx * h_x2_div_d));
+
+                            }
+                            else
+                            { // Offset mode specific computations
+                                r = (float)Math.Sqrt(offset[0] * offset[0] + offset[1] * offset[1]); // Compute arc radius for mc_arc
+                            }
+
+                            // Set clockwise/counter-clockwise sign for mc_arc computations
+                            bool isclockwise = code.G == 2;
+
+                            // Trace the arc
+                            arc(position, target, offset, r, isclockwise,code);
+                            lastX = x;
+                            lastY = y;
+                            lastZ = z;
+                            lastE = e;
+                            if (x < Main.printerSettings.XMin) { x = Main.printerSettings.XMin; hasXHome = false; }
+                            if (y < Main.printerSettings.YMin) { y = Main.printerSettings.YMin; hasYHome = false; }
+                            if (z < 0) { z = 0; hasZHome = false; }
+                            if (x > Main.printerSettings.XMax) { hasXHome = false; }
+                            if (y > Main.printerSettings.YMax) { hasYHome = false; }
+                            if (z > printerHeight) { hasZHome = false; }
+                            if (e > emax)
+                            {
+                                emax = e;
+                                if (z > lastZPrint)
+                                {
+                                    lastZPrint = z;
+                                    layer++;
+                                }
+                            }
+
+                        }
                         break;
                     case 28:
                     case 161:
@@ -356,14 +542,119 @@ namespace RepetierHost.model
                 fireChanged();
             }
         }
+        private void arc(float[] position, float[] target, float[] offset, float radius, bool isclockwise,GCode code)
+        {
+            //   int acceleration_manager_was_enabled = plan_is_acceleration_manager_enabled();
+            //   plan_set_acceleration_manager_enabled(false); // disable acceleration management for the duration of the arc
+            float center_axis0 = position[0] + offset[0];
+            float center_axis1 = position[1] + offset[1];
+            //float linear_travel = 0; //target[axis_linear] - position[axis_linear];
+            float r_axis0 = -offset[0];  // Radius vector from center to current location
+            float r_axis1 = -offset[1];
+            float rt_axis0 = target[0] - center_axis0;
+            float rt_axis1 = target[1] - center_axis1;
+
+            // CCW angle between position and target from circle center. Only one atan2() trig computation required.
+            float angular_travel = (float)Math.Atan2(r_axis0 * rt_axis1 - r_axis1 * rt_axis0, r_axis0 * rt_axis0 + r_axis1 * rt_axis1);
+            if (angular_travel < 0) { angular_travel += 2 * (float)Math.PI; }
+            if (isclockwise) { angular_travel -= 2 * (float)Math.PI; }
+
+            float millimeters_of_travel = Math.Abs(angular_travel) * radius; //hypot(angular_travel*radius, fabs(linear_travel));
+            if (millimeters_of_travel < 0.001) { return; }
+            printingTime += millimeters_of_travel * 60.0f / f;
+            if (eventPosChangedFast == null) return;
+            //uint16_t segments = (radius>=BIG_ARC_RADIUS ? floor(millimeters_of_travel/MM_PER_ARC_SEGMENT_BIG) : floor(millimeters_of_travel/MM_PER_ARC_SEGMENT));
+            // Increase segment size if printing faster then computation speed allows
+            int segments = (int)Math.Min(millimeters_of_travel,millimeters_of_travel*10/radius);
+            if (segments > 32) segments = 32;
+            if (segments == 0) segments = 1;
+            /*  
+              // Multiply inverse feed_rate to compensate for the fact that this movement is approximated
+              // by a number of discrete segments. The inverse feed_rate should be correct for the sum of 
+              // all segments.
+              if (invert_feed_rate) { feed_rate *= segments; }
+            */
+            float theta_per_segment = angular_travel / segments;
+            //float linear_per_segment = linear_travel / segments;
+            float extruder_per_segment = (e - lastE) / segments;
+            float arc_target_e = lastE;
+            float sin_Ti;
+            float cos_Ti;
+            int i;
+            
+            for (i = 1; i < segments; i++)
+            { // Increment (segments-1)
+                // Arc correction to radius vector. Computed only every N_ARC_CORRECTION increments.
+                // Compute exact location by applying transformation matrix from initial radius vector(=-offset).
+                cos_Ti = (float)Math.Cos(i * theta_per_segment);
+                sin_Ti = (float)Math.Sin(i * theta_per_segment);
+                r_axis0 = -offset[0] * cos_Ti + offset[1] * sin_Ti;
+                r_axis1 = -offset[0] * sin_Ti - offset[1] * cos_Ti;
+
+                // Update arc_target location
+                //arc_target[axis_linear] += linear_per_segment;
+                arc_target_e += extruder_per_segment;
+                if (arc_target_e > emax)
+                {
+                    emax = arc_target_e;
+                    if (z > lastZPrint)
+                    {
+                        lastZPrint = z;
+                        layer++;
+                        if (code!=null)
+                        {
+                            if (!privateAnalyzer && Main.conn.job.hasData() && Main.conn.job.maxLayer >= 0)
+                            {
+                                //PrinterConnection.logInfo("Printing layer " + layer.ToString() + " of " + Main.conn.job.maxLayer.ToString());
+                                PrinterConnection.logInfo(Trans.T2("L_PRINTING_LAYER_X_OF_Y", layer.ToString(), Main.conn.job.maxLayer.ToString()));
+                            }
+                        }
+                    }
+                }
+                if (code!=null)
+                {
+                    if (privateAnalyzer)
+                        eventPosChanged(code, center_axis0 + r_axis0, center_axis1 + r_axis1, z);
+                    else
+                        Main.main.Invoke(eventPosChanged, code, center_axis0 + r_axis0, center_axis1 + r_axis1, z);
+                } else
+                eventPosChangedFast(center_axis0 + r_axis0, center_axis1 + r_axis1, z, arc_target_e);
+            }
+            // Ensure last segment arrives at target location.
+            if (e > emax)
+            {
+                emax = e;
+                if (z > lastZPrint)
+                {
+                    lastZPrint = z;
+                    layer++;
+                    if (code!=null)
+                    {
+                        if (!privateAnalyzer && Main.conn.job.hasData() && Main.conn.job.maxLayer >= 0)
+                        {
+                            //PrinterConnection.logInfo("Printing layer " + layer.ToString() + " of " + Main.conn.job.maxLayer.ToString());
+                            PrinterConnection.logInfo(Trans.T2("L_PRINTING_LAYER_X_OF_Y", layer.ToString(), Main.conn.job.maxLayer.ToString()));
+                        }
+                    }
+                }
+            }
+            if (code!=null)
+            {
+                if (privateAnalyzer)
+                    eventPosChanged(code, x, y, z);
+                else
+                    Main.main.Invoke(eventPosChanged, code, x, y, z);
+            }
+            else
+                eventPosChangedFast(x, y, z, e);
+
+        }
         public void analyzeShort(GCodeShort code)
         {
             isG1Move = false;
             switch (code.compressedCommand)
             {
                 case 1:
-                case 2:
-                case 3:
                     isG1Move = true;
                     eChanged = false;
                     if (code.hasF) f = code.f;
@@ -457,6 +748,198 @@ namespace RepetierHost.model
                     lastY = y;
                     lastZ = z;
                     lastE = e;
+                    break;
+                case 2:
+                case 3:
+                    {
+                        isG1Move = true;
+                        eChanged = false;
+                        if (code.hasF) f = code.f;
+                        if (relative)
+                        {
+                            if (code.hasX)
+                            {
+                                x += code.x;
+                                //if (x < 0) { x = 0; hasXHome = NO; }
+                                //if (x > printerWidth) { hasXHome = NO; }
+                            }
+                            if (code.hasY)
+                            {
+                                y += code.y;
+                                //if (y < 0) { y = 0; hasYHome = NO; }
+                                //if (y > printerDepth) { hasYHome = NO; }
+                            }
+                            if (code.hasZ)
+                            {
+                                z += code.z;
+                                //if (z < 0) { z = 0; hasZHome = NO; }
+                                //if (z > printerHeight) { hasZHome = NO; }
+                            }
+                            if (code.hasE)
+                            {
+                                eChanged = code.e != 0;
+                                e += code.e;
+                            }
+                        }
+                        else
+                        {
+                            if (code.x != -99999)
+                            {
+                                x = xOffset + code.x;
+                                //if (x < 0) { x = 0; hasXHome = NO; }
+                                //if (x > printerWidth) { hasXHome = NO; }
+                            }
+                            if (code.y != -99999)
+                            {
+                                y = yOffset + code.y;
+                                //if (y < 0) { y = 0; hasYHome = NO; }
+                                //if (y > printerDepth) { hasYHome = NO; }
+                            }
+                            if (code.z != -99999)
+                            {
+                                z = zOffset + code.z;
+                                //if (z < 0) { z = 0; hasZHome = NO; }
+                                //if (z > printerHeight) { hasZHome = NO; }
+                            }
+                            if (code.e != -99999)
+                            {
+                                if (eRelative)
+                                { eChanged = code.e != 0; e += code.e; }
+                                else
+                                {
+                                    eChanged = e != (eOffset + code.e);
+                                    e = eOffset + code.e;
+                                }
+                            }
+                        }
+
+                        float[] offset = new float[] { code.getValueFor("I", 0), code.getValueFor("J", 0) };
+                        /* if(unit_inches) {
+                           offset[0]*=25.4;
+                           offset[1]*=25.4;
+                         }*/
+                        float[] position = new float[] { lastX, lastY };
+                        float[] target = new float[] { x, y };
+                        float r = code.getValueFor("R", -1000000);
+                        if (r > 0)
+                        {
+                            /* 
+                              We need to calculate the center of the circle that has the designated radius and passes
+                              through both the current position and the target position. This method calculates the following
+                              set of equations where [x,y] is the vector from current to target position, d == magnitude of 
+                              that vector, h == hypotenuse of the triangle formed by the radius of the circle, the distance to
+                              the center of the travel vector. A vector perpendicular to the travel vector [-y,x] is scaled to the 
+                              length of h [-y/d*h, x/d*h] and added to the center of the travel vector [x/2,y/2] to form the new point 
+                              [i,j] at [x/2-y/d*h, y/2+x/d*h] which will be the center of our arc.
+          
+                              d^2 == x^2 + y^2
+                              h^2 == r^2 - (d/2)^2
+                              i == x/2 - y/d*h
+                              j == y/2 + x/d*h
+          
+                                                                                   O <- [i,j]
+                                                                                -  |
+                                                                      r      -     |
+                                                                          -        |
+                                                                       -           | h
+                                                                    -              |
+                                                      [0,0] ->  C -----------------+--------------- T  <- [x,y]
+                                                                | <------ d/2 ---->|
+                    
+                              C - Current position
+                              T - Target position
+                              O - center of circle that pass through both C and T
+                              d - distance from C to T
+                              r - designated radius
+                              h - distance from center of CT to O
+          
+                              Expanding the equations:
+
+                              d -> sqrt(x^2 + y^2)
+                              h -> sqrt(4 * r^2 - x^2 - y^2)/2
+                              i -> (x - (y * sqrt(4 * r^2 - x^2 - y^2)) / sqrt(x^2 + y^2)) / 2 
+                              j -> (y + (x * sqrt(4 * r^2 - x^2 - y^2)) / sqrt(x^2 + y^2)) / 2
+         
+                              Which can be written:
+          
+                              i -> (x - (y * sqrt(4 * r^2 - x^2 - y^2))/sqrt(x^2 + y^2))/2
+                              j -> (y + (x * sqrt(4 * r^2 - x^2 - y^2))/sqrt(x^2 + y^2))/2
+          
+                              Which we for size and speed reasons optimize to:
+
+                              h_x2_div_d = sqrt(4 * r^2 - x^2 - y^2)/sqrt(x^2 + y^2)
+                              i = (x - (y * h_x2_div_d))/2
+                              j = (y + (x * h_x2_div_d))/2
+          
+                            */
+                            //if(unit_inches) r*=25.4;
+                            // Calculate the change in position along each selected axis
+                            float cx = target[0] - position[0];
+                            float cy = target[1] - position[1];
+
+                            float h_x2_div_d = -(float)Math.Sqrt(4 * r * r - cx * cx - cy * cy) / (float)Math.Sqrt(cx * cx + cy * cy); // == -(h * 2 / d)
+                            // If r is smaller than d, the arc is now traversing the complex plane beyond the reach of any
+                            // real CNC, and thus - for practical reasons - we will terminate promptly:
+                            // if(isnan(h_x2_div_d)) { OUT_P_LN("error: Invalid arc"); break; }
+                            // Invert the sign of h_x2_div_d if the circle is counter clockwise (see sketch below)
+                            if (code.compressedCommand == 3) { h_x2_div_d = -h_x2_div_d; }
+
+                            /* The counter clockwise circle lies to the left of the target direction. When offset is positive,
+                               the left hand circle will be generated - when it is negative the right hand circle is generated.
+           
+           
+                                                                             T  <-- Target position
+                                                         
+                                                                             ^ 
+                                  Clockwise circles with this center         |          Clockwise circles with this center will have
+                                  will have > 180 deg of angular travel      |          < 180 deg of angular travel, which is a good thing!
+                                                                   \         |          /   
+                      center of arc when h_x2_div_d is positive ->  x <----- | -----> x <- center of arc when h_x2_div_d is negative
+                                                                             |
+                                                                             |
+                                                         
+                                                                             C  <-- Current position                                 */
+
+
+                            // Negative R is g-code-alese for "I want a circle with more than 180 degrees of travel" (go figure!), 
+                            // even though it is advised against ever generating such circles in a single line of g-code. By 
+                            // inverting the sign of h_x2_div_d the center of the circles is placed on the opposite side of the line of
+                            // travel and thus we get the unadvisably long arcs as prescribed.
+                            if (r < 0)
+                            {
+                                h_x2_div_d = -h_x2_div_d;
+                                r = -r; // Finished with r. Set to positive for mc_arc
+                            }
+                            // Complete the operation by calculating the actual center of the arc
+                            offset[0] = 0.5f * (cx - (cy * h_x2_div_d));
+                            offset[1] = 0.5f * (cy + (cx * h_x2_div_d));
+
+                        }
+                        else
+                        { // Offset mode specific computations
+                            r = (float)Math.Sqrt(offset[0] * offset[0] + offset[1] * offset[1]); // Compute arc radius for mc_arc
+                        }
+
+                        // Set clockwise/counter-clockwise sign for mc_arc computations
+                        bool isclockwise = code.compressedCommand == 2;
+
+                        // Trace the arc
+                        arc(position, target, offset, r, isclockwise,null);
+                        lastX = x;
+                        lastY = y;
+                        lastZ = z;
+                        lastE = e;
+                        if (e > emax)
+                        {
+                            emax = e;
+                            if (z > lastZPrint)
+                            {
+                                lastZPrint = z;
+                                layer++;
+                            }
+                        }
+
+                    }
                     break;
                 case 4:
                     {

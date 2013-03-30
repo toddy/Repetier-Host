@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<translation revision="6" language="Deutsch" languageInEnglish="German" author="Repetier">
+<translation revision="8" language="Deutsch" languageInEnglish="German" author="Repetier">
 <t id="M_FILE" ver="1">Datei</t>
 <t id="M_CONFIG" ver="1">Konfiguration</t>
 <t id="M_SLICER" ver="1">Slicer</t>
@@ -513,5 +513,9 @@ Mögliche Gründe:
 <t id="L_CARTESIAN_PRINTER_DUMP" ver="6">Klassischer Drucker (mit Abladeplatz)</t>
 <t id="L_ROSTOCK_CIRCLE" ver="6">Rostock Drucker (runder Druckbereich)</t>
 <t id="L_CORRECT_NORMALS" ver="7">Korrekte Normalen nutzen (sieht besser aus, benötigt mehr Speicher)</t>
+<t id="L_WARNING" ver="8">Warnung</t>
+<t id="L_HEATERS_ON_QUEST" ver="8">Einige Heizlemente sind imme rnoch an. Soll ich sie ausschalten?</t>
+<t id="L_OBJECTS_OUTSIDE_SLICE_QUEST" ver="8">Mindestens ein Objekt liegt außerhalb des Druckbereichs. Slicen abbrechen?</t>
+<t id="L_CNC_ROUTER" ver="8">CNC Fräße</t>
 </translation>
 

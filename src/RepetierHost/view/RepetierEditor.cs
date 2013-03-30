@@ -1370,7 +1370,7 @@ namespace RepetierHost.view
                 PositionCursor();
             }
         }
-        private void Changed() {
+        public void Changed() {
             changedCounter = 4;
         }
         private void editor_SizeChanged(object sender, EventArgs e)

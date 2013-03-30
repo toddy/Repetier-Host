@@ -445,6 +445,51 @@ namespace RepetierHost.view
                             x -= (float)delta;
                         }
                     }
+                    else if (ps.printerType == 3)
+                    {
+                        float dx = 10; // ps.PrintAreaWidth / 20f;
+                        float dy = 10; // ps.PrintAreaDepth / 20f;
+                        float x, y;
+                        for (i = 0; i < 200; i++)
+                        {
+                            x = (float)i * dx;
+                            if (x >= ps.PrintAreaWidth)
+                                x = ps.PrintAreaWidth;
+                            if (ps.printerType == 1 && x >= dx1 && x <= dx2)
+                            {
+                                GL.Vertex3(ps.BedLeft + x, ps.BedFront, 0);
+                                GL.Vertex3(ps.BedLeft + x, ps.BedFront + dy1, 0);
+                                GL.Vertex3(ps.BedLeft + x, ps.BedFront + dy2, 0);
+                                GL.Vertex3(ps.BedLeft + x, ps.BedFront + ps.PrintAreaDepth, 0);
+                            }
+                            else
+                            {
+                                GL.Vertex3(ps.BedLeft + x, ps.BedFront, 0);
+                                GL.Vertex3(ps.BedLeft + x, ps.BedFront + ps.PrintAreaDepth, 0);
+                            }
+                            if (x >= ps.PrintAreaWidth) break;
+                        }
+                        for (i = 0; i < 200; i++)
+                        {
+                            y = (float)i * dy;
+                            if (y > ps.PrintAreaDepth)
+                                y = ps.PrintAreaDepth;
+                            if (ps.printerType == 1 && y >= dy1 && y <= dy2)
+                            {
+                                GL.Vertex3(ps.BedLeft, ps.BedFront + y, 0);
+                                GL.Vertex3(ps.BedLeft + dx1, ps.BedFront + y, 0);
+                                GL.Vertex3(ps.BedLeft + dx2, ps.BedFront + y, 0);
+                                GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront + y, 0);
+                            }
+                            else
+                            {
+                                GL.Vertex3(ps.BedLeft, ps.BedFront + y, 0);
+                                GL.Vertex3(ps.BedLeft + ps.PrintAreaWidth, ps.BedFront + y, 0);
+                            }
+                            if (y >= ps.PrintAreaDepth)
+                                break;
+                        }
+                    }
                     GL.End();
                 }
                 if (Main.main.tab.SelectedIndex > 1)
@@ -547,7 +592,7 @@ namespace RepetierHost.view
                     GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Emission, transblack);
                     GL.PushMatrix();
                     GL.Translate(0, 0, -0.04);
-                    if (ps.printerType < 2)
+                    if (ps.printerType < 2 || ps.printerType==3)
                     {
                         GL.Begin(BeginMode.Quads);
                         GL.Normal3(0, 0, 1);
@@ -978,6 +1023,12 @@ namespace RepetierHost.view
                 speedY = (yPos - yDown) / gl.Height;
                 view.userPosition.X = startUserPosition.X + speedX * 200 * view.zoom;
                 view.userPosition.Z = startUserPosition.Z - speedY * 200 * view.zoom;
+                if (view.rotX == 90 && view.rotZ == 0 && toolParallelProjection.Checked)
+                {
+                    view.viewCenter.X = startViewCenter.X + speedX * 200 * view.zoom;
+                    view.viewCenter.Z = startViewCenter.Z - speedY * 200 * view.zoom;
+                }
+
                 //userPosition.X += (float)milliseconds * speedX * Math.Abs(speedX) / 10.0f;
                 //userPosition.Z -= (float)milliseconds * speedY *Math.Abs(speedY)/ 10.0f;
                 gl.Invalidate();
@@ -988,6 +1039,11 @@ namespace RepetierHost.view
                 speedY = (yPos - yDown) / gl.Height;
                 view.viewCenter.X = startViewCenter.X - speedX * 200 * view.zoom;
                 view.viewCenter.Z = startViewCenter.Z + speedY * 200 * view.zoom;
+                if (view.rotX == 90 && view.rotZ == 0 && toolParallelProjection.Checked)
+                {
+                    view.userPosition.X = startUserPosition.X - speedX * 200 * view.zoom;
+                    view.userPosition.Z = startUserPosition.Z + speedY * 200 * view.zoom;
+                }
                 //viewCenter.X -= (float)milliseconds * speedX * Math.Abs(speedX) / 10.0f;
                 //viewCenter.Z += (float)milliseconds * speedY * Math.Abs(speedY)/ 10.0f;
                 gl.Invalidate();

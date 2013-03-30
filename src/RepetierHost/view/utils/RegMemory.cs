@@ -13,7 +13,7 @@ namespace RepetierHost.view.utils
 {
     public class RegMemory
     {
-        static RegistryKey mainKey=null;
+        static RegistryKey mainKey = null;
         static RegistryKey windowKey = null;
 
         static void initKeys()
@@ -37,7 +37,7 @@ namespace RepetierHost.view.utils
         {
             initKeys();
             string v = (string)windowKey.GetValue(r, def.ToString());
-            long l=0;
+            long l = 0;
             long.TryParse(v, out l);
             return l;
         }
@@ -62,14 +62,14 @@ namespace RepetierHost.view.utils
         public static bool GetBool(string r, bool def)
         {
             initKeys();
-            return (int)windowKey.GetValue(r, def?1:0)!=0;
+            return (int)windowKey.GetValue(r, def ? 1 : 0) != 0;
         }
         public static void SetBool(string r, bool val)
         {
             initKeys();
-            windowKey.SetValue(r, val?1:0);
+            windowKey.SetValue(r, val ? 1 : 0);
         }
-        public static string GetString(string r,string def)
+        public static string GetString(string r, string def)
         {
             initKeys();
             return (string)windowKey.GetValue(r, def);
@@ -88,97 +88,110 @@ namespace RepetierHost.view.utils
         {
             SetInt(r, val.ToArgb());
         }
-        public static string WindowPosToString(Form f,bool state)
+        public static string WindowPosToString(Form f, bool state)
         {
-            return f.Location.X.ToString() + "|" +
-                f.Location.Y.ToString()+(state?f.WindowState.ToString():"");
+            Rectangle rest = f.DesktopBounds;
+            return rest.X.ToString() + "|" +
+                rest.Y.ToString() + (state ? f.WindowState.ToString() : "");
         }
         public static string WindowPosSizeToString(Form f, bool state)
         {
-            return f.Location.X.ToString() + "|" +
-                f.Location.Y.ToString() +"|"+
-                f.Size.Width.ToString() + "|" +
-                f.Size.Height.ToString() + "|" + 
+            Rectangle rest = f.DesktopBounds;
+            if (f.WindowState != FormWindowState.Maximized)
+                return rest.X.ToString() + "|" +
+                    rest.Y.ToString() + "|" +
+                    rest.Width.ToString() + "|" +
+                    rest.Height.ToString() + "|" +
+                    (state ? FormWindowState.Normal.ToString() : "");
+            rest = f.RestoreBounds;
+            return rest.X.ToString() + "|" +
+                rest.Y.ToString() + "|" +
+                rest.Width.ToString() + "|" +
+                rest.Height.ToString() + "|" +
                 (state ? f.WindowState.ToString() : "");
         }
-        private static bool GeometryIsBizarreSize(Size size)
+        private static bool IsVisibleOnAnyScreen(Rectangle rect)
         {
-            return (size.Height <= Screen.PrimaryScreen.WorkingArea.Height &&
-                size.Width <= Screen.PrimaryScreen.WorkingArea.Width);
+            foreach (Screen screen in Screen.AllScreens)
+            {
+                if (screen.WorkingArea.IntersectsWith(rect))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
-        private static bool GeometryIsBizarreLocation(Point loc, Size size)
+        private static bool IsVisibleOnAnyScreen(Point pnt)
         {
-            bool locOkay;
-            if (loc.X < 0 || loc.Y < 0)
+            foreach (Screen screen in Screen.AllScreens)
             {
-                locOkay = false;
+                if (screen.WorkingArea.Contains(pnt))
+                {
+                    return true;
+                }
             }
-            else if (loc.X + size.Width > Screen.PrimaryScreen.WorkingArea.Width)
-            {
-                locOkay = false;
-            }
-            else if (loc.Y + size.Height > Screen.PrimaryScreen.WorkingArea.Height)
-            {
-                locOkay = false;
-            }
-            else
-            {
-                locOkay = true;
-            }
-            return locOkay;
+            return false;
         }
-        public static void StringToWindowPos(Form f, string pos)
+        public static void StringToWindowPos(Form f, string pos, int screenId)
         {
             if (string.IsNullOrEmpty(pos)) return;
+            if (screenId > Screen.AllScreens.Length) screenId = 0;
+            Screen screen = Screen.AllScreens[screenId];
             string[] numbers = pos.Split('|');
             Point windowPoint = new Point(int.Parse(numbers[0]),
                 int.Parse(numbers[1]));
             Size windowSize = f.Size;
+            Rectangle winBounds;
             if (numbers.Length >= 4)
             {
                 windowSize = new Size(int.Parse(numbers[2]),
                     int.Parse(numbers[3]));
-            }
+                winBounds = new Rectangle(windowPoint, windowSize);
+            } else
+                winBounds = new Rectangle(windowPoint, f.Size);
             string windowString = "Normal";
-            if(numbers.Length==3 || numbers.Length==5)
-            windowString = numbers[numbers.Length-1];
+            if (numbers.Length == 3 || numbers.Length == 5)
+                windowString = numbers[numbers.Length - 1];
             if (windowString == "Normal")
             {
 
-                bool locOkay = GeometryIsBizarreLocation(windowPoint, windowSize);
-                bool sizeOkay = GeometryIsBizarreSize(windowSize);
+                bool locOkay = IsVisibleOnAnyScreen(windowPoint);
+                bool okay = IsVisibleOnAnyScreen(winBounds);
 
-                if (locOkay == true && sizeOkay == true)
+                if (okay == true)
                 {
-                    f.Location = windowPoint;
-                    f.Size = windowSize;
                     f.StartPosition = FormStartPosition.Manual;
+                    f.DesktopBounds = winBounds;
                     f.WindowState = FormWindowState.Normal;
-                }
-                else if (sizeOkay == true)
-                {
-                    f.Size = windowSize;
                 }
             }
             else if (windowString == "Maximized")
             {
-                f.Location = new Point(100, 100);
                 f.StartPosition = FormStartPosition.Manual;
+                f.DesktopBounds = winBounds;
                 f.WindowState = FormWindowState.Maximized;
             }
         }
         public static void StoreWindowPos(string name, Form f, bool storeSize, bool storeState)
         {
             string s = storeSize ? WindowPosSizeToString(f, storeState) : WindowPosToString(f, storeState);
-            string s2 = GetString(name,"");
+            string s2 = GetString(name, "");
             if (s == s2) return;
             SetString(name, s);
+            Screen sc = Screen.FromControl(f);
+            int scIdx = 0, i = 0;
+            foreach (Screen testScreen in Screen.AllScreens)
+            {
+                if (testScreen == sc) scIdx = i;
+                i++;
+            }
+            SetInt(name + "Screen", scIdx);
         }
         public static void RestoreWindowPos(string name, Form f)
         {
             string s = GetString(name, "");
             if (s == "") return;
-            StringToWindowPos(f, s);
+            StringToWindowPos(f, s, GetInt(name + "Screen", 0));
         }
         public class HistoryFile
         {
@@ -199,7 +212,7 @@ namespace RepetierHost.view.utils
             public LinkedList<HistoryFile> list = new LinkedList<HistoryFile>();
             string name;
             int maxLength;
-            public FilesHistory(string id,int max)
+            public FilesHistory(string id, int max)
             {
                 name = id;
                 maxLength = max;

@@ -368,6 +368,7 @@ namespace RepetierHost.view
                     exe = BasicConfiguration.basicConf.Slic3rExecutable;
                 */
                 StringBuilder sb = new StringBuilder();
+                //sb.Append("--no-plater");
                 procSlic3r.EnableRaisingEvents = true;
                 procSlic3r.Exited += new EventHandler(Slic3rExited);
                 procSlic3r.StartInfo.FileName = Main.IsMono ? exe : wrapQuotes(exe);
@@ -753,11 +754,15 @@ namespace RepetierHost.view
             IniFile ini3 = new IniFile();
             ini3.read(cdir + Path.DirectorySeparatorChar + "filament"+Path.DirectorySeparatorChar + b.Slic3rFilamentSettings + ".ini");
             IniFile ini3_2 = new IniFile();
+            if(Main.conn.numberExtruder>1)
             ini3_2.read(cdir + Path.DirectorySeparatorChar + "filament" + Path.DirectorySeparatorChar + b.Slic3rFilament2Settings + ".ini");
             IniFile ini3_3 = new IniFile();
-            ini3_3.read(cdir + Path.DirectorySeparatorChar + "filament" + Path.DirectorySeparatorChar + b.Slic3rFilament3Settings + ".ini");
-            ini3.merge(ini3_2);
-            ini3.merge(ini3_3);
+            if (Main.conn.numberExtruder > 2)
+                ini3_3.read(cdir + Path.DirectorySeparatorChar + "filament" + Path.DirectorySeparatorChar + b.Slic3rFilament3Settings + ".ini");
+            if (Main.conn.numberExtruder > 1)
+                ini3.merge(ini3_2);
+            if (Main.conn.numberExtruder > 2)
+                ini3.merge(ini3_3);
             ini.add(ini2);
             ini.add(ini3);
             ini.flatten();

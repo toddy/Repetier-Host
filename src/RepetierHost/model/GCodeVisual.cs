@@ -538,6 +538,7 @@ namespace RepetierHost.model
         public bool showSelection = false;
         public int selectionStart = 0;
         public int selectionEnd = 0;
+        int lastMachineType = -1; // Type id for last draw. cnc has different visualization style!
 
         public GCodeVisual()
         {
@@ -728,9 +729,12 @@ namespace RepetierHost.model
             }
             float locDist = (float)Math.Sqrt((x - lastx) * (x - lastx) + (y - lasty) * (y - lasty) + (z - lastz) * (z - lastz));
             bool isLastPos = locDist < 0.00001;
-            if (!act.hasG || (act.G > 1 && act.G != 28)) return;
+            if (!act.hasG || (act.G > 3 && act.G != 28)) return;
+            bool isTravel = (FormPrinterSettings.ps.printerType == 3 ? Math.Max(z, lastz) - ana.zOffset >= FormPrinterSettings.ps.cncZTop : !ana.eChanged);
             int segpos = ana.activeExtruder;
-            if (ana.eChanged == false)
+            if (segpos < 0 || segpos >= MaxExtruder) segpos = 0;
+            LinkedList<GCodePath> seg = segments[segpos];
+            if (isTravel)
             {
                 GCodeTravel travel = new GCodeTravel();
                 travel.fline = GCodePoint.toFileLine(fileid, actLine);
@@ -741,10 +745,18 @@ namespace RepetierHost.model
                 travel.p2.Y = y;
                 travel.p2.Z = z;
                 travelMoves.Add(travel);
+                if (FormPrinterSettings.ps.printerType == 3 && z - ana.zOffset < FormPrinterSettings.ps.cncZTop) // End od travel moves
+                { // Start new milling move sequence
+                    GCodePath p = new GCodePath();
+                    p.Add(new Vector3(x, y, z), ana.emax, totalDist, GCodePoint.toFileLine(fileid, actLine));
+                    if (seg.Count > 0 && seg.Last.Value.pointsLists.Last.Value.Count == 1)
+                    {
+                        seg.RemoveLast();
+                    }
+                    seg.AddLast(p);
+                }
             }
-            if (segpos < 0 || segpos >= MaxExtruder) segpos = 0;
-            LinkedList<GCodePath> seg = segments[segpos];
-            if (seg.Count == 0 || laste >= ana.e) // start new segment
+            if (seg.Count == 0 || (laste >= ana.e && FormPrinterSettings.ps.printerType != 3)) // start new segment
             {
                 if (!isLastPos) // no move, no action
                 {
@@ -760,7 +772,7 @@ namespace RepetierHost.model
             }
             else
             {
-                if (!isLastPos)
+                if (!isLastPos && (FormPrinterSettings.ps.printerType != 3 || !isTravel))
                 {
                     totalDist += locDist;
                     seg.Last.Value.Add(new Vector3(x, y, z), ana.emax, totalDist, GCodePoint.toFileLine(fileid, actLine));
@@ -786,7 +798,10 @@ namespace RepetierHost.model
             float locDist = (float)Math.Sqrt((x - lastx) * (x - lastx) + (y - lasty) * (y - lasty) + (z - lastz) * (z - lastz));
             bool isLastPos = locDist < 0.00001;
             int segpos = ana.activeExtruder;
-            if (ana.eChanged == false)
+            bool isTravel = (FormPrinterSettings.ps.printerType == 3 ? Math.Max(z,lastz) - ana.zOffset >= FormPrinterSettings.ps.cncZTop : !ana.eChanged);
+            if (segpos < 0 || segpos >= MaxExtruder) segpos = 0;
+            LinkedList<GCodePath> seg = segments[segpos];
+            if (isTravel)
             {
                 GCodeTravel travel = new GCodeTravel();
                 travel.fline = GCodePoint.toFileLine(fileid, actLine);
@@ -797,11 +812,20 @@ namespace RepetierHost.model
                 travel.p2.Y = y;
                 travel.p2.Z = z;
                 travelMoves.Add(travel);
+                if (FormPrinterSettings.ps.printerType == 3 && z - ana.zOffset < FormPrinterSettings.ps.cncZTop) // End od travel moves
+                { // Start new milling move sequence
+                    GCodePath p = new GCodePath();
+                    p.Add(new Vector3(x, y, z), ana.emax, totalDist, GCodePoint.toFileLine(fileid, actLine));
+                    if (seg.Count > 0 && seg.Last.Value.pointsLists.Last.Value.Count == 1)
+                    {
+                        seg.RemoveLast();
+                    }
+                    seg.AddLast(p);
+                }
             }
-            if (segpos < 0 || segpos >= MaxExtruder) segpos = 0;
-            LinkedList<GCodePath> seg = segments[segpos];
+            
             //if (!act.hasG || (act.G > 1 && act.G != 28)) return;
-            if (lastLayer == minLayer - 1 && laste < e)
+            if (lastLayer == minLayer - 1 && (laste < e || FormPrinterSettings.ps.printerType == 3))
             {
                 GCodePath p = new GCodePath();
                 p.Add(new Vector3(lastx, lasty, lastz), laste, totalDist, GCodePoint.toFileLine(fileid, actLine));
@@ -813,13 +837,13 @@ namespace RepetierHost.model
                 seg.AddLast(p);
             }
 
-            if (seg.Count == 0 || laste >= ana.e) // start new segment
+            if (seg.Count == 0 || (laste >= ana.e && FormPrinterSettings.ps.printerType != 3)) // start new segment
             {
                 if (!isLastPos) // no move, no action
                 {
                     GCodePath p = new GCodePath();
                     p.Add(new Vector3(x, y, z), ana.emax, totalDist, GCodePoint.toFileLine(fileid, actLine));
-                    if (seg.Count > 0 && seg.Last.Value.pointsLists.Last.Value.Count == 1)
+                    if (seg.Count > 0 && seg.Last.Value.pointsLists.Count>0 && seg.Last.Value.pointsLists.Last.Value.Count == 1)
                     {
                         seg.RemoveLast();
                     }
@@ -829,7 +853,7 @@ namespace RepetierHost.model
             }
             else
             {
-                if (!isLastPos)
+                if (!isLastPos && (FormPrinterSettings.ps.printerType != 3 || !isTravel))
                 {
                     totalDist += locDist;
                     seg.Last.Value.Add(new Vector3(x, y, z), ana.emax, totalDist, GCodePoint.toFileLine(fileid, actLine));
@@ -1459,11 +1483,12 @@ namespace RepetierHost.model
             w = h * wfac;
             fixedH = Main.threeDSettings.useLayerHeight;
             dfac = (float)(Math.PI * Main.threeDSettings.filamentDiameter * Main.threeDSettings.filamentDiameter * 0.25 / wfac);
-            recompute = lastFilHeight != h || lastFilWidth != w || fixedH != lastFilUseHeight || dfac != lastFilDiameter || lastCorrectNormals!=GCodePath.correctNorms;
+            recompute = lastFilHeight != h || lastFilWidth != w || fixedH != lastFilUseHeight || dfac != lastFilDiameter || lastCorrectNormals != GCodePath.correctNorms || lastMachineType != FormPrinterSettings.ps.printerType;
             lastFilHeight = h;
             lastFilWidth = w;
             lastFilDiameter = dfac;
             lastFilUseHeight = fixedH;
+            lastMachineType = FormPrinterSettings.ps.printerType;
             lastCorrectNormals = GCodePath.correctNorms;
             for (int i = 0; i < MaxExtruder; i++)
             {

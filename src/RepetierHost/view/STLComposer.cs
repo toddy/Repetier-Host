@@ -31,6 +31,7 @@ namespace RepetierHost.view
 {
     public partial class STLComposer : UserControl
     {
+        private bool writeSTLBinary = false;
         public ThreeDView cont;
         private bool autosizeFailed = false;
         private CopyObjectsDialog copyDialog = new CopyObjectsDialog();
@@ -40,11 +41,11 @@ namespace RepetierHost.view
             try
             {
                 cont = new ThreeDView();
-              //  cont.Dock = DockStyle.None;
-              //  cont.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
-              //  cont.Width = Width - panelControls.Width;
-              //  cont.Height = Height;
-              //  Controls.Add(cont);
+                //  cont.Dock = DockStyle.None;
+                //  cont.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
+                //  cont.Width = Width - panelControls.Width;
+                //  cont.Height = Height;
+                //  Controls.Add(cont);
                 cont.SetEditor(true);
                 cont.objectsSelected = false;
                 cont.eventObjectMoved += objectMoved;
@@ -73,7 +74,7 @@ namespace RepetierHost.view
             buttonCopyObjects.Text = Trans.T("B_COPY_OBJECTS");
             buttonCenter.Text = Trans.T("B_CENTER_OBJECT");
             checkScaleAll.Text = Trans.T("L_LOCK_ASPECT_RATIO");
-            if(Main.slicer!=null)
+            if (Main.slicer != null)
                 buttonSlice.Text = Trans.T1("L_SLICE_WITH", Main.slicer.SlicerName);
         }
         public void Update3D()
@@ -111,9 +112,9 @@ namespace RepetierHost.view
                 buttonCenter.Enabled = false;
                 buttonAutoplace.Enabled = listSTLObjects.Items.Count > 1;
                 buttonLand.Enabled = n > 0;
-                if(Main.main.threedview!=null)
+                if (Main.main.threedview != null)
                     Main.main.threedview.SetObjectSelected(n > 0);
-                buttonCopyObjects.Enabled = n>0;
+                buttonCopyObjects.Enabled = n > 0;
             }
             else
             {
@@ -134,7 +135,7 @@ namespace RepetierHost.view
                 if (Main.main.threedview != null)
                     Main.main.threedview.SetObjectSelected(true);
             }
-            buttonRemoveSTL.Enabled = n!=0;
+            buttonRemoveSTL.Enabled = n != 0;
             buttonSlice.Enabled = listSTLObjects.Items.Count > 0;
             buttonSave.Enabled = listSTLObjects.Items.Count > 0;
         }
@@ -158,8 +159,8 @@ namespace RepetierHost.view
         {
             if (openFileSTL.ShowDialog() == DialogResult.OK)
             {
-                foreach(string fname in openFileSTL.FileNames)
-                openAndAddObject(fname);
+                foreach (string fname in openFileSTL.FileNames)
+                    openAndAddObject(fname);
             }
         }
         /// <summary>
@@ -364,6 +365,27 @@ namespace RepetierHost.view
                 saveComposition(saveSTL.FileName);
             }
         }
+        private bool AssertVector3NotNaN(Vector3 v)
+        {
+            if (float.IsNaN(v.X) || float.IsNaN(v.Y) || float.IsNaN(v.Z))
+            {
+                Main.conn.log("NaN value in STL file export", false, 2);
+                return false;
+            }
+            if (float.IsInfinity(v.X) || float.IsInfinity(v.Y) || float.IsInfinity(v.Z))
+            {
+                Main.conn.log("Infinity value in STL file export", false, 2);
+                return false;
+            }
+            return true;
+        }
+        private bool AssertMinDistance(Vector3 a, Vector3 b)
+        {
+            double dx = a.X - b.X;
+            double dy = a.Y - b.Y;
+            double dz = a.Z - b.Z;
+            return dx * dx + dy * dy + dz * dz > 1e-8;
+        }
         private void saveComposition(string fname)
         {
             int n = 0;
@@ -397,35 +419,83 @@ namespace RepetierHost.view
                     t.normal.Y = az * bx - ax * bz;
                     t.normal.Z = ax * by - ay * bx;
                     Vector3.Normalize(ref t.normal, out t.normal);
-                    triList[p++] = t;
+                    if (AssertVector3NotNaN(t.normal) && AssertVector3NotNaN(t.p1) && AssertVector3NotNaN(t.p2) &&
+                        AssertVector3NotNaN(t.p3) &&
+                        AssertMinDistance(t.p1, t.p2) && AssertMinDistance(t.p1, t.p3) && AssertMinDistance(t.p2, t.p3))
+                    {
+
+                        triList[p++] = t;
+                    }
                 }
             }
+            n = p;
             // STL should have increasing z for faster slicing
             Array.Sort<STLTriangle>(triList, triList[0]);
             // Write file in binary STL format
             FileStream fs = File.Open(fname, FileMode.Create);
-            BinaryWriter w = new BinaryWriter(fs);
-            int i;
-            for (i = 0; i < 20; i++) w.Write((int)0);
-            w.Write(n);
-            for (i = 0; i < n; i++)
+            if (writeSTLBinary)
             {
-                STLTriangle t = triList[i];
-                w.Write(t.normal.X);
-                w.Write(t.normal.Y);
-                w.Write(t.normal.Z);
-                w.Write(t.p1.X);
-                w.Write(t.p1.Y);
-                w.Write(t.p1.Z);
-                w.Write(t.p2.X);
-                w.Write(t.p2.Y);
-                w.Write(t.p2.Z);
-                w.Write(t.p3.X);
-                w.Write(t.p3.Y);
-                w.Write(t.p3.Z);
-                w.Write((short)0);
+                BinaryWriter w = new BinaryWriter(fs);
+                int i;
+                for (i = 0; i < 20; i++) w.Write((int)0);
+                w.Write(n);
+                for (i = 0; i < n; i++)
+                {
+                    STLTriangle t = triList[i];
+                    w.Write(t.normal.X);
+                    w.Write(t.normal.Y);
+                    w.Write(t.normal.Z);
+                    w.Write(t.p1.X);
+                    w.Write(t.p1.Y);
+                    w.Write(t.p1.Z);
+                    w.Write(t.p2.X);
+                    w.Write(t.p2.Y);
+                    w.Write(t.p2.Z);
+                    w.Write(t.p3.X);
+                    w.Write(t.p3.Y);
+                    w.Write(t.p3.Z);
+                    w.Write((short)0);
+                }
+                w.Close();
             }
-            w.Close();
+            else
+            {
+                TextWriter w = new EnglishStreamWriter(fs);
+                w.WriteLine("solid RepetierHost");
+                for (int i = 0; i < n; i++)
+                {
+                    STLTriangle t = triList[i];
+                    w.Write("  facet normal ");
+                    w.Write(t.normal.X);
+                    w.Write(" ");
+                    w.Write(t.normal.Y);
+                    w.Write(" ");
+                    w.WriteLine(t.normal.Z);
+                    w.WriteLine("    outer loop");
+                    w.Write("      vertex ");
+                    w.Write(t.p1.X);
+                    w.Write(" ");
+                    w.Write(t.p1.Y);
+                    w.Write(" ");
+                    w.WriteLine(t.p1.Z);
+                    w.Write("      vertex ");
+                    w.Write(t.p2.X);
+                    w.Write(" ");
+                    w.Write(t.p2.Y);
+                    w.Write(" ");
+                    w.WriteLine(t.p2.Z);
+                    w.Write("      vertex ");
+                    w.Write(t.p3.X);
+                    w.Write(" ");
+                    w.Write(t.p3.Y);
+                    w.Write(" ");
+                    w.WriteLine(t.p3.Z);
+                    w.WriteLine("    endloop");
+                    w.WriteLine("  endfacet");
+                }
+                w.WriteLine("endsolid RepetierHost");
+                w.Close();
+            }
             fs.Close();
         }
 
@@ -447,7 +517,7 @@ namespace RepetierHost.view
             //if (stl == null) return;
             foreach (STL stl in listSTLObjects.SelectedItems)
             {
-                stl.Center(Main.printerSettings.BedLeft + Main.printerSettings.PrintAreaWidth / 2, Main.printerSettings.BedFront+ Main.printerSettings.PrintAreaDepth / 2);
+                stl.Center(Main.printerSettings.BedLeft + Main.printerSettings.PrintAreaWidth / 2, Main.printerSettings.BedFront + Main.printerSettings.PrintAreaDepth / 2);
                 listSTLObjects_SelectedIndexChanged(null, null);
 
             }
@@ -459,11 +529,21 @@ namespace RepetierHost.view
             string dir = Main.globalSettings.Workdir;
             if (!Directory.Exists(dir))
             {
-                MessageBox.Show("Workdir does not exists. Slicing aborted.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Trans.T("L_EXISTING_WORKDIR_REQUIRED"), Trans.T("L_ERROR"), MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Main.globalSettings.Show();
                 return;
             }
             if (listSTLObjects.Items.Count == 0) return;
+            bool itemsOutide = false;
+            foreach (STL stl in listSTLObjects.Items)
+            {
+                if (stl.outside) itemsOutide = true;
+            }
+            if (itemsOutide)
+            {
+                if (MessageBox.Show(Trans.T("L_OBJECTS_OUTSIDE_SLICE_QUEST"), Trans.T("L_WARNING"), MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                    return;
+            }
             string t = listSTLObjects.Items[0].ToString();
             if (listSTLObjects.Items.Count > 1)
                 t += " + " + (listSTLObjects.Items.Count - 1).ToString();
@@ -487,11 +567,11 @@ namespace RepetierHost.view
             float maxW = ps.PrintAreaWidth;
             float maxH = ps.PrintAreaDepth;
             float xOff = ps.BedLeft, yOff = ps.BedFront;
-            if (ps.printerType==1)
+            if (ps.printerType == 1)
             {
                 if (ps.DumpAreaFront <= 0)
                 {
-                    yOff = ps.BedFront+ps.DumpAreaDepth - ps.DumpAreaFront;
+                    yOff = ps.BedFront + ps.DumpAreaDepth - ps.DumpAreaFront;
                     maxH -= yOff;
                 }
                 else if (ps.DumpAreaDepth + ps.DumpAreaFront >= maxH)
@@ -501,7 +581,7 @@ namespace RepetierHost.view
                 }
                 else if (ps.DumpAreaLeft <= 0)
                 {
-                    xOff = ps.BedLeft+ps.DumpAreaWidth - ps.DumpAreaLeft;
+                    xOff = ps.BedLeft + ps.DumpAreaWidth - ps.DumpAreaLeft;
                     maxW -= xOff;
                 }
                 else if (ps.DumpAreaWidth + ps.DumpAreaLeft >= maxW)
@@ -611,14 +691,28 @@ namespace RepetierHost.view
         {
             if (e.Modifiers == Keys.Control && e.KeyCode == Keys.A)
             {
-                for(int i=0;i<listSTLObjects.Items.Count;i++)
-                    listSTLObjects.SetSelected(i,true);
+                for (int i = 0; i < listSTLObjects.Items.Count; i++)
+                    listSTLObjects.SetSelected(i, true);
                 e.Handled = true;
             }
             else if (e.KeyCode == Keys.Delete || e.KeyCode == Keys.Back)
             {
-                buttonRemoveSTL_Click(sender,null);
+                buttonRemoveSTL_Click(sender, null);
                 e.Handled = true;
+            }
+        }
+    }
+    public class EnglishStreamWriter : StreamWriter
+    {
+        public EnglishStreamWriter(Stream path)
+            : base(path, Encoding.ASCII)
+        {
+        }
+        public override IFormatProvider FormatProvider
+        {
+            get
+            {
+                return System.Globalization.CultureInfo.InvariantCulture;
             }
         }
     }
