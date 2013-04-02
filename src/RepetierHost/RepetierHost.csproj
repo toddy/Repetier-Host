@@ -113,6 +113,7 @@
     <Compile Include="model\LogLine.cs" />
     <Compile Include="model\ModelAnimation.cs" />
     <Compile Include="model\PrinterConnection.cs" />
+    <Compile Include="model\PrinterModel.cs" />
     <Compile Include="model\Printjob.cs" />
     <Compile Include="model\ProtectedSerialPort.cs">
       <SubType>Component</SubType>
@@ -524,6 +525,8 @@
     <Content Include="images\switch_off.bmp" />
     <Content Include="repetier-logo-trans32.ico" />
     <Content Include="repetier-logo32.ico" />
+    <None Include="Properties\DataSources\Main.datasource" />
+    <None Include="Properties\DataSources\RepetierHost.model.PrinterModel.datasource" />
     <None Include="Resources\home.png" />
   </ItemGroup>
   <ItemGroup>

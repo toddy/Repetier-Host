@@ -526,5 +526,6 @@ Write Changes to EEPROM?</t>
 <t id="L_HEATERS_ON_QUEST" ver="8">Some heaters are still on. Shall I disable them?</t>
 <t id="L_OBJECTS_OUTSIDE_SLICE_QUEST" ver="8">At least one object is outside the printable area. Abort slicing?</t>
 <t id="L_CNC_ROUTER" ver="8">CNC Router</t>
+<t id="L_SLIC3R_VERSION" ver="8">Slic3r Version</t>
 </translation>
 

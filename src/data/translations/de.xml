@@ -517,5 +517,6 @@ Mögliche Gründe:
 <t id="L_HEATERS_ON_QUEST" ver="8">Einige Heizlemente sind imme rnoch an. Soll ich sie ausschalten?</t>
 <t id="L_OBJECTS_OUTSIDE_SLICE_QUEST" ver="8">Mindestens ein Objekt liegt außerhalb des Druckbereichs. Slicen abbrechen?</t>
 <t id="L_CNC_ROUTER" ver="8">CNC Fräße</t>
+<t id="L_SLIC3R_VERSION" ver="8">Slic3r Version</t>
 </translation>
 

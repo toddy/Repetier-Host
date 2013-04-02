@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SlicerPanel));
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.buttonSetupSlic3r = new System.Windows.Forms.Button();
@@ -54,12 +55,14 @@
             this.panelSlic3rPos = new System.Windows.Forms.Panel();
             this.panelSkeinforgePos = new System.Windows.Forms.Panel();
             this.switchSkeinforge = new RepetierHost.view.SwitchButton();
+            this.mainBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.switchSlic3rActive = new RepetierHost.view.SwitchButton();
             this.groupBox2.SuspendLayout();
             this.groupSkeinforge.SuspendLayout();
             this.panelTop.SuspendLayout();
             this.panelSlic3rPos.SuspendLayout();
             this.panelSkeinforgePos.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mainBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox2
@@ -115,6 +118,8 @@
             // 
             // comboSlic3rPrinterSettings
             // 
+            this.comboSlic3rPrinterSettings.DataBindings.Add(new System.Windows.Forms.Binding("SelectedItem", this.mainBindingSource, "Slic3rPrinter", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.comboSlic3rPrinterSettings.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.mainBindingSource, "Slic3rPrinter", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.comboSlic3rPrinterSettings.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboSlic3rPrinterSettings.FormattingEnabled = true;
             this.comboSlic3rPrinterSettings.Location = new System.Drawing.Point(126, 73);
@@ -125,6 +130,8 @@
             // 
             // comboSlic3rFilamentSettings3
             // 
+            this.comboSlic3rFilamentSettings3.DataBindings.Add(new System.Windows.Forms.Binding("SelectedItem", this.mainBindingSource, "Slic3rFilament3", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.comboSlic3rFilamentSettings3.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.mainBindingSource, "Slic3rFilament3", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.comboSlic3rFilamentSettings3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboSlic3rFilamentSettings3.FormattingEnabled = true;
             this.comboSlic3rFilamentSettings3.Location = new System.Drawing.Point(126, 179);
@@ -135,6 +142,8 @@
             // 
             // comboSlic3rFilamentSettings2
             // 
+            this.comboSlic3rFilamentSettings2.DataBindings.Add(new System.Windows.Forms.Binding("SelectedItem", this.mainBindingSource, "Slic3rFilament2", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.comboSlic3rFilamentSettings2.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.mainBindingSource, "Slic3rFilament2", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.comboSlic3rFilamentSettings2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboSlic3rFilamentSettings2.FormattingEnabled = true;
             this.comboSlic3rFilamentSettings2.Location = new System.Drawing.Point(126, 152);
@@ -145,6 +154,8 @@
             // 
             // comboSlic3rFilamentSettings
             // 
+            this.comboSlic3rFilamentSettings.DataBindings.Add(new System.Windows.Forms.Binding("SelectedItem", this.mainBindingSource, "Slic3rFilament1", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.comboSlic3rFilamentSettings.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.mainBindingSource, "Slic3rFilament1", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.comboSlic3rFilamentSettings.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboSlic3rFilamentSettings.FormattingEnabled = true;
             this.comboSlic3rFilamentSettings.Location = new System.Drawing.Point(126, 127);
@@ -164,6 +175,8 @@
             // 
             // comboSlic3rPrintSettings
             // 
+            this.comboSlic3rPrintSettings.DataBindings.Add(new System.Windows.Forms.Binding("SelectedItem", this.mainBindingSource, "Slic3rPrint", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.comboSlic3rPrintSettings.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.mainBindingSource, "Slic3rPrint", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.comboSlic3rPrintSettings.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboSlic3rPrintSettings.FormattingEnabled = true;
             this.comboSlic3rPrintSettings.Location = new System.Drawing.Point(126, 46);
@@ -262,6 +275,8 @@
             // 
             // comboSkeinProfile
             // 
+            this.comboSkeinProfile.DataBindings.Add(new System.Windows.Forms.Binding("SelectedItem", this.mainBindingSource, "SkeinforgeProfile", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.comboSkeinProfile.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.mainBindingSource, "SkeinforgeProfile", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.comboSkeinProfile.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboSkeinProfile.FormattingEnabled = true;
             this.comboSkeinProfile.Location = new System.Drawing.Point(126, 50);
@@ -352,6 +367,10 @@
             this.switchSkeinforge.TextOn = "Active";
             this.switchSkeinforge.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchSkeinforge_OnChange);
             // 
+            // mainBindingSource
+            // 
+            this.mainBindingSource.DataSource = typeof(RepetierHost.model.PrinterModel);
+            // 
             // switchSlic3rActive
             // 
             this.switchSlic3rActive.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
@@ -387,6 +406,7 @@
             this.panelTop.ResumeLayout(false);
             this.panelSlic3rPos.ResumeLayout(false);
             this.panelSkeinforgePos.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.mainBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -419,5 +439,6 @@
         private System.Windows.Forms.Panel panelTop;
         private System.Windows.Forms.Panel panelSlic3rPos;
         private System.Windows.Forms.Panel panelSkeinforgePos;
+        private System.Windows.Forms.BindingSource mainBindingSource;
     }
 }

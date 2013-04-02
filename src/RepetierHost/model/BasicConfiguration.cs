@@ -33,6 +33,7 @@ namespace RepetierHost.model
         private string slic3rFilament2Settings = "";
         private string slic3rFilament3Settings = "";
         private string slic3rExecutable = "";
+        private int slic3rVersionGroup = 1;
         private string skeinforgeProfile = "";
         private string skeinforgeProfileDir = "";
         private bool internalSlic3rUseBundledVersion = true;
@@ -46,6 +47,7 @@ namespace RepetierHost.model
             slic3rFilamentSettings = RegMemory.GetString("slic3rFilamentSettings", slic3rFilamentSettings);
             slic3rFilament2Settings = RegMemory.GetString("slic3rFilament2Settings", slic3rFilament2Settings);
             slic3rFilament3Settings = RegMemory.GetString("slic3rFilament3Settings", slic3rFilament3Settings);
+            slic3rVersionGroup = RegMemory.GetInt("slic3rVersionGroup", slic3rVersionGroup);
             skeinforgeProfile = RegMemory.GetString("skeinforgeProfile", skeinforgeProfile);
             skeinforgeProfileDir = RegMemory.GetString("skeinforgeProfileDir", skeinforgeProfileDir);
             externalSlic3rPath = RegMemory.GetString("externalSlic3rPath", externalSlic3rPath);
@@ -87,6 +89,11 @@ namespace RepetierHost.model
         {
             get { return slic3rFilament3Settings; }
             set { slic3rFilament3Settings = value; RegMemory.SetString("slic3rFilament3Settings", slic3rFilament3Settings); }
+        }
+        public int Slic3rVersionGroup
+        {
+            get { return slic3rVersionGroup; }
+            set { slic3rVersionGroup = value; RegMemory.SetInt("slic3rVersionGroup", slic3rVersionGroup); }
         }
         public string SkeinforgeProfile
         {

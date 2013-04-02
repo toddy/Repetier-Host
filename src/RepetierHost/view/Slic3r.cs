@@ -368,7 +368,8 @@ namespace RepetierHost.view
                     exe = BasicConfiguration.basicConf.Slic3rExecutable;
                 */
                 StringBuilder sb = new StringBuilder();
-                //sb.Append("--no-plater");
+                if(BasicConfiguration.basicConf.Slic3rVersionGroup>=1)
+                    sb.Append("--no-plater --gui-mode expert");
                 procSlic3r.EnableRaisingEvents = true;
                 procSlic3r.Exited += new EventHandler(Slic3rExited);
                 procSlic3r.StartInfo.FileName = Main.IsMono ? exe : wrapQuotes(exe);
@@ -746,19 +747,19 @@ namespace RepetierHost.view
             string config = dir + Path.DirectorySeparatorChar + "slic3r.ini";
             string cdir = Main.main.slicerPanel.slic3rDirectory;
             IniFile ini = new IniFile();
-            BasicConfiguration b = BasicConfiguration.basicConf;
-            string fPrinter = cdir + Path.DirectorySeparatorChar + "print"+Path.DirectorySeparatorChar + b.Slic3rPrintSettings + ".ini";
+            //BasicConfiguration b = BasicConfiguration.basicConf;
+            string fPrinter = cdir + Path.DirectorySeparatorChar + "print"+Path.DirectorySeparatorChar + Main.printerModel.Slic3rPrint + ".ini";
             ini.read(fPrinter);
             IniFile ini2 = new IniFile();
-            ini2.read(cdir + Path.DirectorySeparatorChar + "printer" +Path.DirectorySeparatorChar+ b.Slic3rPrinterSettings + ".ini");
+            ini2.read(cdir + Path.DirectorySeparatorChar + "printer" + Path.DirectorySeparatorChar + Main.printerModel.Slic3rPrinter + ".ini");
             IniFile ini3 = new IniFile();
-            ini3.read(cdir + Path.DirectorySeparatorChar + "filament"+Path.DirectorySeparatorChar + b.Slic3rFilamentSettings + ".ini");
+            ini3.read(cdir + Path.DirectorySeparatorChar + "filament" + Path.DirectorySeparatorChar + Main.printerModel.Slic3rFilament1 + ".ini");
             IniFile ini3_2 = new IniFile();
             if(Main.conn.numberExtruder>1)
-            ini3_2.read(cdir + Path.DirectorySeparatorChar + "filament" + Path.DirectorySeparatorChar + b.Slic3rFilament2Settings + ".ini");
+                ini3_2.read(cdir + Path.DirectorySeparatorChar + "filament" + Path.DirectorySeparatorChar + Main.printerModel.Slic3rFilament2 + ".ini");
             IniFile ini3_3 = new IniFile();
             if (Main.conn.numberExtruder > 2)
-                ini3_3.read(cdir + Path.DirectorySeparatorChar + "filament" + Path.DirectorySeparatorChar + b.Slic3rFilament3Settings + ".ini");
+                ini3_3.read(cdir + Path.DirectorySeparatorChar + "filament" + Path.DirectorySeparatorChar + Main.printerModel.Slic3rFilament3 + ".ini");
             if (Main.conn.numberExtruder > 1)
                 ini3.merge(ini3_2);
             if (Main.conn.numberExtruder > 2)

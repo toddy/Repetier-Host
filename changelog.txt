@@ -1,6 +1,8 @@
 Version 0.85
-	Drag and Drop of files into host.
+  Slic3r 0.9.9 included
+	Drag and Drop of stl and g-code files into host.
 	Preview of G2/G3 in xy plane.
+	Fixed some viewing errors.
 	Set DTR to off on connect. Reduces error rate on some boards.
 	Security question if heaters are on during close.
 	Check if objects are inside printable area before slicing starts.

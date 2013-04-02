@@ -42,8 +42,16 @@ namespace RepetierHost
         public static PrinterConnection conn;
         public static Main main;
         public static FormPrinterSettings printerSettings;
+        public static PrinterModel printerModel;
         public static ThreeDSettings threeDSettings;
         public static GlobalSettings globalSettings = null;
+        public static GCodeGenerator generator = null;
+        public string basicTitle = "";
+        public static bool IsMono = Type.GetType("Mono.Runtime") != null;
+        public static Slicer slicer = null;
+        public static Slic3r slic3r = null;
+        public static bool IsMac = false;
+
         public Skeinforge skeinforge = null;
         public EEPROMRepetier eepromSettings = null;
         public EEPROMMarlin eepromSettingsm = null;
@@ -56,16 +64,10 @@ namespace RepetierHost
         public GCodeVisual jobVisual = new GCodeVisual();
         public GCodeVisual printVisual = null;
         public STLComposer stlComposer1 = null;
-        public static GCodeGenerator generator = null;
-        public string basicTitle = "";
         public volatile GCodeVisual newVisual = null;
         public volatile bool jobPreviewThreadFinished = true;
         public volatile Thread previewThread = null;
         public RegMemory.FilesHistory fileHistory = new RegMemory.FilesHistory("fileHistory", 8);
-        public static bool IsMono = Type.GetType("Mono.Runtime") != null;
-        public static Slicer slicer = null;
-        public static Slic3r slic3r = null;
-        public static bool IsMac = false;
         public int refreshCounter = 0;
         public executeHostCommandDelegate executeHostCall;
         bool recalcJobPreview = false;
@@ -182,6 +184,7 @@ namespace RepetierHost
             globalSettings = new GlobalSettings();
             conn = new PrinterConnection();
             printerSettings = new FormPrinterSettings();
+            printerModel = new PrinterModel();
             conn.analyzer.start();
             threeDSettings = new ThreeDSettings();
             InitializeComponent();
@@ -1293,6 +1296,7 @@ namespace RepetierHost
         private void Main_Activated(object sender, EventArgs e)
         {
             stlComposer1.recheckChangedFiles();
+            slicerPanel.UpdateSelection();
         }
         public void selectTimePeriod(object sender, EventArgs e)
         {

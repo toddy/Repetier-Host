@@ -26,7 +26,7 @@ namespace RepetierHost.view.utils
             x = a.x-a.xOffset;
             y = a.y-a.yOffset;
             z = a.z-a.zOffset;
-            e = a.e-a.eOffset;
+            e = a.activeExtruder.e - a.activeExtruder.eOffset;
             f = a.f;
             relative = a.relative;
 

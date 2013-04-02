@@ -118,7 +118,7 @@ namespace RepetierHost.view
             TimeSpan t = (DateTime.UtcNow - new DateTime(1970, 1, 1));
             long timestamp = (long)t.TotalSeconds;
             long diff = timestamp - statusSet;
-            float etemp = ann.getTemperature(ann.activeExtruder);
+            float etemp = ann.getTemperature(ann.activeExtruderId);
             if (Main.conn.connected == false)
             {
                 if (status != PrinterStatus.disconnected)
@@ -246,8 +246,8 @@ namespace RepetierHost.view
             numericUpDownFlow.Value = con.flowMultiply;
             //labelSpeed.Text = sliderSpeed.Value.ToString() + "%";
             tempUpdate(con.getTemperature(-1), con.bedTemp);
-            if(ann.activeExtruder>=0 && ann.activeExtruder<comboExtruder.Items.Count)
-                comboExtruder.SelectedIndex = ann.activeExtruder;
+            if(ann.activeExtruderId>=0 && ann.activeExtruderId<comboExtruder.Items.Count)
+                comboExtruder.SelectedIndex = ann.activeExtruderId;
             createCommands = true;
         }
         private void coordUpdate(GCode code,float x,float y,float z) {

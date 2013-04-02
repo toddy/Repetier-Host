@@ -54,6 +54,7 @@ namespace RepetierHost.view
                     switchSlic3rActive.On = true;
                     switchSlic3rActive.Visible = false;
                 }
+                mainBindingSource.DataSource = Main.printerModel;
             }
         }
         void translate() {
@@ -117,8 +118,10 @@ namespace RepetierHost.view
             // Printer folder
             string printerFolder = slic3rConf + Path.DirectorySeparatorChar + "printer";
             DirectoryInfo di = new DirectoryInfo(printerFolder);
+            string old;
             if (di.Exists)
             {
+                old = Main.printerModel.Slic3rPrinter;
                 FileInfo[] rgFiles = di.GetFiles("*.ini");
                 comboSlic3rPrinterSettings.Items.Clear();
                 foreach (FileInfo fi in rgFiles)
@@ -127,7 +130,7 @@ namespace RepetierHost.view
                 }
                 comboSlic3rPrinterSettings.Enabled = true;
                 if (b.Slic3rPrinterSettings.Length > 0)
-                    comboSlic3rPrinterSettings.SelectedItem = b.Slic3rPrinterSettings;
+                    comboSlic3rPrinterSettings.SelectedItem = old;
                 if(comboSlic3rPrinterSettings.SelectedIndex<0 && rgFiles.Count() > 0) {
                     b.Slic3rPrinterSettings = noINI(rgFiles[0].Name);
                     comboSlic3rPrinterSettings.SelectedIndex = 0;
@@ -141,6 +144,7 @@ namespace RepetierHost.view
             di = new DirectoryInfo(printFolder);
             if (di.Exists)
             {
+                old = Main.printerModel.Slic3rPrint;
                 FileInfo[] rgFiles = di.GetFiles("*.ini");
                 comboSlic3rPrintSettings.Items.Clear();
                 foreach (FileInfo fi in rgFiles)
@@ -149,7 +153,7 @@ namespace RepetierHost.view
                 }
                 comboSlic3rPrintSettings.Enabled = true;
                 if (b.Slic3rPrintSettings.Length > 0)
-                    comboSlic3rPrintSettings.SelectedItem = b.Slic3rPrintSettings;
+                    comboSlic3rPrintSettings.SelectedItem = old;
                 if (comboSlic3rPrintSettings.SelectedIndex<0 && rgFiles.Count() > 0)
                 {
                     b.Slic3rPrintSettings = noINI(rgFiles[0].Name);
@@ -164,6 +168,9 @@ namespace RepetierHost.view
             di = new DirectoryInfo(filamentFolder);
             if (di.Exists)
             {
+                string old1 = Main.printerModel.Slic3rFilament1;
+                string old2 = Main.printerModel.Slic3rFilament2;
+                string old3 = Main.printerModel.Slic3rFilament3;
                 FileInfo[] rgFiles = di.GetFiles("*.ini");
                 comboSlic3rFilamentSettings.Items.Clear();
                 comboSlic3rFilamentSettings2.Items.Clear();
@@ -181,7 +188,7 @@ namespace RepetierHost.view
                 comboSlic3rFilamentSettings2.Enabled = Main.conn.numberExtruder > 1;
                 comboSlic3rFilamentSettings3.Enabled = Main.conn.numberExtruder > 2;
                 if (b.Slic3rFilamentSettings.Length > 0)
-                    comboSlic3rFilamentSettings.SelectedItem = b.Slic3rFilamentSettings;
+                    comboSlic3rFilamentSettings.SelectedItem = old1;
                 if (comboSlic3rFilamentSettings.SelectedIndex<0 && rgFiles.Count() > 0)
                 {
                     b.Slic3rFilamentSettings = noINI(rgFiles[0].Name);
@@ -189,7 +196,7 @@ namespace RepetierHost.view
                 }
 
                 if (b.Slic3rFilament2Settings.Length > 0)
-                    comboSlic3rFilamentSettings2.SelectedItem = b.Slic3rFilament2Settings;
+                    comboSlic3rFilamentSettings2.SelectedItem = old2;
                 if (comboSlic3rFilamentSettings2.SelectedIndex < 0 && rgFiles.Count() > 0)
                 {
                     b.Slic3rFilament2Settings = noINI(rgFiles[0].Name);
@@ -197,7 +204,7 @@ namespace RepetierHost.view
                 }
 
                 if (b.Slic3rFilament3Settings.Length > 0)
-                    comboSlic3rFilamentSettings3.SelectedItem = b.Slic3rFilament3Settings;
+                    comboSlic3rFilamentSettings3.SelectedItem = old3;
                 if (comboSlic3rFilamentSettings3.SelectedIndex < 0 && rgFiles.Count() > 0)
                 {
                     b.Slic3rFilament3Settings = noINI(rgFiles[0].Name);
@@ -216,6 +223,7 @@ namespace RepetierHost.view
                 di = new DirectoryInfo(skeinProfFolder);
                 if (di.Exists)
                 {
+                    old = Main.printerModel.SkeinforgeProfile;
                     DirectoryInfo[] rgFiles = di.GetDirectories();
                     comboSkeinProfile.Items.Clear();
                     foreach (DirectoryInfo fi in rgFiles)
@@ -224,7 +232,7 @@ namespace RepetierHost.view
                     }
                     comboSkeinProfile.Enabled = true;
                     if (b.SkeinforgeProfile.Length > 0)
-                        comboSkeinProfile.SelectedItem = b.SkeinforgeProfile;
+                        comboSkeinProfile.SelectedItem = old;
                     if (comboSkeinProfile.SelectedIndex < 0 && rgFiles.Count() > 0)
                     {
                         b.SkeinforgeProfile = rgFiles[0].Name;
@@ -262,8 +270,8 @@ namespace RepetierHost.view
         {
             if (!updating)
             {
-                BasicConfiguration.basicConf.Slic3rPrintSettings = (string)comboSlic3rPrintSettings.SelectedItem;
-                UpdateSelection();
+               // BasicConfiguration.basicConf.Slic3rPrintSettings = (string)comboSlic3rPrintSettings.SelectedItem;
+               // UpdateSelection();
             }
         }
 
@@ -271,8 +279,8 @@ namespace RepetierHost.view
         {
             if (!updating)
             {
-                BasicConfiguration.basicConf.Slic3rFilamentSettings = (string)comboSlic3rFilamentSettings.SelectedItem;
-                UpdateSelection();
+              //  BasicConfiguration.basicConf.Slic3rFilamentSettings = (string)comboSlic3rFilamentSettings.SelectedItem;
+              //  UpdateSelection();
             }
         }
 
@@ -280,8 +288,8 @@ namespace RepetierHost.view
         {
             if (!updating)
             {
-                BasicConfiguration.basicConf.Slic3rPrinterSettings = (string)comboSlic3rPrinterSettings.SelectedItem;
-                UpdateSelection();
+              //  BasicConfiguration.basicConf.Slic3rPrinterSettings = (string)comboSlic3rPrinterSettings.SelectedItem;
+              //  UpdateSelection();
             }
         }
 
@@ -317,8 +325,8 @@ namespace RepetierHost.view
         private void comboSkeinProfile_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (updating) return;
-            BasicConfiguration.basicConf.SkeinforgeProfile = (string)comboSkeinProfile.SelectedItem;
-            UpdateSelection();
+            //BasicConfiguration.basicConf.SkeinforgeProfile = (string)comboSkeinProfile.SelectedItem;
+            //UpdateSelection();
         }
 
         private void buttonSetupSlic3r_Click(object sender, EventArgs e)
@@ -343,8 +351,8 @@ namespace RepetierHost.view
         {
             if (!updating)
             {
-                BasicConfiguration.basicConf.Slic3rFilament2Settings = (string)comboSlic3rFilamentSettings2.SelectedItem;
-                UpdateSelection();
+              //  BasicConfiguration.basicConf.Slic3rFilament2Settings = (string)comboSlic3rFilamentSettings2.SelectedItem;
+              //  UpdateSelection();
             }
         }
 
@@ -352,8 +360,8 @@ namespace RepetierHost.view
         {
             if (!updating)
             {
-                BasicConfiguration.basicConf.Slic3rFilament3Settings = (string)comboSlic3rFilamentSettings3.SelectedItem;
-                UpdateSelection();
+              //  BasicConfiguration.basicConf.Slic3rFilament3Settings = (string)comboSlic3rFilamentSettings3.SelectedItem;
+              //  UpdateSelection();
             }
         }
     }

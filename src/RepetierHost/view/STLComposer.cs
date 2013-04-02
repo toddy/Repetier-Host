@@ -31,7 +31,7 @@ namespace RepetierHost.view
 {
     public partial class STLComposer : UserControl
     {
-        private bool writeSTLBinary = false;
+        private bool writeSTLBinary = true;
         public ThreeDView cont;
         private bool autosizeFailed = false;
         private CopyObjectsDialog copyDialog = new CopyObjectsDialog();
@@ -369,12 +369,12 @@ namespace RepetierHost.view
         {
             if (float.IsNaN(v.X) || float.IsNaN(v.Y) || float.IsNaN(v.Z))
             {
-                Main.conn.log("NaN value in STL file export", false, 2);
+               // Main.conn.log("NaN value in STL file export", false, 2);
                 return false;
             }
             if (float.IsInfinity(v.X) || float.IsInfinity(v.Y) || float.IsInfinity(v.Z))
             {
-                Main.conn.log("Infinity value in STL file export", false, 2);
+               // Main.conn.log("Infinity value in STL file export", false, 2);
                 return false;
             }
             return true;

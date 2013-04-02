@@ -39,6 +39,7 @@ namespace RepetierHost.view
             labelSlic3rConfigDir.Text = Trans.T("L_SLIC3R_CONFIG_DIR");
             labelSlic3rExecutable.Text = Trans.T("L_SLIC3R_EXECUTABLE");
             labelSlic3rInfo.Text = Trans.T("L_SLIC3R_INFO");
+            labelSlic3rVersion.Text = Trans.T("L_SLIC3R_VERSION");
             labelSlic3rLeaveBlankConfig.Text = Trans.T("L_SLIC3R_BLANK_CONFIG");            
             buttonBrowseConfigDir.Text = Trans.T("B_BROWSE");
             buttonBrowseExecutable.Text = Trans.T("B_BROWSE");
@@ -52,6 +53,7 @@ namespace RepetierHost.view
             //textPath.Text = b.ExternalSlic3rPath;
             textSlic3rConfigDir.Text = b.Slic3rConfigDir;
             textExecutable.Text = b.Slic3rExecutable;
+            comboVersion.SelectedIndex = comboVersion.Items.Count - b.Slic3rVersionGroup - 1;
             //checkBoxUseBundledVersion.Checked = b.InternalSlic3rUseBundledVersion;
         }
        /* private void buttonBrowseSlic3r_Click(object sender, EventArgs e)
@@ -75,6 +77,7 @@ namespace RepetierHost.view
             //b.ExternalSlic3rIniFile = textIni.Text;
             b.Slic3rConfigDir = textSlic3rConfigDir.Text;
             b.Slic3rExecutable = textExecutable.Text;
+            b.Slic3rVersionGroup = comboVersion.Items.Count - 1 - comboVersion.SelectedIndex;
             Hide();
             Main.slicer.Update();
             Main.main.slicerPanel.UpdateSelection();

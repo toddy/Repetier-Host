@@ -687,7 +687,7 @@ namespace RepetierHost.model
         {
             act = g;
             ana.Analyze(g);
-            laste = ana.emax;
+            laste = ana.activeExtruder.emax;
         }
         /// <summary>
         /// Remove all drawn lines.
@@ -724,14 +724,14 @@ namespace RepetierHost.model
                 lastx = x;
                 lasty = y;
                 lastz = z;
-                laste = ana.emax;
+                laste = ana.activeExtruder.emax;
                 return;
             }
             float locDist = (float)Math.Sqrt((x - lastx) * (x - lastx) + (y - lasty) * (y - lasty) + (z - lastz) * (z - lastz));
             bool isLastPos = locDist < 0.00001;
             if (!act.hasG || (act.G > 3 && act.G != 28)) return;
             bool isTravel = (FormPrinterSettings.ps.printerType == 3 ? Math.Max(z, lastz) - ana.zOffset >= FormPrinterSettings.ps.cncZTop : !ana.eChanged);
-            int segpos = ana.activeExtruder;
+            int segpos = ana.activeExtruderId;
             if (segpos < 0 || segpos >= MaxExtruder) segpos = 0;
             LinkedList<GCodePath> seg = segments[segpos];
             if (isTravel)
@@ -748,7 +748,7 @@ namespace RepetierHost.model
                 if (FormPrinterSettings.ps.printerType == 3 && z - ana.zOffset < FormPrinterSettings.ps.cncZTop) // End od travel moves
                 { // Start new milling move sequence
                     GCodePath p = new GCodePath();
-                    p.Add(new Vector3(x, y, z), ana.emax, totalDist, GCodePoint.toFileLine(fileid, actLine));
+                    p.Add(new Vector3(x, y, z), ana.activeExtruder.emax, totalDist, GCodePoint.toFileLine(fileid, actLine));
                     if (seg.Count > 0 && seg.Last.Value.pointsLists.Last.Value.Count == 1)
                     {
                         seg.RemoveLast();
@@ -756,12 +756,12 @@ namespace RepetierHost.model
                     seg.AddLast(p);
                 }
             }
-            if (seg.Count == 0 || (laste >= ana.e && FormPrinterSettings.ps.printerType != 3)) // start new segment
+            if (seg.Count == 0 || (laste >= ana.activeExtruder.e && FormPrinterSettings.ps.printerType != 3)) // start new segment
             {
                 if (!isLastPos) // no move, no action
                 {
                     GCodePath p = new GCodePath();
-                    p.Add(new Vector3(x, y, z), ana.emax, totalDist, GCodePoint.toFileLine(fileid, actLine));
+                    p.Add(new Vector3(x, y, z), ana.activeExtruder.emax, totalDist, GCodePoint.toFileLine(fileid, actLine));
                     if (seg.Count > 0 && seg.Last.Value.pointsLists.Last.Value.Count == 1)
                     {
                         seg.RemoveLast();
@@ -775,14 +775,14 @@ namespace RepetierHost.model
                 if (!isLastPos && (FormPrinterSettings.ps.printerType != 3 || !isTravel))
                 {
                     totalDist += locDist;
-                    seg.Last.Value.Add(new Vector3(x, y, z), ana.emax, totalDist, GCodePoint.toFileLine(fileid, actLine));
+                    seg.Last.Value.Add(new Vector3(x, y, z), ana.activeExtruder.emax, totalDist, GCodePoint.toFileLine(fileid, actLine));
                     changed = true;
                 }
             }
             lastx = x;
             lasty = y;
             lastz = z;
-            laste = ana.emax;
+            laste = ana.activeExtruder.emax;
         }
         void OnPosChangeFast(float x, float y, float z, float e)
         {
@@ -791,13 +791,13 @@ namespace RepetierHost.model
                 lastx = x;
                 lasty = y;
                 lastz = z;
-                laste = ana.emax;
+                laste = ana.activeExtruder.emax;
                 lastLayer = ana.layer;
                 return;
             }
             float locDist = (float)Math.Sqrt((x - lastx) * (x - lastx) + (y - lasty) * (y - lasty) + (z - lastz) * (z - lastz));
             bool isLastPos = locDist < 0.00001;
-            int segpos = ana.activeExtruder;
+            int segpos = ana.activeExtruderId;
             bool isTravel = (FormPrinterSettings.ps.printerType == 3 ? Math.Max(z,lastz) - ana.zOffset >= FormPrinterSettings.ps.cncZTop : !ana.eChanged);
             if (segpos < 0 || segpos >= MaxExtruder) segpos = 0;
             LinkedList<GCodePath> seg = segments[segpos];
@@ -815,7 +815,7 @@ namespace RepetierHost.model
                 if (FormPrinterSettings.ps.printerType == 3 && z - ana.zOffset < FormPrinterSettings.ps.cncZTop) // End od travel moves
                 { // Start new milling move sequence
                     GCodePath p = new GCodePath();
-                    p.Add(new Vector3(x, y, z), ana.emax, totalDist, GCodePoint.toFileLine(fileid, actLine));
+                    p.Add(new Vector3(x, y, z), ana.activeExtruder.emax, totalDist, GCodePoint.toFileLine(fileid, actLine));
                     if (seg.Count > 0 && seg.Last.Value.pointsLists.Last.Value.Count == 1)
                     {
                         seg.RemoveLast();
@@ -837,12 +837,12 @@ namespace RepetierHost.model
                 seg.AddLast(p);
             }
 
-            if (seg.Count == 0 || (laste >= ana.e && FormPrinterSettings.ps.printerType != 3)) // start new segment
+            if (seg.Count == 0 || (laste >= ana.activeExtruder.e && FormPrinterSettings.ps.printerType != 3)) // start new segment
             {
                 if (!isLastPos) // no move, no action
                 {
                     GCodePath p = new GCodePath();
-                    p.Add(new Vector3(x, y, z), ana.emax, totalDist, GCodePoint.toFileLine(fileid, actLine));
+                    p.Add(new Vector3(x, y, z), ana.activeExtruder.emax, totalDist, GCodePoint.toFileLine(fileid, actLine));
                     if (seg.Count > 0 && seg.Last.Value.pointsLists.Count>0 && seg.Last.Value.pointsLists.Last.Value.Count == 1)
                     {
                         seg.RemoveLast();
@@ -856,14 +856,14 @@ namespace RepetierHost.model
                 if (!isLastPos && (FormPrinterSettings.ps.printerType != 3 || !isTravel))
                 {
                     totalDist += locDist;
-                    seg.Last.Value.Add(new Vector3(x, y, z), ana.emax, totalDist, GCodePoint.toFileLine(fileid, actLine));
+                    seg.Last.Value.Add(new Vector3(x, y, z), ana.activeExtruder.emax, totalDist, GCodePoint.toFileLine(fileid, actLine));
                     //changed = true;
                 }
             }
             lastx = x;
             lasty = y;
             lastz = z;
-            laste = ana.emax;
+            laste = ana.activeExtruder.emax;
             lastLayer = ana.layer;
         }
         public void ParseText(string text, bool clear)
@@ -886,7 +886,7 @@ namespace RepetierHost.model
             foreach (GCodeShort code in codes)
             {
                 ana.analyzeShort(code);
-                laste = ana.emax;
+                laste = ana.activeExtruder.emax;
                 actLine++;
             }
         }

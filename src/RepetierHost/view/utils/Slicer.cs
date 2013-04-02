@@ -7,6 +7,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Windows.Forms;
 using RepetierHost.model;
+using System.ComponentModel;
 
 namespace RepetierHost.view.utils
 {
@@ -24,7 +25,8 @@ namespace RepetierHost.view.utils
         {
             skein = Main.main.skeinforge;
             Main.slicer = this;
-            ActiveSlicer = (Slicer.SlicerID)(int)Main.main.repetierKey.GetValue("ActiveSlicer", (int)ActiveSlicer);
+            ActiveSlicer = Main.printerModel.ActiveSlicer; // (Slicer.SlicerID)(int)Main.main.repetierKey.GetValue("ActiveSlicer", (int)ActiveSlicer);
+            Main.printerModel.PropertyChanged += printerPropertyChanged;
 
             Update();
         }
@@ -129,13 +131,21 @@ namespace RepetierHost.view.utils
                 Main.conn.log("<Postprocess> "+outLine.Data, false, 4);
             }
         }
+        private void printerPropertyChanged(object sender, PropertyChangedEventArgs evt)
+        {
+            if (evt.PropertyName == "ActiveSlicer")
+            {
+                ActiveSlicer = Main.printerModel.ActiveSlicer;
+            }
+        }
 
         public SlicerID ActiveSlicer {
             get {return _ActiveSlicer;}
             set {
                 if(value!=_ActiveSlicer) {
                     _ActiveSlicer = value;
-                    Main.main.repetierKey.SetValue("ActiveSlicer", (int)_ActiveSlicer);
+                    Main.printerModel.ActiveSlicer = _ActiveSlicer;
+                    //Main.main.repetierKey.SetValue("ActiveSlicer", (int)_ActiveSlicer);
                 }
                 Main.main.slic3rToolStripMenuItem.Checked = _ActiveSlicer == SlicerID.Slic3r;
                 Main.main.skeinforgeToolStripMenuItem1.Checked = _ActiveSlicer == SlicerID.Skeinforge;

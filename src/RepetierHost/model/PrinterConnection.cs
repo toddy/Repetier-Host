@@ -1025,28 +1025,28 @@ namespace RepetierHost.model
         };
         public float getTemperature(int extr)
         {
-            if (extr < 0) extr = analyzer.activeExtruder;
+            if (extr < 0) extr = analyzer.activeExtruderId;
             if (!extruderTemp.ContainsKey(extr))
                 extruderTemp.Add(extr, 0.0f);
             return extruderTemp[extr];
         }
         public void setTemperature(int extr, float t)
         {
-            if (extr < 0) extr = analyzer.activeExtruder;
+            if (extr < 0) extr = analyzer.activeExtruderId;
             if (!extruderTemp.ContainsKey(extr))
                 extruderTemp.Add(extr, t);
             else extruderTemp[extr] = t;
         }
         public float getOutput(int extr)
         {
-            if (extr < 0) extr = analyzer.activeExtruder;
+            if (extr < 0) extr = analyzer.activeExtruderId;
             if (!extruderOutput.ContainsKey(extr))
                 extruderOutput.Add(extr, -1);
             return extruderOutput[extr];
         }
         public void setOutput(int extr, int o)
         {
-            if (extr < 0) extr = analyzer.activeExtruder;
+            if (extr < 0) extr = analyzer.activeExtruderId;
             if (!extruderOutput.ContainsKey(extr))
                 extruderOutput.Add(extr, o);
             else extruderOutput[extr] = o;
@@ -1146,7 +1146,7 @@ namespace RepetierHost.model
             {
                 level = 3;
                 float.TryParse(h, NumberStyles.Float, GCode.format, out e);
-                analyzer.e = e;
+                analyzer.activeExtruder.e = e;
             }
             if (!ignoreFB)
             {
