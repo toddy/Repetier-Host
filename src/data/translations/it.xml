@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<translation revision="6" language="Italiano" languageInEnglish="Italian" author="S. Camerino;info.dtxrobotics@gmail.com">
+<translation revision="8" language="Italiano" languageInEnglish="Italian" author="S. Camerino;info.dtxrobotics@gmail.com">
 <t id="M_FILE" ver="1">File</t>
 <t id="M_CONFIG" ver="1">Configurazione</t>
 <t id="M_SLICER" ver="1">Slicer</t>
@@ -102,7 +102,7 @@ Puoi mettere pausa al tuo codice con
 <t id="B_DROP_OBJECT" ver="1">Lascia cadere oggetto</t>
 <t id="B_COPY_OBJECTS" ver="1">Copia oggetto(i)</t>
 <t id="B_CENTER_OBJECT" ver="1">Centra oggetto</t>
-<t id="L_LOCK_ASPECT_RATIO" ver="1">Blocca proporzioni (aspect ratio)</t>
+<t id="L_LOCK_ASPECT_RATIO" ver="1">Blocca proporzioni</t>
 <t id="B_KILL_SLICING_PROCESS" ver="1">Ferma Slicing</t>
 <t id="B_SETUP_SKEINFORGE" ver="1">Setup</t>
 <t id="B_SETUP_SLIC3R" ver="1">Setup</t>
@@ -209,7 +209,7 @@ Puoi mettere pausa al tuo codice con
 <t id="L_DUMP_AREA_LEFT" ver="1">Area "scarto" da sinistra:</t>
 <t id="L_DUMP_AREA_WIDTH" ver="1">Area "scarto" larghezza:</t>
 <t id="L_FILTER_INFO" ver="1">E' possibile eseguire un programma di filtro dopo ogni azione di slicing. Il filtro verra' eseguito sul G-Code
-prodotto dallo slicer. Utilizzare #in e #out per inserire i nomi dei file di input e output come parametro.</t>
+prodotto dallo slicer. Utilizzare #in e #out per inserire i nomi dei file di input e output come parametri.</t>
 <t id="L_FILTER_PATH_PARAM" ver="1">Filtro percorso e parametri:</t>
 <t id="L_PARITY" ver="1">Parita':</t>
 <t id="L_PARK_POSITION" ver="1">Posizione Stand-by:</t>
@@ -253,8 +253,8 @@ prodotto dallo slicer. Utilizzare #in e #out per inserire i nomi dei file di inp
 <t id="B_DOWNLOAD" ver="1">Scarica</t>
 <t id="B_REMIND_ME_LATER" ver="1">Ricordamelo dopo</t>
 <t id="B_SKIP_VERSION" ver="1">Salta questa versione</t>
-<t id="L_AVAILABLE_VERSION" ver="1">Versione disponibile:</t>
-<t id="L_INSTALLED_VERSION" ver="1">Versione installata:</t>
+<t id="L_AVAILABLE_VERSION" ver="1">Versione Disponibile:</t>
+<t id="L_INSTALLED_VERSION" ver="1">Versione Installata:</t>
 <t id="L_INFORMATION_ON_UPDATE" ver="1">Informazioni aggiornamenti</t>
 <t id="L_NO_NEW_UPDATES" ver="1">Nessun aggiornamento disponibile.
 Al momento stai utilizzando l'ultima versione =)</t>
@@ -409,7 +409,7 @@ Possibili spiegazioni:
 <t id="L_SELECT_WAV_FILE_TO_PLAY" ver="1">Seleziona WAV File</t>
 <t id="W_SLIC3R_SETUP" ver="1">Slic3r Setup</t>
 <t id="L_SLIC3R_SETUP" ver="1">Slic3r Setup</t>
-<t id="L_SLIC3R_BLANK_BUNDLE" ver="1">Lascia vuoto per usare la versione fornita (altrimenti specifica).</t>
+<t id="L_SLIC3R_BLANK_BUNDLE" ver="1">Lascia vuoto per usare la versione predefinita (altrimenti specifica).</t>
 <t id="L_SLIC3R_CONFIG_DIR" ver="1">Slic3r Cartella configurazione</t>
 <t id="L_SLIC3R_EXECUTABLE" ver="1">Slic3r file eseguibile</t>
 <t id="L_SLIC3R_INFO" ver="1">Con queste impostazioni, si e' in grado di utilizzare diverse versioni di Slic3r. E' possibile ottenere le nuove versioni da http://www.slic3r.org La versione minima richiesta e' 0.9.0. Lasciare tutti i campi vuoti per utilizzare semplicemente la versione in bundle.</t>
@@ -423,7 +423,7 @@ Possibili spiegazioni:
 <t id="L_M_MAX_XY_JERK" ver="1">Max X-Y jerk [mm/s]</t>
 <t id="L_M_MAX_Z_JERK" ver="1">Max Z jerk [mm/s]</t>
 <t id="L_M_MIN_FEEDRATE" ver="1">Min feedrate [mm/s]</t>
-<t id="L_M_MIN_SEGMENT_TIME" ver="1">Min segment time [ms]</t>
+<t id="L_M_MIN_SEGMENT_TIME" ver="1">Min tempo segmento[ms]</t>
 <t id="L_M_MIN_TRAVEL_FEEDRATE" ver="1">Min travel feedrate [mm/s]</t>
 <t id="L_M_PID_SETTINGS" ver="1">Impostazioni PID:</t>
 <t id="L_M_STEPS_PER_MM" ver="1">Passi per mm:</t>
@@ -515,4 +515,10 @@ Scrivere i cambiamenti in EEPROM?</t>
 <t id="L_CARTESIAN_PRINTER" ver="6">Stampante classica</t>
 <t id="L_CARTESIAN_PRINTER_DUMP" ver="6">Stampante classica (con area di scarto)</t>
 <t id="L_ROSTOCK_CIRCLE" ver="6">Stampante Rostock (stampa forma circolare)</t>
+<t id="L_CORRECT_NORMALS" ver="7">Usa valori corretti(sembra andare meglio, necessita di piu' memoria)</t>
+<t id="L_WARNING" ver="8">Attenzione</t>
+<t id="L_HEATERS_ON_QUEST" ver="8">Qualche estrusore e' ancora acceso. Vuoi che li spenga?</t>
+<t id="L_OBJECTS_OUTSIDE_SLICE_QUEST" ver="8">Almeno un oggetto e' fuori dall'area di stampa. Fermare lo slicing?</t>
+<t id="L_CNC_ROUTER" ver="8">CNC Router</t>
+<t id="L_SLIC3R_VERSION" ver="8">Versione di Slic3r</t>
 </translation>

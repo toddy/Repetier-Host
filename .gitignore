@@ -40,3 +40,7 @@ iRapid/custom.ini
 iRapid/Arduino MEGA 2560 REV3.inf
 
 setup-config-felixprinters.iss
+
+*.iss
+
+setup-config-leapfrog.iss

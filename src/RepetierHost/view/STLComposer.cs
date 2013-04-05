@@ -393,7 +393,7 @@ namespace RepetierHost.view
             {
                 n += stl.list.Count;
             }
-            STLTriangle[] triList = new STLTriangle[n];
+            STLTriangle[] triList2 = new STLTriangle[n];
             int p = 0;
             foreach (STL stl in listSTLObjects.Items)
             {
@@ -424,11 +424,14 @@ namespace RepetierHost.view
                         AssertMinDistance(t.p1, t.p2) && AssertMinDistance(t.p1, t.p3) && AssertMinDistance(t.p2, t.p3))
                     {
 
-                        triList[p++] = t;
+                        triList2[p++] = t;
                     }
                 }
             }
             n = p;
+            STLTriangle[] triList = new STLTriangle[n];
+            for (int i = 0; i < n; i++)
+                triList[i] = triList2[i];
             // STL should have increasing z for faster slicing
             Array.Sort<STLTriangle>(triList, triList[0]);
             // Write file in binary STL format

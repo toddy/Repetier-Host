@@ -210,7 +210,7 @@ namespace RepetierHost.view.utils
                     Main.slic3r.RunSliceExternal(file, Main.printerSettings.PrintAreaWidth / 2, Main.printerSettings.PrintAreaDepth / 2);
                     break;*/
                 case SlicerID.Skeinforge:
-                    skein.RunSlice(file,BasicConfiguration.basicConf.SkeinforgeProfile);
+                    skein.RunSlice(file,Main.printerModel.SkeinforgeProfile);
                     break;
             }
         }

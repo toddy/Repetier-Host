@@ -1,5 +1,6 @@
 Version 0.85
   Slic3r 0.9.9 included
+  Store slicer selection with printer settings.
 	Drag and Drop of stl and g-code files into host.
 	Preview of G2/G3 in xy plane.
 	Fixed some viewing errors.
@@ -9,6 +10,7 @@ Version 0.85
 	Better error correction with Marlin.
 	Create only as many filament configs as extruders enabled in host.
 	Added @execute host command to call programs during print.
+	In parallel top view user and view center are moved to stay on top.
 
 Version 0.84 09-02-2013
   Added japanese translation by Hajime Ashida.
