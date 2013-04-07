@@ -1352,7 +1352,7 @@ namespace RepetierHost.model
                 else
                     ignoreNextOk = false;
             }
-            else if (res.Equals("wait") && DateTime.Now.Ticks - lastCommandSend > 5000)
+            else if (res.Equals("wait")) //  && DateTime.Now.Ticks - lastCommandSend > 5000)
             {
                 if (Main.main.logView.switchACK.On)
                     log(res, true, level);
