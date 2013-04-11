@@ -506,5 +506,29 @@ Ecrire changement dans l'EEPROM?</t>
 <t id="M_SHOW_TRAVEL" ver="4">Afficher déplacements</t>
 <t id="L_TRAVEL_MOVES:" ver="4">Déplacements:</t>
 <t id="L_DISABLE_TRAVEL_MOVES_VIS" ver="4">Désactiver visu. des déplacements rapides</t>
+<t id="L_NUMBER_OF_EXTRUDER:" ver="5">Nombre d'extrudeurs:</t>
+<t id="L_NEW_FOLDER" ver="5">Nouveau Dossier</t>
+<t id="L_USE_PARALLEL_PROJECTION" ver="5">Projection parallèle</t>
+<t id="L_USE_RED_GREEN_SWITCH" ver="5">Utiliser boutons rouge/vert (nécessite redémarrage)</t>
+<t id="L_SLIC3R_NOT_FOUND" ver="6">Slic3r non trouvé.</t>
+<t id="L_ANALYSING_STL" ver="6">Analyse fichier STL...</t>
+<t id="L_SLICING_STL" ver="6">Trachange fichier STL...</t>
+<t id="L_PYPY_NOT_FOUND" ver="6">Pypy ou Interpréteur Python non trouvé.</t>
+<t id="L_SKEINCRAFT_NOT_FOUND" ver="6">Skeinforge craft non trouvé.</t>
+<t id="L_PYTHON_NOT_FOUND" ver="6">Interpréteur Python non trouvé.</t>
+<t id="L_SKEINFORGE_NOT_FOUND" ver="6">Skeinforge non trouvé.</t>
+<t id="L_SKEINCRAFT_PROFILES_NOT_FOUND" ver="6">Répertoire de profils Skeinforge/SFACT non trouvé.</t>
+<t id="B_REFRESH_PORTS" ver="6">Rafraichir Ports</t>
+<t id="L_ROS_PRINTABLE_HEIGHT:" ver="6">Hauteur imprimable:</t>
+<t id="L_ROS_PRINTABLE_RADIUS:" ver="6">Rayon imprimable:</t>
+<t id="L_CARTESIAN_PRINTER" ver="6">Imprimante classique</t>
+<t id="L_CARTESIAN_PRINTER_DUMP" ver="6">Imprimante classique (avec zone de purge)</t>
+<t id="L_ROSTOCK_CIRCLE" ver="6">Imprimante Rostock (zone d'impression circulaire)</t>
+<t id="L_CORRECT_NORMALS" ver="7">Utiliser normales correctes (meilleur aspect, nécessite plus de mémoire)</t>
+<t id="L_WARNING" ver="8">Attention</t>
+<t id="L_HEATERS_ON_QUEST" ver="8">Certains chauffages sont encore allumés. Dois-je les désactiver?</t>
+<t id="L_OBJECTS_OUTSIDE_SLICE_QUEST" ver="8">Au moins un objet est en dehors de la zone imprimable. Arrêt du tranchage?</t>
+<t id="L_CNC_ROUTER" ver="8">Routeur CNC</t>
+<t id="L_SLIC3R_VERSION" ver="8">Version de Slic3r</t>
 </translation>
 
