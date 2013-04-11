@@ -144,9 +144,9 @@
             this.tab = new System.Windows.Forms.TabControl();
             this.tabModel = new System.Windows.Forms.TabPage();
             this.tabSlicer = new System.Windows.Forms.TabPage();
+            this.slicerPanel = new RepetierHost.view.SlicerPanel();
             this.tabGCode = new System.Windows.Forms.TabPage();
             this.tabPrint = new System.Windows.Forms.TabPage();
-            this.slicerPanel = new RepetierHost.view.SlicerPanel();
             this.menu.SuspendLayout();
             this.status.SuspendLayout();
             this.toolStrip.SuspendLayout();
@@ -1173,6 +1173,15 @@
             this.tabSlicer.Text = "Slicer";
             this.tabSlicer.UseVisualStyleBackColor = true;
             // 
+            // slicerPanel
+            // 
+            this.slicerPanel.AutoScroll = true;
+            this.slicerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.slicerPanel.Location = new System.Drawing.Point(0, 0);
+            this.slicerPanel.Name = "slicerPanel";
+            this.slicerPanel.Size = new System.Drawing.Size(467, 304);
+            this.slicerPanel.TabIndex = 0;
+            // 
             // tabGCode
             // 
             this.tabGCode.AutoScroll = true;
@@ -1196,15 +1205,6 @@
             this.tabPrint.Text = "Manual control";
             this.tabPrint.UseVisualStyleBackColor = true;
             // 
-            // slicerPanel
-            // 
-            this.slicerPanel.AutoScroll = true;
-            this.slicerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.slicerPanel.Location = new System.Drawing.Point(0, 0);
-            this.slicerPanel.Name = "slicerPanel";
-            this.slicerPanel.Size = new System.Drawing.Size(467, 304);
-            this.slicerPanel.TabIndex = 0;
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1218,7 +1218,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menu;
             this.Name = "Main";
-            this.Text = "Repetier-Host V0.85b";
+            this.Text = "Repetier-Host V0.85c";
             this.Load += new System.EventHandler(this.Main_Load);
             this.SizeChanged += new System.EventHandler(this.Main_SizeChanged);
             this.Shown += new System.EventHandler(this.Main_Shown);

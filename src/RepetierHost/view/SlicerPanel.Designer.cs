@@ -54,8 +54,8 @@
             this.panelTop = new System.Windows.Forms.Panel();
             this.panelSlic3rPos = new System.Windows.Forms.Panel();
             this.panelSkeinforgePos = new System.Windows.Forms.Panel();
-            this.switchSkeinforge = new RepetierHost.view.SwitchButton();
             this.mainBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.switchSkeinforge = new RepetierHost.view.SwitchButton();
             this.switchSlic3rActive = new RepetierHost.view.SwitchButton();
             this.groupBox2.SuspendLayout();
             this.groupSkeinforge.SuspendLayout();
@@ -349,6 +349,10 @@
             this.panelSkeinforgePos.Size = new System.Drawing.Size(610, 96);
             this.panelSkeinforgePos.TabIndex = 6;
             // 
+            // mainBindingSource
+            // 
+            this.mainBindingSource.DataSource = typeof(RepetierHost.model.PrinterModel);
+            // 
             // switchSkeinforge
             // 
             this.switchSkeinforge.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
@@ -366,10 +370,6 @@
             this.switchSkeinforge.TextOff = "Active";
             this.switchSkeinforge.TextOn = "Active";
             this.switchSkeinforge.OnChange += new RepetierHost.view.SwitchEventHandler(this.switchSkeinforge_OnChange);
-            // 
-            // mainBindingSource
-            // 
-            this.mainBindingSource.DataSource = typeof(RepetierHost.model.PrinterModel);
             // 
             // switchSlic3rActive
             // 
