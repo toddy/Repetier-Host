@@ -853,7 +853,7 @@ namespace RepetierHost.view
         private void arrowButtonZMinus_Click(object sender, EventArgs e)
         {
             float d = -((ArrowButton)sender).CurrentValueF;
-            if (ann.hasZHome && d + ann.z < 0) d = -ann.z;
+            if (FormPrinterSettings.ps.printerType != 3 && (ann.hasZHome && d + ann.z < 0)) d = -ann.z;
             moveHead("Z", d);
 
         }
