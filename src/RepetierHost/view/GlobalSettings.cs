@@ -26,6 +26,7 @@ using System.IO;
 using Microsoft.Win32;
 using RepetierHost.view.utils;
 using RepetierHost.model;
+using System.Runtime.InteropServices;
 
 namespace RepetierHost.view
 {
@@ -36,6 +37,16 @@ namespace RepetierHost.view
         public GlobalSettings()
         {
             InitializeComponent();
+            if (Main.IsMono)
+            {
+                buttonAssociate.Enabled = false;
+                checkG.Enabled = false;
+                checkGCO.Enabled = false;
+                checkGCode.Enabled = false;
+                checkSTL.Enabled = false;
+                checkOBJ.Enabled = false;
+                checkNC.Enabled = false;
+            }
             RegMemory.RestoreWindowPos("globalSettingsWindow", this);
             repetierKey = Custom.BaseKey; // Registry.CurrentUser.CreateSubKey("SOFTWARE\\Repetier");
             RegToForm();
@@ -58,6 +69,8 @@ namespace RepetierHost.view
             checkRedGreenSwitch.Text = Trans.T("L_USE_RED_GREEN_SWITCH");
             buttonAbort.Text = Trans.T("B_CANCEL");
             buttonOK.Text = Trans.T("B_OK");
+            groupFileAssociations.Text = Trans.T("L_FILE_ASSOCIATIONS");
+            buttonAssociate.Text = Trans.T("L_ASSOCIATE_EXTENSIONS");
         }
         public bool WorkdirOK()
         {
@@ -85,6 +98,39 @@ namespace RepetierHost.view
             checkDisableQualityReduction.Checked = 1 == (int)repetierKey.GetValue("disableQualityReduction", DisableQualityReduction ? 1 : 0);
             checkReduceToolbarSize.Checked = 1 == (int)repetierKey.GetValue("reduceToolbarSize", ReduceToolbarSize ? 1 : 0);
             checkRedGreenSwitch.Checked = 2 == RegMemory.GetInt("onOffImageOffset", 0);
+        }
+        public static void Associate(string extension,
+           string progID, string description)
+        {
+            string icon = Application.StartupPath + Path.DirectorySeparatorChar + "repetier-logo-trans32.ico";
+            string application = Application.ExecutablePath;
+            RegistryKey classes = Registry.CurrentUser.OpenSubKey("Software\\Classes",true);
+            classes.CreateSubKey(extension).SetValue("", progID);
+            if (progID != null && progID.Length > 0)
+                using (RegistryKey key = classes.CreateSubKey(progID))
+                {
+                    if (description != null)
+                        key.SetValue("", description);
+                    if (icon != null)
+                        key.CreateSubKey("DefaultIcon").SetValue("", ToShortPathName(icon));
+                    if (application != null)
+                        key.CreateSubKey(@"Shell\Open\Command").SetValue("",
+                                    ToShortPathName(application) + " \"%1\"");
+                }
+        }
+        [DllImport("Kernel32.dll")]
+        private static extern uint GetShortPathName(string lpszLongPath,
+            [Out] StringBuilder lpszShortPath, uint cchBuffer);
+        [DllImport("Shell32.dll")]
+        private static extern int SHChangeNotify(int eventId, int flags, IntPtr item1, IntPtr item2);
+
+        // Return short path format of a file name
+        private static string ToShortPathName(string longName)
+        {
+            StringBuilder s = new StringBuilder(1000);
+            uint iSize = (uint)s.Capacity;
+            uint iRet = GetShortPathName(longName, s, iSize);
+            return s.ToString();
         }
         public string Workdir
         {
@@ -138,6 +184,38 @@ namespace RepetierHost.view
         private void checkReduceToolbarSize_CheckedChanged(object sender, EventArgs e)
         {
             Main.main.UpdateToolbarSize();
+        }
+        private void buttonAssociate_Click(object sender, EventArgs e)
+        {
+            string progid = Main.main.basicTitle;
+            int p = -1,p2 = -1;
+            for (int i = 0; i < progid.Length; i++)
+            {
+                char c = progid[i];
+                if (c == ' ') p2 = i;
+                if (c >= '0' && c <= '9')
+                {
+                    p = i;
+                    break;
+                }
+            }
+            if (p > 0)
+                progid = progid.Substring(0, p2>0 ? p2 : p).Trim();
+            progid = progid.Replace(" ", "-");
+            if (checkSTL.Checked)
+                Associate(".stl", progid, "STL file");
+            if (checkOBJ.Checked)
+                Associate(".obj", progid, "OBJ file");
+            if (checkG.Checked)
+                Associate(".g", progid, "G-Code");
+            if (checkGCO.Checked)
+                Associate(".gco", progid, "G-Code");
+            if (checkGCode.Checked)
+                Associate(".gcode", progid, "G-Code");
+            if (checkNC.Checked)
+                Associate(".nc", progid, "G-Code");
+
+            SHChangeNotify(0x8000000, 0x1000, IntPtr.Zero, IntPtr.Zero); 
         }
     }
 }

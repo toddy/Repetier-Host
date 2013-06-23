@@ -37,6 +37,20 @@
             this.toolStripStartHistory = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripEndHistory = new System.Windows.Forms.ToolStripSeparator();
             this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.isometricToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.frontViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.leftViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rightViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.backViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.topViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bottomViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripSeparator();
+            this.fitPrinterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fitObjectsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripSeparator();
+            this.showEdgesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showFacesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.languageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.printerSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -96,6 +110,9 @@
             this.sendScript3ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sendScript4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sendScript5ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.beltCalculatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.leadscrewCalculatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.repetierHostHomepageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.repetierHostDownloadPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -147,6 +164,7 @@
             this.slicerPanel = new RepetierHost.view.SlicerPanel();
             this.tabGCode = new System.Windows.Forms.TabPage();
             this.tabPrint = new System.Windows.Forms.TabPage();
+            this.tdSettings = new System.Windows.Forms.BindingSource(this.components);
             this.menu.SuspendLayout();
             this.status.SuspendLayout();
             this.toolStrip.SuspendLayout();
@@ -158,16 +176,19 @@
             this.tabControlView.SuspendLayout();
             this.tab.SuspendLayout();
             this.tabSlicer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tdSettings)).BeginInit();
             this.SuspendLayout();
             // 
             // menu
             // 
             this.menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
+            this.viewToolStripMenuItem,
             this.settingsToolStripMenuItem,
             this.slicerToolStripMenuItem,
             this.temperatureToolStripMenuItem,
             this.printerToolStripMenuItem,
+            this.toolsToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menu.Location = new System.Drawing.Point(0, 0);
             this.menu.Name = "menu";
@@ -190,7 +211,7 @@
             // loadGCodeToolStripMenuItem
             // 
             this.loadGCodeToolStripMenuItem.Name = "loadGCodeToolStripMenuItem";
-            this.loadGCodeToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F2;
+            this.loadGCodeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.loadGCodeToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
             this.loadGCodeToolStripMenuItem.Text = "&Load G-Code";
             this.loadGCodeToolStripMenuItem.Click += new System.EventHandler(this.toolGCodeLoad_Click);
@@ -219,6 +240,124 @@
             this.quitToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
             this.quitToolStripMenuItem.Text = "&Quit";
             this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
+            // 
+            // viewToolStripMenuItem
+            // 
+            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.isometricToolStripMenuItem,
+            this.frontViewToolStripMenuItem,
+            this.leftViewToolStripMenuItem,
+            this.rightViewToolStripMenuItem,
+            this.backViewToolStripMenuItem,
+            this.topViewToolStripMenuItem,
+            this.bottomViewToolStripMenuItem,
+            this.toolStripMenuItem8,
+            this.fitPrinterToolStripMenuItem,
+            this.fitObjectsToolStripMenuItem,
+            this.toolStripMenuItem7,
+            this.showEdgesToolStripMenuItem,
+            this.showFacesToolStripMenuItem});
+            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.viewToolStripMenuItem.Text = "View";
+            // 
+            // isometricToolStripMenuItem
+            // 
+            this.isometricToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("isometricToolStripMenuItem.Image")));
+            this.isometricToolStripMenuItem.Name = "isometricToolStripMenuItem";
+            this.isometricToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.isometricToolStripMenuItem.Text = "Isometric";
+            this.isometricToolStripMenuItem.Click += new System.EventHandler(this.isometricToolStripMenuItem_Click);
+            // 
+            // frontViewToolStripMenuItem
+            // 
+            this.frontViewToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("frontViewToolStripMenuItem.Image")));
+            this.frontViewToolStripMenuItem.Name = "frontViewToolStripMenuItem";
+            this.frontViewToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.frontViewToolStripMenuItem.Text = "Front view";
+            this.frontViewToolStripMenuItem.Click += new System.EventHandler(this.frontViewToolStripMenuItem_Click);
+            // 
+            // leftViewToolStripMenuItem
+            // 
+            this.leftViewToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("leftViewToolStripMenuItem.Image")));
+            this.leftViewToolStripMenuItem.Name = "leftViewToolStripMenuItem";
+            this.leftViewToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.leftViewToolStripMenuItem.Text = "Left view";
+            this.leftViewToolStripMenuItem.Click += new System.EventHandler(this.leftViewToolStripMenuItem_Click);
+            // 
+            // rightViewToolStripMenuItem
+            // 
+            this.rightViewToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("rightViewToolStripMenuItem.Image")));
+            this.rightViewToolStripMenuItem.Name = "rightViewToolStripMenuItem";
+            this.rightViewToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.rightViewToolStripMenuItem.Text = "Right view";
+            this.rightViewToolStripMenuItem.Click += new System.EventHandler(this.rightViewToolStripMenuItem_Click);
+            // 
+            // backViewToolStripMenuItem
+            // 
+            this.backViewToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("backViewToolStripMenuItem.Image")));
+            this.backViewToolStripMenuItem.Name = "backViewToolStripMenuItem";
+            this.backViewToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.backViewToolStripMenuItem.Text = "Back view";
+            this.backViewToolStripMenuItem.Click += new System.EventHandler(this.backViewToolStripMenuItem_Click);
+            // 
+            // topViewToolStripMenuItem
+            // 
+            this.topViewToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("topViewToolStripMenuItem.Image")));
+            this.topViewToolStripMenuItem.Name = "topViewToolStripMenuItem";
+            this.topViewToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.topViewToolStripMenuItem.Text = "Top view";
+            this.topViewToolStripMenuItem.Click += new System.EventHandler(this.topViewToolStripMenuItem_Click);
+            // 
+            // bottomViewToolStripMenuItem
+            // 
+            this.bottomViewToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("bottomViewToolStripMenuItem.Image")));
+            this.bottomViewToolStripMenuItem.Name = "bottomViewToolStripMenuItem";
+            this.bottomViewToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.bottomViewToolStripMenuItem.Text = "Bottom view";
+            this.bottomViewToolStripMenuItem.Click += new System.EventHandler(this.bottomViewToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem8
+            // 
+            this.toolStripMenuItem8.Name = "toolStripMenuItem8";
+            this.toolStripMenuItem8.Size = new System.Drawing.Size(176, 6);
+            // 
+            // fitPrinterToolStripMenuItem
+            // 
+            this.fitPrinterToolStripMenuItem.Name = "fitPrinterToolStripMenuItem";
+            this.fitPrinterToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
+            this.fitPrinterToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.fitPrinterToolStripMenuItem.Text = "Fit Printer";
+            this.fitPrinterToolStripMenuItem.Click += new System.EventHandler(this.fitPrinterToolStripMenuItem_Click);
+            // 
+            // fitObjectsToolStripMenuItem
+            // 
+            this.fitObjectsToolStripMenuItem.Name = "fitObjectsToolStripMenuItem";
+            this.fitObjectsToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
+            this.fitObjectsToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.fitObjectsToolStripMenuItem.Text = "Fit Objects";
+            this.fitObjectsToolStripMenuItem.Click += new System.EventHandler(this.fitObjectsToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem7
+            // 
+            this.toolStripMenuItem7.Name = "toolStripMenuItem7";
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(176, 6);
+            // 
+            // showEdgesToolStripMenuItem
+            // 
+            this.showEdgesToolStripMenuItem.Name = "showEdgesToolStripMenuItem";
+            this.showEdgesToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
+            this.showEdgesToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.showEdgesToolStripMenuItem.Text = "Show Edges";
+            this.showEdgesToolStripMenuItem.Click += new System.EventHandler(this.showEdgesToolStripMenuItem_Click);
+            // 
+            // showFacesToolStripMenuItem
+            // 
+            this.showFacesToolStripMenuItem.Name = "showFacesToolStripMenuItem";
+            this.showFacesToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
+            this.showFacesToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.showFacesToolStripMenuItem.Text = "Show Faces";
+            this.showFacesToolStripMenuItem.Click += new System.EventHandler(this.showFacesToolStripMenuItem_Click);
             // 
             // settingsToolStripMenuItem
             // 
@@ -260,7 +399,7 @@
             // threeDSettingsMenu
             // 
             this.threeDSettingsMenu.Name = "threeDSettingsMenu";
-            this.threeDSettingsMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D3)));
+            this.threeDSettingsMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.V)));
             this.threeDSettingsMenu.Size = new System.Drawing.Size(283, 22);
             this.threeDSettingsMenu.Text = "3D viewer configuration";
             this.threeDSettingsMenu.Click += new System.EventHandler(this.threeDSettingsMenu_Click);
@@ -347,8 +486,8 @@
             // slic3rConfigurationToolStripMenuItem
             // 
             this.slic3rConfigurationToolStripMenuItem.Name = "slic3rConfigurationToolStripMenuItem";
-            this.slic3rConfigurationToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-                        | System.Windows.Forms.Keys.D1)));
+            this.slic3rConfigurationToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.D1)));
             this.slic3rConfigurationToolStripMenuItem.Size = new System.Drawing.Size(346, 22);
             this.slic3rConfigurationToolStripMenuItem.Text = "Internal Slic3r configuration";
             this.slic3rConfigurationToolStripMenuItem.Click += new System.EventHandler(this.slic3rConfigurationToolStripMenuItem_Click);
@@ -356,8 +495,8 @@
             // externalSlic3rConfigurationToolStripMenuItem
             // 
             this.externalSlic3rConfigurationToolStripMenuItem.Name = "externalSlic3rConfigurationToolStripMenuItem";
-            this.externalSlic3rConfigurationToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-                        | System.Windows.Forms.Keys.D2)));
+            this.externalSlic3rConfigurationToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.D2)));
             this.externalSlic3rConfigurationToolStripMenuItem.Size = new System.Drawing.Size(346, 22);
             this.externalSlic3rConfigurationToolStripMenuItem.Text = "External Slic3r configuration";
             this.externalSlic3rConfigurationToolStripMenuItem.Click += new System.EventHandler(this.externalSlic3rConfigurationToolStripMenuItem_Click);
@@ -365,8 +504,8 @@
             // skeinforgeConfigurationToolStripMenuItem
             // 
             this.skeinforgeConfigurationToolStripMenuItem.Name = "skeinforgeConfigurationToolStripMenuItem";
-            this.skeinforgeConfigurationToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-                        | System.Windows.Forms.Keys.D3)));
+            this.skeinforgeConfigurationToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.D3)));
             this.skeinforgeConfigurationToolStripMenuItem.Size = new System.Drawing.Size(346, 22);
             this.skeinforgeConfigurationToolStripMenuItem.Text = "Skeinforge configuration";
             this.skeinforgeConfigurationToolStripMenuItem.Click += new System.EventHandler(this.skeinforgeToolStripMenuItem_Click);
@@ -636,6 +775,7 @@
             // 
             // printerInformationsToolStripMenuItem
             // 
+            this.printerInformationsToolStripMenuItem.Enabled = false;
             this.printerInformationsToolStripMenuItem.Name = "printerInformationsToolStripMenuItem";
             this.printerInformationsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.P)));
             this.printerInformationsToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
@@ -673,6 +813,7 @@
             // sendScript1ToolStripMenuItem
             // 
             this.sendScript1ToolStripMenuItem.Name = "sendScript1ToolStripMenuItem";
+            this.sendScript1ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D0)));
             this.sendScript1ToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.sendScript1ToolStripMenuItem.Text = "Send script 1";
             this.sendScript1ToolStripMenuItem.Click += new System.EventHandler(this.sendScript1ToolStripMenuItem_Click);
@@ -680,6 +821,7 @@
             // sendScript2ToolStripMenuItem
             // 
             this.sendScript2ToolStripMenuItem.Name = "sendScript2ToolStripMenuItem";
+            this.sendScript2ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D2)));
             this.sendScript2ToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.sendScript2ToolStripMenuItem.Text = "Send script 2";
             this.sendScript2ToolStripMenuItem.Click += new System.EventHandler(this.sendScript2ToolStripMenuItem_Click);
@@ -687,6 +829,7 @@
             // sendScript3ToolStripMenuItem
             // 
             this.sendScript3ToolStripMenuItem.Name = "sendScript3ToolStripMenuItem";
+            this.sendScript3ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D3)));
             this.sendScript3ToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.sendScript3ToolStripMenuItem.Text = "Send script 3";
             this.sendScript3ToolStripMenuItem.Click += new System.EventHandler(this.sendScript3ToolStripMenuItem_Click);
@@ -694,6 +837,7 @@
             // sendScript4ToolStripMenuItem
             // 
             this.sendScript4ToolStripMenuItem.Name = "sendScript4ToolStripMenuItem";
+            this.sendScript4ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D4)));
             this.sendScript4ToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.sendScript4ToolStripMenuItem.Text = "Send script 4";
             this.sendScript4ToolStripMenuItem.Click += new System.EventHandler(this.sendScript4ToolStripMenuItem_Click);
@@ -701,9 +845,33 @@
             // sendScript5ToolStripMenuItem
             // 
             this.sendScript5ToolStripMenuItem.Name = "sendScript5ToolStripMenuItem";
+            this.sendScript5ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D5)));
             this.sendScript5ToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.sendScript5ToolStripMenuItem.Text = "Send script 5";
             this.sendScript5ToolStripMenuItem.Click += new System.EventHandler(this.sendScript5ToolStripMenuItem_Click);
+            // 
+            // toolsToolStripMenuItem
+            // 
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.beltCalculatorToolStripMenuItem,
+            this.leadscrewCalculatorToolStripMenuItem});
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // beltCalculatorToolStripMenuItem
+            // 
+            this.beltCalculatorToolStripMenuItem.Name = "beltCalculatorToolStripMenuItem";
+            this.beltCalculatorToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.beltCalculatorToolStripMenuItem.Text = "Belt Calculator";
+            this.beltCalculatorToolStripMenuItem.Click += new System.EventHandler(this.beltCalculatorToolStripMenuItem_Click);
+            // 
+            // leadscrewCalculatorToolStripMenuItem
+            // 
+            this.leadscrewCalculatorToolStripMenuItem.Name = "leadscrewCalculatorToolStripMenuItem";
+            this.leadscrewCalculatorToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.leadscrewCalculatorToolStripMenuItem.Text = "Leadscrew Calculator";
+            this.leadscrewCalculatorToolStripMenuItem.Click += new System.EventHandler(this.leadscrewCalculatorToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -1060,7 +1228,7 @@
             // openGCode
             // 
             this.openGCode.DefaultExt = "gcode";
-            this.openGCode.Filter = "GCode/STL-Files|*.gcode;*.gco;*.stl;*.STL|All files|*.*";
+            this.openGCode.Filter = "GCode/3D-Files|*.gcode;*.gco;*.g;*.nc;*.stl;*.STL;*.obj;*.OBJ|All files|*.*";
             this.openGCode.Title = "Import G-Code";
             // 
             // saveJobDialog
@@ -1205,6 +1373,12 @@
             this.tabPrint.Text = "Manual control";
             this.tabPrint.UseVisualStyleBackColor = true;
             // 
+            // tdSettings
+            // 
+            this.tdSettings.DataSource = typeof(RepetierHost.view.ThreeDSettings);
+            this.tdSettings.DataMemberChanged += new System.EventHandler(this.tdSettings_DataMemberChanged);
+            this.tdSettings.CurrentItemChanged += new System.EventHandler(this.tdSettings_CurrentChanged);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1217,15 +1391,16 @@
             this.Controls.Add(this.menu);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menu;
+            this.MinimumSize = new System.Drawing.Size(640, 480);
             this.Name = "Main";
-            this.Text = "Repetier-Host V0.85c";
-            this.Load += new System.EventHandler(this.Main_Load);
-            this.SizeChanged += new System.EventHandler(this.Main_SizeChanged);
-            this.Shown += new System.EventHandler(this.Main_Shown);
+            this.Text = "Repetier-Host V0.90";
             this.Activated += new System.EventHandler(this.Main_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
-            this.Resize += new System.EventHandler(this.Main_Resize);
+            this.Load += new System.EventHandler(this.Main_Load);
+            this.Shown += new System.EventHandler(this.Main_Shown);
+            this.SizeChanged += new System.EventHandler(this.Main_SizeChanged);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Main_KeyDown);
+            this.Resize += new System.EventHandler(this.Main_Resize);
             this.menu.ResumeLayout(false);
             this.menu.PerformLayout();
             this.status.ResumeLayout(false);
@@ -1240,6 +1415,7 @@
             this.tabControlView.ResumeLayout(false);
             this.tab.ResumeLayout(false);
             this.tabSlicer.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.tdSettings)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1263,7 +1439,6 @@
         private System.Windows.Forms.OpenFileDialog openGCode;
         private System.Windows.Forms.ToolStripMenuItem printerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem threeDSettingsMenu;
-        private System.Windows.Forms.ToolStripMenuItem printerInformationsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem repetierSettingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem jobStatusToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem repetierHostHomepageToolStripMenuItem;
@@ -1364,6 +1539,25 @@
         public System.Windows.Forms.ToolStripButton toolShowTravel;
         private System.Windows.Forms.ToolStripMenuItem supportToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton toolStripButtonSupport;
+        private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem isometricToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem frontViewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem leftViewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem rightViewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem backViewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem topViewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem bottomViewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem7;
+        private System.Windows.Forms.ToolStripMenuItem showEdgesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showFacesToolStripMenuItem;
+        private System.Windows.Forms.BindingSource tdSettings;
+        private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem beltCalculatorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem leadscrewCalculatorToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem printerInformationsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem8;
+        private System.Windows.Forms.ToolStripMenuItem fitPrinterToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fitObjectsToolStripMenuItem;
     }
 }
 

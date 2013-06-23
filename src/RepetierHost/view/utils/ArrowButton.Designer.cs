@@ -16,6 +16,15 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
+                if(path!=null)
+                    path.Dispose();
+                if(innerPath!=null)
+                    innerPath.Dispose();
+                if(drawFont!=null)
+                    drawFont.Dispose();
+                path = null;
+                innerPath = null;
+                drawFont = null;
             }
             base.Dispose(disposing);
         }

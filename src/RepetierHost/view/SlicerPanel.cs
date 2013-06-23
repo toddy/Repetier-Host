@@ -249,12 +249,14 @@ namespace RepetierHost.view
 
             if (Main.slicer.ActiveSlicer == Slicer.SlicerID.Slic3r)
             {
-                switchSlic3rActive.On = true;
+                Console.WriteLine("slic3r active");
                 switchSkeinforge.On = false;
+                switchSlic3rActive.On = true;
                 //buttonStartSlicing.Text = "Slice with Slic3r\r\n\r\nPrinter = " + b.Slic3rPrinterSettings + "\r\nFilament = " + b.Slic3rFilamentSettings + "\r\nPrint = " + b.Slic3rPrintSettings;
             }
             else if (Main.slicer.ActiveSlicer == Slicer.SlicerID.Skeinforge)
             {
+                Console.WriteLine("skeinforge active");
                 switchSlic3rActive.On = false;
                 switchSkeinforge.On = true;
                 //buttonStartSlicing.Text = "Slice with Skeinforge\r\n\r\nProfile = " + b.SkeinforgeProfile;
@@ -319,7 +321,7 @@ namespace RepetierHost.view
 
         private void buttonStartSlicing_Click(object sender, EventArgs e)
         {
-            Main.main.stlComposer1.buttonSlice_Click(null, null);
+            Main.main.objectPlacement.buttonSlice_Click(null, null);
         }
 
         private void comboSkeinProfile_SelectedIndexChanged(object sender, EventArgs e)

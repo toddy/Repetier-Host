@@ -35,23 +35,6 @@
             this.labelPrinter = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageConnection = new System.Windows.Forms.TabPage();
-            this.buttonRefreshPorts = new System.Windows.Forms.Button();
-            this.labelCacheSizeHint = new System.Windows.Forms.Label();
-            this.checkPingPong = new System.Windows.Forms.CheckBox();
-            this.labelReceiveCacheSize = new System.Windows.Forms.Label();
-            this.textReceiveCacheSize = new System.Windows.Forms.TextBox();
-            this.labelConnectionInfo = new System.Windows.Forms.Label();
-            this.buttonDelete = new System.Windows.Forms.Button();
-            this.labelTransferProtocol = new System.Windows.Forms.Label();
-            this.comboTransferProtocol = new System.Windows.Forms.ComboBox();
-            this.comboParity = new System.Windows.Forms.ComboBox();
-            this.comboStopbits = new System.Windows.Forms.ComboBox();
-            this.labelParity = new System.Windows.Forms.Label();
-            this.labelStopbits = new System.Windows.Forms.Label();
-            this.comboBaud = new System.Windows.Forms.ComboBox();
-            this.labelBaudRate = new System.Windows.Forms.Label();
-            this.comboPort = new System.Windows.Forms.ComboBox();
-            this.labelPort = new System.Windows.Forms.Label();
             this.tabPagePrinter = new System.Windows.Forms.TabPage();
             this.numericNumExtruder = new System.Windows.Forms.NumericUpDown();
             this.labelNumberOfExtruder = new System.Windows.Forms.Label();
@@ -88,6 +71,10 @@
             this.labelTravelFeedRate = new System.Windows.Forms.Label();
             this.tabPageShape = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.panelCNC = new System.Windows.Forms.Panel();
+            this.labelCNCHeight = new System.Windows.Forms.Label();
+            this.textCNCZTop = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.panelRostock = new System.Windows.Forms.Panel();
             this.labelRosPrintableHeight = new System.Windows.Forms.Label();
             this.labelRosPrintableRadius = new System.Windows.Forms.Label();
@@ -151,10 +138,11 @@
             this.buttonAbort = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this.panelCNC = new System.Windows.Forms.Panel();
-            this.labelCNCHeight = new System.Windows.Forms.Label();
-            this.textCNCZTop = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.buttonDelete = new System.Windows.Forms.Button();
+            this.panelConnector = new System.Windows.Forms.Panel();
+            this.labelConnector = new System.Windows.Forms.Label();
+            this.comboConnector = new System.Windows.Forms.ComboBox();
+            this.bindingConnectors = new System.Windows.Forms.BindingSource(this.components);
             this.panelPrinterSelect.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPageConnection.SuspendLayout();
@@ -163,6 +151,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackTempPeriod)).BeginInit();
             this.tabPageShape.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.panelCNC.SuspendLayout();
             this.panelRostock.SuspendLayout();
             this.panelDumpArea.SuspendLayout();
             this.panelTotalArea.SuspendLayout();
@@ -171,13 +160,15 @@
             this.groupBoxPostSliceFilter.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
-            this.panelCNC.SuspendLayout();
+            this.panelConnector.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingConnectors)).BeginInit();
             this.SuspendLayout();
             // 
             // panelPrinterSelect
             // 
             this.panelPrinterSelect.Controls.Add(this.comboPrinter);
             this.panelPrinterSelect.Controls.Add(this.labelPrinter);
+            this.panelPrinterSelect.Controls.Add(this.buttonDelete);
             this.panelPrinterSelect.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelPrinterSelect.Location = new System.Drawing.Point(0, 0);
             this.panelPrinterSelect.Name = "panelPrinterSelect";
@@ -189,7 +180,7 @@
             this.comboPrinter.FormattingEnabled = true;
             this.comboPrinter.Location = new System.Drawing.Point(88, 3);
             this.comboPrinter.Name = "comboPrinter";
-            this.comboPrinter.Size = new System.Drawing.Size(388, 21);
+            this.comboPrinter.Size = new System.Drawing.Size(357, 21);
             this.comboPrinter.TabIndex = 0;
             this.comboPrinter.SelectedIndexChanged += new System.EventHandler(this.comboPrinter_SelectedIndexChanged);
             // 
@@ -204,9 +195,9 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPageConnection);
             this.tabControl1.Controls.Add(this.tabPagePrinter);
             this.tabControl1.Controls.Add(this.tabPageShape);
@@ -219,24 +210,9 @@
             // 
             // tabPageConnection
             // 
+            this.tabPageConnection.AutoScroll = true;
             this.tabPageConnection.BackColor = System.Drawing.Color.Transparent;
-            this.tabPageConnection.Controls.Add(this.buttonRefreshPorts);
-            this.tabPageConnection.Controls.Add(this.labelCacheSizeHint);
-            this.tabPageConnection.Controls.Add(this.checkPingPong);
-            this.tabPageConnection.Controls.Add(this.labelReceiveCacheSize);
-            this.tabPageConnection.Controls.Add(this.textReceiveCacheSize);
-            this.tabPageConnection.Controls.Add(this.labelConnectionInfo);
-            this.tabPageConnection.Controls.Add(this.buttonDelete);
-            this.tabPageConnection.Controls.Add(this.labelTransferProtocol);
-            this.tabPageConnection.Controls.Add(this.comboTransferProtocol);
-            this.tabPageConnection.Controls.Add(this.comboParity);
-            this.tabPageConnection.Controls.Add(this.comboStopbits);
-            this.tabPageConnection.Controls.Add(this.labelParity);
-            this.tabPageConnection.Controls.Add(this.labelStopbits);
-            this.tabPageConnection.Controls.Add(this.comboBaud);
-            this.tabPageConnection.Controls.Add(this.labelBaudRate);
-            this.tabPageConnection.Controls.Add(this.comboPort);
-            this.tabPageConnection.Controls.Add(this.labelPort);
+            this.tabPageConnection.Controls.Add(this.panelConnector);
             this.tabPageConnection.Location = new System.Drawing.Point(4, 22);
             this.tabPageConnection.Name = "tabPageConnection";
             this.tabPageConnection.Padding = new System.Windows.Forms.Padding(3);
@@ -244,194 +220,6 @@
             this.tabPageConnection.TabIndex = 0;
             this.tabPageConnection.Text = "Connection";
             this.tabPageConnection.UseVisualStyleBackColor = true;
-            // 
-            // buttonRefreshPorts
-            // 
-            this.buttonRefreshPorts.Location = new System.Drawing.Point(292, 7);
-            this.buttonRefreshPorts.Name = "buttonRefreshPorts";
-            this.buttonRefreshPorts.Size = new System.Drawing.Size(149, 23);
-            this.buttonRefreshPorts.TabIndex = 16;
-            this.buttonRefreshPorts.Text = "Refresh Ports";
-            this.buttonRefreshPorts.UseVisualStyleBackColor = true;
-            this.buttonRefreshPorts.Click += new System.EventHandler(this.buttonRefreshPorts_Click);
-            // 
-            // labelCacheSizeHint
-            // 
-            this.labelCacheSizeHint.AutoSize = true;
-            this.labelCacheSizeHint.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelCacheSizeHint.Location = new System.Drawing.Point(136, 168);
-            this.labelCacheSizeHint.Name = "labelCacheSizeHint";
-            this.labelCacheSizeHint.Size = new System.Drawing.Size(305, 12);
-            this.labelCacheSizeHint.TabIndex = 15;
-            this.labelCacheSizeHint.Text = "From Arduino 1 on the receiving cache was reduced from 127 to 63 bytes!";
-            // 
-            // checkPingPong
-            // 
-            this.checkPingPong.AutoSize = true;
-            this.checkPingPong.Location = new System.Drawing.Point(16, 188);
-            this.checkPingPong.Name = "checkPingPong";
-            this.checkPingPong.Size = new System.Drawing.Size(264, 17);
-            this.checkPingPong.TabIndex = 14;
-            this.checkPingPong.Text = "Use Ping-Pong communication (send only after ok)";
-            this.checkPingPong.UseVisualStyleBackColor = true;
-            // 
-            // labelReceiveCacheSize
-            // 
-            this.labelReceiveCacheSize.AutoSize = true;
-            this.labelReceiveCacheSize.Location = new System.Drawing.Point(13, 148);
-            this.labelReceiveCacheSize.Name = "labelReceiveCacheSize";
-            this.labelReceiveCacheSize.Size = new System.Drawing.Size(104, 13);
-            this.labelReceiveCacheSize.TabIndex = 13;
-            this.labelReceiveCacheSize.Text = "Receive cache size:";
-            // 
-            // textReceiveCacheSize
-            // 
-            this.textReceiveCacheSize.Location = new System.Drawing.Point(138, 145);
-            this.textReceiveCacheSize.Name = "textReceiveCacheSize";
-            this.textReceiveCacheSize.Size = new System.Drawing.Size(106, 20);
-            this.textReceiveCacheSize.TabIndex = 5;
-            this.textReceiveCacheSize.Text = "63";
-            // 
-            // labelConnectionInfo
-            // 
-            this.labelConnectionInfo.Location = new System.Drawing.Point(16, 218);
-            this.labelConnectionInfo.Name = "labelConnectionInfo";
-            this.labelConnectionInfo.Size = new System.Drawing.Size(456, 85);
-            this.labelConnectionInfo.TabIndex = 11;
-            this.labelConnectionInfo.Text = resources.GetString("labelConnectionInfo.Text");
-            // 
-            // buttonDelete
-            // 
-            this.buttonDelete.Location = new System.Drawing.Point(273, 306);
-            this.buttonDelete.Name = "buttonDelete";
-            this.buttonDelete.Size = new System.Drawing.Size(180, 22);
-            this.buttonDelete.TabIndex = 6;
-            this.buttonDelete.Text = "Delete these printer settings";
-            this.buttonDelete.UseVisualStyleBackColor = true;
-            this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
-            // 
-            // labelTransferProtocol
-            // 
-            this.labelTransferProtocol.AutoSize = true;
-            this.labelTransferProtocol.Location = new System.Drawing.Point(13, 117);
-            this.labelTransferProtocol.Name = "labelTransferProtocol";
-            this.labelTransferProtocol.Size = new System.Drawing.Size(87, 13);
-            this.labelTransferProtocol.TabIndex = 9;
-            this.labelTransferProtocol.Text = "Transfer protocol";
-            // 
-            // comboTransferProtocol
-            // 
-            this.comboTransferProtocol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboTransferProtocol.FormattingEnabled = true;
-            this.comboTransferProtocol.Items.AddRange(new object[] {
-            "Autodetect",
-            "ASCII",
-            "Repetier protocol"});
-            this.comboTransferProtocol.Location = new System.Drawing.Point(138, 117);
-            this.comboTransferProtocol.Name = "comboTransferProtocol";
-            this.comboTransferProtocol.Size = new System.Drawing.Size(129, 21);
-            this.comboTransferProtocol.TabIndex = 4;
-            // 
-            // comboParity
-            // 
-            this.comboParity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboParity.FormattingEnabled = true;
-            this.comboParity.Items.AddRange(new object[] {
-            "None",
-            "Even",
-            "Odd",
-            "Mark",
-            "Space"});
-            this.comboParity.Location = new System.Drawing.Point(138, 90);
-            this.comboParity.Name = "comboParity";
-            this.comboParity.Size = new System.Drawing.Size(129, 21);
-            this.comboParity.TabIndex = 3;
-            // 
-            // comboStopbits
-            // 
-            this.comboStopbits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboStopbits.FormattingEnabled = true;
-            this.comboStopbits.Items.AddRange(new object[] {
-            "0",
-            "1",
-            "2"});
-            this.comboStopbits.Location = new System.Drawing.Point(138, 62);
-            this.comboStopbits.Name = "comboStopbits";
-            this.comboStopbits.Size = new System.Drawing.Size(129, 21);
-            this.comboStopbits.TabIndex = 2;
-            // 
-            // labelParity
-            // 
-            this.labelParity.AutoSize = true;
-            this.labelParity.Location = new System.Drawing.Point(13, 89);
-            this.labelParity.Name = "labelParity";
-            this.labelParity.Size = new System.Drawing.Size(33, 13);
-            this.labelParity.TabIndex = 5;
-            this.labelParity.Text = "Parity";
-            // 
-            // labelStopbits
-            // 
-            this.labelStopbits.AutoSize = true;
-            this.labelStopbits.Location = new System.Drawing.Point(13, 62);
-            this.labelStopbits.Name = "labelStopbits";
-            this.labelStopbits.Size = new System.Drawing.Size(51, 13);
-            this.labelStopbits.TabIndex = 4;
-            this.labelStopbits.Text = "Stop bits:";
-            // 
-            // comboBaud
-            // 
-            this.comboBaud.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBaud.FormattingEnabled = true;
-            this.comboBaud.Items.AddRange(new object[] {
-            "9600",
-            "14400",
-            "19200",
-            "28800",
-            "38400",
-            "56000",
-            "57600",
-            "76800",
-            "111112",
-            "115200",
-            "128000",
-            "230400",
-            "250000",
-            "256000",
-            "460800",
-            "500000",
-            "921600",
-            "1000000",
-            "1500000"});
-            this.comboBaud.Location = new System.Drawing.Point(138, 34);
-            this.comboBaud.Name = "comboBaud";
-            this.comboBaud.Size = new System.Drawing.Size(129, 21);
-            this.comboBaud.TabIndex = 1;
-            // 
-            // labelBaudRate
-            // 
-            this.labelBaudRate.AutoSize = true;
-            this.labelBaudRate.Location = new System.Drawing.Point(13, 34);
-            this.labelBaudRate.Name = "labelBaudRate";
-            this.labelBaudRate.Size = new System.Drawing.Size(56, 13);
-            this.labelBaudRate.TabIndex = 2;
-            this.labelBaudRate.Text = "Baud rate:";
-            // 
-            // comboPort
-            // 
-            this.comboPort.FormattingEnabled = true;
-            this.comboPort.Location = new System.Drawing.Point(138, 7);
-            this.comboPort.Name = "comboPort";
-            this.comboPort.Size = new System.Drawing.Size(129, 21);
-            this.comboPort.TabIndex = 0;
-            // 
-            // labelPort
-            // 
-            this.labelPort.AutoSize = true;
-            this.labelPort.Location = new System.Drawing.Point(13, 10);
-            this.labelPort.Name = "labelPort";
-            this.labelPort.Size = new System.Drawing.Size(29, 13);
-            this.labelPort.TabIndex = 0;
-            this.labelPort.Text = "Port:";
             // 
             // tabPagePrinter
             // 
@@ -823,6 +611,44 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(460, 517);
             this.panel2.TabIndex = 18;
+            // 
+            // panelCNC
+            // 
+            this.panelCNC.Controls.Add(this.labelCNCHeight);
+            this.panelCNC.Controls.Add(this.textCNCZTop);
+            this.panelCNC.Controls.Add(this.label1);
+            this.panelCNC.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelCNC.Location = new System.Drawing.Point(0, 447);
+            this.panelCNC.Name = "panelCNC";
+            this.panelCNC.Size = new System.Drawing.Size(460, 100);
+            this.panelCNC.TabIndex = 23;
+            // 
+            // labelCNCHeight
+            // 
+            this.labelCNCHeight.AutoSize = true;
+            this.labelCNCHeight.Location = new System.Drawing.Point(9, 7);
+            this.labelCNCHeight.Name = "labelCNCHeight";
+            this.labelCNCHeight.Size = new System.Drawing.Size(106, 13);
+            this.labelCNCHeight.TabIndex = 0;
+            this.labelCNCHeight.Text = "Object z top position:";
+            // 
+            // textCNCZTop
+            // 
+            this.textCNCZTop.Location = new System.Drawing.Point(137, 4);
+            this.textCNCZTop.Name = "textCNCZTop";
+            this.textCNCZTop.Size = new System.Drawing.Size(106, 20);
+            this.textCNCZTop.TabIndex = 1;
+            this.textCNCZTop.Text = "0";
+            this.textCNCZTop.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(271, 6);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(23, 13);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "mm";
             // 
             // panelRostock
             // 
@@ -1388,8 +1214,8 @@
             this.labelFilterInfo.Size = new System.Drawing.Size(447, 62);
             this.labelFilterInfo.TabIndex = 3;
             this.labelFilterInfo.Text = "You can run a filter program after each slicing action. The filter will be run on" +
-                " the G-Code\r\nproduced by the slicer. Use #in and #out to insert the input and ou" +
-                "tput filenames as parameter.";
+    " the G-Code\r\nproduced by the slicer. Use #in and #out to insert the input and ou" +
+    "tput filenames as parameter.";
             // 
             // checkRunFilterEverySlice
             // 
@@ -1463,43 +1289,46 @@
             // 
             this.errorProvider.ContainerControl = this;
             // 
-            // panelCNC
+            // buttonDelete
             // 
-            this.panelCNC.Controls.Add(this.labelCNCHeight);
-            this.panelCNC.Controls.Add(this.textCNCZTop);
-            this.panelCNC.Controls.Add(this.label1);
-            this.panelCNC.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelCNC.Location = new System.Drawing.Point(0, 447);
-            this.panelCNC.Name = "panelCNC";
-            this.panelCNC.Size = new System.Drawing.Size(460, 100);
-            this.panelCNC.TabIndex = 23;
+            this.buttonDelete.FlatAppearance.BorderSize = 0;
+            this.buttonDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonDelete.Image = ((System.Drawing.Image)(resources.GetObject("buttonDelete.Image")));
+            this.buttonDelete.Location = new System.Drawing.Point(452, 3);
+            this.buttonDelete.Name = "buttonDelete";
+            this.buttonDelete.Size = new System.Drawing.Size(25, 26);
+            this.buttonDelete.TabIndex = 6;
+            this.buttonDelete.UseVisualStyleBackColor = true;
+            this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
             // 
-            // labelCNCHeight
+            // panelConnector
             // 
-            this.labelCNCHeight.AutoSize = true;
-            this.labelCNCHeight.Location = new System.Drawing.Point(9, 7);
-            this.labelCNCHeight.Name = "labelCNCHeight";
-            this.labelCNCHeight.Size = new System.Drawing.Size(106, 13);
-            this.labelCNCHeight.TabIndex = 0;
-            this.labelCNCHeight.Text = "Object z top position:";
+            this.panelConnector.Controls.Add(this.comboConnector);
+            this.panelConnector.Controls.Add(this.labelConnector);
+            this.panelConnector.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelConnector.Location = new System.Drawing.Point(3, 3);
+            this.panelConnector.Name = "panelConnector";
+            this.panelConnector.Size = new System.Drawing.Size(475, 37);
+            this.panelConnector.TabIndex = 18;
             // 
-            // textCNCZTop
+            // labelConnector
             // 
-            this.textCNCZTop.Location = new System.Drawing.Point(137, 4);
-            this.textCNCZTop.Name = "textCNCZTop";
-            this.textCNCZTop.Size = new System.Drawing.Size(106, 20);
-            this.textCNCZTop.TabIndex = 1;
-            this.textCNCZTop.Text = "0";
-            this.textCNCZTop.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
+            this.labelConnector.AutoSize = true;
+            this.labelConnector.Location = new System.Drawing.Point(5, 7);
+            this.labelConnector.Name = "labelConnector";
+            this.labelConnector.Size = new System.Drawing.Size(59, 13);
+            this.labelConnector.TabIndex = 0;
+            this.labelConnector.Text = "Connector;";
             // 
-            // label1
+            // comboConnector
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(271, 6);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(23, 13);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "mm";
+            this.comboConnector.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboConnector.FormattingEnabled = true;
+            this.comboConnector.Location = new System.Drawing.Point(94, 4);
+            this.comboConnector.Name = "comboConnector";
+            this.comboConnector.Size = new System.Drawing.Size(188, 21);
+            this.comboConnector.TabIndex = 1;
+            this.comboConnector.SelectedIndexChanged += new System.EventHandler(this.comboConnector_SelectedIndexChanged);
             // 
             // FormPrinterSettings
             // 
@@ -1525,13 +1354,14 @@
             this.panelPrinterSelect.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPageConnection.ResumeLayout(false);
-            this.tabPageConnection.PerformLayout();
             this.tabPagePrinter.ResumeLayout(false);
             this.tabPagePrinter.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericNumExtruder)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackTempPeriod)).EndInit();
             this.tabPageShape.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
+            this.panelCNC.ResumeLayout(false);
+            this.panelCNC.PerformLayout();
             this.panelRostock.ResumeLayout(false);
             this.panelRostock.PerformLayout();
             this.panelDumpArea.ResumeLayout(false);
@@ -1545,8 +1375,9 @@
             this.groupBoxPostSliceFilter.PerformLayout();
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
-            this.panelCNC.ResumeLayout(false);
-            this.panelCNC.PerformLayout();
+            this.panelConnector.ResumeLayout(false);
+            this.panelConnector.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingConnectors)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1561,16 +1392,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button buttonAbort;
         private System.Windows.Forms.Button buttonOK;
-        private System.Windows.Forms.ComboBox comboParity;
-        private System.Windows.Forms.ComboBox comboStopbits;
-        private System.Windows.Forms.Label labelParity;
-        private System.Windows.Forms.Label labelStopbits;
-        private System.Windows.Forms.ComboBox comboBaud;
-        private System.Windows.Forms.Label labelBaudRate;
-        private System.Windows.Forms.ComboBox comboPort;
-        private System.Windows.Forms.Label labelPort;
-        private System.Windows.Forms.Label labelTransferProtocol;
-        private System.Windows.Forms.ComboBox comboTransferProtocol;
         private System.Windows.Forms.CheckBox checkTemp;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
@@ -1586,14 +1407,11 @@
         private System.Windows.Forms.TextBox textDisposeX;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label labelParkPosition;
-        private System.Windows.Forms.Label labelConnectionInfo;
         private System.Windows.Forms.Button buttonDelete;
         private System.Windows.Forms.CheckBox checkDisbaleHeatedBedAfterJob;
         private System.Windows.Forms.CheckBox checkDisableExtruderAfterJob;
         private System.Windows.Forms.Button buttonApply;
         private System.Windows.Forms.ErrorProvider errorProvider;
-        private System.Windows.Forms.Label labelReceiveCacheSize;
-        private System.Windows.Forms.TextBox textReceiveCacheSize;
         private System.Windows.Forms.TabPage tabPageShape;
         private System.Windows.Forms.TextBox textPrintAreaHeight;
         private System.Windows.Forms.TextBox textDumpAreaLeft;
@@ -1616,7 +1434,6 @@
         private System.Windows.Forms.TextBox textDumpAreaDepth;
         private System.Windows.Forms.TextBox textDumpAreaWidth;
         private System.Windows.Forms.TextBox textDumpAreaFront;
-        private System.Windows.Forms.CheckBox checkPingPong;
         public System.Windows.Forms.ComboBox comboPrinter;
         private System.Windows.Forms.Label label33;
         private System.Windows.Forms.TextBox textDisposeZ;
@@ -1627,7 +1444,6 @@
         private System.Windows.Forms.TextBox textDefaultExtruderTemp;
         private System.Windows.Forms.Label labelDefHeatedBedTemp;
         private System.Windows.Forms.Label labelDefExtruderTemp;
-        private System.Windows.Forms.Label labelCacheSizeHint;
         private System.Windows.Forms.CheckBox logM105Checkbox;
         private System.Windows.Forms.TabPage tabAdvanced;
         private System.Windows.Forms.GroupBox groupBoxPostSliceFilter;
@@ -1660,7 +1476,6 @@
         private System.Windows.Forms.Label labelHomeY;
         private System.Windows.Forms.NumericUpDown numericNumExtruder;
         private System.Windows.Forms.Label labelNumberOfExtruder;
-        private System.Windows.Forms.Button buttonRefreshPorts;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panelPrinterType;
         private System.Windows.Forms.ComboBox comboBoxPrinterType;
@@ -1678,5 +1493,9 @@
         private System.Windows.Forms.Label labelCNCHeight;
         private System.Windows.Forms.TextBox textCNCZTop;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Panel panelConnector;
+        private System.Windows.Forms.ComboBox comboConnector;
+        private System.Windows.Forms.Label labelConnector;
+        private System.Windows.Forms.BindingSource bindingConnectors;
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<translation revision="8" language="English" languageInEnglish="English" author="Repetier">
+<translation revision="9" language="English" languageInEnglish="English" author="Repetier">
 <t id="M_FILE" ver="1">File</t>
 <t id="M_CONFIG" ver="1">Config</t>
 <t id="M_SLICER" ver="1">Slicer</t>
@@ -95,8 +95,8 @@ You can add pauses in your code with
 <t id="L_TRANSLATION:" ver="1">Translation</t>
 <t id="L_SCALE:" ver="1">Scale</t>
 <t id="L_ROTATE:" ver="1">Rotation</t>
-<t id="L_STL_OBJECTS" ver="1">STL Objects</t>
-<t id="B_SAVE_AS_STL" ver="1">Save as STL</t>
+<t id="L_STL_OBJECTS" ver="9">Objects</t>
+<t id="B_SAVE_AS_STL" ver="9">Export</t>
 <t id="B_REMOVE_STL_OBJECT" ver="1">Remove Object</t>
 <t id="B_ADD_STL_OBJECT" ver="1">Add Object</t>
 <t id="B_AUTOPOSITION" ver="1">Autoposition</t>
@@ -527,5 +527,94 @@ Write Changes to EEPROM?</t>
 <t id="L_OBJECTS_OUTSIDE_SLICE_QUEST" ver="8">At least one object is outside the printable area. Abort slicing?</t>
 <t id="L_CNC_ROUTER" ver="8">CNC Router</t>
 <t id="L_SLIC3R_VERSION" ver="8">Slic3r Version</t>
+<t id="L_MODEL_ERRORS" ver="9">Model Errors:</t>
+<t id="L_REPAIR" ver="9">Repair</t>
+<t id="L_SPLIT" ver="9">Split</t>
+<t id="L_YES" ver="9">Yes</t>
+<t id="L_NO" ver="9">No</t>
+<t id="L_MODEL_CHANGED_RELOAD" ver="9">One or more objects files are changed.\r\nReload objects?</t>
+<t id="L_FILES_CHANGED" ver="9">Files changed</t>
+<t id="L_INNER_FACES" ver="9">Inner faces:</t>
+<t id="L_BACKGROUND_TOP" ver="9">Background Top:</t>
+<t id="L_BACKGROUND_BOTTOM" ver="9">Background Bottom:</t>
+<t id="L_PRINTER_FRAME" ver="9">Printer Frame:</t>
+<t id="L_ISOMETRIC_VIEW" ver="9">Isometric View</t>
+<t id="L_BOTTOM_VIEW" ver="9">Bottom View</t>
+<t id="L_LEFT_VIEW" ver="9">Left View</t>
+<t id="L_RIGHT_VIEW" ver="9">Right View</t>
+<t id="L_FRONT_VIEW" ver="9">Front View</t>
+<t id="L_BACK_VIEW" ver="9">Back View</t>
+<t id="M_VIEW" ver="9">View</t>
+<t id="M_SHOW_EDGES" ver="9">Show Edges</t>
+<t id="M_SHOW_FACES" ver="9">Show Faces</t>
+<t id="L_ANA_MODIFIED" ver="9">Modified:</t>
+<t id="L_ANA_MANIFOLD" ver="9">Manifold:</t>
+<t id="L_ANA_INTERSECTING_TRIANGLES" ver="9">Intersecting triangles:</t>
+<t id="L_ANA_NORMALS" ver="9">Normals:</t>
+<t id="L_ANA_LOOP_EDGES" ver="9">Loop Edges:</t>
+<t id="L_ANA_HIGHLY_CONNECTED" ver="9">Highly Connected Edges:</t>
+<t id="L_ANA_VERTICES" ver="9">Points:</t>
+<t id="L_ANA_EDGES" ver="9">Edges:</t>
+<t id="L_ANA_FACES" ver="9">Faces:</t>
+<t id="L_ANA_SHELLS" ver="9">Shells:</t>
+<t id="L_ANA_ORIENTED" ver="9">Oriented</t>
+<t id="L_ANA_NOT_ORIENTED" ver="9">Not Oriented</t>
+<t id="M_TOOLS" ver="9">Tools</t>
+<t id="M_BELT_CALCULATOR" ver="9">Belt Calculator</t>
+<t id="M_LEADSCREW_CALCULATOR" ver="9">Leadscrew Calculator</t>
+<t id="L_MOTOR_STEP_ANGLE" ver="9">Motor step angle</t>
+<t id="L_DRIVER_MICROSTEPPING" ver="9">Driver Microstepping</t>
+<t id="L_BELT_PITCH" ver="9">Belt Pitch</t>
+<t id="L_TOOTH_COUNT" ver="9">Tooth Count</t>
+<t id="B_CALCULATE" ver="9">Calculate</t>
+<t id="L_STEPS_PER_MM" ver="9">Value for steps per mm</t>
+<t id="L_TOOTH_COUNT_MUST_INT" ver="9">Tooth Count must be int</t>
+<t id="L_LEADSCREW_PITCH" ver="9">Leadscrew pitch</t>
+<t id="L_GEAR_RATIO" ver="9">Gear ratio</t>
+<t id="L_SERIAL_CONNECTION" ver="9">Serial Connection</t>
+<t id="L_VIRTUAL_CONNECTION" ver="9">Virtual Printer</t>
+<t id="L_REPETIER_SERVER_CONNECTION" ver="9">Repetier-Server</t>
+<t id="L_CONNECTOR" ver="9">Connector</t>
+<t id="L_DISABLED" ver="9">Disabled</t>
+<t id="L_DTR_LOW_HIGH" ver="9">DTR high->low</t>
+<t id="L_DTR_LOW_HIGH_LOW" ver="9">DTR low->high->low</t>
+<t id="L_DTR_TOGGLE" ver="9">DTR toggle</t>
+<t id="L_RESET_ON_CONNECT" ver="9">Reset on Connect</t>
+<t id="L_RESET_ON_EMERGENCY" ver="9">Reset on Emergency</t>
+<t id="L_SEND_EMERGENCY_CMD" ver="9">Send emergency command</t>
+<t id="L_SEND_EMERGENCY_CMD_DTR_TOGGLE" ver="9">Send emergency command + DTR high->low</t>
+<t id="L_SEND_EMERGENCY_CMD_RECONNECT" ver="9">Send emergency command and reconnect</t>
+<t id="L_FILE_ASSOCIATIONS" ver="9">File Associations</t>
+<t id="L_ASSOCIATE_EXTENSIONS" ver="9">Associate Extensions</t>
+<t id="L_CONNECTION_FAILED" ver="9">The connection failed with the following error: $1. Make sure your printer is connected, enabled and connection data is set correct. Open printer settings?</t>
+<t id="L_AUTOENABLE_PARALLEL_TOPVIEW" ver="9">Enable parallel mode in top view</t>
+<t id="L_RESET_DEFAULTS" ver="9">Reset defaults</t>
+<t id="L_REMOVED_DEGENERATED" ver="9">Removed degenerated triangles:</t>
+<t id="L_REMOVED_ISOLATED" ver="9">Removed isolated triangles:</t>
+<t id="L_REMOVED_DOUBLE" ver="9">Removed double triangles:</t>
+<t id="L_STARTING_ANALYSER" ver="9">Starting object analyser ...</t>
+<t id="L_ANALYSER_FINISHED" ver="9">Analysing finished.</t>
+<t id="L_LOADING_3D_FAILED" ver="9">Loading of 3d file $1 failed.</t>
+<t id="L_OBJECT_INFORMATIONS" ver="9">Object Informations</t>
+<t id="L_MINIMUM:" ver="9">Minimum:</t>
+<t id="L_MAXIMUM:" ver="9">Maximum:</t>
+<t id="L_SIZE:" ver="9">Size:</t>
+<t id="L_VOLUME:" ver="9">Volume:</t>
+<t id="L_SURFACE:" ver="9">Surface:</t>
+<t id="L_DIMENSIONS:" ver="9">Dimensions:</t>
+<t id="L_SPLIT_OBJECT" ver="9">Split Object</t>
+<t id="L_FIX_NORMALS" ver="9">Fix Normals</t>
+<t id="L_REPAIR" ver="9">Repair</t>
+<t id="M_FIT_PRINTER" ver="9">Fit Printer</t>
+<t id="M_FIT_OBJECTS" ver="9">Fit Objects</t>
+<t id="IMPORTING_1" ver="9">Importing $1</t>
+<t id="L_LOADING..." ver="9">Loading ...</t>
+<t id="L_INTERSECTION_TESTS" ver="9">Intersection tests</t>
+<t id="L_FIXING_NORMALS" ver="9">Fixing normals</t>
+<t id="L_ANA_FIXED_COLLINEAR_TRIANGLES" ver="9">Fixed collinear triangles:</t>
+<t id="L_ANA_CORRECTED_NORMAL_ORIENTATIONS" ver="9">Corrected normal orientations:</t>
+<t id="L_OBJECT_IS_MANIFOLD" ver="9">Object is manifold.</t>
+<t id="L_OBJECT_IS_NON_MANIFOLD" ver="9">Object is non-manifold. Slicing may produce wrong results. Please repair object file first.</t>
+<t id="L_" ver="9"></t>
 </translation>
 

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -17,9 +17,13 @@
     <SignManifests>false</SignManifests>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <ApplicationIcon>repetier-logo-trans32.ico</ApplicationIcon>
-    <PublishWizardCompleted>true</PublishWizardCompleted>
     <StartupObject>RepetierHost.Program</StartupObject>
-    <NoWin32Manifest>true</NoWin32Manifest>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -34,6 +38,7 @@
     <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -44,13 +49,13 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
@@ -63,6 +68,9 @@
     <WarningLevel>4</WarningLevel>
     <Commandlineparameters>-macosx</Commandlineparameters>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" />
@@ -92,6 +100,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="connector\PrinterConnectorBase.cs" />
+    <Compile Include="connector\SerialConnectionPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="connector\SerialConnectionPanel.Designer.cs">
+      <DependentUpon>SerialConnectionPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="connector\SerialConnector.cs" />
+    <Compile Include="connector\VirtualPrinterConnector.cs" />
+    <Compile Include="connector\VirtualPrinterPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="connector\VirtualPrinterPanel.Designer.cs">
+      <DependentUpon>VirtualPrinterPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="extensions\ExtensionManager.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -99,6 +123,7 @@
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
     <Compile Include="model\BasicConfiguration.cs" />
+    <Compile Include="model\BeltCalculator.cs" />
     <Compile Include="model\Commands.cs" />
     <Compile Include="model\Custom.cs" />
     <Compile Include="model\EEPROMMarlinParameter.cs" />
@@ -109,6 +134,18 @@
     <Compile Include="model\GCodeShort.cs" />
     <Compile Include="model\GCodeVisual.cs" />
     <Compile Include="model\Geom3D.cs" />
+    <Compile Include="model\geom\RHBoundingBox.cs" />
+    <Compile Include="model\geom\RHMatrix3.cs" />
+    <Compile Include="model\geom\RHVector3.cs" />
+    <Compile Include="model\geom\Submesh.cs" />
+    <Compile Include="model\geom\TestTopoTriangle.cs" />
+    <Compile Include="model\geom\TopoEdge.cs" />
+    <Compile Include="model\geom\TopoModel.cs" />
+    <Compile Include="model\geom\TopoPlane.cs" />
+    <Compile Include="model\geom\TopoTriangle.cs" />
+    <Compile Include="model\geom\TopoTriangleStorage.cs" />
+    <Compile Include="model\geom\TopoVertex.cs" />
+    <Compile Include="model\geom\TopoVertexStorage.cs" />
     <Compile Include="model\IniManager.cs" />
     <Compile Include="model\LogLine.cs" />
     <Compile Include="model\ModelAnimation.cs" />
@@ -121,7 +158,7 @@
     <Compile Include="model\PulseAnimation.cs" />
     <Compile Include="model\RectPacker.cs" />
     <Compile Include="model\SkeinConfig.cs" />
-    <Compile Include="model\STL.cs" />
+    <Compile Include="model\PrintModel.cs" />
     <Compile Include="model\TemperatureHistory.cs" />
     <Compile Include="model\ThreeDModel.cs" />
     <Compile Include="model\ThreeDView.cs" />
@@ -129,6 +166,12 @@
     <Compile Include="model\VirtualPrinter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="connector\SerialConnectionPanel.resx">
+      <DependentUpon>SerialConnectionPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="connector\VirtualPrinterPanel.resx">
+      <DependentUpon>VirtualPrinterPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -141,6 +184,9 @@
     <EmbeddedResource Include="view\About.resx">
       <DependentUpon>About.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="view\BeltCalculatorDialog.resx">
+      <DependentUpon>BeltCalculatorDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="view\CopyObjectsDialog.resx">
       <DependentUpon>CopyObjectsDialog.cs</DependentUpon>
@@ -170,6 +216,9 @@
       <DependentUpon>JobStatus.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="view\LeadScrewCalculatorDialog.resx">
+      <DependentUpon>LeadScrewCalculatorDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="view\LogBox.resx">
       <DependentUpon>LogBox.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -177,6 +226,9 @@
     <EmbeddedResource Include="view\LogView.resx">
       <DependentUpon>LogView.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="view\ObjectInformation.resx">
+      <DependentUpon>ObjectInformation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="view\Preferences.resx">
       <DependentUpon>Preferences.cs</DependentUpon>
@@ -258,6 +310,9 @@
       <DependentUpon>ColorSlider.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="view\utils\InfoProgressPanel.resx">
+      <DependentUpon>InfoProgressPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="view\utils\PauseInfo.resx">
       <DependentUpon>PauseInfo.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -283,7 +338,11 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="app.config" />
+    <None Include="Properties\DataSources\RepetierHost.connector.SerialConnector.datasource" />
+    <None Include="Properties\DataSources\RepetierHost.connector.VirtualPrinterConnector.datasource" />
     <None Include="Properties\DataSources\RepetierHost.view.RepetierEditor.datasource" />
+    <None Include="Properties\DataSources\RepetierHost.view.ThreeDSettings.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -299,6 +358,12 @@
     </Compile>
     <Compile Include="view\About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
+    </Compile>
+    <Compile Include="view\BeltCalculatorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="view\BeltCalculatorDialog.Designer.cs">
+      <DependentUpon>BeltCalculatorDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="view\CopyObjectsDialog.cs">
       <SubType>Form</SubType>
@@ -345,6 +410,12 @@
     <Compile Include="view\JobStatus.Designer.cs">
       <DependentUpon>JobStatus.cs</DependentUpon>
     </Compile>
+    <Compile Include="view\LeadScrewCalculatorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="view\LeadScrewCalculatorDialog.Designer.cs">
+      <DependentUpon>LeadScrewCalculatorDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="view\LogBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -356,6 +427,12 @@
     </Compile>
     <Compile Include="view\LogView.Designer.cs">
       <DependentUpon>LogView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="view\ObjectInformation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="view\ObjectInformation.Designer.cs">
+      <DependentUpon>ObjectInformation.cs</DependentUpon>
     </Compile>
     <Compile Include="view\Preferences.cs">
       <SubType>Form</SubType>
@@ -459,6 +536,7 @@
     <Compile Include="view\TestGenerator.Designer.cs">
       <DependentUpon>TestGenerator.cs</DependentUpon>
     </Compile>
+    <Compile Include="view\ThreedCamera.cs" />
     <Compile Include="view\ThreeDControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -480,10 +558,16 @@
     <Compile Include="view\utils\ColorSlider.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="view\utils\ColorSlider.designer.cs">
+    <Compile Include="view\utils\ColorSlider.Designer.cs">
       <DependentUpon>ColorSlider.cs</DependentUpon>
     </Compile>
     <Compile Include="view\utils\CommandExecutioner.cs" />
+    <Compile Include="view\utils\InfoProgressPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="view\utils\InfoProgressPanel.Designer.cs">
+      <DependentUpon>InfoProgressPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="view\utils\PauseInfo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -530,6 +614,11 @@
     <None Include="Resources\home.png" />
   </ItemGroup>
   <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
       <Visible>False</Visible>
       <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
@@ -559,6 +648,7 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

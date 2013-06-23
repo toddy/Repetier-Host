@@ -514,9 +514,98 @@ Mögliche Gründe:
 <t id="L_ROSTOCK_CIRCLE" ver="6">Rostock Drucker (runder Druckbereich)</t>
 <t id="L_CORRECT_NORMALS" ver="7">Korrekte Normalen nutzen (sieht besser aus, benötigt mehr Speicher)</t>
 <t id="L_WARNING" ver="8">Warnung</t>
-<t id="L_HEATERS_ON_QUEST" ver="8">Einige Heizlemente sind imme rnoch an. Soll ich sie ausschalten?</t>
+<t id="L_HEATERS_ON_QUEST" ver="8">Einige Heizlemente sind immer noch an. Soll ich sie ausschalten?</t>
 <t id="L_OBJECTS_OUTSIDE_SLICE_QUEST" ver="8">Mindestens ein Objekt liegt außerhalb des Druckbereichs. Slicen abbrechen?</t>
 <t id="L_CNC_ROUTER" ver="8">CNC Fräße</t>
 <t id="L_SLIC3R_VERSION" ver="8">Slic3r Version</t>
+<t id="L_MODEL_ERRORS" ver="9">Modelierungsfehler:</t>
+<t id="L_REPAIR" ver="9">Reparieren</t>
+<t id="L_SPLIT" ver="9">Aufspalten</t>
+<t id="L_YES" ver="9">Ja</t>
+<t id="L_NO" ver="9">Nein</t>
+<t id="L_MODEL_CHANGED_RELOAD" ver="9">Ein oder mehrere Objektdateien wurden geändert.\r\nObjekte erneut laden?</t>
+<t id="L_FILES_CHANGED" ver="9">Dateien geändert</t>
+<t id="L_INNER_FACES" ver="9">Innere Flächen:</t>
+<t id="L_BACKGROUND_TOP" ver="9">Hintergrund oben:</t>
+<t id="L_BACKGROUND_BOTTOM" ver="9">Hintergrund unten:</t>
+<t id="L_PRINTER_FRAME" ver="9">Druckerbereich:</t>
+<t id="L_ISOMETRIC_VIEW" ver="9">Isometrische Ansicht</t>
+<t id="L_BOTTOM_VIEW" ver="9">Von unten betrachten</t>
+<t id="L_LEFT_VIEW" ver="9">Links</t>
+<t id="L_RIGHT_VIEW" ver="9">Rechts</t>
+<t id="L_FRONT_VIEW" ver="9">Vorderansicht</t>
+<t id="L_BACK_VIEW" ver="9">Hinten</t>
+<t id="M_VIEW" ver="9">Ansicht</t>
+<t id="M_SHOW_EDGES" ver="9">Zeige Kanten</t>
+<t id="M_SHOW_FACES" ver="9">Zeige Flächen</t>
+<t id="L_ANA_MODIFIED" ver="9">Modifiziert:</t>
+<t id="L_ANA_MANIFOLD" ver="9">Manifold:</t>
+<t id="L_ANA_INTERSECTING_TRIANGLES" ver="9">Schneidende Dreiecke:</t>
+<t id="L_ANA_NORMALS" ver="9">Normalen:</t>
+<t id="L_ANA_LOOP_EDGES" ver="9">Randkanten:</t>
+<t id="L_ANA_HIGHLY_CONNECTED" ver="9">Stark verbundene Kanten:</t>
+<t id="L_ANA_VERTICES" ver="9">Punkte:</t>
+<t id="L_ANA_EDGES" ver="9">Kannten:</t>
+<t id="L_ANA_FACES" ver="9">Flächen:</t>
+<t id="L_ANA_SHELLS" ver="9">Hüllen:</t>
+<t id="L_ANA_ORIENTED" ver="9">Orientiert</t>
+<t id="L_ANA_NOT_ORIENTED" ver="9">Nicht orientiert</t>
+<t id="M_TOOLS" ver="9">Werkzeuge</t>
+<t id="M_BELT_CALCULATOR" ver="9">Zahnriemen Rechner</t>
+<t id="M_LEADSCREW_CALCULATOR" ver="9">Spindel Rechner</t>
+<t id="L_MOTOR_STEP_ANGLE" ver="9">Motor Schrittwinkel</t>
+<t id="L_DRIVER_MICROSTEPPING" ver="9">Treiber Microschritte</t>
+<t id="L_BELT_PITCH" ver="9">Zahnteilung</t>
+<t id="L_TOOTH_COUNT" ver="9">Anzahl Zähne</t>
+<t id="B_CALCULATE" ver="9">Berechnen</t>
+<t id="L_STEPS_PER_MM" ver="9">Wert für Schritte pro mm</t>
+<t id="L_TOOTH_COUNT_MUST_INT" ver="9">Zahnzahl muss integer sein</t>
+<t id="L_LEADSCREW_PITCH" ver="9">Spindelsteigung</t>
+<t id="L_GEAR_RATIO" ver="9">Getriebeverhältnis</t>
+<t id="L_SERIAL_CONNECTION" ver="9">Serielle Verbindung</t>
+<t id="L_VIRTUAL_CONNECTION" ver="9">Virtueller Drucker</t>
+<t id="L_REPETIER_SERVER_CONNECTION" ver="9">Repetier-Server</t>
+<t id="L_CONNECTOR" ver="9">Verbindung</t>
+<t id="L_DISABLED" ver="9">Ausgeschaltet</t>
+<t id="L_DTR_LOW_HIGH" ver="9">DTR high->low</t>
+<t id="L_DTR_LOW_HIGH_LOW" ver="9">DTR low->high->low</t>
+<t id="L_DTR_TOGGLE" ver="9">DTR wechseln</t>
+<t id="L_RESET_ON_CONNECT" ver="9">Reset bei Verbindung</t>
+<t id="L_RESET_ON_EMERGENCY" ver="9">Reset im Notfall</t>
+<t id="L_SEND_EMERGENCY_CMD" ver="9">Notfallstop senden</t>
+<t id="L_SEND_EMERGENCY_CMD_DTR_TOGGLE" ver="9">Notfallstop senden + DTR high->low</t>
+<t id="L_SEND_EMERGENCY_CMD_RECONNECT" ver="9">Notfallstop senden + neu verbinden</t>
+<t id="L_FILE_ASSOCIATIONS" ver="9">Dateiverknüpfungen</t>
+<t id="L_ASSOCIATE_EXTENSIONS" ver="9">Verknüpfe Endungen</t>
+<t id="L_CONNECTION_FAILED" ver="9">Der Verbingungsaufbei is mit folgendem Fehler fehlgeschlagen: $1. Stellen Sie sicher, dass der Drucker verbunden, eingeschaltet und richtig konfiguriert ist. Druckereinstellungen öffnen?</t>
+<t id="L_AUTOENABLE_PARALLEL_TOPVIEW" ver="9">Parallelansicht in Draufsicht aktivieren</t>
+<t id="L_RESET_DEFAULTS" ver="9">Standard wieder herstellen</t>
+<t id="L_REMOVED_DEGENERATED" ver="9">Entfernte degenerierte Dreiecke:</t>
+<t id="L_REMOVED_ISOLATED" ver="9">Entfernte isolierte Dreiecke:</t>
+<t id="L_REMOVED_DOUBLE" ver="9">Entfernte doppelte Dreiecke:</t>
+<t id="L_STARTING_ANALYSER" ver="9">Starte Objektanalyse ...</t>
+<t id="L_ANALYSER_FINISHED" ver="9">Analyse beendet.</t>
+<t id="L_LOADING_3D_FAILED" ver="9">Laden der 3D Datei $1 fehlgeschlagen.</t>
+<t id="L_OBJECT_INFORMATIONS" ver="9">Objekt Informationen</t>
+<t id="L_MINIMUM:" ver="9">Minimum:</t>
+<t id="L_MAXIMUM:" ver="9">Maximum:</t>
+<t id="L_SIZE:" ver="9">Größe:</t>
+<t id="L_VOLUME:" ver="9">Volumen:</t>
+<t id="L_SURFACE:" ver="9">Oberfläche:</t>
+<t id="L_DIMENSIONS:" ver="9">Abmessungen:</t>
+<t id="L_SPLIT_OBJECT" ver="9">Objekt aufspalten</t>
+<t id="L_FIX_NORMALS" ver="9">Normalen reparieren</t>
+<t id="L_REPAIR" ver="9">Reparieren</t>
+<t id="M_FIT_PRINTER" ver="9">Zoom auf Drucker</t>
+<t id="M_FIT_OBJECTS" ver="9">Zoom auf Objekte</t>
+<t id="IMPORTING_1" ver="9">Importiere $1</t>
+<t id="L_LOADING..." ver="9">Lade ...</t>
+<t id="L_INTERSECTION_TESTS" ver="9">Schnitte prüfen</t>
+<t id="L_FIXING_NORMALS" ver="9">Repariere Normalen</t>
+<t id="L_ANA_FIXED_COLLINEAR_TRIANGLES" ver="9">Reparierte kollineare Dreiecke:</t>
+<t id="L_ANA_CORRECTED_NORMAL_ORIENTATIONS" ver="9">Reparierte Normalenausrichtungen:</t>
+<t id="L_OBJECT_IS_MANIFOLD" ver="9">Objekt ist mannigfaltig.</t>
+<t id="L_OBJECT_IS_NON_MANIFOLD" ver="9">Objekt ist nicht mannigfaltig. Slicen kann falsche Ergebnisse erzeugen. Bitte reparieren Sie das Objekt zuerst.</t>
+<t id="L_" ver="9"></t>
 </translation>
 

@@ -104,7 +104,7 @@ namespace RepetierHost.view
             TextBox box = (TextBox)sender;
             try
             {
-                float.Parse(box.Text);
+                float.Parse(box.Text, NumberStyles.Float, GCode.format);
                 errorProvider.SetError(box, "");
             }
             catch

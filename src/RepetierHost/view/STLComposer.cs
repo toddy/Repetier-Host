@@ -22,22 +22,32 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Threading;
 using System.Globalization;
 using System.IO;
 using OpenTK;
 using RepetierHost.model;
+using RepetierHost.model.geom;
+using RepetierHost.view.utils;
 
 namespace RepetierHost.view
 {
+    public delegate void RepairToolDelegate(PrintModel model);
+    public delegate void ObjectModelRemovedEvent(PrintModel model);
+
     public partial class STLComposer : UserControl
     {
         private bool writeSTLBinary = true;
         public ThreeDView cont;
         private bool autosizeFailed = false;
         private CopyObjectsDialog copyDialog = new CopyObjectsDialog();
+        private Dictionary<ListViewItem, Button> delButtonList = new Dictionary<ListViewItem, Button>();
+        private RepairToolDelegate repairToolDeleagte = null;
+        public event ObjectModelRemovedEvent objectModelRemovedEvent = null;
         public STLComposer()
         {
             InitializeComponent();
+            toolRepair.Visible = false;
             try
             {
                 cont = new ThreeDView();
@@ -60,22 +70,111 @@ namespace RepetierHost.view
             }
             catch { }
         }
+        public void ConnectRepairTool(RepairToolDelegate tool)
+        {
+            repairToolDeleagte = tool;
+            toolRepair.Visible = true;
+        }
         public void translate()
         {
             labelTranslation.Text = Trans.T("L_TRANSLATION:");
             labelScale.Text = Trans.T("L_SCALE:");
             labelRotate.Text = Trans.T("L_ROTATE:");
-            labelSTLObjects.Text = Trans.T("L_STL_OBJECTS");
-            buttonSave.Text = Trans.T("B_SAVE_AS_STL");
-            buttonRemoveSTL.Text = Trans.T("B_REMOVE_STL_OBJECT");
-            buttonAddSTL.Text = Trans.T("B_ADD_STL_OBJECT");
-            buttonAutoplace.Text = Trans.T("B_AUTOPOSITION");
-            buttonLand.Text = Trans.T("B_DROP_OBJECT");
-            buttonCopyObjects.Text = Trans.T("B_COPY_OBJECTS");
-            buttonCenter.Text = Trans.T("B_CENTER_OBJECT");
-            checkScaleAll.Text = Trans.T("L_LOCK_ASPECT_RATIO");
-            if (Main.slicer != null)
-                buttonSlice.Text = Trans.T1("L_SLICE_WITH", Main.slicer.SlicerName);
+            toolSavePlate.ToolTipText = Trans.T("B_SAVE_AS_STL");
+            toolRemoveObjects.ToolTipText = Trans.T("B_REMOVE_STL_OBJECT");
+            toolAddObjects.ToolTipText = Trans.T("B_ADD_STL_OBJECT");
+            toolAutoposition.ToolTipText = Trans.T("B_AUTOPOSITION");
+            toolLandObject.ToolTipText = Trans.T("B_DROP_OBJECT");
+            toolCopyObjects.ToolTipText = Trans.T("B_COPY_OBJECTS");
+            toolCenterObject.ToolTipText = Trans.T("B_CENTER_OBJECT");
+            toolStripInfo.ToolTipText = Trans.T("L_OBJECT_INFORMATIONS");
+            toolSplitObject.ToolTipText = Trans.T("L_SPLIT_OBJECT");
+            toolFixNormals.ToolTipText = Trans.T("L_FIX_NORMALS");
+            toolRepair.ToolTipText = Trans.T("L_REPAIR");
+            textModied.Text = Trans.T("L_ANA_MODIFIED");
+            textManifold.Text = Trans.T("L_ANA_MANIFOLD");
+            textIntersectingTriangles.Text = Trans.T("L_ANA_INTERSECTING_TRIANGLES");
+            textNormals.Text = Trans.T("L_ANA_NORMALS");
+            textLoopEdges.Text = Trans.T("L_ANA_LOOP_EDGES");
+            textHighlyConnected.Text = Trans.T("L_ANA_HIGHLY_CONNECTED");
+            textVertices.Text = Trans.T("L_ANA_VERTICES");
+            textEdges.Text = Trans.T("L_ANA_EDGES");
+            textFaces.Text = Trans.T("L_ANA_FACES");
+            textShells.Text = Trans.T("L_ANA_SHELLS");
+            //buttonLockAspect.Text = Trans.T("L_LOCK_ASPECT_RATIO");
+            //if (Main.slicer != null)
+            //    buttonSlice.Text = Trans.T1("L_SLICE_WITH", Main.slicer.SlicerName);
+        }
+        public void AddObject(PrintModel model)
+        {
+            ListViewItem item = new ListViewItem(model.name);
+            item.Tag = model;
+            Button button = new Button();
+            button.ImageList = imageList16;
+            button.ImageIndex = 4;
+            button.ImageAlign = ContentAlignment.MiddleCenter;
+            button.Width = 16;
+            button.Height = 16;
+            button.TextImageRelation = TextImageRelation.Overlay;
+            button.Text = "";
+            button.Tag = model;
+            button.FlatStyle = FlatStyle.Flat;
+            button.FlatAppearance.BorderSize = 0;
+            button.Click += buttonRemoveObject_Click;
+            button.Visible = false;
+            delButtonList.Add(item, button);
+            item.SubItems.Add("");
+            item.SubItems.Add("");
+            item.SubItems.Add("");            
+            listObjects.Controls.Add(button);
+            listObjects.Items.Add(item);
+            SetObjectSelected(model, true);
+        }
+        public void RemoveObject(PrintModel model)
+        {
+            ListViewItem item = null;
+            foreach (ListViewItem test in listObjects.Items)
+            {
+                if (test.Tag == model)
+                {
+                    item = test;
+                    break;
+                }
+            }
+            if (item == null) return;
+            Button trash = delButtonList[item];
+            if (trash != null)
+            {
+                listObjects.Controls.Remove(trash);
+                delButtonList.Remove(item);
+            }
+            foreach (Button b in delButtonList.Values)
+                b.Visible = false;
+            listObjects.Items.Remove(item);
+            if (objectModelRemovedEvent != null)
+                objectModelRemovedEvent(model);
+        }
+        public LinkedList<PrintModel> ListObjects(bool selected) {
+            LinkedList<PrintModel> list = new LinkedList<PrintModel>();
+            if (selected)
+            {
+                foreach (ListViewItem item in listObjects.SelectedItems)
+                    list.AddLast((PrintModel)item.Tag);
+            }
+            else
+            {
+                foreach (ListViewItem item in listObjects.Items)
+                    list.AddLast((PrintModel)item.Tag);
+            }
+            return list;
+        }
+        public PrintModel SingleSelectedModel
+        {
+            get
+            {
+                if (listObjects.SelectedItems.Count != 1) return null;
+                return (PrintModel)listObjects.SelectedItems[0].Tag;
+            }
         }
         public void Update3D()
         {
@@ -86,7 +185,7 @@ namespace RepetierHost.view
             TextBox box = (TextBox)sender;
             try
             {
-                float.Parse(box.Text);
+                float.Parse(box.Text, NumberStyles.Float, GCode.format);
                 errorProvider.SetError(box, "");
             }
             catch
@@ -94,9 +193,53 @@ namespace RepetierHost.view
                 errorProvider.SetError(box, "Not a number.");
             }
         }
+        public void UpdateAnalyserData()
+        {
+            PrintModel model = SingleSelectedModel;
+            if (model == null) return;
+            labelVertices.Text = model.ActiveModel.vertices.Count.ToString();
+            labelEdges.Text = model.ActiveModel.edges.Count.ToString();
+            labelFaces.Text = model.ActiveModel.triangles.Count.ToString();
+            labelShells.Text = model.ActiveModel.shells.ToString();
+            labelIntersectingTriangles.Text = model.ActiveModel.intersectingTriangles.Count.ToString();
+            labelIntersectingTriangles.ForeColor = (model.ActiveModel.intersectingTriangles.Count == 0 ? Color.Black : Color.Red);
+            labelLoopEdges.Text = model.ActiveModel.loopEdges.ToString();
+            labelLoopEdges.ForeColor = (model.ActiveModel.loopEdges == 0 ? Color.Black : Color.Red);
+            labelHighConnected.Text = model.ActiveModel.manyShardEdges.ToString();
+            labelHighConnected.ForeColor = (model.ActiveModel.manyShardEdges == 0 ? Color.Black : Color.Red);
+            if (model.ActiveModel.manifold)
+            {
+                labelManifold.Text = Trans.T("L_YES");
+                labelManifold.ForeColor = Color.Green;
+            }
+            else
+            {
+                labelManifold.Text = Trans.T("L_NO");
+                labelManifold.ForeColor = Color.Red;
+            }
+            if (model.ActiveModel.normalsOriented)
+            {
+                labelNormals.Text = Trans.T("L_ANA_ORIENTED");
+                labelNormals.ForeColor = Color.Green;
+            }
+            else
+            {
+                labelNormals.Text = Trans.T("L_ANA_NOT_ORIENTED");
+                labelNormals.ForeColor = Color.Red;
+            }
+            if (model.activeModel == 1)
+            {
+                labelModified.Text = Trans.T("L_YES");
+            }
+            else
+            {
+                labelModified.Text = Trans.T("L_NO");
+            }
+        }
+
         private void updateEnabled()
         {
-            int n = listSTLObjects.SelectedItems.Count;
+            int n = listObjects.SelectedItems.Count;
             if (n != 1)
             {
                 textRotX.Enabled = false;
@@ -105,55 +248,78 @@ namespace RepetierHost.view
                 textScaleX.Enabled = false;
                 textScaleY.Enabled = false;
                 textScaleZ.Enabled = false;
-                checkScaleAll.Enabled = false;
+                buttonLockAspect.Enabled = false;
                 textTransX.Enabled = false;
                 textTransY.Enabled = false;
                 textTransZ.Enabled = false;
-                buttonCenter.Enabled = false;
-                buttonAutoplace.Enabled = listSTLObjects.Items.Count > 1;
-                buttonLand.Enabled = n > 0;
+                toolCenterObject.Enabled = false;
+                toolAutoposition.Enabled = listObjects.Items.Count > 1;
+                toolLandObject.Enabled = n > 0;
                 if (Main.main.threedview != null)
                     Main.main.threedview.SetObjectSelected(n > 0);
-                buttonCopyObjects.Enabled = n > 0;
+                toolCopyObjects.Enabled = n > 0;
+                toolRepair.Enabled = false;
+                toolSplitObject.Enabled = false;
+                panelAnalysis.Visible = false;
+                toolStripInfo.Enabled = false;
             }
             else
             {
-                buttonAutoplace.Enabled = listSTLObjects.Items.Count > 1;
-                buttonCopyObjects.Enabled = true;
+                toolAutoposition.Enabled = listObjects.Items.Count > 1;
+                toolCopyObjects.Enabled = true;
                 textRotX.Enabled = true;
                 textRotY.Enabled = true;
                 textRotZ.Enabled = true;
                 textScaleX.Enabled = true;
-                textScaleY.Enabled = !checkScaleAll.Checked;
-                textScaleZ.Enabled = !checkScaleAll.Checked;
-                checkScaleAll.Enabled = true;
+                textScaleY.Enabled = !LockAspectRatio;
+                textScaleZ.Enabled = !LockAspectRatio;
+                buttonLockAspect.Enabled = true;
                 textTransX.Enabled = true;
                 textTransY.Enabled = true;
                 textTransZ.Enabled = true;
-                buttonCenter.Enabled = true;
-                buttonLand.Enabled = true;
+                toolCenterObject.Enabled = true;
+                toolLandObject.Enabled = true;
                 if (Main.main.threedview != null)
                     Main.main.threedview.SetObjectSelected(true);
+                toolRepair.Enabled = n == 1;
+                toolSplitObject.Enabled = SingleSelectedModel.ActiveModel.shells > 1;
+                panelAnalysis.Visible = true;
+                toolStripInfo.Enabled = true;
+                UpdateAnalyserData();
             }
-            buttonRemoveSTL.Enabled = n != 0;
-            buttonSlice.Enabled = listSTLObjects.Items.Count > 0;
-            buttonSave.Enabled = listSTLObjects.Items.Count > 0;
+            toolFixNormals.Enabled = n != 0;
+            toolRemoveObjects.Enabled = n != 0;
+            //buttonSlice.Enabled = listObjects.Items.Count > 0;
+            toolSavePlate.Enabled = listObjects.Items.Count > 0;
         }
         public void openAndAddObject(string file)
         {
-            STL stl = new STL();
-            stl.Load(file);
-            stl.Center(Main.printerSettings.PrintAreaWidth / 2, Main.printerSettings.PrintAreaDepth / 2);
-            stl.Land();
-            if (stl.list.Count > 0)
+            PrintModel model = new PrintModel();
+            FileInfo f = new FileInfo(file);
+
+            InfoProgressPanel ipp = InfoProgressPanel.Create(Trans.T1("IMPORTING_1", f.Name), true);
+            ipp.Action = Trans.T("L_LOADING...");
+            ipp.Dock = DockStyle.Top;
+            panelControls.Controls.Add(ipp);
+            panelControls.Update();
+            model.Load(file,ipp);
+            model.Center(Main.printerSettings.PrintAreaWidth / 2, Main.printerSettings.PrintAreaDepth / 2);
+            model.Land();
+            if (model.ActiveModel.triangles.Count > 0)
             {
-                listSTLObjects.Items.Add(stl);
-                cont.models.AddLast(stl);
-                listSTLObjects.SelectedItem = stl;
+                AddObject(model);
+                cont.models.AddLast(model);
+
                 Autoposition();
-                stl.addAnimation(new DropAnimation("drop"));
-                updateSTLState(stl);
+                model.addAnimation(new DropAnimation("drop"));
+                updateSTLState(model);
             }
+            else
+            {
+                if(!ipp.IsKilled)
+                    MessageBox.Show(Trans.T1("L_LOADING_3D_FAILED", file), Trans.T("L_ERROR"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            ipp.Finished();
         }
         private void buttonAddSTL_Click(object sender, EventArgs e)
         {
@@ -167,38 +333,75 @@ namespace RepetierHost.view
         /// Checks the state of the object.
         /// If it is outside print are it starts pulsing
         /// </summary>
-        public void updateSTLState(STL stl)
+        public void updateSTLState(PrintModel stl2)
         {
+            bool dataChanged = false;
             FormPrinterSettings ps = Main.printerSettings;
-            stl.UpdateBoundingBox();
-            if (!ps.PointInside(stl.xMin, stl.yMin, stl.zMin) ||
-                !ps.PointInside(stl.xMax, stl.yMin, stl.zMin) ||
-                !ps.PointInside(stl.xMin, stl.yMax, stl.zMin) ||
-                !ps.PointInside(stl.xMax, stl.yMax, stl.zMin) ||
-                !ps.PointInside(stl.xMin, stl.yMin, stl.zMax) ||
-                !ps.PointInside(stl.xMax, stl.yMin, stl.zMax) ||
-                !ps.PointInside(stl.xMin, stl.yMax, stl.zMax) ||
-                !ps.PointInside(stl.xMax, stl.yMax, stl.zMax))
+            stl2.UpdateBoundingBox();
+            LinkedList<PrintModel> testList = ListObjects(false);
+            foreach (PrintModel pm in testList)
             {
-                stl.outside = true;
-                if (Main.threeDSettings.pulseOutside.Checked && !stl.hasAnimationWithName("pulse"))
-                    stl.addAnimation(new PulseAnimation("pulse", 0.03, 0.03, 0.03, 0.3));
+                pm.oldOutside = pm.outside;
+                pm.outside = false;
             }
-            else
+            foreach (PrintModel pm in testList)
             {
-                stl.outside = false;
-                stl.removeAnimationWithName("pulse");
+                foreach (PrintModel pm2 in testList)
+                {
+                    if (pm == pm2) continue;
+                    if (pm2.bbox.IntersectsBox(pm.bbox))
+                    {
+                        pm.outside = true;
+                        pm2.outside = true;
+                    }
+                }
+            }
+            foreach (PrintModel stl in testList)
+            {
+                if (!ps.PointInside(stl.xMin, stl.yMin, stl.zMin) ||
+                    !ps.PointInside(stl.xMax, stl.yMin, stl.zMin) ||
+                    !ps.PointInside(stl.xMin, stl.yMax, stl.zMin) ||
+                    !ps.PointInside(stl.xMax, stl.yMax, stl.zMin) ||
+                    !ps.PointInside(stl.xMin, stl.yMin, stl.zMax) ||
+                    !ps.PointInside(stl.xMax, stl.yMin, stl.zMax) ||
+                    !ps.PointInside(stl.xMin, stl.yMax, stl.zMax) ||
+                    !ps.PointInside(stl.xMax, stl.yMax, stl.zMax))
+                {
+                    stl.outside = true;
+                }
+            }
+            foreach (PrintModel pm in testList)
+            {
+                if (pm.oldOutside != pm.outside)
+                {
+                    dataChanged = true;
+                    pm.ForceViewRegeneration();
+                    if (Main.threeDSettings.pulseOutside.Checked)
+                    {
+                        if (!pm.hasAnimationWithName("pulse") && pm.outside)
+                            pm.addAnimation(new PulseAnimation("pulse", 0.03, 0.03, 0.03, 0.3));
+                        if (pm.hasAnimationWithName("pulse") && !pm.outside)
+                            pm.removeAnimationWithName("pulse");
+                    }
+                }
+            }
+
+            if (dataChanged)
+            {
+                listObjects.Refresh();
             }
         }
         private void listSTLObjects_SelectedIndexChanged(object sender, EventArgs e)
         {
+            Main.main.threedview.updateCuts = true;
             updateEnabled();
-            STL stl = (STL)listSTLObjects.SelectedItem;
-            foreach (STL s in cont.models)
+            LinkedList<PrintModel> list = ListObjects(false);
+            LinkedList<PrintModel> sellist = ListObjects(true);
+            PrintModel stl = (sellist.Count == 1 ? sellist.First.Value : null);
+            foreach (PrintModel s in list)
             {
-                s.Selected = listSTLObjects.SelectedItems.Contains(s);
+                s.Selected = sellist.Contains(s);
             }
-            if (listSTLObjects.SelectedItems.Count > 1) stl = null;
             if (stl != null)
             {
                 textRotX.Text = stl.Rotation.x.ToString(GCode.format);
@@ -210,14 +413,26 @@ namespace RepetierHost.view
                 textTransX.Text = stl.Position.x.ToString(GCode.format);
                 textTransY.Text = stl.Position.y.ToString(GCode.format);
                 textTransZ.Text = stl.Position.z.ToString(GCode.format);
-                checkScaleAll.Checked = (stl.Scale.x == stl.Scale.y && stl.Scale.x == stl.Scale.z);
+                LockAspectRatio = (stl.Scale.x == stl.Scale.y && stl.Scale.x == stl.Scale.z);
             }
             Main.main.threedview.UpdateChanges();
         }
-
+        public bool LockAspectRatio
+        {
+            get
+            {
+                return buttonLockAspect.ImageIndex == 1;
+            }
+            set
+            {
+                buttonLockAspect.ImageIndex = value ? 1 : 0;
+                textScaleY.Enabled = !value;
+                textScaleZ.Enabled = !value;
+            }
+        }
         private void textTransX_TextChanged(object sender, EventArgs e)
         {
-            STL stl = (STL)listSTLObjects.SelectedItem;
+            PrintModel stl = SingleSelectedModel;
             if (stl == null) return;
             float.TryParse(textTransX.Text, NumberStyles.Float, GCode.format, out stl.Position.x);
             updateSTLState(stl);
@@ -226,7 +441,7 @@ namespace RepetierHost.view
 
         private void textTransY_TextChanged(object sender, EventArgs e)
         {
-            STL stl = (STL)listSTLObjects.SelectedItem;
+            PrintModel stl = SingleSelectedModel;
             if (stl == null) return;
             float.TryParse(textTransY.Text, NumberStyles.Float, GCode.format, out stl.Position.y);
             updateSTLState(stl);
@@ -235,7 +450,7 @@ namespace RepetierHost.view
 
         private void textTransZ_TextChanged(object sender, EventArgs e)
         {
-            STL stl = (STL)listSTLObjects.SelectedItem;
+            PrintModel stl = SingleSelectedModel;
             if (stl == null) return;
             float.TryParse(textTransZ.Text, NumberStyles.Float, GCode.format, out stl.Position.z);
             updateSTLState(stl);
@@ -245,11 +460,11 @@ namespace RepetierHost.view
         {
             //STL stl = (STL)listSTLObjects.SelectedItem;
             //if (stl == null) return;
-            foreach (STL stl in listSTLObjects.SelectedItems)
+            foreach (PrintModel stl in ListObjects(true))
             {
                 stl.Position.x += dx;
                 stl.Position.y += dy;
-                if (listSTLObjects.SelectedItems.Count == 1)
+                if (listObjects.SelectedItems.Count == 1)
                 {
                     textTransX.Text = stl.Position.x.ToString(GCode.format);
                     textTransY.Text = stl.Position.y.ToString(GCode.format);
@@ -258,45 +473,53 @@ namespace RepetierHost.view
             }
             Main.main.threedview.UpdateChanges();
         }
+        public void SetObjectSelected(PrintModel model, bool select)
+        {
+            foreach (ListViewItem item in listObjects.Items)
+            {
+                if (item.Tag == model)
+                    item.Selected = select;
+            }
+        }
         private void objectSelected(ThreeDModel sel)
         {
             if (Control.ModifierKeys == Keys.Shift)
             {
                 if (!sel.Selected)
-                    listSTLObjects.SelectedItems.Add(sel);
+                    SetObjectSelected((PrintModel)sel,true);
             }
             else
                 if (Control.ModifierKeys == Keys.Control)
                 {
                     if (sel.Selected)
-                        listSTLObjects.SelectedItems.Remove(sel);
+                        SetObjectSelected((PrintModel)sel,false);
                     else
-                        listSTLObjects.SelectedItems.Add(sel);
+                        SetObjectSelected((PrintModel)sel, true);
                 }
                 else
                 {
-                    listSTLObjects.SelectedItems.Clear();
-                    listSTLObjects.SelectedItem = sel;
+                    listObjects.SelectedItems.Clear();
+                    SetObjectSelected((PrintModel)sel,true);
                 }
         }
         private void textScaleX_TextChanged(object sender, EventArgs e)
         {
-            STL stl = (STL)listSTLObjects.SelectedItem;
-            if (stl == null) return;
-            float.TryParse(textScaleX.Text, NumberStyles.Float, GCode.format, out stl.Scale.x);
-            if (checkScaleAll.Checked)
+            PrintModel model = SingleSelectedModel;
+            if (model == null) return;
+            float.TryParse(textScaleX.Text, NumberStyles.Float, GCode.format, out model.Scale.x);
+            if (LockAspectRatio)
             {
-                stl.Scale.y = stl.Scale.z = stl.Scale.x;
-                textScaleY.Text = stl.Scale.y.ToString(GCode.format);
-                textScaleZ.Text = stl.Scale.z.ToString(GCode.format);
+                model.Scale.y = model.Scale.z = model.Scale.x;
+                textScaleY.Text = model.Scale.y.ToString(GCode.format);
+                textScaleZ.Text = model.Scale.z.ToString(GCode.format);
             }
-            updateSTLState(stl);
+            updateSTLState(model);
             Main.main.threedview.UpdateChanges();
         }
 
         private void textScaleY_TextChanged(object sender, EventArgs e)
         {
-            STL stl = (STL)listSTLObjects.SelectedItem;
+            PrintModel stl = SingleSelectedModel;
             if (stl == null) return;
             float.TryParse(textScaleY.Text, NumberStyles.Float, GCode.format, out stl.Scale.y);
             updateSTLState(stl);
@@ -305,7 +528,7 @@ namespace RepetierHost.view
 
         private void textScaleZ_TextChanged(object sender, EventArgs e)
         {
-            STL stl = (STL)listSTLObjects.SelectedItem;
+            PrintModel stl = SingleSelectedModel;
             if (stl == null) return;
             float.TryParse(textScaleZ.Text, NumberStyles.Float, GCode.format, out stl.Scale.z);
             updateSTLState(stl);
@@ -314,7 +537,7 @@ namespace RepetierHost.view
 
         private void textRotX_TextChanged(object sender, EventArgs e)
         {
-            STL stl = (STL)listSTLObjects.SelectedItem;
+            PrintModel stl = SingleSelectedModel;
             if (stl == null) return;
             float.TryParse(textRotX.Text, NumberStyles.Float, GCode.format, out stl.Rotation.x);
             updateSTLState(stl);
@@ -323,7 +546,7 @@ namespace RepetierHost.view
 
         private void textRotY_TextChanged(object sender, EventArgs e)
         {
-            STL stl = (STL)listSTLObjects.SelectedItem;
+            PrintModel stl = SingleSelectedModel;
             if (stl == null) return;
             float.TryParse(textRotY.Text, NumberStyles.Float, GCode.format, out stl.Rotation.y);
             updateSTLState(stl);
@@ -332,29 +555,31 @@ namespace RepetierHost.view
 
         private void textRotZ_TextChanged(object sender, EventArgs e)
         {
-            STL stl = (STL)listSTLObjects.SelectedItem;
+            PrintModel stl = SingleSelectedModel;
             if (stl == null) return;
             float.TryParse(textRotZ.Text, NumberStyles.Float, GCode.format, out stl.Rotation.z);
             updateSTLState(stl);
             Main.main.threedview.UpdateChanges();
         }
-
+        private void buttonRemoveObject_Click(object sender, EventArgs e)
+        {
+            PrintModel model = (PrintModel)((Button)sender).Tag;
+            cont.models.Remove(model);
+            RemoveObject(model);
+            autosizeFailed = false;
+            Main.main.threedview.UpdateChanges();
+        }
         public void buttonRemoveSTL_Click(object sender, EventArgs e)
         {
             //STL stl = (STL)listSTLObjects.SelectedItem;
             //if (stl == null) return;
-            LinkedList<STL> list = new LinkedList<STL>();
-            foreach (STL stl in listSTLObjects.SelectedItems)
-                list.AddLast(stl);
-            foreach (STL stl in list)
+            LinkedList<PrintModel> list = new LinkedList<PrintModel>();
+            foreach (PrintModel stl in ListObjects(true))
             {
                 cont.models.Remove(stl);
-                listSTLObjects.Items.Remove(stl);
+                RemoveObject(stl);
                 autosizeFailed = false; // Reset autoposition
             }
-            list.Clear();
-            if (listSTLObjects.Items.Count > 0)
-                listSTLObjects.SelectedIndex = 0;
             Main.main.threedview.UpdateChanges();
         }
 
@@ -367,146 +592,40 @@ namespace RepetierHost.view
         }
         private bool AssertVector3NotNaN(Vector3 v)
         {
+            //return true;
             if (float.IsNaN(v.X) || float.IsNaN(v.Y) || float.IsNaN(v.Z))
             {
-               // Main.conn.log("NaN value in STL file export", false, 2);
+            RLog.info("NaN value in STL file export");
                 return false;
             }
             if (float.IsInfinity(v.X) || float.IsInfinity(v.Y) || float.IsInfinity(v.Z))
             {
-               // Main.conn.log("Infinity value in STL file export", false, 2);
+               RLog.info("Infinity value in STL file export");
                 return false;
             }
             return true;
         }
-        private bool AssertMinDistance(Vector3 a, Vector3 b)
+        private void saveComposition(string filename)
         {
-            double dx = a.X - b.X;
-            double dy = a.Y - b.Y;
-            double dz = a.Z - b.Z;
-            return dx * dx + dy * dy + dz * dz > 1e-8;
-        }
-        private void saveComposition(string fname)
-        {
-            int n = 0;
-            foreach (STL stl in listSTLObjects.Items)
-            {
-                n += stl.list.Count;
-            }
-            STLTriangle[] triList2 = new STLTriangle[n];
-            int p = 0;
-            foreach (STL stl in listSTLObjects.Items)
+            TopoModel model = new TopoModel();
+            foreach (PrintModel stl in ListObjects(false))
             {
                 stl.UpdateMatrix();
-                foreach (STLTriangle t2 in stl.list)
-                {
-                    STLTriangle t = new STLTriangle();
-                    t.p1 = new Vector3();
-                    t.p2 = new Vector3();
-                    t.p3 = new Vector3();
-                    t.normal = new Vector3();
-                    stl.TransformPoint(ref t2.p1, out t.p1.X, out t.p1.Y, out t.p1.Z);
-                    stl.TransformPoint(ref t2.p2, out t.p2.X, out t.p2.Y, out t.p2.Z);
-                    stl.TransformPoint(ref t2.p3, out t.p3.X, out t.p3.Y, out t.p3.Z);
-                    // Compute normal from p1-p3
-                    float ax = t.p2.X - t.p1.X;
-                    float ay = t.p2.Y - t.p1.Y;
-                    float az = t.p2.Z - t.p1.Z;
-                    float bx = t.p3.X - t.p1.X;
-                    float by = t.p3.Y - t.p1.Y;
-                    float bz = t.p3.Z - t.p1.Z;
-                    t.normal.X = ay * bz - az * by;
-                    t.normal.Y = az * bx - ax * bz;
-                    t.normal.Z = ax * by - ay * bx;
-                    Vector3.Normalize(ref t.normal, out t.normal);
-                    if (AssertVector3NotNaN(t.normal) && AssertVector3NotNaN(t.p1) && AssertVector3NotNaN(t.p2) &&
-                        AssertVector3NotNaN(t.p3) &&
-                        AssertMinDistance(t.p1, t.p2) && AssertMinDistance(t.p1, t.p3) && AssertMinDistance(t.p2, t.p3))
-                    {
-
-                        triList2[p++] = t;
-                    }
-                }
+                model.Merge(stl.ActiveModel, stl.trans);
             }
-            n = p;
-            STLTriangle[] triList = new STLTriangle[n];
-            for (int i = 0; i < n; i++)
-                triList[i] = triList2[i];
-            // STL should have increasing z for faster slicing
-            Array.Sort<STLTriangle>(triList, triList[0]);
-            // Write file in binary STL format
-            FileStream fs = File.Open(fname, FileMode.Create);
-            if (writeSTLBinary)
-            {
-                BinaryWriter w = new BinaryWriter(fs);
-                int i;
-                for (i = 0; i < 20; i++) w.Write((int)0);
-                w.Write(n);
-                for (i = 0; i < n; i++)
-                {
-                    STLTriangle t = triList[i];
-                    w.Write(t.normal.X);
-                    w.Write(t.normal.Y);
-                    w.Write(t.normal.Z);
-                    w.Write(t.p1.X);
-                    w.Write(t.p1.Y);
-                    w.Write(t.p1.Z);
-                    w.Write(t.p2.X);
-                    w.Write(t.p2.Y);
-                    w.Write(t.p2.Z);
-                    w.Write(t.p3.X);
-                    w.Write(t.p3.Y);
-                    w.Write(t.p3.Z);
-                    w.Write((short)0);
-                }
-                w.Close();
-            }
+            if (filename.EndsWith(".obj") || filename.EndsWith(".OBJ"))
+                model.exportObj(filename,true);
             else
-            {
-                TextWriter w = new EnglishStreamWriter(fs);
-                w.WriteLine("solid RepetierHost");
-                for (int i = 0; i < n; i++)
-                {
-                    STLTriangle t = triList[i];
-                    w.Write("  facet normal ");
-                    w.Write(t.normal.X);
-                    w.Write(" ");
-                    w.Write(t.normal.Y);
-                    w.Write(" ");
-                    w.WriteLine(t.normal.Z);
-                    w.WriteLine("    outer loop");
-                    w.Write("      vertex ");
-                    w.Write(t.p1.X);
-                    w.Write(" ");
-                    w.Write(t.p1.Y);
-                    w.Write(" ");
-                    w.WriteLine(t.p1.Z);
-                    w.Write("      vertex ");
-                    w.Write(t.p2.X);
-                    w.Write(" ");
-                    w.Write(t.p2.Y);
-                    w.Write(" ");
-                    w.WriteLine(t.p2.Z);
-                    w.Write("      vertex ");
-                    w.Write(t.p3.X);
-                    w.Write(" ");
-                    w.Write(t.p3.Y);
-                    w.Write(" ");
-                    w.WriteLine(t.p3.Z);
-                    w.WriteLine("    endloop");
-                    w.WriteLine("  endfacet");
-                }
-                w.WriteLine("endsolid RepetierHost");
-                w.Close();
-            }
-            fs.Close();
+                model.exportSTL(filename, writeSTLBinary);
+            Slicer.lastBox.Clear();
+            Slicer.lastBox.Add(model.boundingBox);
         }
 
         private void buttonLand_Click(object sender, EventArgs e)
         {
             //STL stl = (STL)listSTLObjects.SelectedItem;
             //if (stl == null) return;
-            foreach (STL stl in listSTLObjects.SelectedItems)
+            foreach (PrintModel stl in ListObjects(true))
             {
                 stl.Land();
                 listSTLObjects_SelectedIndexChanged(null, null);
@@ -518,7 +637,7 @@ namespace RepetierHost.view
         {
             //STL stl = (STL)listSTLObjects.SelectedItem;
             //if (stl == null) return;
-            foreach (STL stl in listSTLObjects.SelectedItems)
+            foreach (PrintModel stl in ListObjects(true))
             {
                 stl.Center(Main.printerSettings.BedLeft + Main.printerSettings.PrintAreaWidth / 2, Main.printerSettings.BedFront + Main.printerSettings.PrintAreaDepth / 2);
                 listSTLObjects_SelectedIndexChanged(null, null);
@@ -536,9 +655,9 @@ namespace RepetierHost.view
                 Main.globalSettings.Show();
                 return;
             }
-            if (listSTLObjects.Items.Count == 0) return;
+            if (listObjects.Items.Count == 0) return;
             bool itemsOutide = false;
-            foreach (STL stl in listSTLObjects.Items)
+            foreach (PrintModel stl in ListObjects(false))
             {
                 if (stl.outside) itemsOutide = true;
             }
@@ -547,22 +666,27 @@ namespace RepetierHost.view
                 if (MessageBox.Show(Trans.T("L_OBJECTS_OUTSIDE_SLICE_QUEST"), Trans.T("L_WARNING"), MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                     return;
             }
-            string t = listSTLObjects.Items[0].ToString();
-            if (listSTLObjects.Items.Count > 1)
-                t += " + " + (listSTLObjects.Items.Count - 1).ToString();
+            string t = listObjects.Items[0].ToString();
+            if (listObjects.Items.Count > 1)
+                t += " + " + (listObjects.Items.Count - 1).ToString();
             Main.main.Title = t;
-            dir += Path.DirectorySeparatorChar + "composition.stl";
+            if(Main.slicer.ActiveSlicer == RepetierHost.view.utils.Slicer.SlicerID.Slic3r)
+                dir += Path.DirectorySeparatorChar + "composition.obj";
+            else
+                dir += Path.DirectorySeparatorChar + "composition.stl";
             saveComposition(dir);
             Main.slicer.RunSlice(dir); // Slice it and load
         }
 
-        private void checkScaleAll_CheckedChanged(object sender, EventArgs e)
-        {
-            textScaleY.Enabled = !checkScaleAll.Checked;
-            textScaleZ.Enabled = !checkScaleAll.Checked;
-        }
         public void Autoposition()
         {
+            if (listObjects.Items.Count == 1)
+            {
+                PrintModel stl = (PrintModel)listObjects.Items[0].Tag;
+                stl.Center(Main.printerSettings.BedLeft + Main.printerSettings.PrintAreaWidth / 2, Main.printerSettings.BedFront + Main.printerSettings.PrintAreaDepth / 2);
+                Main.main.threedview.UpdateChanges();
+                return;
+            }
             if (autosizeFailed) return;
             RectPacker packer = new RectPacker(1, 1);
             int border = 3;
@@ -593,7 +717,7 @@ namespace RepetierHost.view
                     maxW += xOff;
                 }
             }
-            foreach (STL stl in listSTLObjects.Items)
+            foreach (PrintModel stl in ListObjects(false))
             {
                 int w = 2 * border + (int)Math.Ceiling(stl.xMax - stl.xMin);
                 int h = 2 * border + (int)Math.Ceiling(stl.yMax - stl.yMin);
@@ -612,7 +736,7 @@ namespace RepetierHost.view
             float yAdd = (maxH - packer.h) / 2.0f;
             foreach (PackerRect rect in packer.vRects)
             {
-                STL s = (STL)rect.obj;
+                PrintModel s = (PrintModel)rect.obj;
                 float xPos = xOff + xAdd + rect.x + border;
                 float yPos = yOff + yAdd + rect.y + border;
                 s.Position.x += xPos - s.xMin;
@@ -631,20 +755,20 @@ namespace RepetierHost.view
             if (copyDialog.ShowDialog(Main.main) == DialogResult.Cancel) return;
             int numberOfCopies = (int)copyDialog.numericCopies.Value;
 
-            List<STL> newSTL = new List<STL>();
-            foreach (STL act in listSTLObjects.SelectedItems)
+            List<PrintModel> newSTL = new List<PrintModel>();
+            foreach (PrintModel act in ListObjects(true))
             {
-                STL last = act;
+                PrintModel last = act;
                 for (int i = 0; i < numberOfCopies; i++)
                 {
-                    STL stl = last.copySTL();
+                    PrintModel stl = last.copyPrintModel();
                     last = stl;
                     newSTL.Add(stl);
                 }
             }
-            foreach (STL stl in newSTL)
+            foreach (PrintModel stl in newSTL)
             {
-                listSTLObjects.Items.Add(stl);
+                AddObject(stl);
                 cont.models.AddLast(stl);
             }
             if (copyDialog.checkAutoposition.Checked)
@@ -659,9 +783,9 @@ namespace RepetierHost.view
             if (inRecheckFiles) return;
             inRecheckFiles = true;
             bool changed = false;
-            foreach (STL stl in listSTLObjects.Items)
+            foreach (PrintModel model in ListObjects(false))
             {
-                if (stl.changedOnDisk())
+                if (model.changedOnDisk())
                 {
                     changed = true;
                     break;
@@ -669,9 +793,9 @@ namespace RepetierHost.view
             }
             if (changed)
             {
-                if (MessageBox.Show("One or more objects files are changed.\r\nReload objects?", "Files changed", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                if (MessageBox.Show(Trans.T("L_MODEL_CHANGED_RELOAD"), Trans.T("L_FILES_CHANGED"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    foreach (STL stl in listSTLObjects.Items)
+                    foreach (PrintModel stl in ListObjects(false))
                     {
                         if (stl.changedOnDisk())
                             stl.reload();
@@ -680,7 +804,7 @@ namespace RepetierHost.view
                 }
                 else
                 {
-                    foreach (STL stl in listSTLObjects.Items)
+                    foreach (PrintModel stl in ListObjects(false))
                     {
                         if (stl.changedOnDisk())
                             stl.resetModifiedDate();
@@ -694,8 +818,8 @@ namespace RepetierHost.view
         {
             if (e.Modifiers == Keys.Control && e.KeyCode == Keys.A)
             {
-                for (int i = 0; i < listSTLObjects.Items.Count; i++)
-                    listSTLObjects.SetSelected(i, true);
+                foreach (ListViewItem item in listObjects.Items)
+                    item.Selected = true;
                 e.Handled = true;
             }
             else if (e.KeyCode == Keys.Delete || e.KeyCode == Keys.Back)
@@ -704,12 +828,135 @@ namespace RepetierHost.view
                 e.Handled = true;
             }
         }
+
+        private void buttonRepair_Click(object sender, EventArgs e)
+        {
+            if (listObjects.SelectedItems.Count != 1) return;
+            PrintModel model = (PrintModel)ListObjects(true).First.Value;
+            if (model != null && repairToolDeleagte!=null)
+                repairToolDeleagte(model);
+        }
+
+        private void listObjects_DrawSubItem(object sender, DrawListViewSubItemEventArgs e)
+        {
+            if (e.ColumnIndex == 1)
+            {
+                e.DrawDefault = false;
+              //  if ((e.ItemState & ListViewItemStates.Selected) == 0)
+              //      e.DrawBackground();
+    
+                Graphics g = e.Graphics;
+                PrintModel model = (PrintModel)e.Item.Tag;
+                g.DrawImage(imageList16.Images[model.Model.manifold ? 2 : 3], e.Bounds.Left + e.Bounds.Width / 2 - 8, e.Bounds.Top + e.Bounds.Height / 2 - 8);
+            } else if (e.ColumnIndex == 2)
+            {
+                PrintModel model = (PrintModel)e.Item.Tag;
+                e.DrawDefault = false;
+              //  if ((e.ItemState & ListViewItemStates.Selected) == 0)
+              //      e.DrawBackground();
+                Graphics g = e.Graphics;
+                int idx = model.outside ? 3 : 2;
+                g.DrawImage(imageList16.Images[idx], e.Bounds.Left + e.Bounds.Width / 2 - 8, e.Bounds.Top + e.Bounds.Height / 2 - 8);
+            }
+            else if (e.ColumnIndex == 3) // Trash
+            {
+                e.DrawDefault = false;
+                //if ((e.ItemState & ListViewItemStates.Selected) == 0)
+                //    e.DrawBackground();
+                Button b = delButtonList.ContainsKey(e.Item) ? delButtonList[e.Item] : null;
+                if (b!=null)
+                {
+                    b.Bounds = new Rectangle(e.Bounds.Left+1,e.Bounds.Top+1,e.Bounds.Width-2,e.Bounds.Height-2);
+                    b.Visible = true;
+                }
+            }
+            else
+            {
+                e.DrawDefault = true;
+            }
+        }
+
+        private void listObjects_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e)
+        {
+            e.DrawDefault = true;
+        }
+
+        private void buttonLockAspect_Click(object sender, EventArgs e)
+        {
+            LockAspectRatio = !LockAspectRatio;
+        }
+
+        private void listObjects_ClientSizeChanged(object sender, EventArgs e)
+        {
+            int nameWith = listObjects.Width - columnCollision.Width - columnMesh.Width - columnDelete.Width-5;
+            if (nameWith > 0)
+                columnName.Width = nameWith;
+        }
+
+        private void toolFixNormals_Click(object sender, EventArgs e)
+        {
+            foreach(PrintModel model in ListObjects(true))
+                model.FixNormals();
+            updateEnabled();
+            Main.main.threedview.UpdateChanges();
+        }
+
+        private void listObjects_DrawItem(object sender, DrawListViewItemEventArgs e)
+        {
+            e.DrawDefault = false;
+            e.DrawBackground();
+            e.DrawText();
+        }
+
+        private void checkCutFaces_CheckedChanged(object sender, EventArgs e)
+        {
+            Main.main.threedview.UpdateChanges();
+        }
+
+        private void cutPositionSlider_ValueChanged(object sender, EventArgs e)
+        {
+            if(checkCutFaces.Checked)
+                Main.main.threedview.UpdateChanges();
+        }
+
+        private void toolSplitObject_Click(object sender, EventArgs e)
+        {
+            PrintModel act = SingleSelectedModel;
+            if(act==null) return;
+            List<TopoModel> models = act.ActiveModel.SplitIntoSurfaces();
+            if (models.Count == 1) return;
+            int idx = 1;
+            foreach (TopoModel m in models)
+            {
+                PrintModel pm = act.cloneWithModel(m, idx++);
+                cont.models.AddLast(pm);
+                AddObject(pm);
+            }
+            cont.models.Remove(act);
+            RemoveObject(act);
+        }
+
+        private void labelModified_Click(object sender, EventArgs e)
+        {
+            PrintModel act = SingleSelectedModel;
+            if (act == null) return;
+            act.ShowRepaired(act.activeModel == 0 && act.repairedModel!=null);
+            UpdateAnalyserData();
+        }
+
+        private void toolStripInfo_Click(object sender, EventArgs e)
+        {
+            PrintModel act = SingleSelectedModel;
+            if (act == null) return;
+            ObjectInformation.Execute(act);
+        }
     }
     public class EnglishStreamWriter : StreamWriter
     {
         public EnglishStreamWriter(Stream path)
             : base(path, Encoding.ASCII)
         {
+            Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
         }
         public override IFormatProvider FormatProvider
         {

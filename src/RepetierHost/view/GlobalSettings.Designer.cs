@@ -44,9 +44,18 @@
             this.groupGUI = new System.Windows.Forms.GroupBox();
             this.checkRedGreenSwitch = new System.Windows.Forms.CheckBox();
             this.checkReduceToolbarSize = new System.Windows.Forms.CheckBox();
+            this.groupFileAssociations = new System.Windows.Forms.GroupBox();
+            this.checkSTL = new System.Windows.Forms.CheckBox();
+            this.checkOBJ = new System.Windows.Forms.CheckBox();
+            this.checkGCode = new System.Windows.Forms.CheckBox();
+            this.checkG = new System.Windows.Forms.CheckBox();
+            this.checkGCO = new System.Windows.Forms.CheckBox();
+            this.checkNC = new System.Windows.Forms.CheckBox();
+            this.buttonAssociate = new System.Windows.Forms.Button();
             this.groupFilesAndDirectories.SuspendLayout();
             this.groupBehaviour.SuspendLayout();
             this.groupGUI.SuspendLayout();
+            this.groupFileAssociations.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupFilesAndDirectories
@@ -121,7 +130,7 @@
             // 
             // buttonOK
             // 
-            this.buttonOK.Location = new System.Drawing.Point(365, 326);
+            this.buttonOK.Location = new System.Drawing.Point(365, 418);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(80, 22);
             this.buttonOK.TabIndex = 0;
@@ -131,7 +140,7 @@
             // 
             // buttonAbort
             // 
-            this.buttonAbort.Location = new System.Drawing.Point(451, 326);
+            this.buttonAbort.Location = new System.Drawing.Point(451, 418);
             this.buttonAbort.Name = "buttonAbort";
             this.buttonAbort.Size = new System.Drawing.Size(80, 22);
             this.buttonAbort.TabIndex = 1;
@@ -196,12 +205,109 @@
             this.checkReduceToolbarSize.UseVisualStyleBackColor = true;
             this.checkReduceToolbarSize.CheckedChanged += new System.EventHandler(this.checkReduceToolbarSize_CheckedChanged);
             // 
+            // groupFileAssociations
+            // 
+            this.groupFileAssociations.Controls.Add(this.buttonAssociate);
+            this.groupFileAssociations.Controls.Add(this.checkNC);
+            this.groupFileAssociations.Controls.Add(this.checkGCO);
+            this.groupFileAssociations.Controls.Add(this.checkG);
+            this.groupFileAssociations.Controls.Add(this.checkGCode);
+            this.groupFileAssociations.Controls.Add(this.checkOBJ);
+            this.groupFileAssociations.Controls.Add(this.checkSTL);
+            this.groupFileAssociations.Location = new System.Drawing.Point(13, 316);
+            this.groupFileAssociations.Name = "groupFileAssociations";
+            this.groupFileAssociations.Size = new System.Drawing.Size(518, 69);
+            this.groupFileAssociations.TabIndex = 4;
+            this.groupFileAssociations.TabStop = false;
+            this.groupFileAssociations.Text = "File Associations";
+            // 
+            // checkSTL
+            // 
+            this.checkSTL.AutoSize = true;
+            this.checkSTL.Checked = true;
+            this.checkSTL.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkSTL.Location = new System.Drawing.Point(13, 20);
+            this.checkSTL.Name = "checkSTL";
+            this.checkSTL.Size = new System.Drawing.Size(39, 17);
+            this.checkSTL.TabIndex = 0;
+            this.checkSTL.Text = ".stl";
+            this.checkSTL.UseVisualStyleBackColor = true;
+            // 
+            // checkOBJ
+            // 
+            this.checkOBJ.AutoSize = true;
+            this.checkOBJ.Checked = true;
+            this.checkOBJ.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkOBJ.Location = new System.Drawing.Point(13, 43);
+            this.checkOBJ.Name = "checkOBJ";
+            this.checkOBJ.Size = new System.Drawing.Size(43, 17);
+            this.checkOBJ.TabIndex = 0;
+            this.checkOBJ.Text = ".obj";
+            this.checkOBJ.UseVisualStyleBackColor = true;
+            // 
+            // checkGCode
+            // 
+            this.checkGCode.AutoSize = true;
+            this.checkGCode.Checked = true;
+            this.checkGCode.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkGCode.Location = new System.Drawing.Point(80, 20);
+            this.checkGCode.Name = "checkGCode";
+            this.checkGCode.Size = new System.Drawing.Size(59, 17);
+            this.checkGCode.TabIndex = 0;
+            this.checkGCode.Text = ".gcode";
+            this.checkGCode.UseVisualStyleBackColor = true;
+            // 
+            // checkG
+            // 
+            this.checkG.AutoSize = true;
+            this.checkG.Checked = true;
+            this.checkG.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkG.Location = new System.Drawing.Point(159, 20);
+            this.checkG.Name = "checkG";
+            this.checkG.Size = new System.Drawing.Size(35, 17);
+            this.checkG.TabIndex = 0;
+            this.checkG.Text = ".g";
+            this.checkG.UseVisualStyleBackColor = true;
+            // 
+            // checkGCO
+            // 
+            this.checkGCO.AutoSize = true;
+            this.checkGCO.Checked = true;
+            this.checkGCO.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkGCO.Location = new System.Drawing.Point(80, 43);
+            this.checkGCO.Name = "checkGCO";
+            this.checkGCO.Size = new System.Drawing.Size(47, 17);
+            this.checkGCO.TabIndex = 0;
+            this.checkGCO.Text = ".gco";
+            this.checkGCO.UseVisualStyleBackColor = true;
+            // 
+            // checkNC
+            // 
+            this.checkNC.AutoSize = true;
+            this.checkNC.Location = new System.Drawing.Point(159, 43);
+            this.checkNC.Name = "checkNC";
+            this.checkNC.Size = new System.Drawing.Size(41, 17);
+            this.checkNC.TabIndex = 0;
+            this.checkNC.Text = ".nc";
+            this.checkNC.UseVisualStyleBackColor = true;
+            // 
+            // buttonAssociate
+            // 
+            this.buttonAssociate.Location = new System.Drawing.Point(372, 20);
+            this.buttonAssociate.Name = "buttonAssociate";
+            this.buttonAssociate.Size = new System.Drawing.Size(140, 23);
+            this.buttonAssociate.TabIndex = 1;
+            this.buttonAssociate.Text = "Associate Extensions";
+            this.buttonAssociate.UseVisualStyleBackColor = true;
+            this.buttonAssociate.Click += new System.EventHandler(this.buttonAssociate_Click);
+            // 
             // GlobalSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(544, 381);
+            this.ClientSize = new System.Drawing.Size(544, 494);
             this.ControlBox = false;
+            this.Controls.Add(this.groupFileAssociations);
             this.Controls.Add(this.groupGUI);
             this.Controls.Add(this.groupBehaviour);
             this.Controls.Add(this.buttonAbort);
@@ -221,6 +327,8 @@
             this.groupBehaviour.PerformLayout();
             this.groupGUI.ResumeLayout(false);
             this.groupGUI.PerformLayout();
+            this.groupFileAssociations.ResumeLayout(false);
+            this.groupFileAssociations.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -242,6 +350,14 @@
         private System.Windows.Forms.GroupBox groupGUI;
         private System.Windows.Forms.CheckBox checkReduceToolbarSize;
         private System.Windows.Forms.CheckBox checkRedGreenSwitch;
+        private System.Windows.Forms.GroupBox groupFileAssociations;
+        private System.Windows.Forms.Button buttonAssociate;
+        private System.Windows.Forms.CheckBox checkNC;
+        private System.Windows.Forms.CheckBox checkGCO;
+        private System.Windows.Forms.CheckBox checkG;
+        private System.Windows.Forms.CheckBox checkGCode;
+        private System.Windows.Forms.CheckBox checkOBJ;
+        private System.Windows.Forms.CheckBox checkSTL;
 
     }
 }

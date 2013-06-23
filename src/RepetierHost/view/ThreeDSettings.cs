@@ -30,16 +30,27 @@ using OpenTK;
 
 namespace RepetierHost.view
 {
-    public partial class ThreeDSettings : Form
+    public partial class ThreeDSettings : Form, INotifyPropertyChanged
     {
+
         RegistryKey repetierKey;
         RegistryKey threedKey;
         public bool useVBOs = false;
         public int drawMethod = 0; // 0 = elements, 1 = drawElements, 2 = VBO
         public float openGLVersion = 1.0f; // Version for feature detection
+        private bool _showEdges = false;
+        private bool _showFaces = true;
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, e);
+        }
+
         public ThreeDSettings()
         {
             InitializeComponent();
+            tdSettings.DataSource = this;
             RegMemory.RestoreWindowPos("threeDSettingsWindow", this);
             if (Main.IsMono)
                 buttonOK.Location = new Point(buttonOK.Location.X,buttonOK.Location.Y-10);
@@ -60,7 +71,9 @@ namespace RepetierHost.view
             groupPrintbed.Text = Trans.T("L_PRINTBED");
             groupVisualization.Text = Trans.T("L_VISUALIZATION");
             labelAmbientColor.Text = Trans.T("L_AMBIENT_COLOR");
-            labelBackground.Text = Trans.T("L_BACKGROUND");
+            labelBackgroundTop.Text = Trans.T("L_BACKGROUND_TOP");
+            labelBackgroundBottom.Text = Trans.T("L_BACKGROUND_BOTTOM");
+            labelPrinterFrame.Text = Trans.T("L_PRINTER_FRAME");
             labelDiffuseColor.Text = Trans.T("L_DIFFUSE_COLOR");
             labelDrawMethod.Text = Trans.T("L_DRAW_METHOD");
             labelEdges.Text = Trans.T("L_EDGES");
@@ -97,6 +110,8 @@ namespace RepetierHost.view
             tabLights.Text = Trans.T("TAB_LIGHTS");
             radioHeight.Text = Trans.T("L_LAYER_HEIGHT");
             radioDiameter.Text = Trans.T("L_FILAMENT_DIAMETER");
+            labelModelError.Text = Trans.T("L_MODEL_ERRORS");
+            labelInsideFaces.Text = Trans.T("L_INNER_FACES");
             /* Autodetect best
 VBOs (fastest)
 Arrays (medium)
@@ -110,6 +125,33 @@ Immediate (slow)*/
             labelTravelMoves.Text = Trans.T("L_TRAVEL_MOVES:");
             checkDisableTravelMoves.Text = Trans.T("L_DISABLE_TRAVEL_MOVES_VIS");
             checkCorrectNormals.Text = Trans.T("L_CORRECT_NORMALS");
+            checkAutoenableParallelInTopView.Text = Trans.T("L_AUTOENABLE_PARALLEL_TOPVIEW");
+            buttonGeneralColorDefaults.Text = Trans.T("L_RESET_DEFAULTS");
+            buttonModelColorsDefaults.Text = Trans.T("L_RESET_DEFAULTS");
+        }
+        public bool ShowEdges
+        {
+            get { return _showEdges; }
+            set
+            {
+                if (value == _showEdges) return;
+                _showEdges = value;
+                threedKey.SetValue("showEdges", _showEdges ? 1 : 0);
+                OnPropertyChanged(new PropertyChangedEventArgs("ShowEdges"));
+                Main.main.Update3D();
+            }
+        }
+        public bool ShowFaces
+        {
+            get { return _showFaces; }
+            set
+            {
+                if (value == _showFaces) return;
+                _showFaces = value;
+                threedKey.SetValue("showFaces", _showFaces ? 1 : 0);
+                OnPropertyChanged(new PropertyChangedEventArgs("ShowFaces"));
+                Main.main.Update3D();
+            }
         }
         public int filamentVisualization
         {
@@ -139,11 +181,13 @@ Immediate (slow)*/
         {
             try
             {
-                threedKey.SetValue("backgroundColor", background.BackColor.ToArgb());
+                threedKey.SetValue("backgroundTopColor", backgroundTop.BackColor.ToArgb());
+                threedKey.SetValue("backgroundBottomColor", backgroundBottom.BackColor.ToArgb());
                 threedKey.SetValue("facesColor", faces.BackColor.ToArgb());
                 threedKey.SetValue("edgesColor", edges.BackColor.ToArgb());
                 threedKey.SetValue("selectedFacesColor", selectedFaces.BackColor.ToArgb());
                 threedKey.SetValue("printerBaseColor", printerBase.BackColor.ToArgb());
+                threedKey.SetValue("printerFrameColor", printerFrame.BackColor.ToArgb());
                 threedKey.SetValue("filamenColor", filament.BackColor.ToArgb());
                 threedKey.SetValue("filament2Color", filament2.BackColor.ToArgb());
                 threedKey.SetValue("filament3Color", filament3.BackColor.ToArgb());
@@ -151,8 +195,8 @@ Immediate (slow)*/
                 threedKey.SetValue("travelColor", travelMoves.BackColor.ToArgb());
                 threedKey.SetValue("selectedFilamentColor", selectedFilament.BackColor.ToArgb());
                 threedKey.SetValue("outsidePrintbedColor", outsidePrintbed.BackColor.ToArgb());
-                threedKey.SetValue("showEdges", showEdges.Checked ? 1 : 0);
-                threedKey.SetValue("showFaces", showFaces.Checked ? 1 : 0);
+                threedKey.SetValue("showEdges", _showEdges ? 1 : 0);
+                threedKey.SetValue("showFaces", _showFaces ? 1 : 0);
                 threedKey.SetValue("pulseOutside", pulseOutside.Checked ? 1 : 0);
                 threedKey.SetValue("showPrintbed", showPrintbed.Checked ? 1 : 0);
                 threedKey.SetValue("disableFilamentVisualization", checkDisableFilamentVisualization.Checked ? 1 : 0);
@@ -185,6 +229,8 @@ Immediate (slow)*/
                 threedKey.SetValue("diffuse4Color", diffuse4.BackColor.ToArgb());
                 threedKey.SetValue("specular4Color", specular4.BackColor.ToArgb());
                 threedKey.SetValue("selectionBoxColor", selectionBox.BackColor.ToArgb());
+                threedKey.SetValue("errorModelColor", errorModel.BackColor.ToArgb());
+                threedKey.SetValue("insideFacesColor", insideFaces.BackColor.ToArgb());
                 threedKey.SetValue("light1X", xdir1.Text);
                 threedKey.SetValue("light1Y", ydir1.Text);
                 threedKey.SetValue("light1Z", zdir1.Text);
@@ -197,6 +243,7 @@ Immediate (slow)*/
                 threedKey.SetValue("light4X", xdir4.Text);
                 threedKey.SetValue("light4Y", ydir4.Text);
                 threedKey.SetValue("light4Z", zdir4.Text);
+                threedKey.SetValue("autoenableParallelForTopView", checkAutoenableParallelInTopView.Checked ? 1 : 0);
 
             }
             catch { }
@@ -205,11 +252,13 @@ Immediate (slow)*/
         {
             try
             {
-                background.BackColor = Color.FromArgb((int)threedKey.GetValue("backgroundColor",background.BackColor.ToArgb()));
+                backgroundTop.BackColor = Color.FromArgb((int)threedKey.GetValue("backgroundTopColor",backgroundTop.BackColor.ToArgb()));
+                backgroundBottom.BackColor = Color.FromArgb((int)threedKey.GetValue("backgroundBottomColor", backgroundBottom.BackColor.ToArgb()));
                 faces.BackColor = Color.FromArgb((int)threedKey.GetValue("facesColor", faces.BackColor.ToArgb()));
                 edges.BackColor = Color.FromArgb((int)threedKey.GetValue("edgesColor", faces.BackColor.ToArgb()));
                 selectedFaces.BackColor = Color.FromArgb((int)threedKey.GetValue("selectedFacesColor", selectedFaces.BackColor.ToArgb()));
                 printerBase.BackColor = Color.FromArgb((int)threedKey.GetValue("printerBaseColor", printerBase.BackColor.ToArgb()));
+                printerFrame.BackColor = Color.FromArgb((int)threedKey.GetValue("printerFrameColor", printerFrame.BackColor.ToArgb()));
                 filament.BackColor = Color.FromArgb((int)threedKey.GetValue("filamenColor", filament.BackColor.ToArgb()));
                 filament2.BackColor = Color.FromArgb((int)threedKey.GetValue("filament2Color", filament2.BackColor.ToArgb()));
                 filament3.BackColor = Color.FromArgb((int)threedKey.GetValue("filament3Color", filament3.BackColor.ToArgb()));
@@ -217,8 +266,8 @@ Immediate (slow)*/
                 travelMoves.BackColor = Color.FromArgb((int)threedKey.GetValue("travelColor", travelMoves.BackColor.ToArgb()));
                 selectedFilament.BackColor = Color.FromArgb((int)threedKey.GetValue("selectedFilamentColor", selectedFilament.BackColor.ToArgb()));
                 outsidePrintbed.BackColor = Color.FromArgb((int)threedKey.GetValue("outsidePrintbedColor", outsidePrintbed.BackColor.ToArgb()));
-                showEdges.Checked = 0 != (int)threedKey.GetValue("showEdges", showEdges.Checked ? 1 : 0);
-                showFaces.Checked = 0 != (int)threedKey.GetValue("showFaces", showFaces.Checked ? 1 : 0);
+                _showEdges = 0 != (int)threedKey.GetValue("showEdges", _showEdges ? 1 : 0);
+                _showFaces = 0 != (int)threedKey.GetValue("showFaces", _showFaces ? 1 : 0);
                 pulseOutside.Checked = 0 != (int)threedKey.GetValue("pulseOutside", pulseOutside.Checked ? 1 : 0);
                 showPrintbed.Checked = 0 != (int)threedKey.GetValue("showPrintbed", showPrintbed.Checked ? 1 : 0);
                 checkDisableFilamentVisualization.Checked = 0 != (int)threedKey.GetValue("disableFilamentVisualization", checkDisableFilamentVisualization.Checked ? 1 : 0);
@@ -251,6 +300,8 @@ Immediate (slow)*/
                 diffuse4.BackColor = Color.FromArgb((int)threedKey.GetValue("diffuse4Color", diffuse4.BackColor.ToArgb()));
                 specular4.BackColor = Color.FromArgb((int)threedKey.GetValue("specular4Color", specular4.BackColor.ToArgb()));
                 selectionBox.BackColor = Color.FromArgb((int)threedKey.GetValue("selectionBoxColor", selectionBox.BackColor.ToArgb()));
+                errorModel.BackColor = Color.FromArgb((int)threedKey.GetValue("errorModelColor", errorModel.BackColor.ToArgb()));
+                insideFaces.BackColor = Color.FromArgb((int)threedKey.GetValue("insideFacesColor", insideFaces.BackColor.ToArgb()));
                 xdir1.Text = (string)threedKey.GetValue("light1X", xdir1.Text);
                 ydir1.Text = (string)threedKey.GetValue("light1Y", ydir1.Text);
                 zdir1.Text = (string)threedKey.GetValue("light1Z", zdir1.Text);
@@ -263,7 +314,14 @@ Immediate (slow)*/
                 xdir4.Text = (string)threedKey.GetValue("light4X", xdir4.Text);
                 ydir4.Text = (string)threedKey.GetValue("light4Y", ydir4.Text);
                 zdir4.Text = (string)threedKey.GetValue("light4Z", zdir4.Text);
+                checkAutoenableParallelInTopView.Checked = 0!=(int)threedKey.GetValue("autoenableParallelForTopView", checkAutoenableParallelInTopView.Checked ? 1 : 0);
                 GCodePath.correctNorms = checkCorrectNormals.Checked;
+                if (threedKey.GetValue("backgroundColor", null) != null)
+                {
+                    buttonModelColorsDefaults_Click(null, null);
+                    buttonGeneralColorDefaults_Click(null, null);
+                    threedKey.DeleteValue("backgroundColor");
+                }
             }
             catch { }
         }
@@ -275,12 +333,7 @@ Immediate (slow)*/
 
         private void background_Click(object sender, EventArgs e)
         {
-            colorDialog.Color = background.BackColor;
-            if (colorDialog.ShowDialog() == DialogResult.OK)
-            {
-                background.BackColor = colorDialog.Color;
-                Main.main.Update3D();
-            }
+
         }
 
         private void faces_Click(object sender, EventArgs e)
@@ -298,6 +351,7 @@ Immediate (slow)*/
             if (colorDialog.ShowDialog() == DialogResult.OK)
             {
                 edges.BackColor = colorDialog.Color;
+                Main.main.threedview.updateCuts = true;
                 Main.main.Update3D();
             }
         }
@@ -308,29 +362,26 @@ Immediate (slow)*/
             if (colorDialog.ShowDialog() == DialogResult.OK)
             {
                 selectedFaces.BackColor = colorDialog.Color;
+                Main.main.threedview.updateCuts = true;
                 Main.main.Update3D();
             }
         }
 
-        private void filament_Click(object sender, EventArgs e)
+        private void changecolor_Click(object sender, EventArgs e)
         {
             Panel p = (Panel)sender;
             colorDialog.Color = p.BackColor;
             if (colorDialog.ShowDialog() == DialogResult.OK)
             {
                 p.BackColor = colorDialog.Color;
+                Main.main.threedview.updateCuts = true;
                 Main.main.Update3D();
             }
         }
 
         private void printerBase_Click(object sender, EventArgs e)
         {
-            colorDialog.Color = printerBase.BackColor;
-            if (colorDialog.ShowDialog() == DialogResult.OK)
-            {
-                printerBase.BackColor = colorDialog.Color;
-                Main.main.Update3D();
-            }
+
         }
 
         private void comboFilamentVisualization_SelectedIndexChanged(object sender, EventArgs e)
@@ -356,7 +407,7 @@ Immediate (slow)*/
             TextBox box = (TextBox)sender;
             try
             {
-                float.Parse(box.Text);
+                float.Parse(box.Text, NumberStyles.Float, GCode.format);
                 errorProvider.SetError(box, "");
             }
             catch
@@ -397,6 +448,7 @@ Immediate (slow)*/
             if (colorDialog.ShowDialog() == DialogResult.OK)
             {
                 outsidePrintbed.BackColor = colorDialog.Color;
+                Main.main.threedview.updateCuts = true;
                 Main.main.Update3D();
             }
         }
@@ -407,6 +459,7 @@ Immediate (slow)*/
             if (colorDialog.ShowDialog() == DialogResult.OK)
             {
                 p.BackColor = colorDialog.Color;
+                Main.main.threedview.updateCuts = true;
                 Main.main.Update3D();
             }
         }
@@ -448,11 +501,31 @@ Immediate (slow)*/
             Main.main.updateTravelMoves();
             Main.main.Update3D();
         }
-
         private void checkCorrectNormals_CheckedChanged(object sender, EventArgs e)
         {
             GCodePath.correctNorms = checkCorrectNormals.Checked;
             Main.main.Update3D();
+        }
+
+        private void buttonGeneralColorDefaults_Click(object sender, EventArgs e)
+        {
+            backgroundTop.BackColor = Color.WhiteSmoke;
+            backgroundBottom.BackColor = Color.CornflowerBlue;
+            printerBase.BackColor = Color.PaleGoldenrod;
+            printerFrame.BackColor = Color.Black;
+        }
+
+        private void buttonModelColorsDefaults_Click(object sender, EventArgs e)
+        {
+            faces.BackColor = Color.Gold;
+            edges.BackColor = Color.DarkGray;
+            selectedFaces.BackColor = Color.Fuchsia;
+            errorModel.BackColor = Color.Red;
+            selectionBox.BackColor = Color.DodgerBlue;
+            errorModelEdge.BackColor = Color.Cyan;
+            outsidePrintbed.BackColor = Color.Aquamarine;
+            cutFaces.BackColor = Color.RoyalBlue;
+            insideFaces.BackColor = Color.Lime;
         }
     }
 }

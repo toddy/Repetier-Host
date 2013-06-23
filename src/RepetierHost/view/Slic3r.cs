@@ -28,6 +28,7 @@ using System.Diagnostics;
 using System.Globalization;
 using RepetierHost.view.utils;
 using RepetierHost.model;
+using RepetierHost.model.geom;
 
 namespace RepetierHost.view
 {
@@ -368,7 +369,7 @@ namespace RepetierHost.view
                     exe = BasicConfiguration.basicConf.Slic3rExecutable;
                 */
                 StringBuilder sb = new StringBuilder();
-                if(BasicConfiguration.basicConf.Slic3rVersionGroup>=1)
+                if(BasicConfiguration.basicConf.Slic3rVersionGroup>=1 && Main.conn.numberExtruder<=1)
                     sb.Append("--no-plater --gui-mode expert");
                 procSlic3r.EnableRaisingEvents = true;
                 procSlic3r.Exited += new EventHandler(Slic3rExited);
@@ -725,16 +726,13 @@ namespace RepetierHost.view
             SlicingInfo.SetAction(Trans.T("L_ANALYSING_STL"));
             try
             {
-                STL stl = new STL();
-                stl.Load(file);
-                stl.UpdateBoundingBox();
+                RHBoundingBox stl = Slicer.lastBox;
                 if (stl.xMin > ps.BedLeft && stl.yMin > ps.BedFront && stl.xMax < ps.BedLeft + ps.PrintAreaWidth && stl.yMax < ps.BedFront+ps.PrintAreaDepth)
                 {
                     // User assigned valid position, so we use this
-                    centerx = stl.xMin + (stl.xMax - stl.xMin) / 2;
-                    centery = stl.yMin + (stl.yMax - stl.yMin) / 2;
+                    centerx = (float)(stl.xMin + (stl.xMax - stl.xMin) / 2);
+                    centery = (float)(stl.yMin + (stl.yMax - stl.yMin) / 2);
                 }
-                stl.Clear();
             }
             catch (Exception e)
             {
@@ -798,6 +796,7 @@ namespace RepetierHost.view
                 sb.Append(wrapQuotes(StlToGCode(file)));
                 sb.Append(" ");
                 sb.Append(wrapQuotes(file));
+                RLog.info("Slic3r command:"+exe+" "+sb.ToString());
                 procConvert.StartInfo.Arguments = sb.ToString();
                 procConvert.StartInfo.UseShellExecute = false;
                 procConvert.StartInfo.RedirectStandardOutput = true;

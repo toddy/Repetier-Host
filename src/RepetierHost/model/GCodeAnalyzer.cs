@@ -81,6 +81,18 @@ namespace RepetierHost.model
             activeExtruder = extruder[activeExtruderId];
             bedTemp = 0;
         }
+        public float RealX
+        {
+            get { return x + xOffset; }
+        }
+        public float RealY
+        {
+            get { return y + yOffset; }
+        }
+        public float RealZ
+        {
+            get { return z + zOffset; }
+        }
         public float getTemperature(int extr)
         {
             if (extr < 0) extr = activeExtruderId;
@@ -181,7 +193,8 @@ namespace RepetierHost.model
                     x = Main.printerSettings.XHomePos;
                     y = Main.printerSettings.YHomePos;
                     z = Main.printerSettings.ZHomePos;
-                    xOffset = yOffset = zOffset = 0;
+                    if (FormPrinterSettings.ps.printerType != 3)
+                        xOffset = yOffset = zOffset = 0;
                 }
                 return;
             }
@@ -271,10 +284,10 @@ namespace RepetierHost.model
                             {
                                 layer++;
                                 lastZPrint = z;
-                                if (!privateAnalyzer && Main.conn.job.hasData() && Main.conn.job.maxLayer >= 0)
+                                if (!privateAnalyzer && Main.conn.connector.IsJobRunning() && Main.conn.connector.MaxLayer >= 0)
                                 {
                                     //PrinterConnection.logInfo("Printing layer " + layer.ToString() + " of " + Main.conn.job.maxLayer.ToString());
-                                    PrinterConnection.logInfo(Trans.T2("L_PRINTING_LAYER_X_OF_Y", layer.ToString(), Main.conn.job.maxLayer.ToString()));
+                                    PrinterConnection.logInfo(Trans.T2("L_PRINTING_LAYER_X_OF_Y", layer.ToString(), Main.conn.connector.MaxLayer.ToString()));
                                 }
                             }
                         }
@@ -552,9 +565,18 @@ namespace RepetierHost.model
                         relative = true;
                         break;
                     case 92:
-                        if (code.hasX) { xOffset = x - code.X; x = xOffset; }
-                        if (code.hasY) { yOffset = y - code.Y; y = yOffset; }
-                        if (code.hasZ) { zOffset = z - code.Z; z = zOffset; }
+                        if (FormPrinterSettings.ps.printerType != 3)
+                        {
+                            if (code.hasX) { float old = xOffset + x; xOffset += code.X; x = old - xOffset; }
+                            if (code.hasY) { float old = zOffset + y; yOffset += code.Y; y = old - yOffset; }
+                            if (code.hasZ) { float old = zOffset + z; zOffset += code.Z; z = old - zOffset; }
+                        }
+                        else
+                        {
+                            if (code.hasX) { xOffset = code.X; x = 0; }
+                            if (code.hasY) { yOffset = code.Y; y = 0; }
+                            if (code.hasZ) { zOffset = code.Z; z = 0; }
+                        }
                         if (code.hasE) { activeExtruder.eOffset = activeExtruder.e - code.E; activeExtruder.lastE = activeExtruder.e = activeExtruder.eOffset; }
                         if (eventPosChanged != null)
                             if (privateAnalyzer)
@@ -700,10 +722,10 @@ namespace RepetierHost.model
                         layer++;
                         if (code!=null)
                         {
-                            if (!privateAnalyzer && Main.conn.job.hasData() && Main.conn.job.maxLayer >= 0)
+                            if (!privateAnalyzer && Main.conn.connector.IsJobRunning() && Main.conn.connector.MaxLayer >= 0)
                             {
                                 //PrinterConnection.logInfo("Printing layer " + layer.ToString() + " of " + Main.conn.job.maxLayer.ToString());
-                                PrinterConnection.logInfo(Trans.T2("L_PRINTING_LAYER_X_OF_Y", layer.ToString(), Main.conn.job.maxLayer.ToString()));
+                                PrinterConnection.logInfo(Trans.T2("L_PRINTING_LAYER_X_OF_Y", layer.ToString(), Main.conn.connector.MaxLayer.ToString()));
                             }
                         }
                     }
@@ -727,10 +749,10 @@ namespace RepetierHost.model
                     layer++;
                     if (code!=null)
                     {
-                        if (!privateAnalyzer && Main.conn.job.hasData() && Main.conn.job.maxLayer >= 0)
+                        if (!privateAnalyzer && Main.conn.connector.IsJobRunning() && Main.conn.connector.MaxLayer >= 0)
                         {
                             //PrinterConnection.logInfo("Printing layer " + layer.ToString() + " of " + Main.conn.job.maxLayer.ToString());
-                            PrinterConnection.logInfo(Trans.T2("L_PRINTING_LAYER_X_OF_Y", layer.ToString(), Main.conn.job.maxLayer.ToString()));
+                            PrinterConnection.logInfo(Trans.T2("L_PRINTING_LAYER_X_OF_Y", layer.ToString(), Main.conn.connector.MaxLayer.ToString()));
                         }
                     }
                 }
@@ -1133,9 +1155,18 @@ namespace RepetierHost.model
                     relative = true;
                     break;
                 case 8:
-                    if (code.hasX) { xOffset = x - code.x; x = xOffset; }
-                    if (code.hasY) { yOffset = y - code.y; y = yOffset; }
-                    if (code.hasZ) { zOffset = z - code.z; z = zOffset; }
+                    if (FormPrinterSettings.ps.printerType != 3)
+                    {
+                        if (code.hasX) { float old = xOffset + x; xOffset += code.x; x = old - xOffset; }
+                        if (code.hasY) { float old = zOffset + y; yOffset += code.y; y = old - yOffset; }
+                        if (code.hasZ) { float old = zOffset + z; zOffset += code.z; z = old - zOffset; }
+                    }
+                    else
+                    {
+                        if (code.hasX) { xOffset = code.x; x = 0; }
+                        if (code.hasY) { yOffset = code.y; y = 0; }
+                        if (code.hasZ) { zOffset = code.z; z = 0; }
+                    }
                     if (code.hasE) { activeExtruder.eOffset = activeExtruder.e - code.e; activeExtruder.lastE = activeExtruder.e = activeExtruder.eOffset; }
                     break;
                 case 12: // Host command

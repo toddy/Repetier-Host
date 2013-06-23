@@ -8,17 +8,18 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using RepetierHost.model;
 using System.ComponentModel;
+using RepetierHost.model.geom;
 
 namespace RepetierHost.view.utils
 {
-    public class Slicer
+    public class Slicer : IDisposable
     {
         public enum SlicerID  {Slic3r,Skeinforge,Slic3rExternal};
         private SlicerID _ActiveSlicer = SlicerID.Slic3r;
         bool _hasSlic3r = false;
         bool _hasSkeinforge = false;
         bool _hasSlic3rExternal = false;
-
+        public static RHBoundingBox lastBox = new RHBoundingBox();
         private Skeinforge skein = null;
 
         public Slicer()
@@ -29,6 +30,19 @@ namespace RepetierHost.view.utils
             Main.printerModel.PropertyChanged += printerPropertyChanged;
 
             Update();
+        }
+        protected void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if(postproc!=null)
+                    postproc.Dispose();
+            }
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
         public bool hasSlic3r
         {
@@ -67,7 +81,7 @@ namespace RepetierHost.view.utils
                 SlicingInfo.f.Invoke(SlicingInfo.f.StopInfo);
                 LoadGCode lg = Main.main.LoadGCode;
                 Main.main.Invoke(lg, file);
-                if (SlicingInfo.f.checkStartBoxAfterSlicing.Checked && Main.conn.connected)
+                if (SlicingInfo.f.checkStartBoxAfterSlicing.Checked && Main.conn.connector.IsConnected())
                     Main.main.Invoke(Main.main.StartJob);
                 return; // Nothing to do
             }
@@ -119,7 +133,7 @@ namespace RepetierHost.view.utils
             SlicingInfo.f.Invoke(SlicingInfo.f.StopInfo);
             LoadGCode lg = Main.main.LoadGCode;
             Main.main.Invoke(lg, postprocessFile);
-            if (SlicingInfo.f.checkStartBoxAfterSlicing.Checked && Main.conn.connected)
+            if (SlicingInfo.f.checkStartBoxAfterSlicing.Checked && Main.conn.connector.IsConnected())
                 Main.main.Invoke(Main.main.StartJob);
         }
         private static void OutputDataHandler(object sendingProcess,
@@ -150,7 +164,7 @@ namespace RepetierHost.view.utils
                 Main.main.slic3rToolStripMenuItem.Checked = _ActiveSlicer == SlicerID.Slic3r;
                 Main.main.skeinforgeToolStripMenuItem1.Checked = _ActiveSlicer == SlicerID.Skeinforge;
                 Main.main.externalSlic3rToolStripMenuItem.Checked = _ActiveSlicer == SlicerID.Slic3rExternal;
-                Main.main.stlComposer1.buttonSlice.Text = Trans.T1("L_SLICE_WITH", SlicerName);
+                //Main.main.stlComposer1.buttonSlice.Text = Trans.T1("L_SLICE_WITH", SlicerName);
                 if( Main.main.slicerPanel!=null)
                     Main.main.slicerPanel.UpdateSelection();
             }
@@ -158,8 +172,8 @@ namespace RepetierHost.view.utils
         public void Update()
         {
             string basedir = (string)Main.main.repetierKey.GetValue("installPath","");
-            _hasSlic3r = false;
-            if(basedir.Length>0) {
+            _hasSlic3r = Main.slic3r.findSlic3rExecutable()!=null;
+            /*if(basedir.Length>0) {
                 string exname = "slic3r.exe";
                 if (Environment.OSVersion.Platform == PlatformID.Unix)
                     exname = "bin" + Path.DirectorySeparatorChar + "slic3r";
@@ -169,7 +183,7 @@ namespace RepetierHost.view.utils
             }
             _hasSlic3rExternal = File.Exists(BasicConfiguration.basicConf.ExternalSlic3rIniFile) &&
                 (_hasSlic3r || File.Exists(BasicConfiguration.basicConf.ExternalSlic3rPath));
-
+            */
             _hasSkeinforge = false;
             if(skein.textPython.Text.Length>0 && skein.textSkeinforge.Text.Length>0 && 
                 skein.textSkeinforgeCraft.Text.Length>0) {

@@ -24,12 +24,14 @@ using System.Text;
 using System.Windows.Forms;
 using RepetierHost.model;
 using RepetierHost.view.utils;
+using RepetierHost.connector;
 
 namespace RepetierHost.view
 {
     public partial class PrinterInfo : Form
     {
         PrinterConnection con;
+        SerialConnector connector = null;
         public PrinterInfo()
         {
             con = Main.conn;
@@ -38,6 +40,9 @@ namespace RepetierHost.view
             timer_Tick(null, null);
             translate();
             Main.main.languageChanged += translate;
+        }
+        public void ConnectWith(SerialConnector c) {
+            connector = c;
         }
         private void translate()
         {
@@ -61,15 +66,18 @@ namespace RepetierHost.view
         /// <param name="e"></param>
         private void timer_Tick(object sender, EventArgs e)
         {
-            if (con.connected == false) return;
+            if (con.connector.IsConnected() == false) return;
             labelMachine.Text = con.machine;
             labelFirmware.Text = con.firmware;
             labelFirmwareURL.Text = con.firmware_url;
             labelNumExtruder.Text = con.numberExtruder.ToString();
             labelProtocol.Text = con.protocol;
-            labelLinesSend.Text = con.linesSend.ToString();
-            labelBytesSend.Text = con.bytesSend.ToString();
-            labelErrorsReceived.Text = con.errorsReceived.ToString();
+            if (connector != null)
+            {
+                labelLinesSend.Text = connector.linesSend.ToString();
+                labelBytesSend.Text = connector.bytesSend.ToString();
+                labelErrorsReceived.Text = connector.errorsReceived.ToString();
+            }
         }
 
         private void buttonClose_Click(object sender, EventArgs e)

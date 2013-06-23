@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // Allgemeine Informationen über eine Assembly werden über die folgenden 
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die mit einer Assembly verknüpft sind.
-[assembly: AssemblyTitle("RepetierHost")]
+[assembly: AssemblyTitle("Repetier-Host")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("-")]
-[assembly: AssemblyProduct("RepetierHost")]
-[assembly: AssemblyCopyright("Copyright © 2011 repetier")]
+[assembly: AssemblyCompany("Hot-World GmbH & Co. KG")]
+[assembly: AssemblyProduct("Repetier-Host")]
+[assembly: AssemblyCopyright("Copyright © 2011-2013 repetier")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

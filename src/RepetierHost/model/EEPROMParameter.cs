@@ -63,7 +63,12 @@ namespace RepetierHost.model
         //[DisplayName("Value")]
         public string Value {
             get { return val; }
-            set { if (val.Equals(value)) return; val = value; changed = true; }
+            set { 
+                value = value.Replace(',','.').Trim(); 
+                if (val.Equals(value)) return; 
+                val = value; 
+                changed = true; 
+            }
         }
     }
     public class EEPROMStorage

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<translation revision="1" language="日本語" languageInEnglish="japanese" author="Hajime Ashida">
+<translation revision="8" language="日本語" languageInEnglish="japanese" author="Hajime Ashida">
 <t id="M_FILE" ver="1">ファイル</t>
 <t id="M_CONFIG" ver="1">設定</t>
 <t id="M_SLICER" ver="1">スライサー</t>
@@ -42,11 +42,11 @@
 <t id="M_SD_CARD_MANAGER" ver="1">SDカードマネージャー</t>
 <t id="L_SD_CARD_MANAGEMENT" ver="1">SDカード管理</t>
 <t id="M_TEST_CASE_GENERATOR" ver="1">Generatorテストケース</t>
-<t id="M_SEND_SCRIPT_1" ver="1">スクリプト1に保存</t>
-<t id="M_SEND_SCRIPT_2" ver="1">スクリプト2に保存</t>
-<t id="M_SEND_SCRIPT_3" ver="1">スクリプト3に保存</t>
-<t id="M_SEND_SCRIPT_4" ver="1">スクリプト4に保存</t>
-<t id="M_SEND_SCRIPT_5" ver="1">スクリプト5に保存</t>
+<t id="M_SEND_SCRIPT_1" ver="1">スクリプト1を送信</t>
+<t id="M_SEND_SCRIPT_2" ver="1">スクリプト2を送信</t>
+<t id="M_SEND_SCRIPT_3" ver="1">スクリプト3を送信</t>
+<t id="M_SEND_SCRIPT_4" ver="1">スクリプト4を送信</t>
+<t id="M_SEND_SCRIPT_5" ver="1">スクリプト5を送信</t>
 <t id="M_REPETIER_HOST_HOMEPAGE" ver="1">Repetier-Host ホームページ</t>
 <t id="M_REPETIER_HOST_DOWNLOAD_PAGE" ver="1">Repetier-Host ダウンロード</t>
 <t id="M_MANUAL" ver="1">Repetier-Host マニュアル</t>
@@ -127,7 +127,7 @@
 <t id="B_FAN" ver="1">ファン運転</t>
 <t id="B_DEBUG_ERRORS" ver="1">エラー</t>
 <t id="B_DEBUG_ECHO" ver="1">返信</t>
-<t id="B_DRY_RUN" ver="1">空運転</t>
+<t id="B_DRY_RUN" ver="1">ドライ運転</t>
 <t id="B_DEBUG_INFO" ver="1">情報</t>
 <t id="L_EXTRUDER" ver="1">エクストルーダー</t>
 <t id="L_PRINTBED" ver="1">ヒーテッドベッド</t>
@@ -232,7 +232,7 @@
 <t id="L_HOME_X_MAX" ver="1">原点位置を X軸最大値に設定</t>
 <t id="L_HOME_Y_MAX" ver="1">原点位置を Y軸最大値に設定</t>
 <t id="L_HOME_Z_MAX" ver="1">原点位置を Y軸最大値に設定</t>
-<t id="L_PING_PONG_MODE" ver="1">交互通信を行う</t>
+<t id="L_PING_PONG_MODE" ver="1">ピンポン伝送を行う</t>
 <t id="L_RUN_FILTER_EVERY_SLICE" ver="1">スライスごとにフィルター起動</t>
 <t id="L_CHECK_EXTRUDER_BED_TEMPERATURE" ver="1">ホットエンドとヒーテッドベッドの温度をチェックする</t>
 <t id="L_REMOVE_M105_REQUEST_LOG" ver="1">Gコード中のM105命令を無視する</t>
@@ -302,7 +302,7 @@
 ログ表示が無効になっている場合、ログを記録するかどうかの設定は次回起動時より変更されます。</t>
 <t id="L_LOG_SESSION" ver="1">ログセッション</t>
 <t id="REDUCE_TOOLBAR_SIZE" ver="1">ツールバーを小さくする</t>
-<t id="L_DISABLE_QUALITY_REDUCTION" ver="1">最大で使用</t>
+<t id="L_DISABLE_QUALITY_REDUCTION" ver="1">品質低下をしない</t>
 <t id="L_EXISTING_WORKDIR_REQUIRED" ver="1">作業フォルダが存在しません。</t>
 <t id="L_WORKDIR:" ver="1">作業フォルダ:</t>
 <t id="B_BROWSE" ver="1">変更</t>
@@ -391,7 +391,7 @@
 <t id="L_SIZE" ver="1">サイズ</t>
 <t id="L_UPLOAD_FILE" ver="1">ファイルをアップロードする</t>
 <t id="L_DELETE_FILE" ver="1">ファイルを削除する</t>
-<t id="L_RUN_CONTINUE_UPLOAD" ver="1">選択されたファイルを実行 / プリント一時停止を継続</t>
+<t id="L_RUN_CONTINUE_UPLOAD" ver="1">選択されたファイルを実行 / プリント一時停止を解除</t>
 <t id="L_STOP_UPLOAD" ver="1">一時停止/SDカードからのプリントを停止</t>
 <t id="L_MOUNT_SD_CARD" ver="1">SDカードを接続する。</t>
 <t id="L_UNMOUNT_SD_CARD" ver="1">SDカードの取り出し</t>
@@ -522,5 +522,11 @@ EEPROMを上書きしますか?</t>
 <t id="L_CARTESIAN_PRINTER" ver="6">クラシックプリンタ(ダンプエリアなし)</t>
 <t id="L_CARTESIAN_PRINTER_DUMP" ver="6">クラシックプリンタ (ダンプエリアあり)</t>
 <t id="L_ROSTOCK_CIRCLE" ver="6">Rostockプリンタ (サーキュラプリントシェイプ)</t>
+<t id="L_CORRECT_NORMALS" ver="7">correct normalsで描画 (品質は向上するがメモリ使用量は増加します)</t>
+<t id="L_WARNING" ver="8">警告</t>
+<t id="L_HEATERS_ON_QUEST" ver="8">ヒーターがONのままです。ヒーターだけOFFにします。</t>
+<t id="L_OBJECTS_OUTSIDE_SLICE_QUEST" ver="8">プリントエリアの外に一つ以上のものがあります。スライスしてもよろしいですか?</t>
+<t id="L_CNC_ROUTER" ver="8">CNC ルーター</t>
+<t id="L_SLIC3R_VERSION" ver="8">Slic3r バージョン</t>
 </translation>
 

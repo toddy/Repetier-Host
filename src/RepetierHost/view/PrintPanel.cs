@@ -24,6 +24,7 @@ using System.Text;
 using System.Windows.Forms;
 using RepetierHost.model;
 using RepetierHost.view.utils;
+using System.Globalization;
 
 namespace RepetierHost.view
 {
@@ -119,7 +120,7 @@ namespace RepetierHost.view
             long timestamp = (long)t.TotalSeconds;
             long diff = timestamp - statusSet;
             float etemp = ann.getTemperature(ann.activeExtruderId);
-            if (Main.conn.connected == false)
+            if (Main.conn.connector.IsConnected() == false)
             {
                 if (status != PrinterStatus.disconnected)
                     Status = PrinterStatus.disconnected;
@@ -130,9 +131,9 @@ namespace RepetierHost.view
                 Status = PrinterStatus.heatingBed;
             else if (status == PrinterStatus.heatingBed || status == PrinterStatus.heatingExtruder)
                 Status = PrinterStatus.idle;
-            else if (Main.conn.paused && status != PrinterStatus.jobPaused)
+            else if (Main.conn.connector.IsPaused && status != PrinterStatus.jobPaused)
                 Status = PrinterStatus.jobPaused;
-            else if (status == PrinterStatus.jobPaused && !Main.conn.paused)
+            else if (status == PrinterStatus.jobPaused && !Main.conn.connector.IsPaused)
                 Status = PrinterStatus.idle;
             else if (status == PrinterStatus.idle && diff > 0)
                 Status = PrinterStatus.idle;
@@ -141,7 +142,7 @@ namespace RepetierHost.view
                 if (diff > 30) // remove message after 30 seconds
                     Status = PrinterStatus.idle;
             }
-            else if (status == PrinterStatus.disconnected && Main.conn.connected)
+            else if (status == PrinterStatus.disconnected && Main.conn.connector.IsConnected())
                 Status = PrinterStatus.idle;
         }
         public MethodInvoker SetStatusJobFinished = delegate {Main.main.printPanel.Status = PrinterStatus.jobFinsihed;};
@@ -176,26 +177,26 @@ namespace RepetierHost.view
                         break;
                     default:
                     case PrinterStatus.idle:
-                        if (Main.conn.job.mode==1)
+                        if (Main.conn.connector.IsJobRunning())
                         {
                             if (Main.conn.analyzer.uploading)
                                 labelStatus.Text = Trans.T("L_UPLOADING..."); //"Uploading ...";
                             else
-                                labelStatus.Text = Trans.T1("L_PRINTING_JOB_ETA",Main.conn.job.ETA); //Printing job ETA " + Main.conn.job.ETA;
+                                labelStatus.Text = Trans.T1("L_PRINTING_JOB_ETA",Main.conn.connector.ETA); //Printing job ETA " + Main.conn.job.ETA;
                         }
                         else
                         {
-                            if (Main.conn.injectCommands.Count == 0)
+                            if (Main.conn.connector.InjectedCommands == 0)
                                 labelStatus.Text = Trans.T("L_IDLE"); //"Idle";
                             else
-                                labelStatus.Text = Trans.T1("L_X_COMMANDS_WAITING", Main.conn.injectCommands.Count.ToString()); // +" commands waiting";
+                                labelStatus.Text = Trans.T1("L_X_COMMANDS_WAITING", Main.conn.connector.InjectedCommands.ToString()); // +" commands waiting";
                         }
                         break;
                 }
             }
         }
         public void ConnectionChanged(string msg) {
-            UpdateConStatus(Main.conn.serial != null || Main.conn.isVirtualActive);
+            UpdateConStatus(Main.conn.connector.IsConnected());
         }
         private void tempUpdate(float extruder, float printbed)
         {
@@ -317,9 +318,10 @@ namespace RepetierHost.view
             arrowButtonYPlus.Enabled = c;
             arrowButtonZMinus.Enabled = c;
             arrowButtonZPlus.Enabled = c;
-            sliderSpeed.Enabled = c && (con.isMarlin || con.isRepetier);
-            sliderFlowrate.Enabled = c && (con.isMarlin || con.isRepetier);
-            numericUpDownSpeed.Enabled = c && (con.isMarlin || con.isRepetier);
+            sliderSpeed.Enabled = c && (con.isMarlin || con.isRepetier || con.isSprinter);
+            sliderFlowrate.Enabled = c && (con.isMarlin || con.isRepetier || con.isSprinter);
+            numericUpDownSpeed.Enabled = c && (con.isMarlin || con.isRepetier || con.isSprinter);
+            numericUpDownFlow.Enabled = c && (con.isMarlin || con.isRepetier || con.isSprinter);
             if (c) sendDebug();
         }
 
@@ -334,48 +336,48 @@ namespace RepetierHost.view
             textGCode.Text = "";
         }
 
-        private void sendDebug()
+        public void sendDebug()
         {
-            if (con.serial == null && !con.isVirtualActive) return;
+            if (!con.connector.IsConnected()) return;
             int v = 0;
             if (switchEcho.On) v += 1;
             if (switchInfo.On) v += 2;
             if (switchErrors.On) v += 4;
             if (switchDryRun.On) v += 8;
-            con.GetInjectLock();
+            con.connector.GetInjectLock();
             con.injectManualCommand("M111 S" + v);
-            con.ReturnInjectLock();
+            con.connector.ReturnInjectLock();
         }
 
         private void buttonHomeX_Click(object sender, EventArgs e)
         {
-            con.GetInjectLock();
+            con.connector.GetInjectLock();
             con.injectManualCommand("G28 X0");
-            con.ReturnInjectLock();
+            con.connector.ReturnInjectLock();
         }
 
         private void buttonHomeY_Click(object sender, EventArgs e)
         {
-            con.GetInjectLock();
+            con.connector.GetInjectLock();
             con.injectManualCommand("G28 Y0");
-            con.ReturnInjectLock();
+            con.connector.ReturnInjectLock();
         }
 
         private void buttonHomeZ_Click(object sender, EventArgs e)
         {
-            con.GetInjectLock();
+            con.connector.GetInjectLock();
             con.injectManualCommand("G28 Z0");
-            con.ReturnInjectLock();
+            con.connector.ReturnInjectLock();
         }
 
         private void buttonHomeAll_Click(object sender, EventArgs e)
         {
-            con.GetInjectLock();
-            con.injectManualCommand("G28 X0 Y0 Z0");
-            con.ReturnInjectLock();
+            con.connector.GetInjectLock();
+            con.injectManualCommand("G28");
+            con.connector.ReturnInjectLock();
         }
         private void moveHead(string axis,float amount) {
-            con.GetInjectLock();
+            con.connector.GetInjectLock();
             bool wasrel = con.analyzer.relative;
             //if(!wasrel) 
                 con.injectManualCommand("G91");
@@ -385,7 +387,7 @@ namespace RepetierHost.view
                 con.injectManualCommand("G1 " + axis + amount.ToString(GCode.format) + " F" + con.travelFeedRate.ToString(GCode.format));
             //if (!wasrel) 
                 con.injectManualCommand("G90");
-            con.ReturnInjectLock();
+                con.connector.ReturnInjectLock();
         }
 
         private void buttonXM100_Click(object sender, EventArgs e)
@@ -510,9 +512,9 @@ namespace RepetierHost.view
 
         private void switchFanOn_Change(SwitchButton b)
         {
-            if (Main.conn.connected == false) return;
+            if (Main.conn.connector.IsConnected() == false) return;
             if (!createCommands) return;
-            con.GetInjectLock();
+            con.connector.GetInjectLock();
             if (switchFanOn.On)
             {
                 //if(ann.fanVoltage!=trackFanVoltage.Value)
@@ -522,7 +524,7 @@ namespace RepetierHost.view
             {
                 con.injectManualCommand("M107");
             }
-            con.ReturnInjectLock();
+            con.connector.ReturnInjectLock();
         }
 
         private void trackFanVoltage_ValueChanged(object sender, EventArgs e)
@@ -537,21 +539,21 @@ namespace RepetierHost.view
 
         private void buttonExtrude_Click(object sender, EventArgs e)
         {
-            con.GetInjectLock();
+            con.connector.GetInjectLock();
             bool wasrel = con.analyzer.relative;
             if (!wasrel) con.injectManualCommand("G91");
             con.injectManualCommand("G1 E" + textExtrudeAmount.Text.Trim() + " F"+textExtrudeSpeed.Text.Trim());
             if (!wasrel) con.injectManualCommand("G90");
-            con.ReturnInjectLock();
+            con.connector.ReturnInjectLock();
         }
 
         private void switchExtruderHeatOn_Change(SwitchButton b)
         {
-            if (Main.conn.connected == false) return;
+            if (Main.conn.connector.IsConnected() == false) return;
             if (!createCommands) return;
             //int temp = 0;
             //int.TryParse(textExtruderSetTemp.Text,out temp);
-            con.GetInjectLock();
+            con.connector.GetInjectLock();
             if (switchExtruderHeatOn.On)
             {
                 con.injectManualCommand("M104 S" + numericUpDownExtruder.Value);
@@ -560,16 +562,16 @@ namespace RepetierHost.view
             {
                 con.injectManualCommand("M104 S0");
             }
-            con.ReturnInjectLock();
+            con.connector.ReturnInjectLock();
         }
 
         private void switchBedHeat_Change(SwitchButton b)
         {
-            if (Main.conn.connected == false) return;
+            if (Main.conn.connector.IsConnected() == false) return;
             if (!createCommands) return;
             //int temp = 0;
             //int.TryParse(textPrintbedTemp.Text, out temp);
-            con.GetInjectLock();
+            con.connector.GetInjectLock();
             if (switchBedHeat.On)
             {
                 con.injectManualCommand("M140 S" + numericPrintBed.Value);
@@ -578,7 +580,7 @@ namespace RepetierHost.view
             {
                 con.injectManualCommand("M140 S0");
             }
-            con.ReturnInjectLock();
+            con.connector.ReturnInjectLock();
         }
 
         private void switchEcho_Change(SwitchButton b)
@@ -603,8 +605,8 @@ namespace RepetierHost.view
 
         private void switchPower_Change(SwitchButton b)
         {
-            if (Main.conn.connected == false) return;
-            con.GetInjectLock();
+            if (Main.conn.connector.IsConnected() == false) return;
+            con.connector.GetInjectLock();
             if (switchPower.On)
             {
                 con.injectManualCommand("M80");
@@ -613,7 +615,7 @@ namespace RepetierHost.view
             {
                 con.injectManualCommand("M81");
             }
-            con.ReturnInjectLock();
+            con.connector.ReturnInjectLock();
         }
 
         private void textGCode_KeyDown(object sender, KeyEventArgs e)
@@ -650,7 +652,7 @@ namespace RepetierHost.view
             TextBox box = (TextBox)sender;
             try
             {
-                float.Parse(box.Text);
+                float.Parse(box.Text, NumberStyles.Float, GCode.format);
                 errorProvider.SetError(box, "");
             }
             catch
@@ -695,7 +697,7 @@ namespace RepetierHost.view
 
         private void buttonSimulateOK_Click(object sender, EventArgs e)
         {
-            con.analyzeResponse("ok");
+            con.connector.AnalyzeResponse("ok");
         }
 
         private void buttonJobStatus_Click(object sender, EventArgs e)
@@ -718,18 +720,21 @@ namespace RepetierHost.view
 
         private void timer_Tick(object sender, EventArgs e)
         {
-            coordUpdate(null, ann.x, ann.y, ann.z);
+            if(FormPrinterSettings.ps.printerType!=3)
+                coordUpdate(null, ann.RealX, ann.RealY, ann.RealZ);
+            else
+                coordUpdate(null, ann.RealX, ann.RealY, ann.RealZ);
             updateStatus();
         }
 
         private void buttonRetract_Click(object sender, EventArgs e)
         {
-            con.GetInjectLock();
+            con.connector.GetInjectLock();
             bool wasrel = con.analyzer.relative;
             if (!wasrel) con.injectManualCommand("G91");
             con.injectManualCommand("G1 E-" + textRetractAmount.Text.Trim() + " F" + textExtrudeSpeed.Text.Trim());
             if (!wasrel) con.injectManualCommand("G90");
-            con.ReturnInjectLock();
+            con.connector.ReturnInjectLock();
         }
 
         private void textExtrudeSpeed_TextChanged(object sender, EventArgs e)
@@ -768,7 +773,7 @@ namespace RepetierHost.view
                     sliderSpeed.Value = con.speedMultiply;
                 }
             }
-            if (oldcon != con.speedMultiply && con.connected && (con.isMarlin || con.isRepetier))
+            if (oldcon != con.speedMultiply && con.connector.IsConnected() && (con.isMarlin || con.isRepetier || con.isSprinter))
             {
                 con.ignoreFeedback();
                 con.injectManualCommand("M220 S" + sliderSpeed.Value.ToString());
@@ -780,9 +785,9 @@ namespace RepetierHost.view
             if (!createCommands) return;
             if (switchExtruderHeatOn.On)
             {
-                con.GetInjectLock();
+                con.connector.GetInjectLock();
                 con.injectManualCommand("M104 S" + numericUpDownExtruder.Value.ToString("0"));
-                con.ReturnInjectLock();
+                con.connector.ReturnInjectLock();
             }
         }
 
@@ -791,9 +796,9 @@ namespace RepetierHost.view
             if (!createCommands) return;
             if (switchBedHeat.On)
             {
-                con.GetInjectLock();
+                con.connector.GetInjectLock();
                 con.injectManualCommand("M140 S" + numericPrintBed.Value.ToString("0"));
-                con.ReturnInjectLock();
+                con.connector.ReturnInjectLock();
             }
 
         }
@@ -879,7 +884,7 @@ namespace RepetierHost.view
                     sliderFlowrate.Value = con.flowMultiply;
                 }
             }
-            if (oldcon != con.flowMultiply && con.connected && (con.isMarlin || con.isRepetier))
+            if (oldcon != con.flowMultiply && con.connector.IsConnected() && (con.isMarlin || con.isRepetier || con.isSprinter))
             {
                 con.ignoreFeedback();
                 con.injectManualCommand("M221 S" + sliderFlowrate.Value.ToString());

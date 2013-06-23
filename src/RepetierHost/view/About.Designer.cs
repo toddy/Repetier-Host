@@ -95,9 +95,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(157, 12);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(180, 13);
+            this.label2.Size = new System.Drawing.Size(272, 13);
             this.label2.TabIndex = 5;
-            this.label2.Text = "Repetier-Host (C) 2011-2012 repetier";
+            this.label2.Text = "Repetier-Host (C) 2011-2013 Hot-World GmbH && Co. KG";
             // 
             // labelRepetierInfo
             // 

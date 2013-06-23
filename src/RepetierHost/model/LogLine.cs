@@ -41,4 +41,23 @@ namespace RepetierHost.model
                 time.Second.ToString("00") + "." + time.Millisecond.ToString("000");
         }
     }
+    public class RLog
+    {
+        public static void info(string text)
+        {
+            Main.conn.log(text, false, 3);
+        }
+        public static void message(string text)
+        {
+            Main.conn.log(text, false, 0);
+        }
+        public static void warning(string text)
+        {
+            Main.conn.log(text, false, 1);
+        }
+        public static void error(string text)
+        {
+            Main.conn.log(text, false, 2);
+        }
+    }
 }

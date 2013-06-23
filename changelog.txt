@@ -1,3 +1,25 @@
+Version 0.90 23-06-2013
+  Slic3r 0.9.10 included.
+  Redesigned object placement tab.
+  Cut objects in any direction.
+  Analyse mesh, calc volume, surface, dimensions.
+  Import/export obj format files.
+  Use obj for exported models for slic3r.
+  Repair normal orientation.
+  Repair some simple mesh defects.
+  Show mesh defects.
+  Better viewing of edges.
+  Allow floating point values for all countries.
+  Fixed problem with G92 showing wrong coords.
+  Faster connects for most boards.
+  Different emergency button settings.
+  Import obj models.
+  Associate stl/obj/gcode/gco/g/g with Repetier-Host.
+  More default view angles.
+  New language: Basque
+  Belt and leadscrew calculator.
+  Many small fixes and improvements.
+
 Version 0.85
   Slic3r 0.9.9 included
   Store slicer selection with printer settings.

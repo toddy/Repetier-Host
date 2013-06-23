@@ -10,7 +10,7 @@ namespace RepetierHost.view.utils
     /// <summary>
     /// Executes a command asynchronously and writes output into the log file.
     /// </summary>
-    public class CommandExecutioner
+    public class CommandExecutioner : IDisposable
     {
         private Process process;
         private string exe = "";
@@ -27,7 +27,7 @@ namespace RepetierHost.view.utils
             {
                 exeEnd = 1;
                 while (exeEnd < cmdLength && cmd[exeEnd] != '"') exeEnd++;
-                exe = cmd.Substring(1, exeEnd-1);
+                exe = cmd.Substring(1, exeEnd - 1);
             }
             else
             {
@@ -76,16 +76,40 @@ namespace RepetierHost.view.utils
         private void runFinsihed(object sender, System.EventArgs e)
         {
             process.Close();
+            process.Dispose();
             process = null;
             list.Remove(this);
         }
-        private void OutputDataHandler(object sendingProcess,DataReceivedEventArgs outLine)
+        private void OutputDataHandler(object sendingProcess, DataReceivedEventArgs outLine)
         {
             // Collect the command output.
             if (!String.IsNullOrEmpty(outLine.Data))
             {
-                Main.conn.log("<"+exeName+"> " + outLine.Data, false, 4);
+                Main.conn.log("<" + exeName + "> " + outLine.Data, false, 4);
             }
+        }
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (process != null)
+                {
+                    process.Dispose();
+                    process = null;
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        // Disposable types implement a finalizer.
+        ~CommandExecutioner()
+        {
+            Dispose(false);
         }
     }
 }

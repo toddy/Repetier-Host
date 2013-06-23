@@ -107,7 +107,7 @@ namespace RepetierHost.model
                 exclusive = false;
                 return;
             }
-            con.GetInjectLock();
+            con.connector.GetInjectLock();
             if (con.afterJobDisableExtruder)
             {
                 for(int i=0;i<Main.conn.numberExtruder;i++) 
@@ -115,7 +115,7 @@ namespace RepetierHost.model
             }
             if(con.afterJobDisablePrintbed) 
                 con.injectManualCommand("M140 S0");
-            con.ReturnInjectLock();
+            con.connector.ReturnInjectLock();
             if (con.afterJobGoDispose)
                 con.doDispose();
             if(con.afterJobDisableMotors)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Threading;
+using RepetierHost.connector;
 
 namespace RepetierHost.model
 {
@@ -16,10 +17,11 @@ namespace RepetierHost.model
         LinkedList<string> output;
         Thread writeThread = null;
         int cnt = 0;
-        int baudrate;
+        int baudrate = 250000;
         int numExtruder = 3;
         int activeExtruder = 0;
         volatile int bytesin = 0;
+        VirtualPrinterConnector vcon;
 
         private void WriteThread()
         {
@@ -60,7 +62,15 @@ namespace RepetierHost.model
                     }
                 }
                 if (res != null)
-                    Main.conn.VirtualResponse(res);
+                {
+                    if (res.Length > 0)
+                    {
+                        vcon.AnalyzeResponse(res);
+                    }
+                    Main.conn.connector.TrySendNextLine();
+                    //lastReceived = DateTime.Now.Ticks / 10000;
+                    //Main.conn.VirtualResponse(res);
+                }
             } while (res != null);
             cnt++;
             if (cnt > 500)
@@ -80,17 +90,18 @@ namespace RepetierHost.model
                 }
             }
         }
-        public VirtualPrinter()
+        public VirtualPrinter(VirtualPrinterConnector vc)
         {
+            vcon = vc;
             ana = new GCodeAnalyzer(true);
             output = new LinkedList<string>();
             extruderTemp[0] = extruderTemp[1] = extruderTemp[2] = 0;
             extruderOut[0] = extruderOut[1] = extruderOut[2] = 0;
         }
 
-        public void open()
+        public void open(int baudrate)
         {
-            baudrate = Main.conn.baud;
+            this.baudrate = baudrate;
             ana.start();
             output.AddLast("start");
             writeThread = new Thread(new ThreadStart(this.WriteThread));

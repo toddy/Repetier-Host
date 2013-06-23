@@ -58,7 +58,7 @@ namespace RepetierHost.view
         }
         private void timer_Tick(object sender, EventArgs e)
         {
-            Printjob j = Main.conn.job;
+            Printjob j = Main.conn.connector.Job;
             switch (j.mode)
             {
                 case 0:

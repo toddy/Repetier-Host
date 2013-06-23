@@ -18,7 +18,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel;
+using System.IO;
+using System.Threading;
 using Microsoft.Win32;
+using System.Diagnostics;
 using RepetierHost;
 using RepetierHost.view.utils;
 

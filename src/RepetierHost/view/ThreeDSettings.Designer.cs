@@ -53,11 +53,11 @@
             this.selectedFaces = new System.Windows.Forms.Panel();
             this.edges = new System.Windows.Forms.Panel();
             this.faces = new System.Windows.Forms.Panel();
-            this.background = new System.Windows.Forms.Panel();
+            this.backgroundTop = new System.Windows.Forms.Panel();
             this.labelEdges = new System.Windows.Forms.Label();
             this.labelSelectedFaces = new System.Windows.Forms.Label();
             this.labelFaces = new System.Windows.Forms.Label();
-            this.labelBackground = new System.Windows.Forms.Label();
+            this.labelBackgroundTop = new System.Windows.Forms.Label();
             this.buttonOK = new System.Windows.Forms.Button();
             this.showEdges = new System.Windows.Forms.CheckBox();
             this.comboDrawMethod = new System.Windows.Forms.ComboBox();
@@ -83,17 +83,30 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabGeneral = new System.Windows.Forms.TabPage();
             this.groupPrintbed = new System.Windows.Forms.GroupBox();
+            this.labelBackgroundBottom = new System.Windows.Forms.Label();
+            this.backgroundBottom = new System.Windows.Forms.Panel();
+            this.labelPrinterFrame = new System.Windows.Forms.Label();
+            this.printerFrame = new System.Windows.Forms.Panel();
             this.tabModel = new System.Windows.Forms.TabPage();
             this.groupEditor = new System.Windows.Forms.GroupBox();
             this.pulseOutside = new System.Windows.Forms.CheckBox();
             this.showFaces = new System.Windows.Forms.CheckBox();
             this.groupColors = new System.Windows.Forms.GroupBox();
+            this.labelCutFaces = new System.Windows.Forms.Label();
+            this.labelInsideFaces = new System.Windows.Forms.Label();
+            this.cutFaces = new System.Windows.Forms.Panel();
+            this.insideFaces = new System.Windows.Forms.Panel();
+            this.labelModelErrorEdge = new System.Windows.Forms.Label();
+            this.labelModelError = new System.Windows.Forms.Label();
             this.labelSelectionBox = new System.Windows.Forms.Label();
             this.labelObjectsOutsidePrintbed = new System.Windows.Forms.Label();
+            this.errorModelEdge = new System.Windows.Forms.Panel();
+            this.errorModel = new System.Windows.Forms.Panel();
             this.selectionBox = new System.Windows.Forms.Panel();
             this.outsidePrintbed = new System.Windows.Forms.Panel();
             this.tabFilament = new System.Windows.Forms.TabPage();
             this.groupVisualization = new System.Windows.Forms.GroupBox();
+            this.checkCorrectNormals = new System.Windows.Forms.CheckBox();
             this.checkDisableTravelMoves = new System.Windows.Forms.CheckBox();
             this.tabLights = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -131,7 +144,10 @@
             this.specular3 = new System.Windows.Forms.Panel();
             this.specular4 = new System.Windows.Forms.Panel();
             this.diffuse4 = new System.Windows.Forms.Panel();
-            this.checkCorrectNormals = new System.Windows.Forms.CheckBox();
+            this.checkAutoenableParallelInTopView = new System.Windows.Forms.CheckBox();
+            this.buttonGeneralColorDefaults = new System.Windows.Forms.Button();
+            this.buttonModelColorsDefaults = new System.Windows.Forms.Button();
+            this.tdSettings = new System.Windows.Forms.BindingSource(this.components);
             this.groupColors2.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
@@ -145,6 +161,7 @@
             this.groupVisualization.SuspendLayout();
             this.tabLights.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tdSettings)).BeginInit();
             this.SuspendLayout();
             // 
             // groupColors2
@@ -218,7 +235,7 @@
             this.filament3.Name = "filament3";
             this.filament3.Size = new System.Drawing.Size(111, 24);
             this.filament3.TabIndex = 4;
-            this.filament3.Click += new System.EventHandler(this.filament_Click);
+            this.filament3.Click += new System.EventHandler(this.changecolor_Click);
             // 
             // labelExtruder2
             // 
@@ -262,7 +279,7 @@
             this.selectedFilament.Name = "selectedFilament";
             this.selectedFilament.Size = new System.Drawing.Size(111, 24);
             this.selectedFilament.TabIndex = 3;
-            this.selectedFilament.Click += new System.EventHandler(this.filament_Click);
+            this.selectedFilament.Click += new System.EventHandler(this.changecolor_Click);
             // 
             // filament2
             // 
@@ -273,7 +290,7 @@
             this.filament2.Name = "filament2";
             this.filament2.Size = new System.Drawing.Size(111, 24);
             this.filament2.TabIndex = 2;
-            this.filament2.Click += new System.EventHandler(this.filament_Click);
+            this.filament2.Click += new System.EventHandler(this.changecolor_Click);
             // 
             // labelSelectedFilament
             // 
@@ -295,7 +312,7 @@
             this.travelMoves.Name = "travelMoves";
             this.travelMoves.Size = new System.Drawing.Size(111, 24);
             this.travelMoves.TabIndex = 3;
-            this.travelMoves.Click += new System.EventHandler(this.filament_Click);
+            this.travelMoves.Click += new System.EventHandler(this.changecolor_Click);
             // 
             // filament
             // 
@@ -306,7 +323,7 @@
             this.filament.Name = "filament";
             this.filament.Size = new System.Drawing.Size(111, 24);
             this.filament.TabIndex = 0;
-            this.filament.Click += new System.EventHandler(this.filament_Click);
+            this.filament.Click += new System.EventHandler(this.changecolor_Click);
             // 
             // labelHotFilament
             // 
@@ -349,7 +366,7 @@
             // labelPrinterBase
             // 
             this.labelPrinterBase.AutoSize = true;
-            this.labelPrinterBase.Location = new System.Drawing.Point(6, 71);
+            this.labelPrinterBase.Location = new System.Drawing.Point(6, 102);
             this.labelPrinterBase.Name = "labelPrinterBase";
             this.labelPrinterBase.Size = new System.Drawing.Size(66, 13);
             this.labelPrinterBase.TabIndex = 5;
@@ -357,13 +374,13 @@
             // 
             // printerBase
             // 
-            this.printerBase.BackColor = System.Drawing.Color.White;
+            this.printerBase.BackColor = System.Drawing.Color.PaleGoldenrod;
             this.printerBase.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.printerBase.Location = new System.Drawing.Point(117, 71);
+            this.printerBase.Location = new System.Drawing.Point(117, 99);
             this.printerBase.Name = "printerBase";
             this.printerBase.Size = new System.Drawing.Size(111, 22);
             this.printerBase.TabIndex = 1;
-            this.printerBase.Click += new System.EventHandler(this.printerBase_Click);
+            this.printerBase.Click += new System.EventHandler(this.lightcolor_Click);
             // 
             // selectedFaces
             // 
@@ -371,7 +388,7 @@
             this.selectedFaces.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.selectedFaces.Location = new System.Drawing.Point(159, 45);
             this.selectedFaces.Name = "selectedFaces";
-            this.selectedFaces.Size = new System.Drawing.Size(111, 22);
+            this.selectedFaces.Size = new System.Drawing.Size(70, 22);
             this.selectedFaces.TabIndex = 1;
             this.selectedFaces.Click += new System.EventHandler(this.selectedFaces_Click);
             // 
@@ -381,29 +398,29 @@
             this.edges.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.edges.Location = new System.Drawing.Point(159, 75);
             this.edges.Name = "edges";
-            this.edges.Size = new System.Drawing.Size(111, 22);
+            this.edges.Size = new System.Drawing.Size(70, 22);
             this.edges.TabIndex = 2;
             this.edges.Click += new System.EventHandler(this.edges_Click);
             // 
             // faces
             // 
-            this.faces.BackColor = System.Drawing.Color.Red;
+            this.faces.BackColor = System.Drawing.Color.Gold;
             this.faces.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.faces.Location = new System.Drawing.Point(159, 17);
             this.faces.Name = "faces";
-            this.faces.Size = new System.Drawing.Size(111, 22);
+            this.faces.Size = new System.Drawing.Size(70, 22);
             this.faces.TabIndex = 0;
             this.faces.Click += new System.EventHandler(this.faces_Click);
             // 
-            // background
+            // backgroundTop
             // 
-            this.background.BackColor = System.Drawing.Color.Black;
-            this.background.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.background.Location = new System.Drawing.Point(117, 43);
-            this.background.Name = "background";
-            this.background.Size = new System.Drawing.Size(111, 22);
-            this.background.TabIndex = 0;
-            this.background.Click += new System.EventHandler(this.background_Click);
+            this.backgroundTop.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.backgroundTop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.backgroundTop.Location = new System.Drawing.Point(117, 43);
+            this.backgroundTop.Name = "backgroundTop";
+            this.backgroundTop.Size = new System.Drawing.Size(111, 22);
+            this.backgroundTop.TabIndex = 0;
+            this.backgroundTop.Click += new System.EventHandler(this.lightcolor_Click);
             // 
             // labelEdges
             // 
@@ -432,14 +449,14 @@
             this.labelFaces.TabIndex = 1;
             this.labelFaces.Text = "Faces:";
             // 
-            // labelBackground
+            // labelBackgroundTop
             // 
-            this.labelBackground.AutoSize = true;
-            this.labelBackground.Location = new System.Drawing.Point(6, 43);
-            this.labelBackground.Name = "labelBackground";
-            this.labelBackground.Size = new System.Drawing.Size(68, 13);
-            this.labelBackground.TabIndex = 0;
-            this.labelBackground.Text = "Background:";
+            this.labelBackgroundTop.AutoSize = true;
+            this.labelBackgroundTop.Location = new System.Drawing.Point(6, 46);
+            this.labelBackgroundTop.Name = "labelBackgroundTop";
+            this.labelBackgroundTop.Size = new System.Drawing.Size(90, 13);
+            this.labelBackgroundTop.TabIndex = 0;
+            this.labelBackgroundTop.Text = "Background Top:";
             // 
             // buttonOK
             // 
@@ -455,13 +472,13 @@
             // showEdges
             // 
             this.showEdges.AutoSize = true;
+            this.showEdges.DataBindings.Add(new System.Windows.Forms.Binding("Checked", this.tdSettings, "ShowEdges", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.showEdges.Location = new System.Drawing.Point(6, 19);
             this.showEdges.Name = "showEdges";
             this.showEdges.Size = new System.Drawing.Size(85, 17);
             this.showEdges.TabIndex = 0;
             this.showEdges.Text = "Show edges";
             this.showEdges.UseVisualStyleBackColor = true;
-            this.showEdges.CheckedChanged += new System.EventHandler(this.showEdges_CheckedChanged);
             // 
             // comboDrawMethod
             // 
@@ -472,7 +489,7 @@
             "VBOs (fastest)",
             "Arrays (medium)",
             "Immediate (slow)"});
-            this.comboDrawMethod.Location = new System.Drawing.Point(131, 129);
+            this.comboDrawMethod.Location = new System.Drawing.Point(131, 205);
             this.comboDrawMethod.Name = "comboDrawMethod";
             this.comboDrawMethod.Size = new System.Drawing.Size(144, 21);
             this.comboDrawMethod.TabIndex = 0;
@@ -481,7 +498,7 @@
             // labelDrawMethod
             // 
             this.labelDrawMethod.AutoSize = true;
-            this.labelDrawMethod.Location = new System.Drawing.Point(20, 132);
+            this.labelDrawMethod.Location = new System.Drawing.Point(20, 208);
             this.labelDrawMethod.Name = "labelDrawMethod";
             this.labelDrawMethod.Size = new System.Drawing.Size(73, 13);
             this.labelDrawMethod.TabIndex = 15;
@@ -689,29 +706,73 @@
             // 
             // tabGeneral
             // 
+            this.tabGeneral.Controls.Add(this.checkAutoenableParallelInTopView);
             this.tabGeneral.Controls.Add(this.comboDrawMethod);
             this.tabGeneral.Controls.Add(this.groupPrintbed);
             this.tabGeneral.Controls.Add(this.labelDrawMethod);
             this.tabGeneral.Location = new System.Drawing.Point(4, 22);
             this.tabGeneral.Name = "tabGeneral";
-            this.tabGeneral.Size = new System.Drawing.Size(486, 364);
+            this.tabGeneral.Size = new System.Drawing.Size(486, 383);
             this.tabGeneral.TabIndex = 0;
             this.tabGeneral.Text = "General";
             this.tabGeneral.UseVisualStyleBackColor = true;
             // 
             // groupPrintbed
             // 
+            this.groupPrintbed.Controls.Add(this.buttonGeneralColorDefaults);
             this.groupPrintbed.Controls.Add(this.showPrintbed);
-            this.groupPrintbed.Controls.Add(this.labelBackground);
-            this.groupPrintbed.Controls.Add(this.background);
+            this.groupPrintbed.Controls.Add(this.labelBackgroundBottom);
+            this.groupPrintbed.Controls.Add(this.labelBackgroundTop);
+            this.groupPrintbed.Controls.Add(this.backgroundBottom);
+            this.groupPrintbed.Controls.Add(this.backgroundTop);
+            this.groupPrintbed.Controls.Add(this.labelPrinterFrame);
             this.groupPrintbed.Controls.Add(this.labelPrinterBase);
+            this.groupPrintbed.Controls.Add(this.printerFrame);
             this.groupPrintbed.Controls.Add(this.printerBase);
             this.groupPrintbed.Location = new System.Drawing.Point(14, 14);
             this.groupPrintbed.Name = "groupPrintbed";
-            this.groupPrintbed.Size = new System.Drawing.Size(456, 104);
+            this.groupPrintbed.Size = new System.Drawing.Size(456, 171);
             this.groupPrintbed.TabIndex = 0;
             this.groupPrintbed.TabStop = false;
             this.groupPrintbed.Text = "Printbed";
+            // 
+            // labelBackgroundBottom
+            // 
+            this.labelBackgroundBottom.AutoSize = true;
+            this.labelBackgroundBottom.Location = new System.Drawing.Point(6, 74);
+            this.labelBackgroundBottom.Name = "labelBackgroundBottom";
+            this.labelBackgroundBottom.Size = new System.Drawing.Size(104, 13);
+            this.labelBackgroundBottom.TabIndex = 0;
+            this.labelBackgroundBottom.Text = "Background Bottom:";
+            // 
+            // backgroundBottom
+            // 
+            this.backgroundBottom.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.backgroundBottom.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.backgroundBottom.Location = new System.Drawing.Point(117, 71);
+            this.backgroundBottom.Name = "backgroundBottom";
+            this.backgroundBottom.Size = new System.Drawing.Size(111, 22);
+            this.backgroundBottom.TabIndex = 0;
+            this.backgroundBottom.Click += new System.EventHandler(this.lightcolor_Click);
+            // 
+            // labelPrinterFrame
+            // 
+            this.labelPrinterFrame.AutoSize = true;
+            this.labelPrinterFrame.Location = new System.Drawing.Point(6, 130);
+            this.labelPrinterFrame.Name = "labelPrinterFrame";
+            this.labelPrinterFrame.Size = new System.Drawing.Size(72, 13);
+            this.labelPrinterFrame.TabIndex = 5;
+            this.labelPrinterFrame.Text = "Printer Frame:";
+            // 
+            // printerFrame
+            // 
+            this.printerFrame.BackColor = System.Drawing.Color.Black;
+            this.printerFrame.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.printerFrame.Location = new System.Drawing.Point(117, 127);
+            this.printerFrame.Name = "printerFrame";
+            this.printerFrame.Size = new System.Drawing.Size(111, 22);
+            this.printerFrame.TabIndex = 1;
+            this.printerFrame.Click += new System.EventHandler(this.lightcolor_Click);
             // 
             // tabModel
             // 
@@ -719,7 +780,7 @@
             this.tabModel.Controls.Add(this.groupColors);
             this.tabModel.Location = new System.Drawing.Point(4, 22);
             this.tabModel.Name = "tabModel";
-            this.tabModel.Size = new System.Drawing.Size(486, 364);
+            this.tabModel.Size = new System.Drawing.Size(486, 383);
             this.tabModel.TabIndex = 1;
             this.tabModel.Text = "Model";
             this.tabModel.UseVisualStyleBackColor = true;
@@ -729,9 +790,9 @@
             this.groupEditor.Controls.Add(this.pulseOutside);
             this.groupEditor.Controls.Add(this.showFaces);
             this.groupEditor.Controls.Add(this.showEdges);
-            this.groupEditor.Location = new System.Drawing.Point(14, 186);
+            this.groupEditor.Location = new System.Drawing.Point(14, 242);
             this.groupEditor.Name = "groupEditor";
-            this.groupEditor.Size = new System.Drawing.Size(456, 98);
+            this.groupEditor.Size = new System.Drawing.Size(456, 103);
             this.groupEditor.TabIndex = 1;
             this.groupEditor.TabStop = false;
             this.groupEditor.Text = "Editor";
@@ -739,7 +800,7 @@
             // pulseOutside
             // 
             this.pulseOutside.AutoSize = true;
-            this.pulseOutside.Location = new System.Drawing.Point(7, 67);
+            this.pulseOutside.Location = new System.Drawing.Point(6, 66);
             this.pulseOutside.Name = "pulseOutside";
             this.pulseOutside.Size = new System.Drawing.Size(153, 17);
             this.pulseOutside.TabIndex = 2;
@@ -752,32 +813,97 @@
             this.showFaces.AutoSize = true;
             this.showFaces.Checked = true;
             this.showFaces.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showFaces.DataBindings.Add(new System.Windows.Forms.Binding("Checked", this.tdSettings, "ShowFaces", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.showFaces.Location = new System.Drawing.Point(6, 43);
             this.showFaces.Name = "showFaces";
             this.showFaces.Size = new System.Drawing.Size(82, 17);
             this.showFaces.TabIndex = 1;
             this.showFaces.Text = "Show faces";
             this.showFaces.UseVisualStyleBackColor = true;
-            this.showFaces.CheckedChanged += new System.EventHandler(this.showEdges_CheckedChanged);
             // 
             // groupColors
             // 
+            this.groupColors.Controls.Add(this.buttonModelColorsDefaults);
+            this.groupColors.Controls.Add(this.labelCutFaces);
+            this.groupColors.Controls.Add(this.labelInsideFaces);
             this.groupColors.Controls.Add(this.labelFaces);
+            this.groupColors.Controls.Add(this.cutFaces);
+            this.groupColors.Controls.Add(this.insideFaces);
             this.groupColors.Controls.Add(this.labelSelectedFaces);
             this.groupColors.Controls.Add(this.faces);
             this.groupColors.Controls.Add(this.selectedFaces);
+            this.groupColors.Controls.Add(this.labelModelErrorEdge);
+            this.groupColors.Controls.Add(this.labelModelError);
             this.groupColors.Controls.Add(this.labelSelectionBox);
             this.groupColors.Controls.Add(this.labelObjectsOutsidePrintbed);
+            this.groupColors.Controls.Add(this.errorModelEdge);
+            this.groupColors.Controls.Add(this.errorModel);
             this.groupColors.Controls.Add(this.selectionBox);
             this.groupColors.Controls.Add(this.outsidePrintbed);
             this.groupColors.Controls.Add(this.labelEdges);
             this.groupColors.Controls.Add(this.edges);
             this.groupColors.Location = new System.Drawing.Point(14, 13);
             this.groupColors.Name = "groupColors";
-            this.groupColors.Size = new System.Drawing.Size(456, 167);
+            this.groupColors.Size = new System.Drawing.Size(456, 223);
             this.groupColors.TabIndex = 0;
             this.groupColors.TabStop = false;
             this.groupColors.Text = "Colors";
+            // 
+            // labelCutFaces
+            // 
+            this.labelCutFaces.AutoSize = true;
+            this.labelCutFaces.Location = new System.Drawing.Point(244, 51);
+            this.labelCutFaces.Name = "labelCutFaces";
+            this.labelCutFaces.Size = new System.Drawing.Size(55, 13);
+            this.labelCutFaces.TabIndex = 1;
+            this.labelCutFaces.Text = "Cut faces;";
+            // 
+            // labelInsideFaces
+            // 
+            this.labelInsideFaces.AutoSize = true;
+            this.labelInsideFaces.Location = new System.Drawing.Point(244, 20);
+            this.labelInsideFaces.Name = "labelInsideFaces";
+            this.labelInsideFaces.Size = new System.Drawing.Size(63, 13);
+            this.labelInsideFaces.TabIndex = 1;
+            this.labelInsideFaces.Text = "Inner faces:";
+            // 
+            // cutFaces
+            // 
+            this.cutFaces.BackColor = System.Drawing.Color.RoyalBlue;
+            this.cutFaces.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.cutFaces.Location = new System.Drawing.Point(380, 48);
+            this.cutFaces.Name = "cutFaces";
+            this.cutFaces.Size = new System.Drawing.Size(70, 22);
+            this.cutFaces.TabIndex = 0;
+            this.cutFaces.Click += new System.EventHandler(this.changecolor_Click);
+            // 
+            // insideFaces
+            // 
+            this.insideFaces.BackColor = System.Drawing.Color.Lime;
+            this.insideFaces.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.insideFaces.Location = new System.Drawing.Point(380, 17);
+            this.insideFaces.Name = "insideFaces";
+            this.insideFaces.Size = new System.Drawing.Size(70, 22);
+            this.insideFaces.TabIndex = 0;
+            this.insideFaces.Click += new System.EventHandler(this.changecolor_Click);
+            // 
+            // labelModelErrorEdge
+            // 
+            this.labelModelErrorEdge.AutoSize = true;
+            this.labelModelErrorEdge.Location = new System.Drawing.Point(6, 192);
+            this.labelModelErrorEdge.Name = "labelModelErrorEdge";
+            this.labelModelErrorEdge.Size = new System.Drawing.Size(101, 13);
+            this.labelModelErrorEdge.TabIndex = 1;
+            this.labelModelErrorEdge.Text = "Model errors (edge):";
+            // 
+            // labelModelError
+            // 
+            this.labelModelError.AutoSize = true;
+            this.labelModelError.Location = new System.Drawing.Point(6, 164);
+            this.labelModelError.Name = "labelModelError";
+            this.labelModelError.Size = new System.Drawing.Size(98, 13);
+            this.labelModelError.TabIndex = 1;
+            this.labelModelError.Text = "Model errors (face):";
             // 
             // labelSelectionBox
             // 
@@ -797,13 +923,33 @@
             this.labelObjectsOutsidePrintbed.TabIndex = 1;
             this.labelObjectsOutsidePrintbed.Text = "Objects outside printbed:";
             // 
+            // errorModelEdge
+            // 
+            this.errorModelEdge.BackColor = System.Drawing.Color.Cyan;
+            this.errorModelEdge.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.errorModelEdge.Location = new System.Drawing.Point(159, 189);
+            this.errorModelEdge.Name = "errorModelEdge";
+            this.errorModelEdge.Size = new System.Drawing.Size(70, 22);
+            this.errorModelEdge.TabIndex = 3;
+            this.errorModelEdge.Click += new System.EventHandler(this.lightcolor_Click);
+            // 
+            // errorModel
+            // 
+            this.errorModel.BackColor = System.Drawing.Color.Red;
+            this.errorModel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.errorModel.Location = new System.Drawing.Point(159, 161);
+            this.errorModel.Name = "errorModel";
+            this.errorModel.Size = new System.Drawing.Size(70, 22);
+            this.errorModel.TabIndex = 3;
+            this.errorModel.Click += new System.EventHandler(this.lightcolor_Click);
+            // 
             // selectionBox
             // 
             this.selectionBox.BackColor = System.Drawing.Color.DodgerBlue;
             this.selectionBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.selectionBox.Location = new System.Drawing.Point(159, 133);
             this.selectionBox.Name = "selectionBox";
-            this.selectionBox.Size = new System.Drawing.Size(111, 22);
+            this.selectionBox.Size = new System.Drawing.Size(70, 22);
             this.selectionBox.TabIndex = 3;
             this.selectionBox.Click += new System.EventHandler(this.lightcolor_Click);
             // 
@@ -813,7 +959,7 @@
             this.outsidePrintbed.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.outsidePrintbed.Location = new System.Drawing.Point(159, 105);
             this.outsidePrintbed.Name = "outsidePrintbed";
-            this.outsidePrintbed.Size = new System.Drawing.Size(111, 22);
+            this.outsidePrintbed.Size = new System.Drawing.Size(70, 22);
             this.outsidePrintbed.TabIndex = 3;
             this.outsidePrintbed.Click += new System.EventHandler(this.outsidePrintbed_Click);
             // 
@@ -854,6 +1000,19 @@
             this.groupVisualization.TabStop = false;
             this.groupVisualization.Text = "Visualization";
             // 
+            // checkCorrectNormals
+            // 
+            this.checkCorrectNormals.AutoSize = true;
+            this.checkCorrectNormals.Checked = true;
+            this.checkCorrectNormals.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkCorrectNormals.Location = new System.Drawing.Point(6, 42);
+            this.checkCorrectNormals.Name = "checkCorrectNormals";
+            this.checkCorrectNormals.Size = new System.Drawing.Size(223, 17);
+            this.checkCorrectNormals.TabIndex = 15;
+            this.checkCorrectNormals.Text = "Use correct normals (needs more memory)";
+            this.checkCorrectNormals.UseVisualStyleBackColor = true;
+            this.checkCorrectNormals.CheckedChanged += new System.EventHandler(this.checkCorrectNormals_CheckedChanged);
+            // 
             // checkDisableTravelMoves
             // 
             this.checkDisableTravelMoves.AutoSize = true;
@@ -870,7 +1029,7 @@
             this.tabLights.Controls.Add(this.tableLayoutPanel1);
             this.tabLights.Location = new System.Drawing.Point(4, 22);
             this.tabLights.Name = "tabLights";
-            this.tabLights.Size = new System.Drawing.Size(486, 364);
+            this.tabLights.Size = new System.Drawing.Size(486, 383);
             this.tabLights.TabIndex = 3;
             this.tabLights.Text = "Lights";
             this.tabLights.UseVisualStyleBackColor = true;
@@ -1283,18 +1442,39 @@
             this.diffuse4.TabIndex = 27;
             this.diffuse4.Click += new System.EventHandler(this.lightcolor_Click);
             // 
-            // checkCorrectNormals
+            // checkAutoenableParallelInTopView
             // 
-            this.checkCorrectNormals.AutoSize = true;
-            this.checkCorrectNormals.Checked = true;
-            this.checkCorrectNormals.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkCorrectNormals.Location = new System.Drawing.Point(6, 42);
-            this.checkCorrectNormals.Name = "checkCorrectNormals";
-            this.checkCorrectNormals.Size = new System.Drawing.Size(223, 17);
-            this.checkCorrectNormals.TabIndex = 15;
-            this.checkCorrectNormals.Text = "Use correct normals (needs more memory)";
-            this.checkCorrectNormals.UseVisualStyleBackColor = true;
-            this.checkCorrectNormals.CheckedChanged += new System.EventHandler(this.checkCorrectNormals_CheckedChanged);
+            this.checkAutoenableParallelInTopView.AutoSize = true;
+            this.checkAutoenableParallelInTopView.Location = new System.Drawing.Point(23, 241);
+            this.checkAutoenableParallelInTopView.Name = "checkAutoenableParallelInTopView";
+            this.checkAutoenableParallelInTopView.Size = new System.Drawing.Size(178, 17);
+            this.checkAutoenableParallelInTopView.TabIndex = 16;
+            this.checkAutoenableParallelInTopView.Text = "Enable parallel mode in top view";
+            this.checkAutoenableParallelInTopView.UseVisualStyleBackColor = true;
+            // 
+            // buttonGeneralColorDefaults
+            // 
+            this.buttonGeneralColorDefaults.Location = new System.Drawing.Point(246, 125);
+            this.buttonGeneralColorDefaults.Name = "buttonGeneralColorDefaults";
+            this.buttonGeneralColorDefaults.Size = new System.Drawing.Size(204, 23);
+            this.buttonGeneralColorDefaults.TabIndex = 6;
+            this.buttonGeneralColorDefaults.Text = "Reset defaults";
+            this.buttonGeneralColorDefaults.UseVisualStyleBackColor = true;
+            this.buttonGeneralColorDefaults.Click += new System.EventHandler(this.buttonGeneralColorDefaults_Click);
+            // 
+            // buttonModelColorsDefaults
+            // 
+            this.buttonModelColorsDefaults.Location = new System.Drawing.Point(247, 187);
+            this.buttonModelColorsDefaults.Name = "buttonModelColorsDefaults";
+            this.buttonModelColorsDefaults.Size = new System.Drawing.Size(203, 23);
+            this.buttonModelColorsDefaults.TabIndex = 4;
+            this.buttonModelColorsDefaults.Text = "Reset defaults";
+            this.buttonModelColorsDefaults.UseVisualStyleBackColor = true;
+            this.buttonModelColorsDefaults.Click += new System.EventHandler(this.buttonModelColorsDefaults_Click);
+            // 
+            // tdSettings
+            // 
+            this.tdSettings.DataSource = typeof(RepetierHost.view.ThreeDSettings);
             // 
             // ThreeDSettings
             // 
@@ -1333,6 +1513,7 @@
             this.tabLights.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tdSettings)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1344,16 +1525,15 @@
         private System.Windows.Forms.Label labelExtruder1;
         private System.Windows.Forms.Label labelSelectedFaces;
         private System.Windows.Forms.Label labelFaces;
-        private System.Windows.Forms.Label labelBackground;
+        private System.Windows.Forms.Label labelBackgroundTop;
         private System.Windows.Forms.Button buttonOK;
         private System.Windows.Forms.Label labelPrinterBase;
         public System.Windows.Forms.Panel faces;
-        public System.Windows.Forms.Panel background;
+        public System.Windows.Forms.Panel backgroundTop;
         public System.Windows.Forms.Panel selectedFaces;
         public System.Windows.Forms.Panel filament;
         public System.Windows.Forms.Panel printerBase;
         public System.Windows.Forms.CheckBox showPrintbed;
-        public System.Windows.Forms.CheckBox showEdges;
         public System.Windows.Forms.CheckBox enableLight4;
         public System.Windows.Forms.CheckBox enableLight3;
         public System.Windows.Forms.CheckBox enableLight2;
@@ -1398,7 +1578,6 @@
         public System.Windows.Forms.Panel filament2;
         private System.Windows.Forms.Label labelExtruder2;
         public System.Windows.Forms.CheckBox pulseOutside;
-        public System.Windows.Forms.CheckBox showFaces;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label labelLight4;
         private System.Windows.Forms.Label labelLight3;
@@ -1441,5 +1620,23 @@
         public System.Windows.Forms.CheckBox checkDisableTravelMoves;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.CheckBox checkCorrectNormals;
+        private System.Windows.Forms.Label labelModelError;
+        public System.Windows.Forms.Panel errorModel;
+        private System.Windows.Forms.Label labelCutFaces;
+        public System.Windows.Forms.Panel cutFaces;
+        private System.Windows.Forms.Label labelModelErrorEdge;
+        public System.Windows.Forms.Panel errorModelEdge;
+        private System.Windows.Forms.Label labelInsideFaces;
+        public System.Windows.Forms.Panel insideFaces;
+        private System.Windows.Forms.Label labelBackgroundBottom;
+        public System.Windows.Forms.Panel backgroundBottom;
+        private System.Windows.Forms.Label labelPrinterFrame;
+        public System.Windows.Forms.Panel printerFrame;
+        private System.Windows.Forms.BindingSource tdSettings;
+        private System.Windows.Forms.CheckBox showEdges;
+        private System.Windows.Forms.CheckBox showFaces;
+        private System.Windows.Forms.Button buttonGeneralColorDefaults;
+        private System.Windows.Forms.Button buttonModelColorsDefaults;
+        public System.Windows.Forms.CheckBox checkAutoenableParallelInTopView;
     }
 }

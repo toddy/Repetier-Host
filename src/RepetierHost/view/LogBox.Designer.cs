@@ -16,6 +16,9 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
+                drawFont.Dispose();
+                blackBrush.Dispose();
+
             }
             base.Dispose(disposing);
         }

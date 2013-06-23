@@ -61,6 +61,7 @@ namespace RepetierHost.model
     public class GCode
     {
         public static NumberFormatInfo format = CultureInfo.InvariantCulture.NumberFormat;
+        public static string floatNoExp = "0.#####";
         public bool forceAscii = false; // true if unpaseable content is found
         public bool hostCommand = false; // True if it contains a host command to be executed
         private ushort fields = 128;
@@ -297,42 +298,42 @@ namespace RepetierHost.model
                 if (hasX)
                 {
                     s.Append(" X");
-                    s.Append(x.ToString(format));
+                    s.Append(x.ToString(floatNoExp,format));
                 }
                 if (hasY)
                 {
                     s.Append(" Y");
-                    s.Append(y.ToString(format));
+                    s.Append(y.ToString(floatNoExp,format));
                 }
                 if (hasZ)
                 {
                     s.Append(" Z");
-                    s.Append(z.ToString(format));
+                    s.Append(z.ToString(floatNoExp,format));
                 }
                 if (hasE)
                 {
                     s.Append(" E");
-                    s.Append(e.ToString(format));
+                    s.Append(e.ToString(floatNoExp,format));
                 }
                 if (hasF)
                 {
                     s.Append(" F");
-                    s.Append(f.ToString(format));
+                    s.Append(f.ToString(floatNoExp,format));
                 }
                 if (hasI)
                 {
                     s.Append(" I");
-                    s.Append(ii.ToString(format));
+                    s.Append(ii.ToString(floatNoExp,format));
                 }
                 if (hasJ)
                 {
                     s.Append(" J");
-                    s.Append(j.ToString(format));
+                    s.Append(j.ToString(floatNoExp,format));
                 }
                 if (hasR)
                 {
                     s.Append(" R");
-                    s.Append(r.ToString(format));
+                    s.Append(r.ToString(floatNoExp,format));
                 }
                 if (hasS)
                 {

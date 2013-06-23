@@ -189,7 +189,7 @@ namespace RepetierHost.view
             TextBox box = (TextBox)sender;
             try
             {
-                float x = float.Parse(box.Text);
+                float x = float.Parse(box.Text,GCode.format);
                 if (x >= 0)
                     errorProvider.SetError(box, "");
                 else
