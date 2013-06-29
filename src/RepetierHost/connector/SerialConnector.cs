@@ -16,8 +16,28 @@ using RepetierHost.view;
 
 namespace RepetierHost.connector
 {
+    
     public class SerialConnector : PrinterConnectorBase, INotifyPropertyChanged, IDisposable
     {
+        private class NackData
+        {
+            public int length;
+            public long expire;
+            public NackData(int l)
+            {
+                length = l;
+                expire = 0;
+            }
+            public NackData(int l,long milli)
+            {
+                length = l;
+                expire = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond + milli+1000;
+            }
+            public void SetExpire(long milli)
+            {
+                expire = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond+milli+1000;
+            }
+        }
         private SerialConnectionPanel panel = null;
         private bool connected = false;
         private RegistryKey key = null;
@@ -28,9 +48,11 @@ namespace RepetierHost.connector
         private bool pingPong = false;
         private int receiveCacheSize = 127;
         private int transferProtocol = 0;
-        private int resetOnConnect = 1;
+        private int resetOnConnect = 2;
         private int resetOnEmergency = 2;
         PrinterConnection con;
+        //System.Text.ASCIIEncoding enc = new System.Text.ASCIIEncoding();
+        Encoding enc = System.Text.Encoding.GetEncoding(1252); 
 
         // ----------- Connection handline variables -------------
 
@@ -45,7 +67,8 @@ namespace RepetierHost.connector
         private int resendError = 0;
         public int linesSend = 0, errorsReceived = 0;
         public int bytesSend = 0;
-        public LinkedList<int> nackLines = new LinkedList<int>(); // Lines, whoses receivement were not acknowledged
+        private LinkedList<NackData> nackLinesBuffered = new LinkedList<NackData>();
+        private LinkedList<NackData> nackLines = new LinkedList<NackData>(); // Lines, whoses receivement were not acknowledged
         Thread readThread = null;
         public Parity parity = Parity.None;
         public StopBits stopbits = StopBits.One;
@@ -168,12 +191,13 @@ namespace RepetierHost.connector
                     serial = new SerialPort();
                 else
                     serial = new ProtectedSerialPort();
-                garbageCleared = false;
+                garbageCleared = true;
                 serial.PortName = port;
                 serial.BaudRate = int.Parse(baudRate);
                 serial.Parity = parity;
                 serial.DataBits = databits;
                 serial.StopBits = stopbits;
+                ignoreResendLine = -1;
                 if (!Main.IsMono)
                     serial.DataReceived += received;
                 serial.ErrorReceived += error;
@@ -213,7 +237,8 @@ namespace RepetierHost.connector
                 }*/
                 lastline = 0;
                 prequelFinished = false;
-                serial.WriteLine("M105 *89");
+                //serial.WriteLine("");
+                //serial.WriteLine("M105 *89");
                 connected = true;
                 if (transferProtocol < 2)
                     binaryVersion = 0;
@@ -228,7 +253,18 @@ namespace RepetierHost.connector
                     readThread = new Thread(new ThreadStart(this.ReadThread));
                     readThread.Start();
                 }
+                // Create safe start if we connect without reset. If we reset anything is lost anyway.
+                if (transferProtocol == 2 || transferProtocol == 0)
+                {
+                    System.Threading.Thread.Sleep(500); // Wait for buffer to empty
+                    byte[] buf = new byte[100];
+                    for (int i = 0; i < 100; i++) buf[i] = 0;
+                    serial.Write(buf, 0, 100);
+                    serial.WriteLine(";");
+                    System.Threading.Thread.Sleep(10 + 1000000 / int.Parse(baudRate)); // Wait for buffer to empty
+                }
                 GetInjectLock();
+                InjectManualCommand("N0 M110"); // Make sure we tal about the same linenumbers
                 InjectManualCommand("N0 M110"); // Make sure we tal about the same linenumbers
                 InjectManualCommand("M115"); // Check firmware
                 InjectManualCommand("T" + Main.main.printPanel.comboExtruder.SelectedIndex);
@@ -631,20 +667,55 @@ namespace RepetierHost.connector
             int n = 0;
             lock (nackLines)
             {
-                foreach (int i in nackLines)
-                    n += i;
+                foreach (NackData i in nackLines)
+                    n += i.length;
             }
             return n;
         }
+        private void TestFakeOk()
+        {
+            return;
+            long now = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+            lock (nackLines)
+            {
+                if(nackLines.Count==0) return; // empty, nothing to do anyway
+                foreach (NackData nd in nackLinesBuffered)
+                {
+                    if (nd.expire != 0 && nd.expire > now)
+                    {
+                        return; // might really be busy, do nothing
+                    }
+                }
+                long ex = nackLines.First.Value.expire;
+                if (ex != 0 && ex < now)
+                {
+                    nackLines.RemoveFirst();
+                    if (pingPong)
+                        readyForNextSend = true;
+                }
+            }
+        }
+        private int ignoreResendLine = -1;
+        private int ignoreResendLineForXCalls = 0;
         public override void ResendLine(int line)
         {
+            if (line == ignoreResendLine && con.isRepetier == true) // Ignore repeated resend requests
+            {
+                if (ignoreResendLineForXCalls > 0) ignoreResendLineForXCalls--;
+                if (ignoreResendLineForXCalls > 0) return;
+            }
+            ignoreResendLine = line;
+            ignoreResendLineForXCalls = 7;
             if (!prequelFinished && line > lastline)
             {
                 RLog.message("ignoring resend in prequel");
+                if (pingPong)
+                    readyForNextSend = true;
                 return;
             }
             if (!connected) return;
             errorsReceived++;
+            resendError++;
             lock (nextlineLock)
             {
                 if (serial == null) return;
@@ -655,19 +726,15 @@ namespace RepetierHost.connector
                 }
                 lastResendLine = line;
                 ignoreXEqualResendsResend = 15;*/
-                resendError++;
                 if (pingPong)
                     readyForNextSend = true;
-                else
+                lock (nackLines)
                 {
-                    lock (nackLines)
-                    {
-                        nackLines.Clear(); // printer flushed all coming commands
-                    }
+                    nackLinesBuffered.Clear();
+                    nackLines.Clear(); // printer flushed all coming commands
                 }
                 lock (history)
                 {
-
                     LinkedListNode<GCode> node = history.Last;
                     GCode gc = null;
                     if (node == null)
@@ -704,27 +771,31 @@ namespace RepetierHost.connector
                             }
                             else
                             {
+                                serial.DiscardOutBuffer();
+                                serial.WriteLine("");
                                 System.Threading.Thread.Sleep(receiveCacheSize * 10000 / int.Parse(baudRate)); // Wait for buffer to empty
                             }
                             TrySendNextLine();
                             return;
                         }
-                        history.RemoveLast();
-                        node = history.Last;
-                        if (node == null)
+                        if (node.Previous == null)
                         {
+                            history.Clear();
                             history.AddFirst(new GCode("N" + line + " M105"));
                             resendNode = history.First;
                             history.AddFirst(new GCode("N0 M110"));
                             return;
                         }
+                        node = node.Previous;
+                        //history.RemoveLast();
+                        //node = history.Last;
                     } while (true);
                 }
             }
         }
         public override void TrySendNextLine()
         {
-            writeEvent.Set(); // Reactivate write look
+            writeEvent.Set(); // Reactivate write loop
         }
         public void WriteLoop()
         {
@@ -735,17 +806,7 @@ namespace RepetierHost.connector
                 {
                     while (true)
                     {
-                        if (pingPong && !readyForNextSend)
-                        {
-                            writeEvent.WaitOne(1);
-                        }
-                        else if (serial == null)
-                        {
-                            // Not ready yet
-                            writeEvent.WaitOne(1);
-                        }
-                        else
-                            writeEvent.WaitOne(1);
+                        writeEvent.WaitOne(1);
                         while (TrySendNextLine2()) { }
                     }
                 }
@@ -769,6 +830,8 @@ namespace RepetierHost.connector
             GCode hostCommand = null;
             bool lineInc = false;
             if (!garbageCleared) return false;
+            byte[] cmd = null;
+            TestFakeOk();
             try
             {
                 if (lastline > 30)
@@ -790,24 +853,12 @@ namespace RepetierHost.connector
                         {
                             gc = resendNode.Value;
                             lastline = gc.N;
-                            if (binaryVersion == 0 || gc.forceAscii)
-                            {
-                                string cmd = gc.getAscii(true, true);
-                                if (!pingPong && receivedCount() + cmd.Length + 2 > receiveCacheSize) return false; // printer cache full
-                                if (pingPong) readyForNextSend = false;
-                                else { lock (nackLines) { nackLines.AddLast(cmd.Length + 2); } }
-                                serial.WriteLine(cmd);
-                                bytesSend += cmd.Length + 2;
-                            }
-                            else
-                            {
-                                byte[] cmd = gc.getBinary(binaryVersion);
-                                if (!pingPong && receivedCount() + cmd.Length > receiveCacheSize) return false; // printer cache full
-                                if (pingPong) readyForNextSend = false;
-                                else { lock (nackLines) { nackLines.AddLast(cmd.Length); } }
-                                serial.Write(cmd, 0, cmd.Length);
-                                bytesSend += cmd.Length;
-                            }
+                            cmd = (binaryVersion == 0 || gc.forceAscii ? enc.GetBytes(gc.getAscii(true, true) + "\r\n") : gc.getBinary(binaryVersion));
+                            if (!pingPong && receivedCount() + cmd.Length > receiveCacheSize) return false; // printer cache full
+                            if (pingPong) readyForNextSend = false;
+                            lock (nackLines) { nackLines.AddLast(new NackData(cmd.Length)); }
+                            serial.Write(cmd, 0, cmd.Length);
+                            bytesSend += cmd.Length;
                             linesSend++;
                             lastCommandSend = DateTime.Now.Ticks;
                             resendNode = resendNode.Next;
@@ -824,9 +875,7 @@ namespace RepetierHost.connector
                             {
                                 gc = injectCommands.First.Value;
                                 if (gc.hostCommand)
-                                {
                                     hostCommand = gc;
-                                }
                                 else
                                 {
                                     if (gc.M == 110)
@@ -836,34 +885,22 @@ namespace RepetierHost.connector
                                         gc.N = ++lastline;
                                         lineInc = true;
                                     }
-                                    if (binaryVersion == 0 || gc.forceAscii)
-                                    {
-                                        string cmd = gc.getAscii(true, true);
-                                        if (!pingPong && receivedCount() + cmd.Length + 2 > receiveCacheSize) { if (lineInc) --lastline; return false; } // printer cache full
-                                        if (pingPong) readyForNextSend = false;
-                                        else { lock (nackLines) { nackLines.AddLast(cmd.Length); } }
-                                        serial.WriteLine(cmd);
-                                        bytesSend += cmd.Length + 2;
-                                    }
-                                    else
-                                    {
-                                        byte[] cmd = gc.getBinary(binaryVersion);
-                                        if (!pingPong && receivedCount() + cmd.Length > receiveCacheSize) { if (lineInc) --lastline; return false; } // printer cache full
-                                        if (pingPong) readyForNextSend = false;
-                                        else { lock (nackLines) { nackLines.AddLast(cmd.Length); } }
-                                        serial.Write(cmd, 0, cmd.Length);
-                                        bytesSend += cmd.Length;
-                                    }
+                                    cmd = (binaryVersion == 0 || gc.forceAscii ? enc.GetBytes(gc.getAscii(true, true)+"\r\n") : gc.getBinary(binaryVersion));
+                                    if (!pingPong && receivedCount() + cmd.Length > receiveCacheSize) { if (lineInc) --lastline; return false; } // printer cache full
+                                    if (pingPong) readyForNextSend = false;
                                 }
                                 injectCommands.RemoveFirst();
-                            }
+                            } // History
+                            con.analyzer.Analyze(gc);
                             if (!gc.hostCommand)
                             {
+                                lock (nackLines) { nackLines.AddLast(new NackData(cmd.Length, con.analyzer.estimatedCommandTime)); }
+                                serial.Write(cmd, 0, cmd.Length);
+                                bytesSend += cmd.Length;
                                 linesSend++;
                                 lastCommandSend = DateTime.Now.Ticks;
                                 historygc = gc;
                             }
-                            con.analyzer.Analyze(gc);
                             if (job.dataComplete == false)
                             {
                                 if (injectCommands.Count == 0)
@@ -897,30 +934,19 @@ namespace RepetierHost.connector
                                         lineInc = true;
                                     }
                                     // bool forceReady = job.exclusive && boostUpload;
-                                    if (binaryVersion == 0 || gc.forceAscii)
-                                    {
-                                        string cmd = gc.getAscii(true, true);
-                                        if (!pingPong && receivedCount() + cmd.Length + 2 > receiveCacheSize) { if (lineInc) --lastline; return false; } // printer cache full
-                                        if (pingPong) readyForNextSend = false;
-                                        else { lock (nackLines) { nackLines.AddLast(cmd.Length + 2); } }
-                                        serial.WriteLine(cmd);
-                                        bytesSend += cmd.Length + 2;
-                                    }
-                                    else
-                                    {
-                                        byte[] cmd = gc.getBinary(binaryVersion);
-                                        if (!pingPong && receivedCount() + cmd.Length > receiveCacheSize) { if (lineInc) --lastline; return false; } // printer cache full
-                                        if (pingPong) readyForNextSend = false;
-                                        else { lock (nackLines) { nackLines.AddLast(cmd.Length); } }
-                                        serial.Write(cmd, 0, cmd.Length);
-                                        bytesSend += cmd.Length;
-                                    }
+                                    cmd = (binaryVersion == 0 || gc.forceAscii ? enc.GetBytes(gc.getAscii(true, true) + "\r\n") : gc.getBinary(binaryVersion));
+                                    if (!pingPong && receivedCount() + cmd.Length > receiveCacheSize) { if (lineInc) --lastline; return false; } // printer cache full
+                                    if (pingPong) readyForNextSend = false;
                                     historygc = gc;
                                 }
                                 job.PopData();
                             }
+                            con.analyzer.Analyze(gc);
                             if (!gc.hostCommand)
                             {
+                                lock (nackLines) { nackLines.AddLast(new NackData(cmd.Length, con.analyzer.estimatedCommandTime)); }
+                                serial.Write(cmd, 0, cmd.Length);
+                                bytesSend += cmd.Length;
                                 linesSend++;
                                 lastCommandSend = DateTime.Now.Ticks;
                                 printeraction = Trans.T1("L_PRINTING..ETA", job.ETA); //"Printing...ETA " + job.ETA;
@@ -928,7 +954,6 @@ namespace RepetierHost.connector
                                     printeraction += " " + Trans.T2("L_LAYER_X/Y", con.analyzer.layer.ToString(), job.maxLayer.ToString()); // Layer " + analyzer.layer + "/" + job.maxLayer;
                                 logprogress = job.PercentDone;
                             }
-                            con.analyzer.Analyze(gc);
                             return true;
                         }
                     }
@@ -1081,6 +1106,7 @@ namespace RepetierHost.connector
                 readyForNextSend = true;
                 lock (nackLines)
                 {
+                    nackLinesBuffered.Clear();
                     nackLines.Clear();
                 }
                 garbageCleared = true;
@@ -1118,12 +1144,14 @@ namespace RepetierHost.connector
                 if (!ignoreNextOk)  // ok in response of resend?
                 {
                     if (pingPong) readyForNextSend = true;
-                    else
+                    lock (nackLines)
                     {
-                        lock (nackLines)
+                        if (nackLines.Count > 0)
                         {
-                            if (nackLines.Count > 0)
-                                nackLines.RemoveFirst();
+                            nackLinesBuffered.AddLast(nackLines.First.Value);
+                            nackLines.RemoveFirst();
+                            while (nackLinesBuffered.Count > 10)
+                                nackLinesBuffered.RemoveFirst();
                         }
                     }
                     resendError = 0;
@@ -1134,16 +1162,15 @@ namespace RepetierHost.connector
             }
             else if (res.Equals("wait")) //  && DateTime.Now.Ticks - lastCommandSend > 5000)
             {
+                ignoreResendLine = -1;
                 if (Main.main.logView.switchACK.On)
                     con.log(res, true, level);
                 if (pingPong) readyForNextSend = true;
-                else
+                lock (nackLines)
                 {
-                    lock (nackLines)
-                    {
-                        if (nackLines.Count > 0)
-                            nackLines.Clear();
-                    }
+                    nackLinesBuffered.Clear();
+                    if (nackLines.Count > 0)
+                        nackLines.Clear();
                 }
                 resendError = 0;
                 TrySendNextLine();

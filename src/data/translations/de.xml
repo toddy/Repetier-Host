@@ -595,7 +595,6 @@ Mögliche Gründe:
 <t id="L_DIMENSIONS:" ver="9">Abmessungen:</t>
 <t id="L_SPLIT_OBJECT" ver="9">Objekt aufspalten</t>
 <t id="L_FIX_NORMALS" ver="9">Normalen reparieren</t>
-<t id="L_REPAIR" ver="9">Reparieren</t>
 <t id="M_FIT_PRINTER" ver="9">Zoom auf Drucker</t>
 <t id="M_FIT_OBJECTS" ver="9">Zoom auf Objekte</t>
 <t id="IMPORTING_1" ver="9">Importiere $1</t>

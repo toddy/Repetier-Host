@@ -44,3 +44,5 @@ setup-config-felixprinters.iss
 *.iss
 
 setup-config-leapfrog.iss
+
+*.db

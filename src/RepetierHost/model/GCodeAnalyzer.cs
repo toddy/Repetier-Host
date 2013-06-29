@@ -70,6 +70,7 @@ namespace RepetierHost.model
         public int tempMonitor = 0;
         public double printingTime = 0;
         public bool eChanged;
+        public long estimatedCommandTime; // safe estimate of execution time in milliseconds
 
         public GCodeAnalyzer(bool privAnal)
         {
@@ -180,6 +181,7 @@ namespace RepetierHost.model
         }
         public void Analyze(GCode code)
         {
+            estimatedCommandTime = 1000;
             if (code.hostCommand)
             {
                 string cmd = code.getHostCommand();
@@ -300,11 +302,13 @@ namespace RepetierHost.model
                         float dy = Math.Abs(y - lastY);
                         float dz = Math.Abs(z - lastZ);
                         float de = Math.Abs(activeExtruder.e - activeExtruder.lastE);
+                        double time;
                         if (dx + dy + dz > 0.001)
-                        {
-                            printingTime += Math.Sqrt(dx * dx + dy * dy + dz * dz) * 60.0f / f;
-                        }
-                        else printingTime += de * 60.0f / f;
+                            time = Math.Sqrt(dx * dx + dy * dy + dz * dz) * 60.0f / f;
+                        else 
+                            time = de * 60.0f / f;
+                        printingTime += time;
+                        estimatedCommandTime = (long)(1100 * time);
                         if (z != lastZ) unchangedLayer.Clear();
                         lastX = x;
                         lastY = y;
@@ -543,6 +547,7 @@ namespace RepetierHost.model
                                     eventPosChanged(code, x, y, z);
                                 else
                                     Main.main.Invoke(eventPosChanged, code, x, y, z);
+                            estimatedCommandTime = 60000;
                         }
                         break;
                     case 162:
@@ -556,6 +561,7 @@ namespace RepetierHost.model
                                     eventPosChanged(code, x, y, z);
                                 else
                                     Main.main.Invoke(eventPosChanged, code, x, y, z);
+                            estimatedCommandTime = 60000;
                         }
                         break;
                     case 90:
@@ -583,6 +589,9 @@ namespace RepetierHost.model
                                 eventPosChanged(code, x, y, z);
                             else
                                 Main.main.Invoke(eventPosChanged, code, x, y, z);
+                        break;
+                    default:
+                        estimatedCommandTime = 5 * 60 * 1000;
                         break;
                 }
             }
@@ -616,6 +625,8 @@ namespace RepetierHost.model
                             int idx = activeExtruderId;
                             if (code.hasT) idx = code.T;
                             if (code.hasS) setTemperature(idx, code.S);
+                            if (code.M == 109)
+                                estimatedCommandTime = 6*60*1000;
                         }
                         fireChanged();
                         break;
@@ -640,6 +651,8 @@ namespace RepetierHost.model
                     case 140:
                     case 190:
                         if (code.hasS) bedTemp = code.S;
+                        if (code.M == 190)
+                            estimatedCommandTime = 20*60*1000;
                         fireChanged();
                         break;
                     case 203: // Temp monitor
@@ -649,6 +662,52 @@ namespace RepetierHost.model
                     case 220:
                         if (code.hasS)
                             speedMultiply = code.S;
+                        break;
+                    case 108: // Catch fast commands to not get slowed down for beeing unknown
+                    case 3:
+                    case 4:
+                    case 5:
+                    case 20:
+                    case 21:
+                    case 22:
+                    case 23:
+                    case 24:
+                    case 25:
+                    case 26:
+                    case 27:
+                    case 30:
+                    case 42:
+                    case 92:
+                    case 101:
+                    case 102:
+                    case 103:
+                    case 105:
+                    case 201:
+                    case 202:
+                    case 204:
+                    case 205:
+                    case 206:
+                    case 221:
+                    case 300:
+                    case 340:
+                    case 350:
+                    case 400:
+                    case 401:
+                    case 402:
+                    case 500:
+                    case 501:
+                    case 502:
+                    case 666:
+                    case 908:
+                        break;
+                    case 116:
+                        estimatedCommandTime = 20 * 60 * 1000;
+                        break;
+                    case 303:
+                        estimatedCommandTime = 30 * 60 * 1000;
+                        break;
+                    default:
+                        estimatedCommandTime = 5 * 60 * 1000;
                         break;
                 }
             }
@@ -680,7 +739,9 @@ namespace RepetierHost.model
 
             float millimeters_of_travel = Math.Abs(angular_travel) * radius; //hypot(angular_travel*radius, fabs(linear_travel));
             if (millimeters_of_travel < 0.001) { return; }
-            printingTime += millimeters_of_travel * 60.0f / f;
+            double time = millimeters_of_travel * 60.0f / f;
+            printingTime += time;
+            estimatedCommandTime = (long)(1000 * time);
             if (eventPosChangedFast == null) return;
             //uint16_t segments = (radius>=BIG_ARC_RADIUS ? floor(millimeters_of_travel/MM_PER_ARC_SEGMENT_BIG) : floor(millimeters_of_travel/MM_PER_ARC_SEGMENT));
             // Increase segment size if printing faster then computation speed allows

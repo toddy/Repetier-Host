@@ -604,7 +604,6 @@ Write Changes to EEPROM?</t>
 <t id="L_DIMENSIONS:" ver="9">Dimensions:</t>
 <t id="L_SPLIT_OBJECT" ver="9">Split Object</t>
 <t id="L_FIX_NORMALS" ver="9">Fix Normals</t>
-<t id="L_REPAIR" ver="9">Repair</t>
 <t id="M_FIT_PRINTER" ver="9">Fit Printer</t>
 <t id="M_FIT_OBJECTS" ver="9">Fit Objects</t>
 <t id="IMPORTING_1" ver="9">Importing $1</t>

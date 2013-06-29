@@ -238,7 +238,8 @@ namespace RepetierHost.view
             //    textPrintbedTemp.Text = ann.bedTemp.ToString();
             switchExtruderHeatOn.On = ann.getTemperature(-1) > 0;
             switchFanOn.On = ann.fanOn;
-            trackFanVoltage.Value = ann.fanVoltage;
+            if(ann.fanOn)
+                trackFanVoltage.Value = ann.fanVoltage;
             switchBedHeat.On = ann.bedTemp > 0;
             switchPower.On = ann.powerOn;
             sliderSpeed.Value = con.speedMultiply;

@@ -249,14 +249,12 @@ namespace RepetierHost.view
 
             if (Main.slicer.ActiveSlicer == Slicer.SlicerID.Slic3r)
             {
-                Console.WriteLine("slic3r active");
                 switchSkeinforge.On = false;
                 switchSlic3rActive.On = true;
                 //buttonStartSlicing.Text = "Slice with Slic3r\r\n\r\nPrinter = " + b.Slic3rPrinterSettings + "\r\nFilament = " + b.Slic3rFilamentSettings + "\r\nPrint = " + b.Slic3rPrintSettings;
             }
             else if (Main.slicer.ActiveSlicer == Slicer.SlicerID.Skeinforge)
             {
-                Console.WriteLine("skeinforge active");
                 switchSlic3rActive.On = false;
                 switchSkeinforge.On = true;
                 //buttonStartSlicing.Text = "Slice with Skeinforge\r\n\r\nProfile = " + b.SkeinforgeProfile;

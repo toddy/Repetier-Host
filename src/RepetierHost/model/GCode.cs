@@ -259,10 +259,11 @@ namespace RepetierHost.model
         {
             if (hostCommand) return orig;
             StringBuilder s = new StringBuilder();
+            /*
             if (hasM)
             {
                 if (m == 117) inclChecksum = false; // For marlin
-            }
+            }*/
             if (inclLine && hasN)
             {
                 s.Append("N");
@@ -442,10 +443,31 @@ namespace RepetierHost.model
             if (p < 0) return "";
             return orig.Substring(p+1);
         }
+        public string Respace(string line)
+        {
+            char last = ' ';
+            StringBuilder b = new StringBuilder();
+            int i, l = line.Length;
+            bool comment = false;
+            for (i = 0; i < l; i++)
+            {
+                char c = line[i];
+                if (c == ';') comment = true;
+                if (char.IsLetter(c) && !comment)
+                {
+                    if (char.IsLower(c))
+                        c = char.ToUpper(c);
+                    if (last != ' ') b.Append(' ');
+                }
+                b.Append(c);
+                last = c;
+            }
+            return b.ToString();
+        }
         public void Parse(String line)
         {
             hostCommand = false;
-            orig = line.Trim();
+            orig = Respace(line.Trim());
             if (orig.StartsWith("@") || orig.StartsWith(";@"))
             {
                 hostCommand = true;

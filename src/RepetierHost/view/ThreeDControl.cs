@@ -1130,7 +1130,7 @@ namespace RepetierHost.view
             {
                 speedX = (xPos - xDown) / gl.Width;
                 speedY = (yPos - yDown) / gl.Height;
-                Vector3 planeVec = Vector3.Sub(new Vector3(moveStart.x,moveStart.y,moveStart.z), cam.CameraPosition);
+                Vector3 planeVec = Vector3.Subtract(new Vector3(moveStart.x,moveStart.y,moveStart.z), cam.CameraPosition);
                 float dot = Vector3.Dot(planeVec, cam.ViewDirection());
                 double len = (dot>0 ? planeVec.Length : -1);                
                 cam.Pan(speedX * 200, speedY * 200,len);
@@ -1140,7 +1140,7 @@ namespace RepetierHost.view
             {
                 speedX = (xPos - xDown) / gl.Width;
                 speedY = (yPos - yDown) / gl.Height;
-                Vector3 planeVec = Vector3.Sub(new Vector3(moveStart.x, moveStart.y, moveStart.z), cam.CameraPosition);
+                Vector3 planeVec = Vector3.Subtract(new Vector3(moveStart.x, moveStart.y, moveStart.z), cam.CameraPosition);
                 float dot = Vector3.Dot(planeVec, cam.ViewDirection());
                 double len = (dot > 0 ? planeVec.Length : -1);
                 cam.Pan(-speedX, -speedY,len);

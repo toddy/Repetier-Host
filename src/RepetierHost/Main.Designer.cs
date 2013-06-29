@@ -813,7 +813,8 @@
             // sendScript1ToolStripMenuItem
             // 
             this.sendScript1ToolStripMenuItem.Name = "sendScript1ToolStripMenuItem";
-            this.sendScript1ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D0)));
+            this.sendScript1ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
+            | System.Windows.Forms.Keys.D1)));
             this.sendScript1ToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.sendScript1ToolStripMenuItem.Text = "Send script 1";
             this.sendScript1ToolStripMenuItem.Click += new System.EventHandler(this.sendScript1ToolStripMenuItem_Click);
@@ -821,7 +822,8 @@
             // sendScript2ToolStripMenuItem
             // 
             this.sendScript2ToolStripMenuItem.Name = "sendScript2ToolStripMenuItem";
-            this.sendScript2ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D2)));
+            this.sendScript2ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
+            | System.Windows.Forms.Keys.D2)));
             this.sendScript2ToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.sendScript2ToolStripMenuItem.Text = "Send script 2";
             this.sendScript2ToolStripMenuItem.Click += new System.EventHandler(this.sendScript2ToolStripMenuItem_Click);
@@ -829,7 +831,8 @@
             // sendScript3ToolStripMenuItem
             // 
             this.sendScript3ToolStripMenuItem.Name = "sendScript3ToolStripMenuItem";
-            this.sendScript3ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D3)));
+            this.sendScript3ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
+            | System.Windows.Forms.Keys.D3)));
             this.sendScript3ToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.sendScript3ToolStripMenuItem.Text = "Send script 3";
             this.sendScript3ToolStripMenuItem.Click += new System.EventHandler(this.sendScript3ToolStripMenuItem_Click);
@@ -837,7 +840,8 @@
             // sendScript4ToolStripMenuItem
             // 
             this.sendScript4ToolStripMenuItem.Name = "sendScript4ToolStripMenuItem";
-            this.sendScript4ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D4)));
+            this.sendScript4ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
+            | System.Windows.Forms.Keys.D4)));
             this.sendScript4ToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.sendScript4ToolStripMenuItem.Text = "Send script 4";
             this.sendScript4ToolStripMenuItem.Click += new System.EventHandler(this.sendScript4ToolStripMenuItem_Click);
@@ -845,7 +849,8 @@
             // sendScript5ToolStripMenuItem
             // 
             this.sendScript5ToolStripMenuItem.Name = "sendScript5ToolStripMenuItem";
-            this.sendScript5ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D5)));
+            this.sendScript5ToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
+            | System.Windows.Forms.Keys.D5)));
             this.sendScript5ToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.sendScript5ToolStripMenuItem.Text = "Send script 5";
             this.sendScript5ToolStripMenuItem.Click += new System.EventHandler(this.sendScript5ToolStripMenuItem_Click);
@@ -1393,7 +1398,7 @@
             this.MainMenuStrip = this.menu;
             this.MinimumSize = new System.Drawing.Size(640, 480);
             this.Name = "Main";
-            this.Text = "Repetier-Host V0.90";
+            this.Text = "Repetier-Host V0.90B";
             this.Activated += new System.EventHandler(this.Main_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.Load += new System.EventHandler(this.Main_Load);
