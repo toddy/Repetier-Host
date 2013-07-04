@@ -168,9 +168,15 @@ namespace RepetierHost.model
         {
             if (File.Exists(filename))
             {
-                Load(filename,null);
+                InfoProgressPanel ipp = InfoProgressPanel.Create(Trans.T1("IMPORTING_1", name), true);
+                ipp.Action = Trans.T("L_LOADING...");
+                ipp.Dock = DockStyle.Top;
+                Main.main.objectPlacement.panelControls.Controls.Add(ipp);
+                Main.main.objectPlacement.panelControls.Update();
+                Load(filename, ipp);
                 Land();
                 ForceViewRegeneration();
+                ipp.Finished();
             }
         }
 

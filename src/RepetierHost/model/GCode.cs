@@ -457,7 +457,7 @@ namespace RepetierHost.model
                 {
                     if (char.IsLower(c))
                         c = char.ToUpper(c);
-                    if (last != ' ') b.Append(' ');
+                    //if (last != ' ' ) b.Append(' ');
                 }
                 b.Append(c);
                 last = c;
@@ -467,12 +467,13 @@ namespace RepetierHost.model
         public void Parse(String line)
         {
             hostCommand = false;
-            orig = Respace(line.Trim());
+            orig = line.Trim();
             if (orig.StartsWith("@") || orig.StartsWith(";@"))
             {
                 hostCommand = true;
                 return;
-            }
+            }            
+            //orig = Respace(orig); // destroys M117 and sd card commands
             fields = 128;
             fields2 = 0;
             int l = orig.Length,i;

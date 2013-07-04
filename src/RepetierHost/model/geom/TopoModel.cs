@@ -262,6 +262,7 @@ namespace RepetierHost.model.geom
         }
         public void UpdateNormals()
         {
+            CountShells();
             StartAction("L_FIXING_NORMALS");
             ResetTriangleMarker();
             updatedNormals = 0;
@@ -274,7 +275,8 @@ namespace RepetierHost.model.geom
                     Application.DoEvents();
                 if (triangle.algHelper == 0)
                 {
-                    triangle.RecomputeNormal();
+                    int testShell = triangle.shell;
+                    /*triangle.RecomputeNormal();
                     RHVector3 lineStart = triangle.Center;
                     RHVector3 lineDirection = triangle.normal;
                     int hits = 0;
@@ -292,14 +294,22 @@ namespace RepetierHost.model.geom
                     {
                         triangle.FlipDirection();
                         updatedNormals++;
-                    }
+                    }*/
                     FloodFillNormals(triangle);
+                    if (SignedShellVolume(testShell) < 0)
+                    {
+                        foreach (TopoTriangle flip in triangles)
+                        {
+                            triangle.FlipDirection();
+                        }
+                    }
                 }
                 else
                     triangle.RecomputeNormal();
             }
             RLog.info(Trans.T("L_ANA_CORRECTED_NORMAL_ORIENTATIONS") + updatedNormals);
         }
+
         private void FloodFillNormals(TopoTriangle good)
         {
             good.algHelper = 1;
@@ -335,13 +345,15 @@ namespace RepetierHost.model.geom
         }
         public bool CheckNormals()
         {
+            CountShells();
             ResetTriangleMarker();
             normalsOriented = true;
             foreach (TopoTriangle triangle in triangles)
             {
                 if (triangle.algHelper == 0)
                 {
-                    triangle.RecomputeNormal();
+                    int testShell = triangle.shell;
+                    /*triangle.RecomputeNormal();
                     RHVector3 lineStart = triangle.Center;
                     RHVector3 lineDirection = triangle.normal;
                     int hits = 0;
@@ -357,6 +369,11 @@ namespace RepetierHost.model.geom
                     {
                         normalsOriented = false;
                         return false;
+                    }*/
+                    if (SignedShellVolume(testShell) < 0)
+                    {
+                        normalsOriented = false;
+                        return false;
                     }
                     if (!FloodFillCheckNormals(triangle))
                     {
@@ -367,6 +384,7 @@ namespace RepetierHost.model.geom
             }
             return true;
         }
+        
         public double Surface()
         {
             double surface = 0;
@@ -376,6 +394,7 @@ namespace RepetierHost.model.geom
             }
             return surface;
         }
+        
         public double Volume()
         {
             double volume = 0;
@@ -383,6 +402,18 @@ namespace RepetierHost.model.geom
                 volume += t.SignedVolume();
             return Math.Abs(volume);
         }
+        
+        public double SignedShellVolume(int shell)
+        {
+            double volume = 0;
+            foreach (TopoTriangle t in triangles)
+            {
+                if(t.shell == shell)
+                    volume += t.SignedVolume();
+            }
+            return volume;
+        }
+
         private bool FloodFillCheckNormals(TopoTriangle good)
         {
             good.algHelper = 1;
@@ -755,17 +786,44 @@ namespace RepetierHost.model.geom
                 newFront = new HashSet<TopoTriangle>();
             }
         }
+        private void FloodFillShells(TopoTriangle tri, int value)
+        {
+            tri.shell = value;
+            HashSet<TopoTriangle> front = new HashSet<TopoTriangle>();
+            front.Add(tri);
+            HashSet<TopoTriangle> newFront = new HashSet<TopoTriangle>();
+            int i;
+            while (front.Count > 0)
+            {
+                foreach (TopoTriangle t in front)
+                {
+                    for (i = 0; i < 3; i++)
+                    {
+                        foreach (TopoTriangle test in t.edges[i].faces)
+                        {
+                            if (test.shell == 0)
+                            {
+                                test.shell = value;
+                                newFront.Add(test);
+                            }
+                        }
+                    }
+                }
+                front = newFront;
+                newFront = new HashSet<TopoTriangle>();
+            }
+        }
         public int CountShells()
         {
             foreach (TopoTriangle t in triangles)
-                t.algHelper = 0;
+                t.shell = 0;
             int nShells = 0;
             foreach (TopoTriangle t in triangles)
             {
-                if (t.algHelper == 0)
+                if (t.shell == 0)
                 {
                     nShells++;
-                    FloodFillTriangles(t, nShells);
+                    FloodFillShells(t, nShells);
                 }
             }
             return nShells;
@@ -773,6 +831,9 @@ namespace RepetierHost.model.geom
         public List<TopoModel> SplitIntoSurfaces()
         {
             CountShells();
+            foreach (TopoTriangle tri in triangles)
+                tri.algHelper = tri.shell;
+
             List<TopoModel> models = new List<TopoModel>();
             Dictionary<int, TopoModel> modelMap = new Dictionary<int, TopoModel>();
             foreach (TopoTriangle tri in triangles)

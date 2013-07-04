@@ -114,21 +114,9 @@ namespace RepetierHost.model
         public long autocheckInterval = 3000;
         public long lastAutocheck = 0;
         System.Timers.Timer timer = null;
-       // private int resendError = 0;
-       // public int linesSend = 0, errorsReceived = 0;
-      //  public int bytesSend = 0;
-       // bool ignoreNextOk = false;
-      //  private ManualResetEvent injectLock = new ManualResetEvent(true);
         public string nextPrinterAction = null;
-      //  private long lastCommandSend = DateTime.Now.Ticks;
         public string lastPrinterAction = "";
-     //   public int receiveCacheSize = 63;
         public LinkedList<int> nackLines = new LinkedList<int>(); // Lines, whoses receivement were not acknowledged
-       // Thread readThread = null;
-       // VirtualPrinter virtualPrinter;
-       // public bool isVirtualActive = false;
-     //   Thread writeThread = null;
-     //   static AutoResetEvent writeEvent;
         public float lastlogprogress = -1000;
         public string filterCommand = "yourFilter #in #out";
         public bool runFilterEverySlice = false;
@@ -144,8 +132,6 @@ namespace RepetierHost.model
 
         public PrinterConnection()
         {
-            //virtualPrinter = new VirtualPrinter();
-            //job = new Printjob(this);
             timer = new System.Timers.Timer();
             timer.Interval = 100;
             timer.AutoReset = true;

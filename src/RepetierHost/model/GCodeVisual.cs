@@ -713,7 +713,7 @@ namespace RepetierHost.model
             ResetQuality();
 
             if (startOnClear)
-                ana.start();
+                ana.start(true);
             else
                 ana.layer = 0;
         }

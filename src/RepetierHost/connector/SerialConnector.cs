@@ -50,6 +50,7 @@ namespace RepetierHost.connector
         private int transferProtocol = 0;
         private int resetOnConnect = 2;
         private int resetOnEmergency = 2;
+        private int doRunStartCommands = -1;
         PrinterConnection con;
         //System.Text.ASCIIEncoding enc = new System.Text.ASCIIEncoding();
         Encoding enc = System.Text.Encoding.GetEncoding(1252); 
@@ -84,6 +85,7 @@ namespace RepetierHost.connector
         string read = "";
         long lastReceived = 0;
         bool ignoreNextOk = false;
+        bool initalizationFinished = false;
         private ManualResetEvent injectLock = new ManualResetEvent(true);
        // int lastResendLine = -1;
        // int ignoreXEqualResendsResend = 0;
@@ -143,7 +145,12 @@ namespace RepetierHost.connector
 
         public override void RunPeriodicalTasks()
         {
-            if (((serial == null || connected == false)) || garbageCleared == false) return;
+            if (doRunStartCommands > 0)
+            {
+                if (--doRunStartCommands == 0)
+                    RunStartCommands();
+            }
+            if (((serial == null || connected == false)) || garbageCleared == false || !initalizationFinished) return;
             long actTime = DateTime.Now.Ticks / 10000;
             if (con.autocheckTemp && actTime - con.lastAutocheck > con.autocheckInterval && job.exclusive == false)
             {
@@ -191,55 +198,63 @@ namespace RepetierHost.connector
                     serial = new SerialPort();
                 else
                     serial = new ProtectedSerialPort();
-                garbageCleared = true;
+                garbageCleared = false;
                 serial.PortName = port;
                 serial.BaudRate = int.Parse(baudRate);
                 serial.Parity = parity;
                 serial.DataBits = databits;
                 serial.StopBits = stopbits;
                 ignoreResendLine = -1;
+                doRunStartCommands = -1;
+                lastline = 0;
+                initalizationFinished = false;
                 if (!Main.IsMono)
                     serial.DataReceived += received;
                 serial.ErrorReceived += error;
-                serial.RtsEnable = false;
+                //serial.RtsEnable = false;
                 if (resetOnConnect == 1)
                     serial.DtrEnable = true;
                 else if (resetOnConnect == 2)
                     serial.DtrEnable = false;
                 serial.Open();
+                if (writeThread == null)
+                {
+                    writeThread = new Thread(new ThreadStart(this.WriteLoop));
+                    writeThread.Start();
+                }
+                connected = true;
                 if (resetOnConnect == 2)
                 {
                     //Thread.Sleep(200);
                     serial.DtrEnable = true;
                 }
                 if (resetOnConnect == 1)
+                {
+                    Thread.Sleep(1000);
                     serial.DtrEnable = false;
+                }
                 if (resetOnConnect == 2)
                 {
-                    Thread.Sleep(200);
+                    Thread.Sleep(1000);
                     serial.DtrEnable = false;
                 }
                 if (resetOnConnect == 3)
                 {
                     serial.DtrEnable = !serial.DtrEnable;
-                }
-                if (writeThread == null)
-                {
-                    writeThread = new Thread(new ThreadStart(this.WriteLoop));
-                    writeThread.Start();
+                    Thread.Sleep(1000);
                 }
                 // If we didn't restart the connection we need to eat
                 // all unread data on this port.
-                serial.DiscardInBuffer();
+                //serial.DiscardInBuffer();
                 /*while(serial.BytesToRead > 0)
                 {
                     string indata = serial.ReadExisting();
                 }*/
-                lastline = 0;
+                Application.DoEvents();
+                Thread.Sleep(1000);
                 prequelFinished = false;
                 //serial.WriteLine("");
                 //serial.WriteLine("M105 *89");
-                connected = true;
                 if (transferProtocol < 2)
                     binaryVersion = 0;
                 else binaryVersion = transferProtocol - 1;
@@ -253,25 +268,36 @@ namespace RepetierHost.connector
                     readThread = new Thread(new ThreadStart(this.ReadThread));
                     readThread.Start();
                 }
-                // Create safe start if we connect without reset. If we reset anything is lost anyway.
-                if (transferProtocol == 2 || transferProtocol == 0)
+                if (resetOnConnect == 0)
                 {
-                    System.Threading.Thread.Sleep(500); // Wait for buffer to empty
-                    byte[] buf = new byte[100];
-                    for (int i = 0; i < 100; i++) buf[i] = 0;
-                    serial.Write(buf, 0, 100);
-                    serial.WriteLine(";");
-                    System.Threading.Thread.Sleep(10 + 1000000 / int.Parse(baudRate)); // Wait for buffer to empty
+                    // Create safe start if we connect without reset. If we reset anything is lost anyway.
+                    if (transferProtocol == 2 || transferProtocol == 0)
+                    {
+                        // System.Threading.Thread.Sleep(500); // Wait for buffer to empty
+                        byte[] buf = new byte[100];
+                        for (int i = 0; i < 100; i++) buf[i] = 0;
+                        serial.Write(buf, 0, 100);
+                        serial.WriteLine("");
+                        System.Threading.Thread.Sleep(10 + 1000000 / int.Parse(baudRate)); // Wait for buffer to empty
+                    }
+                    GetInjectLock();
+                    InjectManualCommand("N1 M110"); // Make sure we tal about the same linenumbers
+                    InjectManualCommand("N1 M110"); // Make sure we tal about the same linenumbers
+                    InjectManualCommand("M115"); // Check firmware
+                    InjectManualCommand("T" + Main.main.printPanel.comboExtruder.SelectedIndex);
+                    InjectManualCommand("M105"); // Read temperature
+                    ReturnInjectLock();
                 }
-                GetInjectLock();
-                InjectManualCommand("N0 M110"); // Make sure we tal about the same linenumbers
-                InjectManualCommand("N0 M110"); // Make sure we tal about the same linenumbers
-                InjectManualCommand("M115"); // Check firmware
-                InjectManualCommand("T" + Main.main.printPanel.comboExtruder.SelectedIndex);
-                InjectManualCommand("M105"); // Read temperature
-                ReturnInjectLock();
-                con.FireConnectionChange(Trans.T("L_CONNECTED") + ":" + con.printerName);
-                Main.main.Invoke(Main.main.UpdateJobButtons);
+                if (resetOnConnect == 0)
+                {
+                    garbageCleared = true;
+                    con.FireConnectionChange(Trans.T("L_CONNECTED") + ":" + con.printerName);
+                    Main.main.Invoke(Main.main.UpdateJobButtons);
+                    initalizationFinished = true;
+                    con.analyzer.fireChanged();
+                    if (con.analyzer.powerOn)
+                        InjectManualCommand("M80");
+                }
             }
             catch (IOException ex)
             {
@@ -495,7 +521,7 @@ namespace RepetierHost.connector
 
         public override void Emergency()
         {
-           // InjectManualCommandFirst("M112");
+            InjectManualCommandFirst("M112");
             job.KillJob();
             if (resetOnEmergency == 2)
             {
@@ -506,7 +532,7 @@ namespace RepetierHost.connector
             {                
                 //serial.DtrEnable = !serial.DtrEnable;
                 serial.DtrEnable = true;
-                Thread.Sleep(5);
+                Thread.Sleep(200);
                 serial.DtrEnable = false;
             }
         }
@@ -706,13 +732,13 @@ namespace RepetierHost.connector
             }
             ignoreResendLine = line;
             ignoreResendLineForXCalls = 7;
-            if (!prequelFinished && line > lastline)
+          /*  if (!prequelFinished && line > lastline)
             {
                 RLog.message("ignoring resend in prequel");
                 if (pingPong)
                     readyForNextSend = true;
                 return;
-            }
+            }*/
             if (!connected) return;
             errorsReceived++;
             resendError++;
@@ -742,7 +768,7 @@ namespace RepetierHost.connector
                         gc = new GCode("N" + line + " M105");
                         history.AddLast(gc);
                         resendNode = history.Last;
-                        history.AddFirst(new GCode("N0 M110"));
+                        history.AddFirst(new GCode("N1 M110"));
                         return;
                     }
                     if (resendError > 5 || node == null)
@@ -783,7 +809,7 @@ namespace RepetierHost.connector
                             history.Clear();
                             history.AddFirst(new GCode("N" + line + " M105"));
                             resendNode = history.First;
-                            history.AddFirst(new GCode("N0 M110"));
+                            history.AddFirst(new GCode("N1 M110"));
                             return;
                         }
                         node = node.Previous;
@@ -1085,8 +1111,23 @@ namespace RepetierHost.connector
         {
             injectLock.Set();
         }
+        private void RunStartCommands()
+        {
+            doRunStartCommands = -1;
+            InjectManualCommand("N1 M110"); // Make sure we tal about the same linenumbers
+            InjectManualCommand("N1 M110"); // Make sure we tal about the same linenumbers
+            InjectManualCommand("M115"); // Check firmware
+            Main.main.printPanel.sendDebug();
+            initalizationFinished = true;
+            con.FireConnectionChange(Trans.T("L_CONNECTED") + ":" + con.printerName);
+            Main.main.Invoke(Main.main.UpdateJobButtons);
+            con.analyzer.fireChanged();
+            if (con.analyzer.powerOn)
+                InjectManualCommand("M80");
+        }
         public override void AnalyzeResponse(string res)
         {
+            //RLog.info("Recv:" + res);
             string h;
             int level = 0;
             while (res.Length > 0 && res[0] < 32) res = res.Substring(1);
@@ -1102,7 +1143,7 @@ namespace RepetierHost.connector
                     history.Clear();
                 }
                 con.sdcardMounted = true;
-                con.analyzer.start();
+                con.analyzer.start(false);
                 readyForNextSend = true;
                 lock (nackLines)
                 {
@@ -1110,9 +1151,7 @@ namespace RepetierHost.connector
                     nackLines.Clear();
                 }
                 garbageCleared = true;
-                InjectManualCommand("N0 M110"); // Make sure we tal about the same linenumbers
-                InjectManualCommand("M115"); // Check firmware
-                Main.main.printPanel.sendDebug();
+                doRunStartCommands = 5;
             }
             h = con.extract(res, "REPETIER_PROTOCOL:");
             if (h != null)

@@ -407,13 +407,13 @@ namespace RepetierHost.view
                 textRotX.Text = stl.Rotation.x.ToString(GCode.format);
                 textRotY.Text = stl.Rotation.y.ToString(GCode.format);
                 textRotZ.Text = stl.Rotation.z.ToString(GCode.format);
+                LockAspectRatio = (stl.Scale.x == stl.Scale.y && stl.Scale.x == stl.Scale.z);
                 textScaleX.Text = stl.Scale.x.ToString(GCode.format);
                 textScaleY.Text = stl.Scale.y.ToString(GCode.format);
                 textScaleZ.Text = stl.Scale.z.ToString(GCode.format);
                 textTransX.Text = stl.Position.x.ToString(GCode.format);
                 textTransY.Text = stl.Position.y.ToString(GCode.format);
                 textTransZ.Text = stl.Position.z.ToString(GCode.format);
-                LockAspectRatio = (stl.Scale.x == stl.Scale.y && stl.Scale.x == stl.Scale.z);
             }
             Main.main.threedview.UpdateChanges();
         }
@@ -884,6 +884,8 @@ namespace RepetierHost.view
         private void buttonLockAspect_Click(object sender, EventArgs e)
         {
             LockAspectRatio = !LockAspectRatio;
+            if(LockAspectRatio)
+                textScaleX_TextChanged(null,null);
         }
 
         private void listObjects_ClientSizeChanged(object sender, EventArgs e)

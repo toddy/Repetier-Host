@@ -124,7 +124,7 @@ namespace RepetierHost.model
             }
         }
         // set to start condition
-        public void start()
+        public void start(bool fire)
         {
             relative = false;
             eRelative = false;
@@ -156,7 +156,8 @@ namespace RepetierHost.model
             printerHeight = Main.printerSettings.PrintAreaHeight;
             if (!privateAnalyzer)
                 Main.main.jobVisual.ResetQuality();
-            fireChanged();
+            if(fire)
+                fireChanged();
         }
         public void StartJob()
         {

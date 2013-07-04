@@ -19,6 +19,7 @@ namespace RepetierHost.model.geom
         public bool bad = false;
         public bool hasIntersections = false;
         public int algHelper;
+        public int shell = -1;
         public TopoTriangle(TopoModel model,TopoVertex v1, TopoVertex v2, TopoVertex v3, double nx, double ny, double nz)
         {
             vertices[0] = v1;

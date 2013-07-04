@@ -102,7 +102,7 @@ namespace RepetierHost.model
         public void open(int baudrate)
         {
             this.baudrate = baudrate;
-            ana.start();
+            ana.start(true);
             output.AddLast("start");
             writeThread = new Thread(new ThreadStart(this.WriteThread));
             writeThread.Start();

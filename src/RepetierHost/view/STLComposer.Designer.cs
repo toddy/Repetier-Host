@@ -970,7 +970,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel panelControls;
         private System.Windows.Forms.TextBox textTransZ;
         private System.Windows.Forms.TextBox textTransY;
         private System.Windows.Forms.TextBox textTransX;
@@ -1046,5 +1045,6 @@
         public MB.Controls.ColorSlider cutAzimuthSlider;
         public MB.Controls.ColorSlider cutInclinationSlider;
         private System.Windows.Forms.ToolStripButton toolStripInfo;
+        public System.Windows.Forms.Panel panelControls;
     }
 }

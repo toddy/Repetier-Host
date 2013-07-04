@@ -186,7 +186,7 @@ namespace RepetierHost
             conn = new PrinterConnection();
             printerSettings = new FormPrinterSettings();
             printerModel = new PrinterModel();
-            conn.analyzer.start();
+            conn.analyzer.start(true);
             threeDSettings = new ThreeDSettings();
             InitializeComponent();
             tdSettings.DataSource = threeDSettings;
@@ -641,7 +641,7 @@ namespace RepetierHost
                     it.Enabled = false;
                 //eeprom.Enabled = true;
                 toolStripEmergencyButton.Enabled = true;
-                toolPrinterSettings.Enabled = false;
+                //toolPrinterSettings.Enabled = false;
                 printerSettingsToolStripMenuItem.Enabled = false;
             }
             else
@@ -666,7 +666,7 @@ namespace RepetierHost
                 foreach (ToolStripItem it in toolConnect.DropDownItems)
                     it.Enabled = true;
                 toolStripEmergencyButton.Enabled = false;
-                toolPrinterSettings.Enabled = true;
+                //toolPrinterSettings.Enabled = true;
                 printerSettingsToolStripMenuItem.Enabled = true;
                 SDCard.Disconnected();
             }
@@ -799,7 +799,10 @@ namespace RepetierHost
             if (conn.connector.IsJobRunning())
                 conn.connector.PauseJob(Trans.T("L_PAUSE_MSG"));
             else
+            {
+                Main.main.printVisual.Clear();
                 conn.connector.RunJob();
+            }
             /*
             Printjob job = conn.job;
             if (job.dataComplete)
@@ -953,7 +956,6 @@ namespace RepetierHost
                 Main.main.toolRunJob.Image = Main.main.imageList.Images[3];
                 Main.main.toolRunJob.ToolTipText = Trans.T("M_PAUSE_JOB"); //"Pause job";
                 Main.main.toolRunJob.Text = Trans.T("M_PAUSE_JOB"); //"Pause job";
-                Main.main.printVisual.Clear();
             }
         };
         public MethodInvoker UpdateEEPROM = delegate
