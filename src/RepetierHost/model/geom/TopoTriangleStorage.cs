@@ -58,6 +58,7 @@ namespace RepetierHost.model.geom
     {
         int dimension = -1;
         double middlePosition;
+        int nextTrySplit = 50;
         TopoTriangleNode parent = null;
         TopoTriangleNode left = null;
         TopoTriangleNode middle = null;
@@ -77,7 +78,7 @@ namespace RepetierHost.model.geom
             {
                 triangles.Add(triangle);
                 box.Add(triangle.boundingBox);
-                if(triangles.Count>50) TrySplit();
+                if (triangles.Count > nextTrySplit) TrySplit();
             }
             else
             {
@@ -161,8 +162,11 @@ namespace RepetierHost.model.geom
                     }
                 }
             }
-            if (bestPercentage < 5) 
+            if (bestPercentage < 5)
+            {
+                nextTrySplit = (nextTrySplit * 3) / 2;
                 return; // not effective enough
+            }
             left = new TopoTriangleNode(this);
             right = new TopoTriangleNode(this);
             middle = new TopoTriangleNode(this);

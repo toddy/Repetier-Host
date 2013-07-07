@@ -1,3 +1,12 @@
+Version 0.90C 07-07-2013
+  Faster connect with reset
+  Fixed crash when stl loaded is modified later.
+  Printer Settings can be opened during print.
+  Better handling of connection without reset.
+  New algorithm for normal orientation detection.
+  Faster loading of files in some cases.
+  Pause does not delete the preview any more.	
+
 Version 0.90 23-06-2013
   Slic3r 0.9.10 included.
   Redesigned object placement tab.

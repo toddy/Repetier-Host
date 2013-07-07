@@ -68,6 +68,7 @@ namespace RepetierHost.connector
         private int resendError = 0;
         public int linesSend = 0, errorsReceived = 0;
         public int bytesSend = 0;
+        public int openResend = -1;
         private LinkedList<NackData> nackLinesBuffered = new LinkedList<NackData>();
         private LinkedList<NackData> nackLines = new LinkedList<NackData>(); // Lines, whoses receivement were not acknowledged
         Thread readThread = null;
@@ -207,6 +208,7 @@ namespace RepetierHost.connector
                 ignoreResendLine = -1;
                 doRunStartCommands = -1;
                 lastline = 0;
+                openResend = -1;
                 initalizationFinished = false;
                 if (!Main.IsMono)
                     serial.DataReceived += received;
@@ -298,6 +300,7 @@ namespace RepetierHost.connector
                     if (con.analyzer.powerOn)
                         InjectManualCommand("M80");
                 }
+                else doRunStartCommands = 25; // in case reset did not work, do the same as without reset
             }
             catch (IOException ex)
             {
@@ -315,9 +318,35 @@ namespace RepetierHost.connector
                 }
                 serial = null;
                 con.log(ex.Message, true, 2);
-                con.FireConnectionChange(Trans.T("L_CONNECTION_ERROR")+":"+con.printerName);
+                con.FireConnectionChange(Trans.T("L_CONNECTION_ERROR") + ":" + con.printerName);
                 RepetierHost.view.SoundConfig.PlayError(false);
-                if(MessageBox.Show(Trans.T1("L_CONNECTION_FAILED",ex.Message),Trans.T("L_CONNECTION_ERROR"),MessageBoxButtons.YesNo,MessageBoxIcon.Error)==DialogResult.Yes) {
+                if (MessageBox.Show(Trans.T1("L_CONNECTION_FAILED", ex.Message), Trans.T("L_CONNECTION_ERROR"), MessageBoxButtons.YesNo, MessageBoxIcon.Error) == DialogResult.Yes)
+                {
+                    Main.printerSettings.Show(Main.main);
+                    Main.main.FormToFront(Main.printerSettings);
+
+                }
+            }
+            catch (System.UnauthorizedAccessException ex)
+            {
+                if (writeThread != null)
+                {
+                    writeThread.Abort();
+                    writeThread = null;
+                }
+
+                if (serial != null)
+                {
+                    if (!Main.IsMono)
+                        serial.DataReceived -= received;
+                    serial.ErrorReceived -= error;
+                }
+                serial = null;
+                con.log(ex.Message, true, 2);
+                con.FireConnectionChange(Trans.T("L_CONNECTION_ERROR") + ":" + con.printerName);
+                RepetierHost.view.SoundConfig.PlayError(false);
+                if (MessageBox.Show(Trans.T1("L_CONNECTION_FAILED", ex.Message), Trans.T("L_CONNECTION_ERROR"), MessageBoxButtons.YesNo, MessageBoxIcon.Error) == DialogResult.Yes)
+                {
                     Main.printerSettings.Show(Main.main);
                     Main.main.FormToFront(Main.printerSettings);
 
@@ -725,6 +754,24 @@ namespace RepetierHost.connector
         private int ignoreResendLineForXCalls = 0;
         public override void ResendLine(int line)
         {
+            if (line == openResend) return; // line was not send yet, do not do it twice
+            if (binaryVersion != 0)
+            {
+                int send = receivedCount();
+                //serial.DiscardOutBuffer();
+                System.Threading.Thread.Sleep(send * 10000 / int.Parse(baudRate)); // Wait for buffer to empty
+                byte[] buf = new byte[32];
+                for (int i = 0; i < 32; i++) buf[i] = 0;
+                serial.Write(buf, 0, 32);
+                System.Threading.Thread.Sleep(320000 / int.Parse(baudRate)); // Wait for buffer to empty
+            }
+            else
+            {
+                //serial.DiscardOutBuffer();
+                serial.WriteLine("");
+                System.Threading.Thread.Sleep(receiveCacheSize * 10000 / int.Parse(baudRate)); // Wait for buffer to empty
+            }
+            if (line > lastline) return; // resend request during connect can request unpossible resends
             if (line == ignoreResendLine && con.isRepetier == true) // Ignore repeated resend requests
             {
                 if (ignoreResendLineForXCalls > 0) ignoreResendLineForXCalls--;
@@ -766,6 +813,7 @@ namespace RepetierHost.connector
                     if (node == null)
                     {
                         gc = new GCode("N" + line + " M105");
+                        openResend = line;
                         history.AddLast(gc);
                         resendNode = history.Last;
                         history.AddFirst(new GCode("N1 M110"));
@@ -784,29 +832,15 @@ namespace RepetierHost.connector
                         gc = node.Value;
                         if (gc.hasN && (gc.N & 65535) == line)
                         {
+                            openResend = line;
                             resendNode = node;
-                            if (binaryVersion != 0)
-                            {
-                                int send = receivedCount();
-                                serial.DiscardOutBuffer();
-                                System.Threading.Thread.Sleep(send * 10000 / int.Parse(baudRate)); // Wait for buffer to empty
-                                byte[] buf = new byte[32];
-                                for (int i = 0; i < 32; i++) buf[i] = 0;
-                                serial.Write(buf, 0, 32);
-                                System.Threading.Thread.Sleep(320000 / int.Parse(baudRate)); // Wait for buffer to empty
-                            }
-                            else
-                            {
-                                serial.DiscardOutBuffer();
-                                serial.WriteLine("");
-                                System.Threading.Thread.Sleep(receiveCacheSize * 10000 / int.Parse(baudRate)); // Wait for buffer to empty
-                            }
                             TrySendNextLine();
                             return;
                         }
                         if (node.Previous == null)
                         {
                             history.Clear();
+                            openResend = line;
                             history.AddFirst(new GCode("N" + line + " M105"));
                             resendNode = history.First;
                             history.AddFirst(new GCode("N1 M110"));
@@ -886,6 +920,7 @@ namespace RepetierHost.connector
                             serial.Write(cmd, 0, cmd.Length);
                             bytesSend += cmd.Length;
                             linesSend++;
+                            openResend = -1;
                             lastCommandSend = DateTime.Now.Ticks;
                             resendNode = resendNode.Next;
                             logtext = "Resend: " + gc.getAscii(true, true);
@@ -922,6 +957,7 @@ namespace RepetierHost.connector
                             {
                                 lock (nackLines) { nackLines.AddLast(new NackData(cmd.Length, con.analyzer.estimatedCommandTime)); }
                                 serial.Write(cmd, 0, cmd.Length);
+                               // RLog.info("Send:" + gc.getAscii(true, true));
                                 bytesSend += cmd.Length;
                                 linesSend++;
                                 lastCommandSend = DateTime.Now.Ticks;

@@ -198,7 +198,7 @@ namespace RepetierHost.model.geom
             {
                 counter++;
                 Progress((double)counter / n);
-                if (counter % 200 == 0)
+                if (counter % 600 == 0)
                 {
                     Application.DoEvents();
                     if (IsActionStopped()) return;
@@ -271,7 +271,7 @@ namespace RepetierHost.model.geom
             {
                 count++;
                 Progress((double)count / triangles.Count);
-                if ((count % 500) == 0)
+                if ((count % 2500) == 0)
                     Application.DoEvents();
                 if (triangle.algHelper == 0)
                 {
@@ -317,11 +317,14 @@ namespace RepetierHost.model.geom
             front.Add(good);
             HashSet<TopoTriangle> newFront = new HashSet<TopoTriangle>();
             int i;
+            int cnt = 0;
             while (front.Count > 0)
             {
                 foreach (TopoTriangle t in front)
                 {
-                    Application.DoEvents();
+                    cnt++;
+                    if((cnt % 2000) == 0)
+                        Application.DoEvents();
                     for (i = 0; i < 3; i++)
                     {
                         foreach (TopoTriangle test in t.edges[i].faces)
@@ -421,11 +424,14 @@ namespace RepetierHost.model.geom
             front.Add(good);
             HashSet<TopoTriangle> newFront = new HashSet<TopoTriangle>();
             int i;
+            int cnt = 0;
             while (front.Count > 0)
             {
                 foreach (TopoTriangle t in front)
                 {
-                    Application.DoEvents();
+                    cnt++;
+                    if((cnt % 2000) == 0)
+                        Application.DoEvents();
                     for (i = 0; i < 3; i++)
                     {
                         foreach (TopoTriangle test in t.edges[i].faces)
@@ -514,13 +520,16 @@ namespace RepetierHost.model.geom
             bool somethingChanged = false;
             RHVector3 projectedPoint = new RHVector3(0, 0, 0);
             double lambda;
+            int cnt = 0;
             do
             {
                 changed = false;
                 HashSet<TopoEdge> list = OpenLoopEdges();
                 foreach (TopoEdge edge in list)
                 {
-                    Application.DoEvents();
+                    cnt++;
+                    if((cnt % 10)==0)
+                        Application.DoEvents();
                     foreach (TopoEdge test in list)
                     {
                         for (int i = 0; i < 2; i++)
@@ -1158,7 +1167,7 @@ namespace RepetierHost.model.geom
                 {
                     count++;
                     Progress((double)count / countMax);
-                    if (count % 200 == 0)
+                    if (count % 2000 == 0)
                     {
                         Application.DoEvents();
                         if (IsActionStopped()) return true;
@@ -1242,7 +1251,7 @@ namespace RepetierHost.model.geom
             {
                 count++;
                 Progress((double)lastP / max);
-                if (count % 200 == 0)
+                if (count % 2000 == 0)
                 {
                     Application.DoEvents();
                     if (IsActionStopped()) return;
@@ -1295,7 +1304,7 @@ namespace RepetierHost.model.geom
                     for (int i = 0; i < nTri; i++)
                     {
                         Progress((double)i / nTri);
-                        if (i % 200 == 0)
+                        if (i % 2000 == 0)
                         {
                             Application.DoEvents();
                             if(IsActionStopped()) return;
