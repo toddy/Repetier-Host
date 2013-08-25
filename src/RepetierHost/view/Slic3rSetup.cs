@@ -31,6 +31,11 @@ namespace RepetierHost.view
             translate();
             Main.main.languageChanged += translate;
         }
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            e.Cancel = true;
+            this.Hide();
+        }
         private void translate()
         {
             Text = Trans.T("W_SLIC3R_SETUP");
