@@ -122,6 +122,7 @@
     <Compile Include="Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
+    <Compile Include="model\3DSLoader.cs" />
     <Compile Include="model\BasicConfiguration.cs" />
     <Compile Include="model\BeltCalculator.cs" />
     <Compile Include="model\Commands.cs" />

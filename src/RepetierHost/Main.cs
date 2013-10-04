@@ -821,7 +821,7 @@ namespace RepetierHost
             fileHistory.Save(file);
             UpdateHistory();
             string fileLow = file.ToLower();
-            if (fileLow.EndsWith(".stl") || fileLow.EndsWith(".obj"))
+            if (fileLow.EndsWith(".stl") || fileLow.EndsWith(".obj") || fileLow.EndsWith(".3ds"))
             {
               /*  if (MessageBox.Show("Do you want to slice the STL-File? No adds it to the object grid.", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {

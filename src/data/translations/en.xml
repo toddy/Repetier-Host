@@ -336,7 +336,7 @@ better results, if the layer height changes, which can happen in newer Skeinforg
 <t id="L_X_DIRECTION" ver="1">X Direction:</t>
 <t id="L_Y_DIRECTION" ver="1">Y Direction:</t>
 <t id="L_Z_DIRECTION" ver="1">Z Direction:</t>
-<t id="L_DISABLE_FILAMENT_VISUALIZATION" ver="1">Disbale Filament Visualization</t>
+<t id="L_DISABLE_FILAMENT_VISUALIZATION" ver="1">Disable Filament Visualization</t>
 <t id="L_ENABLE_LIGHT" ver="1">Enable Light</t>
 <t id="L_SHOW_EDGES" ver="1">Show Edges</t>
 <t id="L_SHOW_FACES" ver="1">Show Faces</t>
