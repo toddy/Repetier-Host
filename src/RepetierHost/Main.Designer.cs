@@ -118,6 +118,7 @@
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.beltCalculatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.leadscrewCalculatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bedHeightMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.repetierHostHomepageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.repetierHostDownloadPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -179,7 +180,11 @@
             this.tabGCode = new System.Windows.Forms.TabPage();
             this.tabPrint = new System.Windows.Forms.TabPage();
             this.tdSettings = new System.Windows.Forms.BindingSource(this.components);
-            this.bedHeightMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.unitsOfImportedObjectsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.objectsAreInMmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.objectsAreInInchesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.objectsAreInFootToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.objectsAreInMeterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menu.SuspendLayout();
             this.status.SuspendLayout();
             this.toolStrip.SuspendLayout();
@@ -431,7 +436,8 @@
             this.threeDSettingsMenu,
             this.repetierSettingsToolStripMenuItem,
             this.internalSlicingParameterToolStripMenuItem,
-            this.soundConfigurationToolStripMenuItem});
+            this.soundConfigurationToolStripMenuItem,
+            this.unitsOfImportedObjectsToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
             this.settingsToolStripMenuItem.Text = "&Config";
@@ -941,6 +947,14 @@
             this.leadscrewCalculatorToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.leadscrewCalculatorToolStripMenuItem.Text = "Leadscrew Calculator";
             this.leadscrewCalculatorToolStripMenuItem.Click += new System.EventHandler(this.leadscrewCalculatorToolStripMenuItem_Click);
+            // 
+            // bedHeightMapToolStripMenuItem
+            // 
+            this.bedHeightMapToolStripMenuItem.Enabled = false;
+            this.bedHeightMapToolStripMenuItem.Name = "bedHeightMapToolStripMenuItem";
+            this.bedHeightMapToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.bedHeightMapToolStripMenuItem.Text = "Bed height map";
+            this.bedHeightMapToolStripMenuItem.Click += new System.EventHandler(this.bedHeightMapToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -1549,12 +1563,50 @@
             this.tdSettings.CurrentChanged += new System.EventHandler(this.tdSettings_CurrentChanged);
             this.tdSettings.CurrentItemChanged += new System.EventHandler(this.tdSettings_CurrentChanged);
             // 
-            // bedHeightMapToolStripMenuItem
+            // unitsOfImportedObjectsToolStripMenuItem
             // 
-            this.bedHeightMapToolStripMenuItem.Name = "bedHeightMapToolStripMenuItem";
-            this.bedHeightMapToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
-            this.bedHeightMapToolStripMenuItem.Text = "Bed height map";
-            this.bedHeightMapToolStripMenuItem.Click += new System.EventHandler(this.bedHeightMapToolStripMenuItem_Click);
+            this.unitsOfImportedObjectsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.objectsAreInMmToolStripMenuItem,
+            this.objectsAreInInchesToolStripMenuItem,
+            this.objectsAreInFootToolStripMenuItem,
+            this.objectsAreInMeterToolStripMenuItem});
+            this.unitsOfImportedObjectsToolStripMenuItem.Name = "unitsOfImportedObjectsToolStripMenuItem";
+            this.unitsOfImportedObjectsToolStripMenuItem.Size = new System.Drawing.Size(283, 22);
+            this.unitsOfImportedObjectsToolStripMenuItem.Text = "Units of imported objects";
+            // 
+            // objectsAreInMmToolStripMenuItem
+            // 
+            this.objectsAreInMmToolStripMenuItem.Checked = true;
+            this.objectsAreInMmToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.objectsAreInMmToolStripMenuItem.Name = "objectsAreInMmToolStripMenuItem";
+            this.objectsAreInMmToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
+            this.objectsAreInMmToolStripMenuItem.Tag = "1";
+            this.objectsAreInMmToolStripMenuItem.Text = "Objects are in millimeter";
+            this.objectsAreInMmToolStripMenuItem.Click += new System.EventHandler(this.objectsAreInMmToolStripMenuItem_Click);
+            // 
+            // objectsAreInInchesToolStripMenuItem
+            // 
+            this.objectsAreInInchesToolStripMenuItem.Name = "objectsAreInInchesToolStripMenuItem";
+            this.objectsAreInInchesToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
+            this.objectsAreInInchesToolStripMenuItem.Tag = "25.4";
+            this.objectsAreInInchesToolStripMenuItem.Text = "Objects are in inches";
+            this.objectsAreInInchesToolStripMenuItem.Click += new System.EventHandler(this.objectsAreInMmToolStripMenuItem_Click);
+            // 
+            // objectsAreInFootToolStripMenuItem
+            // 
+            this.objectsAreInFootToolStripMenuItem.Name = "objectsAreInFootToolStripMenuItem";
+            this.objectsAreInFootToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
+            this.objectsAreInFootToolStripMenuItem.Tag = "304.8";
+            this.objectsAreInFootToolStripMenuItem.Text = "Objects are in foot";
+            this.objectsAreInFootToolStripMenuItem.Click += new System.EventHandler(this.objectsAreInMmToolStripMenuItem_Click);
+            // 
+            // objectsAreInMeterToolStripMenuItem
+            // 
+            this.objectsAreInMeterToolStripMenuItem.Name = "objectsAreInMeterToolStripMenuItem";
+            this.objectsAreInMeterToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
+            this.objectsAreInMeterToolStripMenuItem.Tag = "1000";
+            this.objectsAreInMeterToolStripMenuItem.Text = "Objects are in meter";
+            this.objectsAreInMeterToolStripMenuItem.Click += new System.EventHandler(this.objectsAreInMmToolStripMenuItem_Click);
             // 
             // Main
             // 
@@ -1752,7 +1804,12 @@
         private System.Windows.Forms.ToolStripMenuItem showCompassToolStripMenuItem;
         private System.Windows.Forms.Button buttonChangeId;
         public System.Windows.Forms.Label printerIdLabel;
-        private System.Windows.Forms.ToolStripMenuItem bedHeightMapToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem bedHeightMapToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem unitsOfImportedObjectsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem objectsAreInMmToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem objectsAreInInchesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem objectsAreInFootToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem objectsAreInMeterToolStripMenuItem;
     }
 }
 
