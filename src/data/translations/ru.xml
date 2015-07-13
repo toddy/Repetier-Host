@@ -54,8 +54,8 @@
 <t id="M_SKEINFORGE_HOMEPAGE" ver="1">Домашняя страница Skeinforge</t>
 <t id="M_REPRAP_WEBSITE" ver="1">Домашняя страница RepRap</t>
 <t id="M_REPRAP_FORUM" ver="1">Форум RepRap</t>
-<t id="M_THINGIVERSE_NEWEST" ver="1">Thingiverse Newest Things</t>
-<t id="M_THINGIVERSE_POPULAR" ver="1">Thingiverse Popular Things</t>
+<t id="M_THINGIVERSE_NEWEST" ver="1">Новинки Thingiverse</t>
+<t id="M_THINGIVERSE_POPULAR" ver="1">Популярно на Thingiverse</t>
 <t id="M_ABOUT_REPETIER_HOST" ver="1">О программе Repetier-Host</t>
 <t id="M_CHECK_FOR_UPDATES" ver="1">Проверить обновления</t>
 <t id="L_DISCONNECT_PRINTER" ver="1">Отсоединить принтер</t>
@@ -186,7 +186,7 @@
 <t id="L_EDITOR_R" ver="1">R$1</t>
 <t id="L_OVERWRITE" ver="1">Переписать</t>
 <t id="L_INSERT" ver="1">Вставить</t>
-<t id="L_SYNTAX" ver="1">Синтакс</t>
+<t id="L_SYNTAX" ver="1">Синтаксис</t>
 <t id="TAB_HELP" ver="1">Справка</t>
 <t id="TAB_VISUALIZATION" ver="1">Визуализация</t>
 <t id="L_SHOW_COMPLETE_CODE" ver="1">Показать весь код</t>
@@ -200,7 +200,7 @@
 <t id="L_BAUD_RATE" ver="1">Скорость в бодах:</t>
 <t id="L_CACHE_SIZE_HINT" ver="1">Arduino в приемном буфере снижено 127 до 63 байт!</t>
 <t id="L_CHECK_EVERY_X" ver="1">Проверка каждые $1 секунды.</t>
-<t id="L_CONNECTION_INFO" ver="1">Настройки принтера всегда соответствуют выбраному принтеру.
+<t id="L_CONNECTION_INFO" ver="1">Настройки принтера всегда соответствуют выбранному принтеру.
 Они сохраняются при каждом шелчке по кнопке ОК или Применить.
 Чтобы создать новый принтер, введите имя для принтера и шелкните Применить.
 Новый принтер будет использовать последние выбранные настройки.</t>
@@ -260,7 +260,7 @@
 <t id="L_INSTALLED_VERSION" ver="1">Установленная версия:</t>
 <t id="L_INFORMATION_ON_UPDATE" ver="1">Информация</t>
 <t id="L_NO_NEW_UPDATES" ver="1">Обновлений нет.
-Вы используете последнию версию.</t>
+Вы используете последнюю версию.</t>
 <t id="L_UPDATE_STATUS" ver="1">Статус</t>
 <t id="W_SLICING_INFO" ver="1">Слайсинг</t>
 <t id="L_ACTION:" ver="1">Действие:</t>
@@ -269,7 +269,7 @@
 <t id="L_START_JOB_AFTER_SLICING" ver="1">Пуск после слайсинга</t>
 <t id="W_ABOUT_REPETIER_HOST" ver="1">О программе Repetier-Host</t>
 <t id="L_LICENCE_AND_LIBRARIES" ver="1">Лицензия и компоненты</t>
-<t id="L_REPETIER_INFO" ver="1">This software was developed for controlling RepRap like 3D-printer. It is best used with Repetier-Firmware, which supports all features. Other printer firmware like Marlin, Teacup, Sprinter or 5D GCode interpreter should work with proper settings.</t>
+<t id="L_REPETIER_INFO" ver="1">Эта программа разработана для управления 3D принтерами RepRap. Хотя лучше всего она будет работать с прошивкой Repetier-firmware, ее наверное можно использовать и с другими прошивками такими как: Marlin, Teacup, Sprinter или 5D GCode interpreter, при правильной настройке.</t>
 <t id="W_COPY_MARKED_OBJECTS" ver="1">Копировать отмеченные объекты</t>
 <t id="L_NUMBER_OF_COPIES:" ver="1">Кол-во копий:</t>
 <t id="L_AUTO_POSITION_AFTER_COPY" ver="1">Авторазмещение</t>
@@ -318,7 +318,7 @@
 <t id="L_EDGES" ver="1">Ребра:</t>
 <t id="L_EXTRUDER_X:" ver="1">Экструдер $1:</t>
 <t id="L_FACES" ver="1">Грани:</t>
-<t id="L_FILAMENT_VISUALIZATION_INFO" ver="1">Форма нити вычисляется на основе высоты и ширины слоя или на основе диаметра нити, Второе дает лучший результат если высота слоя меняется, это может быть в новой версии Skeinforge.</t>
+<t id="L_FILAMENT_VISUALIZATION_INFO" ver="1">Форма нити вычисляется на основе высоты и ширины слоя или на основе диаметра нити. Второе дает лучший результат если высота слоя меняется, это может быть в новой версии Skeinforge.</t>
 <t id="L_FILAMENT_VISUALIZATION" ver="1">Визуализация нити:</t>
 <t id="L_HOT_FILAMENT" ver="1">Горячая нить:</t>
 <t id="L_HOT_FILAMENT_LENGTH" ver="1">Длина горячей нити:</t>
@@ -378,7 +378,7 @@
 <t id="L_UPLOAD_CURRENG_GCODE" ver="1">Отправить текущий G-код</t>
 <t id="L_FILE:" ver="1">Файл:</t>
 <t id="W_SAVE_GCODE_DIRECT_PRINT" ver="1">Сохранить G-код для печати напрямую</t>
-<t id="L_SAVE_DIRECT_INFO" ver="1">Эта функция сохранения подразумевает что сгенерированные файлы G-кода могут запускатся с SD-карты.
+<t id="L_SAVE_DIRECT_INFO" ver="1">Эта функция сохранения подразумевает что сгенерированные файлы G-кода могут запускаться с SD-карты.
 По этой причине добавьте коды запуска и завершения вместе с обычными командами завершения.Если же вы просто хотите сохранить G-код в редакторе, используйте иконку сохранения.</t>
 <t id="L_SAVE_AS_BINARY" ver="1">Сохранить в двоичном формате</t>
 <t id="B_SAVE" ver="1">Сохранить</t>
@@ -447,20 +447,20 @@
 <t id="W_SKEIN_SETTINGS" ver="1">Настройки Skeinforge/SFACT</t>
 <t id="L_SKEIN_APPLICARTION" ver="1">Приложение Skeinforge:</t>
 <t id="L_SKEIN_CRAFT" ver="1">Возможности Skeinforge:</t>
-<t id="L_SKEIN_PROFDIR_INFO" ver="1">Выберите подпапку для профиля в конфиг.папке skeinforge.
+<t id="L_SKEIN_PROFDIR_INFO" ver="1">Выберите подпапку для профиля в конфиг.папке Skeinforge.
 Обычно это: HOME/.skeinforge/profiles. Для некоторых версий (например SFACT) путь может быть другим.</t>
 <t id="L_SKEIN_PROFILES_DIRECTORY" ver="1">Папка профиля:</t>
 <t id="L_SKEIN_PYPY" ver="1">PyPy:</t>
 <t id="L_SKEIN_PYPY_INFO" ver="1">If you have pypy installed, Skeinforge slices will run 3-4 times faster. If you don't have pypy installed, leave it blank and the python interpreter will be used instead. You can get the lastest pypy at http://www.pypy.org/</t>
-<t id="L_SKEIN_PYTHON" ver="1">Python Interpreter:</t>
+<t id="L_SKEIN_PYTHON" ver="1">Интерпретатор Python:</t>
 <t id="L_SKEIN_WORKDIR_INFO" ver="1">The working directory determines, where SFACT will store profiles!</t>
-<t id="L_SKEIN_WORKING_DIRECTORY" ver="1">Working Directory:</t>
-<t id="L_SKEIN_OPEN_FILE" ver="1">Skeinforge Application</t>
-<t id="L_SKEIN_OPEN_PYTHON" ver="1">Python Interpreter</t>
+<t id="L_SKEIN_WORKING_DIRECTORY" ver="1">Рабочая папка:</t>
+<t id="L_SKEIN_OPEN_FILE" ver="1">Папка Skeinforge</t>
+<t id="L_SKEIN_OPEN_PYTHON" ver="1">Интерпретатор Python</t>
 <t id="L_SKEIN_OPEN_CRAFT" ver="1">Skeinforge Craft Application</t>
 <t id="L_SKEIN_OPEN_PYPY" ver="1">Pypy Python Interpreter</t>
-<t id="L_SKEIN_SELECT_PROFILE_FOLDER" ver="1">Select profiles Directory</t>
-<t id="L_SKEIN_SELECT_WORKING_FOLDER" ver="1">Select Working Directory</t>
+<t id="L_SKEIN_SELECT_PROFILE_FOLDER" ver="1">Выберите папку профилей</t>
+<t id="L_SKEIN_SELECT_WORKING_FOLDER" ver="1">Выберите рабочую папку</t>
 <t id="L_FEEDRATE:" ver="1">Интенсивность:</t>
 <t id="L_FLOWRATE:" ver="1">Скорость подачи:</t>
 <t id="L_UPDATE_NO_CONNECTION" ver="1">Нет связи с сервером обновлений!</t>
@@ -485,7 +485,7 @@
 <t id="L_SELECTION_BOX" ver="3">Куб выделения:</t>
 <t id="L_FILAMENT_NONE" ver="3">Нет/тот же что и экструдер 1</t>
 <t id="L_REALLY_QUIT" ver="3">Печать не завершена. Все равно выйти?</t>
-<t id="M_DONATE" ver="3">Donate or Support</t>
+<t id="M_DONATE" ver="3">Пожертвовать или поддержать</t>
 <t id="L_FAN" ver="4">Вентилятор</t>
 <t id="L_HOME_X:" ver="4">Начало X:</t>
 <t id="L_HOME_Y:" ver="4">Начало Y:</t>
