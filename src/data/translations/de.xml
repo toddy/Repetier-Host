@@ -209,7 +209,7 @@ Du kannst Pausen in deinem Code einfügen mit:
 <t id="L_DUMP_AREA_FRONT" ver="1">Vorderkante Abladeplatz:</t>
 <t id="L_DUMP_AREA_LEFT" ver="1">Linke Seite Abladeplatz:</t>
 <t id="L_DUMP_AREA_WIDTH" ver="1">Breite Abladeplatz:</t>
-<t id="L_FILTER_INFO" ver="1">Sie können nach jedem Slicing ein Programm mit dem erzeugten G-Code laufen lassen. Verwendien sie #in und #out, um den Eingabe und Ausgabe-Dateiname als Parameter einzufügen.</t>
+<t id="L_FILTER_INFO" ver="1">Sie können nach jedem Slicing ein Programm mit dem erzeugten G-Code laufen lassen. Verwenden sie #in und #out, um den Eingabe und Ausgabe-Dateiname als Parameter einzufügen.</t>
 <t id="L_FILTER_PATH_PARAM" ver="1">Filter Pfad and Parameter:</t>
 <t id="L_PARITY" ver="1">Parity:</t>
 <t id="L_PARK_POSITION" ver="1">Parkposition:</t>
@@ -220,7 +220,7 @@ Du kannst Pausen in deinem Code einfügen mit:
 <t id="L_PRINTER" ver="1">Drucker:</t>
 <t id="L_RECEIVE_CACHE_SIZE" ver="1">Empfänger Cachegröße:</t>
 <t id="L_STOPBITS" ver="1">Stopbits:</t>
-<t id="L_TRANSFER_PROTOCOL" ver="1">Transferprotokol:</t>
+<t id="L_TRANSFER_PROTOCOL" ver="1">Transferprotokoll:</t>
 <t id="L_TRAVEL_FEED_RATE" ver="1">Reisegeschwindigkeit:</t>
 <t id="L_ZFEED_RATE" ver="1">Z-Achse Geschwindigkeit:</t>
 <t id="L_DISABLE_EXTRUDER_AFTER_JOB" ver="1">Extruder nach Job/Beenden ausschalten</t>
